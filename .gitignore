@@ -1,0 +1,8 @@
+# ignore git
+
+# DreamWeaver's sync xml file.
+dwsync.xml
+nbproject/*
+.DS_Store
+.idea/*
+
