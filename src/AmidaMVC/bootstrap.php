@@ -28,7 +28,7 @@ function ClassLoader( $path=FALSE )
     $args[ 'path' ] = $path;
 
     return function( $className ) use ( $args ) {
-        $tip = $args[ 'tip' ];
+        $tip  = $args[ 'tip' ];
         if( !$tip ) return;
         $ds   = DIRECTORY_SEPARATOR;
         $sep  = $args[ 'sep' ];
@@ -36,14 +36,14 @@ function ClassLoader( $path=FALSE )
         $path = $args[ 'path' ];
         if( substr( $className, 0, strlen( $tip.$sep ) ) === $tip.$sep ) {
             $fileName = '';
-            if(false !== ( $lastNsPos = strripos( $className, $sep ) ) ) {
+            if( FALSE !== ( $lastNsPos = strripos( $className, $sep ) ) ) {
                 $namespace = substr( $className, 0, $lastNsPos );
                 $className = substr( $className, $lastNsPos + 1 );
                 $fileName  = str_replace( $sep, $ds, $namespace ) . $ds;
             }
-            $fileName .= str_replace('_', $ds, $className) . $ext;
+            $fileName .= str_replace( '_', $ds, $className) . $ext;
 
-            $inc = ($path !== null ? $path . $ds : '') . $fileName;
+            $inc = ( $path !== null ? $path . $ds : '' ) . $fileName;
             require( $inc );
         }
     };
