@@ -45,8 +45,13 @@ class Router
     // +-------------------------------------------------------------+
     static function actionDefault( $ctrl, &$data ) {
         $ctrl->debug( 'wordy', $ctrl->path, 'ctrl path' );
-        self::match( $ctrl->path );
-        $data .= 'Router::default';
+        $loadInfo = self::match( $ctrl->path );
+        if( !$loadInfo ) {
+            $data .= 'Router::default route not found';
+        }
+        else {
+            $data .= 'Router::default found route:'. $loadInfo['file'];
+        }
     }
     // +-------------------------------------------------------------+
 }
