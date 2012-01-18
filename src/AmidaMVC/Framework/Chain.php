@@ -206,6 +206,7 @@ class Chain
         // chain of responsibility loop.
         while( $action )
         {
+            // TODO: replace debug to preDispatch method.
             $this->debug( 'head', "dispatch for $action, model={$this->model}" );
             $this->currAct( $action );
             $this->nextAct( FALSE ); // reset next action.
@@ -290,11 +291,13 @@ class Chain
         return FALSE;
     }
     // +-------------------------------------------------------------+
+    // TODO: move debug to Controller class. use preDispatch method.
     function setDebug( $debug ) {
         $this->debug = $debug;
         return $this;
     }
     // +-------------------------------------------------------------+
+    // TODO: move debug to Controller class. use preDispatch method.
     function debug() {
         if( !$this->debug ) return FALSE;
         $args = func_get_args();

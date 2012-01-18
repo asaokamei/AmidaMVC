@@ -55,6 +55,7 @@ class Controller extends Chain
         return $this->dispatch( $action, $view );
     }
     // +-------------------------------------------------------------+
+    // TODO: move to Request class.
     function getRoute( $command=NULL ) {
         if( $command === NULL ) {
             $this->command = self::getUriList();
@@ -80,6 +81,7 @@ class Controller extends Chain
         $this->debug( 'table', $this->command, 'getRoute command:' );
     }
     // +-------------------------------------------------------------+
+    // TODO: move to Request class.
     /**
      * @param null $uri
      * @param null $script
