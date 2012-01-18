@@ -1,6 +1,6 @@
 <?php
 
-class app1Model
+class modelApp1
 {
     static function actionDefault( $ctrl, $data ) {
         echo "app1Model::Default, action=".$ctrl->currAct();
@@ -12,5 +12,5 @@ class app1Model
     }
 }
 
-$ctrl->prependModel( 'app1Model', 'model' );
+$ctrl->prependModel( 'modelApp1', 'model' );
 
