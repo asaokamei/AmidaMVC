@@ -8,9 +8,9 @@
  * @return closure
  */
 
-spl_autoload_register( ClassLoader() );
+spl_autoload_register( AmidaMVC_ClassLoader() );
 
-function ClassLoader( $path=FALSE )
+function AmidaMVC_ClassLoader( $path=FALSE )
 {
     if( $path === FALSE ) $path = __DIR__;
     $args = func_get_args();
@@ -22,8 +22,8 @@ function ClassLoader( $path=FALSE )
     );
     $args = $args + $default;
     if( !$args[ 'tip' ] ) {
-        $args[ 'tip' ] = substr( $path, strripos( $path, $args[ 'sep' ] ) + 1 );
-        $path = substr( $path, 0, strripos( $path, $args[ 'sep' ] ) );
+        $args[ 'tip' ] = substr( $path, strripos( $path, DIRECTORY_SEPARATOR ) + 1 );
+        $path = substr( $path, 0, strripos( $path, DIRECTORY_SEPARATOR ) );
     }
     $args[ 'path' ] = $path;
 
