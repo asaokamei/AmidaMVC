@@ -1,3 +1,3 @@
 <?php
 
-class Viewer extends \AmidaMVC\Component\Viewer {}
+class Router extends \AmidaMVC\Component\Router {}
