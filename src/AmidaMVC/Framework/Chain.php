@@ -209,7 +209,7 @@ class Chain
             $this->debug( 'head', "dispatch for $action, model={$this->model}" );
             $this->currAct( $action );
             $this->nextAct( FALSE ); // reset next action.
-            $return = $this->execAction( $action, $data );
+            $return = $this->execAction( $action, $data, $return );
             $action = $this->nextAct();
             // automatically advance to next model.
             if( !$action &&  // next action not set
@@ -227,8 +227,8 @@ class Chain
      * @param null $data      data to pass if any.
      * @return bool|mixed     returned value from exec object.
      */
-    function execute( $exec, &$data=NULL ) {
-        $return = call_user_func_array( $exec, array( $this, &$data ) );
+    function execute( $exec, &$data=NULL, $return=NULL ) {
+        $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
         // note: not to exit on return FALSE;
         // should create breakChain method in Dispatcher.
         return $return;
@@ -279,13 +279,13 @@ class Chain
      * @param null $data   data to pass if any.
      * @return bool|mixed  returned value from exec object.
      */
-    function execAction( $action, &$data=NULL ) {
+    function execAction( $action, &$data=NULL, $return=NULL ) {
         $exec = $this->getExecFromAction( $action );
         if( !$exec ) {
             $exec = $this->getExecFromAction( $this->defaultAct );
         }
         if( $exec ) {
-            return $this->execute( $exec, $data );
+            return $this->execute( $exec, $data, $return );
         }
         return FALSE;
     }

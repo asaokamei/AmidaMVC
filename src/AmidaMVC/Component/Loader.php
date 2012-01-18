@@ -27,11 +27,16 @@ class Loader
         return static::$location;
     }
     // +-------------------------------------------------------------+
-    static function actionDefault( $ctrl, &$data ) {
+    static function actionDefault( $ctrl, &$data, $loadInfo=NULL ) {
         // load by searching routes.
         self::setLocation( $ctrl->getLocation() );
         $routes = $ctrl->routes;
         static::$prefix = $ctrl->prefixCmd;
+
+        if( isset( $loadInfo ) ) {
+            $ctrl->debug( 'table', $loadInfo, 'Loader::default got loadinfo!!!' );
+        }
+
         $file_name = self::searchRoutes( $ctrl, $routes, $action );
         if( $file_name ) {
             self::loadApp( $ctrl, $data, $file_name );

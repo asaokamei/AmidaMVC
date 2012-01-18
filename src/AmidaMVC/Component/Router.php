@@ -37,8 +37,8 @@ class Router
         foreach( self::$_routes as $pattern => $match ) {
             if( preg_match( "#^{$pattern}$#", $path, $matches ) ) {
                 $match = array_merge( $match, $matches );
+                return $match;
             }
-            return $match;
         }
         return FALSE;
     }
@@ -50,8 +50,9 @@ class Router
             $data .= 'Router::default route not found';
         }
         else {
-            $data .= 'Router::default found route:'. $loadInfo['file'];
+            $data .= 'Router::default found route: '. $loadInfo['file'];
         }
+        return $loadInfo;
     }
     // +-------------------------------------------------------------+
 }
