@@ -11,6 +11,10 @@ require_once( __DIR__ . '/Chain.php');
 class Controller extends Chain
 {
     /**
+     * @var null     path info starting from the root dir.
+     */
+    var $path = NULL;
+    /**
      * @var array    command map from URI.
      */
     var $command = array();
@@ -72,6 +76,7 @@ class Controller extends Chain
             }
             $this->routes[] = $cmd;
         }
+        $this->path = implode( '/', $this->routes );
         $this->debug( 'table', $this->command, 'getRoute command:' );
     }
     // +-------------------------------------------------------------+
