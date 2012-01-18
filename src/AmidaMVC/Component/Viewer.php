@@ -6,6 +6,7 @@ class Viewer
     function actionDefault( $ctrl, $data ) {
         // everything OK.
         echo "Viewer::Default<br />";
+        self::showDebugInfo( $ctrl );
         var_dump( $data );
     }
     function actionErr404( $ctrl, $data ) {
@@ -30,7 +31,7 @@ class Viewer
         div.debugInfo td,th { border: 1px dotted gray; }
         div.debugInfo th { background-color: #F0F0F0; }
         </style>
-
+        <hr>
         ";
         echo $css;
         echo "<div style='font-size: 12px;' class='debugInfo'>{$result}</div>";
