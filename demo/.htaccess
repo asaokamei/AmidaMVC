@@ -1,5 +1,11 @@
 Options +FollowSymLinks
 IndexIgnore */*
+
+# no access for AmidaMVC's class files.
+#<Files ~ "^_">
+#  deny from all
+#</Files>
+
 # Turn on the RewriteEngine
 RewriteEngine On
 #  Rules
