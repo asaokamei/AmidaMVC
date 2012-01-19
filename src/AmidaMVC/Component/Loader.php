@@ -27,40 +27,53 @@ class Loader
         return static::$location;
     }
     // +-------------------------------------------------------------+
+    /**
+     * searches for action files under controller folder.
+     * must be slow.
+     * @static
+     * @param $ctrl
+     * @param $data
+     * @param null $loadInfo
+     */
     static function actionDefault( $ctrl, &$data, $loadInfo=NULL ) {
+        // check if loadInfo contains file to load.
+        if( is_array( $loadInfo ) && isset( $loadInfo[ 'file' ] ) ) {
+            self::actionLoad( $ctrl, $data, $loadInfo );
+        }
         // load by searching routes.
         self::setLocation( $ctrl->getLocation() );
-        $routes = $ctrl->routes;
         static::$prefix = $ctrl->prefixCmd;
-
-        if( isset( $loadInfo ) ) {
-            $ctrl->debug( 'table', $loadInfo, 'Loader::default got loadinfo!!!' );
-        }
-
-        $file_name = self::searchRoutes( $ctrl, $routes, $action );
-        if( $file_name ) {
-            self::loadApp( $ctrl, $data, $file_name );
-            $ctrl->nextModel( $action );
+        $folder = '';
+        $routes = $ctrl->routes;
+        $loadInfo = self::searchRoutes( $ctrl, $routes, $folder );
+        if( $loadInfo ) {
+            self::actionLoad( $ctrl, $data, $loadInfo );
         }
         else {
-            $ctrl->nextAct( 'Err404' );
+            $ctrl->nextModel( 'Err404' );
         }
     }
     // +-------------------------------------------------------------+
-    function loadApp( $ctrl, &$data, $file_name ) {
-        $extension = pathinfo( $file_name, PATHINFO_EXTENSION );
-        $read_files = array( 'html', 'text' );
-        $read_asis  = array( 'pdf', 'png', 'jpg', 'gif' );
+    /**
+     * loads app file.
+     * specify file as $loadInfo[ 'file' ] relative to ctrl_root.
+     * @static
+     * @param $ctrl
+     * @param $data
+     * @param $loadInfo
+     */
+    static function actionLoad( $ctrl, &$data, $loadInfo ) {
         $ctrl->debug( 'head', "loading file: {$file_name} as $extension" );
 
-        if( $extension == 'php') {
-            include $file_name;
+        /** @var $file_name  relative to ctrl_root. */
+        if( pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION ) == 'php') {
+            include $ctrl->ctrl_root . '/' . $loadInfo[ 'file' ];
         }
-        else if( in_array( $extension, $read_files ) ) {
-            $data = file_get_contents( $file_name );
+        else if( in_array( $extension, array( 'html', 'text' ) ) ) {
+            $data = file_get_contents( $loadInfo[ 'file' ] );
         }
-        else if( in_array( $extension, $read_asis ) ) {
-            readfile( $file_name );
+        else if( in_array( $extension, array( 'pdf', 'png', 'jpg', 'gif' ) ) ) {
+            readfile( $loadInfo[ 'file' ] );
         }
     }
     // +-------------------------------------------------------------+
@@ -80,36 +93,41 @@ class Loader
      * @param $action
      * @return bool|string $file_name   search file name, or FALSE if not found..
      */
-    static function searchRoutes( $ctrl, &$routes, &$action ) {
+    static function searchRoutes( $ctrl, &$routes, &$folder ) {
         // loads from existing app file.
-        $action = self::getAction( $routes[0] );
-        if( self::$postfix === NULL ) {
-            $extension = '.php';
+        if( is_array( $routes ) && isset( $routes[0] ) ) {
+            // search folder, action.php, or _App.php
+            $action  = self::getAction( $routes[0] );
         }
         else {
-            $extension = '_' . self::$postfix . '.php';
+            // search _App.php only.
+            $action = FALSE;
         }
-        $prefix = self::$prefix;
-
-        // load application.
-
+        $loadInfo = array(
+            'file' => FALSE,
+            'action' => $action
+        );
         // try load in subsequent action folder.
-        $folder = static::$location . "/{$action}";
-        if( is_dir( $folder ) && !empty( $routes ) ) {
-            $routes = array_slice( $routes, 1 );
-            self::$location = $folder;
-            return self::searchRoutes( $ctrl, $routes, $action );
+        if( $action && is_dir( static::$location . "/{$action}" ) ) {
+            // search in the directory.
+            if( !empty( $routes ) ) {
+                $routes = array_slice( $routes, 1 ); // shorten routes.
+            }
+            $folder .= "{$action}";
+            return self::searchRoutes( $ctrl, $routes, $folder );
         }
         // try loading action.php script.
-        if( $file_name = self::getActionFiles( static::$location, $action ) ) {
+        if( $action && $file_name = self::getActionFiles( $folder, $action ) ) {
             $routes = array_slice( $routes, 1 );
-            return $file_name;
+            $loadInfo[ 'file' ] = $file_name;
+            return $loadInfo;
         }
         // try loading ./App.php
-        $file_name = static::$location . "/{$prefix}App{$extension}";
-        if( file_exists( $file_name ) ) {
+        if( $file_name = self::getActionFiles( $folder, '_App' ) ) {
             $action = self::getAction( $routes[0] );
-            return $file_name;
+            $loadInfo[ 'file' ] = $file_name;
+            $loadInfo[ 'action' ] = $action;
+            return $loadInfo;
         }
         return FALSE;
     }
@@ -121,9 +139,10 @@ class Loader
      * @param $action       name of action, ie action.extension
      * @return bool/string  returns filename, false if not found.
      */
-    static function getActionFiles( $location, $action ) {
-        $list = glob( "{$location}/{$action}*", GLOB_NOSORT );
+    static function getActionFiles( $folder, $action ) {
+        $list = glob( static::$location . "/{$folder}/{$action}*", GLOB_NOSORT );
         foreach( $list as $file_name ) {
+            $file_name = substr( $file_name, strlen( static::$location ) + 1 );
             return $file_name;
         }
         return FALSE;
