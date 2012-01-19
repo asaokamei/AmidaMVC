@@ -11,10 +11,6 @@ namespace AmidaMVC\Framework;
 class Controller extends Chain
 {
     /**
-     * @var string  request class to get URI.
-     */
-    var $request = '\\AmidaMVC\\Framework\\Request';
-    /**
      * @var null    control root where MVC controls.
      */
     var $ctrl_root = NULL;
