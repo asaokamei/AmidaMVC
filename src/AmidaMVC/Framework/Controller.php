@@ -11,6 +11,10 @@ require_once( __DIR__ . '/Chain.php');
 class Controller extends Chain
 {
     /**
+     * @var null    control root where MVC controls.
+     */
+    var $ctrl_root = NULL;
+    /**
      * @var null     path info starting from the root dir.
      */
     var $path = NULL;
@@ -36,12 +40,13 @@ class Controller extends Chain
     function __construct() {
         // make this DI!
         $traces = debug_backtrace(false);
-        $this->loadFolder[] = dirname( $traces[0]['file'] );
+        $this->ctrl_root    = dirname( $traces[0]['file'] );
+        $this->loadFolder[] = $this->ctrl_root;
         $this->loadFolder[] = realpath( __DIR__ . '/../AppDefault' );
     }
     // +-------------------------------------------------------------+
     function getLocation() {
-        return $this->loadFolder[0];
+        return $this->ctrl_root;
     }
     // +-------------------------------------------------------------+
     function start( &$view ) {
