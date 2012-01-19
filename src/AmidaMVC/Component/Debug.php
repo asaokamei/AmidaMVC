@@ -107,7 +107,7 @@ class DebugHtml
     // +-------------------------------------------------------------+
     //  compact var_dump.
     // +-------------------------------------------------------------+
-    static function table( $var, $showType=true ) {
+    static function table( $level, $var, $showType=true ) {
         $type = gettype( $var );
         $result = '';
         if( in_array( $type, array( 'object', 'array' ) ) ) {
@@ -118,7 +118,7 @@ class DebugHtml
             $res_t = "";
             $res_d = "";
             foreach( $var as $k => $v ) {
-                $res = self::table( $v, false );
+                $res = self::table( $level, $v, false );
                 $res_h .= "<th>{$k}</th>";
                 $res_t .= "<td>" . gettype($v) . "</td>";
                 $res_d .= "<td>{$res}</td>";
