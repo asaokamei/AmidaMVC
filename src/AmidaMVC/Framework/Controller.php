@@ -1,6 +1,6 @@
 <?php
 namespace AmidaMVC\Framework;
-require_once( __DIR__ . '/Chain.php');
+
 /**
  * Controller for AmidaMVC.
  * TODO: make new Controller
@@ -10,6 +10,10 @@ require_once( __DIR__ . '/Chain.php');
  */
 class Controller extends Chain
 {
+    /**
+     * @var string  request class to get URI.
+     */
+    var $request = '\\AmidaMVC\\Framework\\Request';
     /**
      * @var null    control root where MVC controls.
      */
@@ -32,17 +36,27 @@ class Controller extends Chain
     var $prefixCmd = '_';
     var $loadFolder = array();
     // +-------------------------------------------------------------+
-    /**
-     * gets routes array. override this method to use other Router.
-     * @static
-     * @return array    routes.
-     */
-    function __construct() {
-        // make this DI!
-        $traces = debug_backtrace(false);
-        $this->ctrl_root    = dirname( $traces[0]['file'] );
+    function __construct( $option=array() ) {
+        $default = array(
+            'ctrl_root'  => FALSE,
+            'appDefault' => realpath( __DIR__ . '/../AppDefault' ),
+            'path_info'  => FALSE,
+        );
+        $option = $option + $default;
+        // set ctrl root folder.
+        if( !$option[ 'ctrl_root' ] ) {
+            $traces = debug_backtrace(false);
+            $option[ 'ctrl_root' ] = dirname( $traces[0]['file'] );
+        }
+        $this->ctrl_root    = $option[ 'ctrl_root' ];
+        // set loadFolder as ctrl_root and appDefault.
         $this->loadFolder[] = $this->ctrl_root;
-        $this->loadFolder[] = realpath( __DIR__ . '/../AppDefault' );
+        $this->loadFolder[] = $option[ 'appDefault' ];
+        // set path_info
+        if( !$option[ 'path_info' ] ) {
+            $option[ 'path_info' ] = self::getPathInfo();
+        }
+        $this->path = $option[ 'path_info' ];
     }
     // +-------------------------------------------------------------+
     function getLocation() {
@@ -60,52 +74,20 @@ class Controller extends Chain
         return $this->dispatch( $action, $view );
     }
     // +-------------------------------------------------------------+
-    // TODO: move to Request class.
-    function getRoute( $command=NULL ) {
-        if( $command === NULL ) {
-            $this->command = self::getUriList();
-        }
-        else {
-            $this->command = $command;
-        }
-        foreach( $this->command as $key => $val ) {
-            if( $val === '' ) {
-                unset( $this->command[$key] );
-            }
-        }
+    function getPathInfo() {
+        return \AmidaMVC\Framework\Request::getPathInfo();
+    }
+    // +-------------------------------------------------------------+
+    function getRoute() {
+        $this->command = explode( '/', $this->path );
         $this->routes = array();
-        $this->command = array_values( $this->command );
         foreach( $this->command as $cmd ) {
             if( substr( $cmd, 0, 1 ) === $this->prefixCmd ) {
-                // ignore this cmd as route.
-                continue;
+                continue; // ignore this cmd as route.
             }
             $this->routes[] = $cmd;
         }
-        $this->path = implode( '/', $this->routes );
         $this->debug( 'table', $this->command, 'getRoute command:' );
-    }
-    // +-------------------------------------------------------------+
-    // TODO: move to Request class.
-    /**
-     * @param null $uri
-     * @param null $script
-     * @return array     returns routes.
-     */
-    static function getUriList( $uri=NULL, $script=NULL ) {
-        if( $uri === NULL ) {
-            $uri = preg_replace('@[\/]{2,}@', '/', $_SERVER[ 'REQUEST_URI' ] );
-            $uri = explode( '/', $uri );
-        }
-        if( $script === NULL ) {
-            $script = explode( '/', $_SERVER[ 'SCRIPT_NAME' ] );
-        }
-        for( $i = 0; $i < sizeof( $script ); $i++ ) {
-            if( $uri[$i] == $script[$i] ) {
-                unset( $uri[$i] );
-            }
-        }
-        return array_values( $uri );
     }
     // +-------------------------------------------------------------+
     function loadDebug( $debug=NULL ) {
