@@ -63,16 +63,16 @@ class Loader
      * @param $loadInfo
      */
     static function actionLoad( $ctrl, &$data, $loadInfo ) {
-        $ctrl->debug( 'head', "loading file: {$file_name} as $extension" );
+        $ctrl->debug( 'head', "loading file: ".$loadInfo['file'] );
 
         /** @var $file_name  relative to ctrl_root. */
         if( pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION ) == 'php') {
             include $ctrl->ctrl_root . '/' . $loadInfo[ 'file' ];
         }
-        else if( in_array( $extension, array( 'html', 'text' ) ) ) {
+        else if( in_array( pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION ), array( 'html', 'text' ) ) ) {
             $data = file_get_contents( $loadInfo[ 'file' ] );
         }
-        else if( in_array( $extension, array( 'pdf', 'png', 'jpg', 'gif' ) ) ) {
+        else if( in_array( pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION ), array( 'pdf', 'png', 'jpg', 'gif' ) ) ) {
             readfile( $loadInfo[ 'file' ] );
         }
     }
