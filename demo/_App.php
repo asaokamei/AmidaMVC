@@ -10,5 +10,5 @@ class topApp1
     }
 }
 
-$ctrl->topApp1( 'modelApp1', 'model' );
+$ctrl->prependModel( 'topApp1', 'model' );
 
