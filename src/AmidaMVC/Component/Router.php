@@ -51,6 +51,7 @@ class Router
         }
         else {
             $data .= 'Router::default found route: '. $loadInfo['file'];
+            $ctrl->nextModel( 'Load' );
         }
         return $loadInfo;
     }
