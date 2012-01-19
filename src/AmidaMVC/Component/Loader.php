@@ -3,9 +3,6 @@ namespace AmidaMVC\Component;
 
 /**
  * dumb/simple application loader.
- * currently, it searches app.php or action.php is subsequent folders.
- * this maybe slow.
- * TODO: use route map for finding applications.
  * TODO: Loader needs various loading method.
  *  app.php: load php and prepend model. not sure if
  *           loader/app.php to prepend...
@@ -152,18 +149,6 @@ class Loader
         if( is_array( $string ) ) $string = $string[0];
         $action = preg_replace( '/[^_a-zA-Z0-9]/m', '', $string );
         return $action;
-    }
-    // +-------------------------------------------------------------+
-    /**
-     * search maps to find file to load.
-     * this should be much faster than searchRoutes because there
-     * are no file system access.
-     * not implemented!!!
-     * @static
-     * @param $routes
-     */
-    static function searchMaps( $routes ) {
-        // not implemented.
     }
     // +-------------------------------------------------------------+
 }
