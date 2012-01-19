@@ -7,6 +7,7 @@ require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php');
  */
 
 $routes = array(
+    '/' => array( 'file' => '/_App.php', 'action' => 'default' ),
     '/route/:action' => array( 'file' => 'route/_App.php', 'action' => 'index' ),
 );
 AmidaMVC\Component\Router::set( $routes );

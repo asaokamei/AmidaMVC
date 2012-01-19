@@ -2,11 +2,11 @@
 
 class modelApp1
 {
-    static function actionDefault( $ctrl, $data ) {
+    static function actionDefault( $ctrl, &$data ) {
         echo "app1Model::Default, action=".$ctrl->currAct();
         $ctrl->nextModel( 'Err404' );
     }
-    static function actionList( $ctrl, $data ) {
+    static function actionList( $ctrl, &$data ) {
         //
         echo "Model::List action=".$ctrl->currAct();
     }
