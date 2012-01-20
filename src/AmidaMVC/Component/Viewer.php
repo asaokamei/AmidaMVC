@@ -32,7 +32,8 @@ class Viewer
     }
     // +-------------------------------------------------------------+
     function showDebugInfo( $ctrl ) {
-        $debugInfo = $ctrl->debug( 'getResult' );
+        $debugInfo = Debug::result();
+        if( !$debugInfo ) return '';
         $result = "
         <style>
         div.debugInfo {

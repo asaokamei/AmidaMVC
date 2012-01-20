@@ -207,7 +207,7 @@ class Chain
         while( $action )
         {
             // TODO: replace debug to preDispatch method.
-            $this->debug( 'head', "dispatch for $action, model={$this->model}" );
+            \AmidaMVC\Component\Debug::bug( 'head', "dispatch for $action, model={$this->model}" );
             $this->currAct( $action );
             $this->nextAct( FALSE ); // reset next action.
             $return = $this->execAction( $action, $data, $return );
@@ -269,7 +269,7 @@ class Chain
         if( file_exists( $model.'.php' ) ) {
             /** @define "string" "model, class name" */
             require_once( "{$model}.php" );
-            return TRUE;
+            return $this;
         }
         return FALSE;
     }
@@ -289,28 +289,6 @@ class Chain
             return $this->execute( $exec, $data, $return );
         }
         return FALSE;
-    }
-    // +-------------------------------------------------------------+
-    // TODO: move debug to Controller class. use preDispatch method.
-    function setDebug( $debug ) {
-        $this->debug = $debug;
-        return $this;
-    }
-    // +-------------------------------------------------------------+
-    // TODO: move debug to Controller class. use preDispatch method.
-    function debug() {
-        if( !$this->debug ) return FALSE;
-        $args = func_get_args();
-        $method = $args[0];
-        $args = array_slice( $args, 1 );
-        $traces = debug_backtrace(false);
-        $this->debug->getTrace( $traces[0] );
-        if( empty( $args ) ) {
-            return call_user_func( array( $this->debug, $method ) );
-        }
-        else {
-            return call_user_func_array( array( $this->debug, $method ), $args );
-        }
     }
     // +-------------------------------------------------------------+
 }

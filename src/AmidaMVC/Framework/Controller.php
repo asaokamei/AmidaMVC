@@ -83,15 +83,7 @@ class Controller extends Chain
             }
             $this->routes[] = $cmd;
         }
-        $this->debug( 'table', $this->command, 'getRoute command:' );
-    }
-    // +-------------------------------------------------------------+
-    function loadDebug( $debug=NULL ) {
-        if( !$debug ) $debug = 'Debug';
-        if( $this->loadModel( $debug ) ) {
-            $this->debug = new $debug;
-        }
-        return $this;
+        \AmidaMVC\Component\Debug::bug( 'table', $this->command, 'getRoute command:' );
     }
     // +-------------------------------------------------------------+
     function loadModel( $model ) {
@@ -102,6 +94,9 @@ class Controller extends Chain
             $file_name = $folder. '/' . $base_name;
             if( file_exists( $file_name ) ) {
                 require_once( $file_name );
+                if( isset( $this ) ) {
+                    return $this;
+                }
                 return TRUE;
             }
         }

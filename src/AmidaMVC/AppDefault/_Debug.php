@@ -1,3 +1,3 @@
 <?php
 
-class Debug extends \AmidaMVC\Component\Debug {}
+class Debug extends AmidaMVC\Component\Debug {}

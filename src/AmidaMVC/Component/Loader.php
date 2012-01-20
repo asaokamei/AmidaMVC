@@ -60,7 +60,7 @@ class Loader
      * @param $loadInfo
      */
     static function actionLoad( $ctrl, &$data, $loadInfo ) {
-        $ctrl->debug( 'head', "loading file: ".$loadInfo['file'] );
+        \AmidaMVC\Component\Debug::bug( 'head', "loading file: ".$loadInfo['file'] );
 
         /** @var $file_name  relative to ctrl_root. */
         if( pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION ) == 'php') {
@@ -76,7 +76,7 @@ class Loader
     // +-------------------------------------------------------------+
     function actionErr404( $ctrl, &$data ) {
         // do something about error 404, a file not found.
-        $ctrl->debug( 'wordy', 'Loader::Err404 happened!' );
+        \AmidaMVC\Component\Debug::bug( 'wordy', 'Loader::Err404 happened!' );
         $data = 'We are sorry about page not found. ';
     }
     // +-------------------------------------------------------------+

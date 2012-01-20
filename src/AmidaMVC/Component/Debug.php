@@ -6,10 +6,53 @@ class Debug
     const HTML_TYPE = 'DebugHtml';
     const MARK_TYPE = 'DebugMD';
 
+    static $self;
+
     var $outputTo   = FALSE;
     var $formatType = self::HTML_TYPE;
     var $debugLevel = 4; // debug level.
     var $result = '';
+    // +-------------------------------------------------------------+
+    //  to use Debug as static class like a singleton.
+    // +-------------------------------------------------------------+
+    /**
+     * initializes static self behave a bit like a singleton.
+     * ...not so good...
+     * @static
+     * @return mixed
+     */
+    static function _init() {
+        static::$self = new Debug;
+        return static::$self;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * a generic function to call static::$self.
+     * @static
+     * @return bool
+     */
+    static function bug() {
+        if( !static::$self ) return FALSE;
+        $args = func_get_args();
+        $method = $args[0];
+        $args = array_slice( $args, 1 );
+        $traces = debug_backtrace(false);
+        static::$self->getTrace( $traces[0] );
+        if( empty( $args ) ) {
+            call_user_func( array( static::$self, $method ) );
+        }
+        else {
+            call_user_func_array( array( static::$self, $method ), $args );
+        }
+        return TRUE;
+    }
+    // +-------------------------------------------------------------+
+    static function result() {
+        if( !static::$self ) return FALSE;
+        return static::$self->getResult();
+    }
+    // +-------------------------------------------------------------+
+    //  tools.
     // +-------------------------------------------------------------+
     function output( $text ) {
         if( $this->outputTo ) {

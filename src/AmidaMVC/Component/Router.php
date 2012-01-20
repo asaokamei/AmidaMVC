@@ -44,7 +44,7 @@ class Router
     }
     // +-------------------------------------------------------------+
     static function actionDefault( $ctrl, &$data ) {
-        $ctrl->debug( 'wordy', $ctrl->path, 'ctrl path' );
+        \AmidaMVC\Component\Debug::bug( 'wordy', $ctrl->path, 'ctrl path' );
         $loadInfo = self::match( $ctrl->path );
         if( !$loadInfo ) {
             $data .= 'Router::default route not found';

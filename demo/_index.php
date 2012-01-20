@@ -11,12 +11,16 @@ $routes = array(
     '/:action' => array( 'file' => '_App.php', 'action' => 'default' ),
     '/route/:action' => array( 'file' => 'route/_App.php', 'action' => 'index' ),
 );
+
+
 AmidaMVC\Component\Router::set( $routes );
+
+AmidaMVC\Component\Debug::_init();
 
 $data = array();
 $ctrl = new AmidaMVC\Framework\Controller();
 $ctrl
-    ->loadDebug()
+    ->loadModel( 'Debug' )
     ->addModel( 'Router', 'route' )
     ->addModel( 'Loader', 'load' )
     ->addModel( 'Viewer', 'view' )
