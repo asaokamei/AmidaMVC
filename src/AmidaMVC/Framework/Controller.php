@@ -61,7 +61,7 @@ class Controller extends Chain
     // +-------------------------------------------------------------+
     function start( &$view ) {
         $this->getRoute();
-        if( isset( $this->routes[0] ) ) {
+        if( isset( $this->routes[0] ) && "" !== "{$this->routes[0]}" ) {
             $action = $this->routes[0];
         }
         else {
