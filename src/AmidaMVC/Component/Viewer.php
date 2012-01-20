@@ -6,28 +6,34 @@ class Viewer
     // +-------------------------------------------------------------+
     function actionDefault( $ctrl, $data ) {
         // everything OK.
-        echo "Viewer::Default<br />";
-        var_dump( $data );
-        self::showDebugInfo( $ctrl );
+        self::template( $ctrl, $data );
     }
     // +-------------------------------------------------------------+
     function actionErr404( $ctrl, $data ) {
         // show some excuses, or blame user for not finding a page.
         echo 'page not found...<br />';
         var_dump( $data );
-        self::showDebugInfo( $ctrl );
+        self::template( $ctrl, $data );
     }
     // +-------------------------------------------------------------+
     function actionException( $ctrl, $data ) {
         // show some nasty things happened and apologize.
         echo 'something terrible has happend...<br />';
         var_dump( $data );
-        self::showDebugInfo( $ctrl );
+        self::template( $ctrl, $data );
+    }
+    // +-------------------------------------------------------------+
+    function template( $ctrl, $data ) {
+        $template = $ctrl->ctrl_root . '/_Template/template.php';
+        $title    = 'AmidaMVC H1';
+        $contents = $data;
+        $debug    = self::showDebugInfo( $ctrl );
+        include( $template );
     }
     // +-------------------------------------------------------------+
     function showDebugInfo( $ctrl ) {
-        $result = $ctrl->debug( 'getResult' );
-        $css = "
+        $debugInfo = $ctrl->debug( 'getResult' );
+        $result = "
         <style>
         div.debugInfo {
             font-size: 12px;
@@ -35,13 +41,12 @@ class Viewer
         div.debugInfo table {
         border:1px solid gray; font-size: 11px; border-collapse: collapse;
         }
-        div.debugInfo td,th { border: 1px dotted gray; }
+        div.debugInfo td,th { border: 1px dotted gray; vertical-align: top; }
         div.debugInfo th { background-color: #F0F0F0; }
         </style>
         <hr>
-        ";
-        echo $css;
-        echo "<div class='debugInfo'>{$result}</div>";
+        <div class='debugInfo'>{$debugInfo}</div>";
+        return $result;
     }
     // +-------------------------------------------------------------+
 }
