@@ -188,6 +188,8 @@ class Chain
     // +-------------------------------------------------------------+
     /**
      * starts loop. I think this is chain of responsibility pattern.
+     * TODO: probably nextAction is not necessary. try remove it.
+     * TODO: maybe add breakChain method to break the loop.
      * @param $action           name of action to start.
      * @param null $data        data to pass to each exec method.
      * @return bool|mixed|null  returns the last returned value.
@@ -214,10 +216,6 @@ class Chain
                 $this->moreModels() ) { // still model exists
                 $action = $this->nextModel(); // advance model using current action
             }
-            Event::fire(
-                __CLASS__.'::dispatched',
-                "nextModel={$this->modelName} nextAction={$action}"
-            );
         }
         // -----------------------------
         return $return;
