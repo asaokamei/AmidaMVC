@@ -124,7 +124,7 @@ class Chain
      * @param $name           name of model to set.
      * @return bool|string    returns model name set, or false if not found.
      */
-    function useModel( $name ) {
+    function skipToModel( $name ) {
         while( $this->models ) {
             if( $name === $this->models[0][1] ) {
                 return $name;
@@ -188,8 +188,8 @@ class Chain
     // +-------------------------------------------------------------+
     /**
      * starts loop. I think this is chain of responsibility pattern.
-     * TODO: probably nextAction is not necessary. try remove it.
-     * TODO: maybe add breakChain method to break the loop.
+     * TODO: current loop is a bit too complicated.
+     * TODO: remove nextAction?
      * @param $action           name of action to start.
      * @param null $data        data to pass to each exec method.
      * @return bool|mixed|null  returns the last returned value.
