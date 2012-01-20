@@ -23,6 +23,10 @@ class Debug
      */
     static function _init() {
         static::$self = new Debug;
+        \AmidaMVC\Framework\Event::hook(
+            'AmidaMVC\\Framework\\Chain::dispatch',
+            array( 'AmidaMVC\\Component\\Debug', 'listener' )
+        );
         return static::$self;
     }
     // +-------------------------------------------------------------+
@@ -45,6 +49,11 @@ class Debug
             call_user_func_array( array( static::$self, $method ), $args );
         }
         return TRUE;
+    }
+    // +-------------------------------------------------------------+
+    static function listener() {
+        $args = func_get_args();
+        self::bug( 'table', $args, 'Debug::listener' );
     }
     // +-------------------------------------------------------------+
     static function result() {

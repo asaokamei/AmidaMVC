@@ -201,10 +201,12 @@ class Chain
         // chain of responsibility loop.
         while( $action )
         {
-            // TODO: replace debug to preDispatch event.
-            \AmidaMVC\Component\Debug::bug( 'head', "dispatch for $action, model={$this->model}" );
             $this->currAct( $action );
             $this->nextAct( FALSE ); // reset next action.
+            Event::fire(
+                __CLASS__.'::dispatch',
+                "model={$this->modelName} action={$action}"
+            );
             $return = $this->execAction( $action, $data, $return );
             $action = $this->nextAct();
             // automatically advance to next model.
@@ -212,6 +214,10 @@ class Chain
                 $this->moreModels() ) { // still model exists
                 $action = $this->nextModel(); // advance model using current action
             }
+            Event::fire(
+                __CLASS__.'::dispatched',
+                "nextModel={$this->modelName} nextAction={$action}"
+            );
         }
         // -----------------------------
         return $return;
