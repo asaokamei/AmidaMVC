@@ -243,18 +243,13 @@ class Chain
     }
     // +-------------------------------------------------------------+
     /**
-     * @param string $model    $model (i.e. class name) to load
-     * @return bool
+     * loads model if not exist, but *not* implemented!!
+     * overwrite thid method if autoload is not enough.
+     * @param $model
+     * @return \AmidaMVC\Framework\Chain
      */
     function loadModel( $model ) {
-        if( is_object( $model ) ) return TRUE;
-        if( class_exists( $model, FALSE ) ) return TRUE;
-        if( file_exists( $model.'.php' ) ) {
-            /** @define "string" "model, class name" */
-            require_once( "{$model}.php" );
-            return $this;
-        }
-        return FALSE;
+        return $this;
     }
     // +-------------------------------------------------------------+
     /**
