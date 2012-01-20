@@ -223,19 +223,6 @@ class Chain
     }
     // +-------------------------------------------------------------+
     /**
-     * executes the function/method.
-     * @param callback $exec  callable object (function or obj/method).
-     * @param null $data      data to pass if any.
-     * @return bool|mixed     returned value from exec object.
-     */
-    function execute( $exec, &$data=NULL, $return=NULL ) {
-        $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
-        // note: not to exit on return FALSE;
-        // should create breakChain method in Dispatcher.
-        return $return;
-    }
-    // +-------------------------------------------------------------+
-    /**
      * get exec object from action name.
      * either it is a model/method or function.
      * @param string $action   name of action.
@@ -281,7 +268,8 @@ class Chain
             $exec = $this->getExecFromAction( $this->defaultAct );
         }
         if( $exec ) {
-            return $this->execute( $exec, $data, $return );
+            $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
+            return $return;
         }
         return FALSE;
     }
