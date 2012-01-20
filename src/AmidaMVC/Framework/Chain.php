@@ -238,23 +238,18 @@ class Chain
     /**
      * get exec object from action name.
      * either it is a model/method or function.
-     * TODO: is it necessary to support function?
      * @param string $action   name of action.
      * @return array|bool      found exec object.
      */
     function getExecFromAction( $action ) {
         $exec = FALSE;
         if( !$action ) return $exec;
+        if( !isset( $this->model ) ) return $exec;
+
         $action = $this->prefixAct . ucwords( $action );
-        if( isset( $this->model ) ) {
-            $this->loadModel( $this->model );
-        }
-        if( isset( $this->model ) && is_callable( array( $this->model, $action ) ) ) {
+        $this->loadModel( $this->model );
+        if( is_callable( array( $this->model, $action ) ) ) {
             $exec = array( $this->model, $action );
-        }
-        else
-        if( is_callable( $action ) ) {
-            $exec = $action;
         }
         return $exec;
     }
