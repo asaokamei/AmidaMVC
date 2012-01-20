@@ -3,9 +3,6 @@ namespace AmidaMVC\Framework;
 
 /**
  * Controller for AmidaMVC.
- * TODO: make new Controller
- *  and add data for controlling a web site, such as
- *  debug, admin, bread, etc.
  *
  */
 class Controller extends Chain

@@ -3,7 +3,6 @@ namespace AmidaMVC\Framework;
 /**
  * Dispatcher for application controller.
  * uses Chain of Responsibility pattern...
- * TODO: even if cache is hit, models and views are loaded.
  */
 
 class Chain
@@ -43,10 +42,6 @@ class Chain
      * @var string   prefixAct for action to func/method name.
      */
     var $prefixAct = 'action';
-    /**
-     * @var bool  debug object. if not set it is FALSE;
-     */
-    var $debug = FALSE;
     // +-------------------------------------------------------------+
     function __construct() {
         // nothing.
@@ -206,7 +201,7 @@ class Chain
         // chain of responsibility loop.
         while( $action )
         {
-            // TODO: replace debug to preDispatch method.
+            // TODO: replace debug to preDispatch event.
             \AmidaMVC\Component\Debug::bug( 'head', "dispatch for $action, model={$this->model}" );
             $this->currAct( $action );
             $this->nextAct( FALSE ); // reset next action.

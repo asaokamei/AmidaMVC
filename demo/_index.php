@@ -2,8 +2,7 @@
 require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php');
 
 /**
- * TODO: demo as test site.
- *  before eating dog food, make test/demo site.
+ * AmidaMVC's Demo Site...
  */
 
 $routes = array(
