@@ -22,7 +22,7 @@ $ctrl
     ->loadModel( 'Debug' )
     ->addModel( 'Router', 'route' )
     ->addModel( 'Loader', 'load' )
-    ->addModel( 'Viewer', 'view' )
+    ->addModel( 'Render', 'render' )
 ;
 
 $ctrl->start( $data );

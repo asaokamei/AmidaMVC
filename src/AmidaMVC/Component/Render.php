@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\Component;
 
-class Viewer
+class Render
 {
     // +-------------------------------------------------------------+
     function actionDefault( $ctrl, $data ) {
