@@ -19,7 +19,12 @@ class Router
             \AmidaMVC\Component\Debug::bug( 'table', $loadInfo, 'Router::path matched:'.$ctrl->path );
             $ctrl->nextModel( 'Load' );
         }
+        self::fireRouterResult( $loadInfo );
         return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    static function fireRouterResult( $loadInfo ) {
+        // do nothing
     }
     // +-------------------------------------------------------------+
 }

@@ -205,7 +205,7 @@ class Chain
         {
             $this->currAct( $action );
             $this->nextAct( FALSE ); // reset next action.
-            $this->preDispatch( $action );
+            $this->fireDispatch( $action );
             $return = $this->execAction( $action, $data, $return );
             $action = $this->nextAct();
             // automatically advance to next model.
@@ -223,7 +223,7 @@ class Chain
      * overwrite this method to hook.
      * @param $action
      */
-    function preDispatch( $action ) {
+    function fireDispatch( $action ) {
         // do nothing.
     }
     // +-------------------------------------------------------------+

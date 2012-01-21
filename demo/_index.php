@@ -20,8 +20,8 @@ $data = array();
 $ctrl = new AmidaMVC\Framework\Controller();
 $ctrl
     ->loadModel( 'Debug' )
-    ->addModel( 'Router', 'route' )
-    ->addModel( 'Loader', 'load' )
+    ->addModel( 'Router', 'router' )
+    ->addModel( 'Loader', 'loader' )
     ->addModel( 'Render', 'render' )
 ;
 

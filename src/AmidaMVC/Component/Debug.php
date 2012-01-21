@@ -27,6 +27,10 @@ class Debug
             'Controller::dispatch',
             array( 'AmidaMVC\\Component\\Debug', 'listener' )
         );
+        \AmidaMVC\Framework\Event::hook(
+            'Router::result',
+            array( 'AmidaMVC\\Component\\Debug', 'listener' )
+        );
         return static::$self;
     }
     // +-------------------------------------------------------------+
@@ -52,8 +56,13 @@ class Debug
     }
     // +-------------------------------------------------------------+
     static function listener() {
-        $args = func_get_args();
-        self::bug( 'table', $args, 'Debug::listener' );
+        $args  = func_get_args();
+        $event = $args[0];
+        $args  = array_slice( $args, 1 );
+        if( count( $args ) === 1 ) {
+            $args = $args[0];
+        }
+        self::bug( 'table', $args, '[event]'.$event );
     }
     // +-------------------------------------------------------------+
     static function result() {
@@ -184,14 +193,17 @@ class DebugHtml
             return $result;
         }
         else {
-            if( $showType ) {
-                $result .= 'type:' . gettype( $var ) . ' value: ';
-            }
             if( $var === NULL ) {
-                $result .= 'NULL';
+                $var = 'NULL';
             }
             else if( $var === FALSE ) {
-                $result .= 'FALSE';
+                $var = 'FALSE';
+            }
+            else if( $var === TRUE ) {
+                $var = 'TRUE';
+            }
+            if( $showType ) {
+                $result .= '<table><tr><th>type:</th><td>' . gettype( $var ) . '</td><th>value:</th><td>'.$var.'</td></tr></table>';
             }
             else {
                 $result .= $var;

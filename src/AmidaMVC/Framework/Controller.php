@@ -83,7 +83,7 @@ class Controller extends Chain
         \AmidaMVC\Component\Debug::bug( 'table', $this->command, 'getRoute command:'.$this->path );
     }
     // +-------------------------------------------------------------+
-    function preDispatch( $action ) {
+    function fireDispatch( $action ) {
         Event::fire(
             'Controller::dispatch',
             "model={$this->modelName} action={$action}"

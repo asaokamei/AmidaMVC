@@ -14,7 +14,7 @@ class Render
         echo $data;
     }
     // +-------------------------------------------------------------+
-    function actionErr404( $ctrl, $data ) {
+    function actionPageNotFound( $ctrl, $data ) {
         // show some excuses, or blame user for not finding a page.
         echo 'page not found...<br />';
         var_dump( $data );

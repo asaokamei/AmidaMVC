@@ -47,7 +47,7 @@ class Loader
             self::actionLoad( $ctrl, $data, $loadInfo );
         }
         else {
-            $ctrl->nextModel( 'Err404' );
+            $ctrl->nextModel( 'pageNotFound' );
         }
     }
     // +-------------------------------------------------------------+
