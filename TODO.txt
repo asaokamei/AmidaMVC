@@ -1,3 +1,13 @@
 AmidaMVC ToDos.
 
+* Demo in AmidaMVC
+
+[ ] Viewer to Render.
+[ ] use template
+[ ] make viewDto object for template.
+[ ] make bread
+
+* Demo in Cena-Dta
+
+[ ] add CSRF token
 
