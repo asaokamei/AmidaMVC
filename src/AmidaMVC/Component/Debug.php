@@ -24,7 +24,7 @@ class Debug
     static function _init() {
         static::$self = new Debug;
         \AmidaMVC\Framework\Event::hook(
-            'AmidaMVC\\Framework\\Chain::dispatch',
+            'Controller::dispatch',
             array( 'AmidaMVC\\Component\\Debug', 'listener' )
         );
         return static::$self;

@@ -205,10 +205,7 @@ class Chain
         {
             $this->currAct( $action );
             $this->nextAct( FALSE ); // reset next action.
-            Event::fire(
-                __CLASS__.'::dispatch',
-                "model={$this->modelName} action={$action}"
-            );
+            $this->preDispatch( $action );
             $return = $this->execAction( $action, $data, $return );
             $action = $this->nextAct();
             // automatically advance to next model.
@@ -219,6 +216,15 @@ class Chain
         }
         // -----------------------------
         return $return;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * a method to hook before dispatching a model/action.
+     * overwrite this method to hook.
+     * @param $action
+     */
+    function preDispatch( $action ) {
+        // do nothing.
     }
     // +-------------------------------------------------------------+
     /**

@@ -83,6 +83,13 @@ class Controller extends Chain
         \AmidaMVC\Component\Debug::bug( 'table', $this->command, 'getRoute command:'.$this->path );
     }
     // +-------------------------------------------------------------+
+    function preDispatch( $action ) {
+        Event::fire(
+            'Controller::dispatch',
+            "model={$this->modelName} action={$action}"
+        );
+    }
+    // +-------------------------------------------------------------+
     function loadModel( $model ) {
         if( is_object( $model ) ) return TRUE;
         if( class_exists( $model, FALSE ) ) return TRUE;
