@@ -23,14 +23,6 @@ class Debug
      */
     static function _init() {
         static::$self = new Debug;
-        \AmidaMVC\Framework\Event::hook(
-            'Controller::dispatch',
-            array( 'AmidaMVC\\Component\\Debug', 'listener' )
-        );
-        \AmidaMVC\Framework\Event::hook(
-            'Router::result',
-            array( 'AmidaMVC\\Component\\Debug', 'listener' )
-        );
         return static::$self;
     }
     // +-------------------------------------------------------------+
