@@ -1,6 +1,11 @@
 <?php
 namespace AmidaMVC\Component;
 
+/**
+ * Router class
+ * from Perfect PHP.
+ */
+
 class Router
 {
     // +-------------------------------------------------------------+

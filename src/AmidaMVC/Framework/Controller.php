@@ -80,7 +80,7 @@ class Controller extends Chain
             }
             $this->routes[] = $cmd;
         }
-        \AmidaMVC\Component\Debug::bug( 'table', $this->command, 'getRoute command:' );
+        \AmidaMVC\Component\Debug::bug( 'table', $this->command, 'getRoute command:'.$this->path );
     }
     // +-------------------------------------------------------------+
     function loadModel( $model ) {
