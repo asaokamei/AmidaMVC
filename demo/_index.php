@@ -12,7 +12,7 @@ $routes = array(
 );
 
 
-AmidaMVC\Component\Router::set( $routes );
+AmidaMVC\Framework\Route::set( $routes );
 
 AmidaMVC\Component\Debug::_init();
 
