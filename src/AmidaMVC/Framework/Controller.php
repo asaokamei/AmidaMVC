@@ -79,6 +79,7 @@ class Controller extends Chain
                 continue; // ignore this cmd as route.
             }
             if( empty( $cmd ) ) continue;
+            if( $cmd === '..' ) continue;
             $this->routes[] = $cmd;
         }
         \AmidaMVC\Component\Debug::bug( 'table', $this->command, 'getRoute command:'.$this->path );

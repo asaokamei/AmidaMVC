@@ -71,10 +71,10 @@ class Loader
             include $ctrl->ctrl_root . '/' . $loadInfo[ 'file' ];
         }
         else if( in_array( $_file_ext, array( 'html', 'text' ) ) ) {
-            $data = file_get_contents( $loadInfo[ 'file' ] );
+            $data->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
         }
-        else if( in_array( $_file_ext, array( 'pdf', 'png', 'jpg', 'gif' ) ) ) {
-            readfile( $loadInfo[ 'file' ] );
+        else if( in_array( $_file_ext, array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' ) ) ) {
+            $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
         }
     }
     // +-------------------------------------------------------------+
@@ -151,7 +151,7 @@ class Loader
     // +-------------------------------------------------------------+
     static function getAction( $string ) {
         if( is_array( $string ) ) $string = $string[0];
-        $action = preg_replace( '/[^_a-zA-Z0-9]/m', '', $string );
+        $action = preg_replace( '/[^._a-zA-Z0-9]/m', '', $string );
         return $action;
     }
     // +-------------------------------------------------------------+

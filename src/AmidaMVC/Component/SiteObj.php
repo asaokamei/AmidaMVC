@@ -3,20 +3,60 @@ namespace AmidaMVC\Component;
 
 class SiteObj
 {
-    /** @var \AmidaMVC\Component\AmidaMVC\Framework\Dto
+    /** @var bool
+     * skip html template. directly output response content.
+     */
+    var $as_is = FALSE;
+    /** @var \AmidaMVC\Framework\DataTO
      * for html template: title, contents, bread, etc.
      */
     var $htmlObj;
+    /**
+     * @var \AmidaMVC\Framework\DataTO
+     * for http response.
+     */
+    var $responseObj;
     // +-------------------------------------------------------------+
     function __construct() {
         $this->htmlObj = new \AmidaMVC\Framework\DataTO();
         $htmlDefault = array(
-            'title' => 'title',
+            'title'      => 'title',
             'head_title' => false,
-            'contents' => '',
-            'bread' => '',
+            'contents'   => '',
+            'bread'      => '',
         );
         $this->htmlObj->set( $htmlDefault );
+        $this->responseObj = new \AmidaMVC\Framework\DataTO();
+        $responceDefault = array(
+            'content'     => '',
+            'status_code' => 200,
+            'status_text' => 'OK',
+            'http_header' => array(),
+        );
+        $this->responseObj->set( $responceDefault );
+    }
+    // +-------------------------------------------------------------+
+    function setResponse( $name, $value ) {
+        $this->responseObj->set( $name, $value );
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    function getResponse( $name ) {
+        return $this->responseObj->get( $name );
+    }
+    // +-------------------------------------------------------------+
+    function setHttpContent( $value ) {
+        $this->setResponse( 'content', $value );
+        $this->as_is = TRUE;
+    }
+    // +-------------------------------------------------------------+
+    function isResponseReady() {
+        return $this->as_is;
+    }
+    // +-------------------------------------------------------------+
+    function setResponseAsIs() {
+        $this->as_is = TRUE;
+        return $this->as_is;
     }
     // +-------------------------------------------------------------+
     /**

@@ -31,6 +31,10 @@ class Render
     }
     // +-------------------------------------------------------------+
     function template( $_ctrl, $_siteObj ) {
+        if( $_siteObj->isResponseReady() ) {
+            echo $_siteObj->getResponse( 'content' );
+            return;
+        }
         extract( $_siteObj->getHtml() );
         Debug::bug( 'table', $_siteObj->getHtml() );
         $debug    = self::showDebugInfo( $_ctrl );
