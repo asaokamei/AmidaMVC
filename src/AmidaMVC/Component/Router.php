@@ -8,9 +8,10 @@ namespace AmidaMVC\Component;
 
 class Router
 {
+    static $router = array( '\AmidaMVC\Framework\Route', 'match' );
     // +-------------------------------------------------------------+
-    static function actionDefault( $ctrl, &$data ) {
-        $loadInfo = \AmidaMVC\Framework\Route::match( $ctrl->path );
+    static function actionDefault( $ctrl ) {
+        $loadInfo = call_user_func( self::$router, $ctrl->path );
         if( !$loadInfo ) {
             \AmidaMVC\Component\Debug::bug( 'wordy', 'Router::not matched:'.$ctrl->path );
         }
