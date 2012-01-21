@@ -6,9 +6,7 @@ namespace AmidaMVC\Framework;
  */
 class Dto
 {
-    /**
-     * @var array   contains _data to transfer.
-     */
+    /** @var array   contains _data to transfer. */
     var $_data = array();
     // +-------------------------------------------------------------+
     function __construct() {
