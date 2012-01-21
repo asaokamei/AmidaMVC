@@ -9,6 +9,11 @@ class Render
         self::template( $ctrl, $data );
     }
     // +-------------------------------------------------------------+
+    function actionAsIs( $ctrl, $data ) {
+        // output as is: css, js, img, etc.
+        echo $data;
+    }
+    // +-------------------------------------------------------------+
     function actionErr404( $ctrl, $data ) {
         // show some excuses, or blame user for not finding a page.
         echo 'page not found...<br />';

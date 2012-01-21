@@ -6,6 +6,7 @@ AmidaMVC ToDos.
 [ ] use template
 [ ] make viewDto object for template.
 [ ] make bread
+[ ] output css as is. 
 
 * Demo in Cena-Dta
 
