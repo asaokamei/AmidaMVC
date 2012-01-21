@@ -18,3 +18,12 @@ Seriously, how I can write a usage for a framework?
 Except to provide some demo and ask to look at the code...
 
 
+
+For Developing Memo
+===================
+
+note on class/method amida chain
+--------------------------------
+
+
+

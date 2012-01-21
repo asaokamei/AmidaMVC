@@ -2,11 +2,16 @@ AmidaMVC ToDos.
 
 * Demo in AmidaMVC
 
-[ ] Viewer to Render.
-[ ] use template
-[ ] make viewDto object for template.
+[O] read html as contents: title?
+[ ] make Config and _Config folder.
+[ ] control debug info output.
+[ ] make it easy to output debug info in apps.
+[ ] put routes to _Config older.
 [ ] make bread
-[ ] output css as is. 
+[X] 2012/01/20  use template
+[X] 2012/01/21  Renamed Viewer to Render.
+[X] 2012/01/21  make viewDto object for template; very simple ones.
+[X] 2012/01/21  output css as is.
 
 * Demo in Cena-Dta
 
