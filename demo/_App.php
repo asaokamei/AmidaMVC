@@ -3,10 +3,12 @@
 class topApp1
 {
     static function actionDefault( $ctrl, &$data ) {
-        $data = "topApp1::Default, action=".$ctrl->currAct();
+        $data->setTitle( "Generic Action" );
+        $data->setContents( "topApp1::Default, action=".$ctrl->currAct() );
     }
     static function actionList( $ctrl, &$data ) {
-        $data = "topApp1::List, action=".$ctrl->currAct();
+        $data->setTitle( "List of Something" );
+        $data->setContents( "topApp1::List, action=".$ctrl->currAct() );
     }
 }
 

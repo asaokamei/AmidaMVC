@@ -1,7 +1,6 @@
 <?php
 
-echo 'I\'m in text.php!!!<br />';
-echo "actoin={$action}<br />";
-var_dump( $routes );
+$data->setTitle( "A Text File" );
+$data->setContents( "I'mn in text.php!!!" );
 
 

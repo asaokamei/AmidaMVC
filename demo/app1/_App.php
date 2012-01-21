@@ -3,12 +3,12 @@
 class modelApp1
 {
     static function actionDefault( $ctrl, &$data ) {
-        echo "app1Model::Default, action=".$ctrl->currAct();
-        $ctrl->nextModel( 'Err404' );
+        $data->setContents( "app1Model::Default, action=".$ctrl->currAct() );
+        $ctrl->nextModel( 'pageNotFound' );
     }
     static function actionList( $ctrl, &$data ) {
         //
-        echo "Model::List action=".$ctrl->currAct();
+        $data->setContents( "Model::List action=".$ctrl->currAct() );
     }
 }
 

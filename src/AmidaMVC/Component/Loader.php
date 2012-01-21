@@ -60,16 +60,20 @@ class Loader
      * @param $loadInfo
      */
     static function actionLoad( $ctrl, &$data, $loadInfo ) {
-        \AmidaMVC\Component\Debug::bug( 'head', "loading file: ".$loadInfo['file'] );
-
+        $_file_name = $loadInfo['file'];
+        $_file_ext  = pathinfo( $_file_name, PATHINFO_EXTENSION );
+        $_action    = ( $loadInfo['action'] ) ? $loadInfo['action'] : $ctrl->defaultAct();
+        \AmidaMVC\Component\Debug::bug( 'head', "loading file: ".$_file_name );
+        \AmidaMVC\Framework\Event::fire( 'Loader::load', $loadInfo );
         /** @var $file_name  relative to ctrl_root. */
-        if( pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION ) == 'php') {
+        $ctrl->currAct( $_action );
+        if( $_file_ext == 'php') {
             include $ctrl->ctrl_root . '/' . $loadInfo[ 'file' ];
         }
-        else if( in_array( pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION ), array( 'html', 'text' ) ) ) {
+        else if( in_array( $_file_ext, array( 'html', 'text' ) ) ) {
             $data = file_get_contents( $loadInfo[ 'file' ] );
         }
-        else if( in_array( pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION ), array( 'pdf', 'png', 'jpg', 'gif' ) ) ) {
+        else if( in_array( $_file_ext, array( 'pdf', 'png', 'jpg', 'gif' ) ) ) {
             readfile( $loadInfo[ 'file' ] );
         }
     }

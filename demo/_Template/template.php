@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>AmidaMVC Demo</title>
+    <title><?php echo $head_title; ?></title>
     <style>
         body {
             width: 700px;
@@ -42,7 +42,23 @@
     <h1><?php echo $title; ?></h1>
     <?php echo $contents; ?>
 </div>
-<div><?php echo $debug;?></div>
+<?php if( isset( $debug ) ) { ?>
+<style>
+    div.debugInfo {
+        font-size: 12px;
+        margin: 10px;
+        background-color: #F0F0F0;
+    }
+    div.debugInfo table {
+        border:1px solid gray; font-size: 11px; border-collapse: collapse;
+    }
+    div.debugInfo td,th { border: 1px dotted gray; vertical-align: top; }
+    div.debugInfo th { background-color: #E0E0E0; }
+</style>
+<hr>
+<div class='debugInfo'><?php echo $debug;?></div>
+</div>
+<?php } ?>
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 </body>
 </html>

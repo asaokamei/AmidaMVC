@@ -4,7 +4,7 @@ namespace AmidaMVC\Framework;
 /**
  * Data Transfer Object.
  */
-class Dto
+class DataTO
 {
     /** @var array   contains _data to transfer. */
     var $_data = array();
@@ -21,11 +21,11 @@ class Dto
      * @param type $value  the value.
      * @return $this.
      */
-    function set( $name, $value ) {
+    function set( $name, $value=NULL ) {
         if( is_array( $name ) ) {
             $this->_data = array_merge( $this->_data, $name );
         }
-        else {
+        else if( "{$value}" !== "" ) {
             $this->_data[ $name ] = $value;
         }
         return $this;

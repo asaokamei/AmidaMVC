@@ -3,13 +3,13 @@
 class modelRoute
 {
     static function actionDefault( $ctrl, $data ) {
-        echo "app1Model::Default, action=".$ctrl->currAct();
-        $ctrl->nextModel( 'Err404' );
+        $data->setContents( "modelRoute::default page not found, action=".$ctrl->currAct() );
+        $ctrl->nextModel( 'pageNotFound' );
     }
     static function actionList( $ctrl, $data ) {
-        //
-        echo "Model::List action=".$ctrl->currAct();
+        $data->setTitle( "Route List" );
+        $data->setContents( "modelRoute::list some thing." );
     }
 }
 
-$ctrl->prependModel( 'app1Model', 'model' );
+$ctrl->prependModel( 'modelRoute', 'model' );
