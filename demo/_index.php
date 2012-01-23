@@ -9,6 +9,7 @@ $routes = array(
     '/text' => array( 'file' => 'text.php', 'action' => 'default' ),
     '/demo.css' => array( 'file' => 'demo.css', 'action' => 'default' ),
     '/index.html' => array( 'file' => 'index.html', 'action' => 'default' ),
+    '/text.php' => array( 'file' => 'text.php', 'action' => 'default' ),
     '/' => array( 'file' => 'index.md', 'action' => 'default' ),
     '/:action' => array( 'file' => 'index.md', 'action' => 'default' ),
     '/route/:action' => array( 'file' => 'route/_App.php', 'action' => 'index' ),

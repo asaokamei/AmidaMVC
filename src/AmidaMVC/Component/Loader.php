@@ -67,8 +67,11 @@ class Loader
         \AmidaMVC\Framework\Event::fire( 'Loader::load', $loadInfo );
         /** @var $file_name  relative to ctrl_root. */
         $ctrl->currAct( $_action );
-        if( $_file_ext == 'php') {
+        if( pathinfo( $_file_name, PATHINFO_BASENAME ) == '_App.php' ) {
             include $ctrl->ctrl_root . '/' . $loadInfo[ 'file' ];
+        }
+        else if( $_file_ext == 'php') {
+            self::loadPhpAsCode( $data, $loadInfo );
         }
         else if( in_array( $_file_ext, array( 'html', 'html' ) ) ) {
             self::loadHtml( $data, $loadInfo );
@@ -114,6 +117,14 @@ class Loader
         if( $mime ) {
             $data->setMimeType( $mime );
         }
+    }
+    // +-------------------------------------------------------------+
+    function loadPhpAsCode( &$data, $loadInfo ) {
+        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $content = highlight_string( $content, TRUE );
+        $title   = $loadInfo[ 'file' ];
+        $data->setTitle( $title );
+        $data->setContents( $content );
     }
     // +-------------------------------------------------------------+
     /** load html file into view object.
