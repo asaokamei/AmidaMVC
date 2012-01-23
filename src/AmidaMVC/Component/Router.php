@@ -25,13 +25,11 @@ class Router
         }
         if( !$loadInfo ) {
             $ctrl->nextModel( 'pageNotFound' );
-            \AmidaMVC\Component\Debug::bug( 'wordy', 'Router::not matched:'.$ctrl->path_info );
         }
         else {
-            \AmidaMVC\Component\Debug::bug( 'table', $loadInfo, 'Router::path matched:'.$ctrl->path_info );
             // action is as is; probably default.
         }
-        self::fireRouterResult( $loadInfo );
+        static::fireRouterResult( $loadInfo );
         return $loadInfo;
     }
     // +-------------------------------------------------------------+

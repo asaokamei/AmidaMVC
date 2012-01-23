@@ -3,7 +3,7 @@
 class Router extends \AmidaMVC\Component\Router {
     // +-------------------------------------------------------------+
     static function fireRouterResult( $loadInfo ) {
-        Event::fire(
+        AmidaMVC\Framework\Event::fire(
             'Router::result', $loadInfo
         );
     }
