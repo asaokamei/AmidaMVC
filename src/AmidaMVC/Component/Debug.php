@@ -71,8 +71,8 @@ class Debug
     // +-------------------------------------------------------------+
     function getTrace( $trace ) {
         //$this->arr( $trace );
-        $info = "[<a title='Trace:{$trace['file']}:{$trace['line']}'>Trace</a>]";
-        $this->echoText( 3, $info );
+        $info = "<div class='debugTraceInfo'>[<a title='Trace:{$trace['file']}:{$trace['line']}'>+</a>]</div>";
+        $this->output( $info );
     }
     // +-------------------------------------------------------------+
     //  basic echo functions.

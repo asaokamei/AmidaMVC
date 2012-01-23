@@ -35,7 +35,12 @@ class Debug extends AmidaMVC\Component\Debug {
         if( count( $args ) === 1 ) {
             $args = $args[0];
         }
-        self::bug( 'table', $args, '[event]'.$event );
+        if( $event == 'Controller::dispatch' ) {
+            self::bug( 'head', "{$event}: {$args}" );
+        }
+        else {
+            self::bug( 'table', $args, '[event]'.$event );
+        }
     }
     // +-------------------------------------------------------------+
 }

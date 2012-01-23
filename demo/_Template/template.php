@@ -18,9 +18,17 @@
         font-size: 12px;
         color: #666666;
         margin: 10px;
-        padding: 5px;
+        padding: 5px 5px 5px 25px;
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
+    }
+    div.debugInfo h3 {
+        margin: 0px;
+        padding: 2px;
+    }
+    div.debugInfo .debugTraceInfo {
+        float: left;
+        margin: 0px 0px 0px -20px;
     }
     div.debugInfo table {
         border:1px solid gray; font-size: 11px; border-collapse: collapse;
