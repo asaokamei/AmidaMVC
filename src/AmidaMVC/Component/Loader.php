@@ -71,7 +71,7 @@ class Loader
             include $ctrl->ctrl_root . '/' . $loadInfo[ 'file' ];
         }
         else if( in_array( $_file_ext, array( 'html', 'text' ) ) ) {
-            $data->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
+            self::loadHtml( $data, $loadInfo );
         }
         else if( in_array( $_file_ext, array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' ) ) ) {
             $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
@@ -82,6 +82,20 @@ class Loader
         // do something about error 404, a file not found.
         \AmidaMVC\Component\Debug::bug( 'wordy', 'Loader::Err404 happened!' );
         $data = 'We are sorry about page not found. ';
+    }
+    // +-------------------------------------------------------------+
+    function loadHtml( &$data, $loadInfo ) {
+        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $pattern = '/\<title\>([^<]*)\<\/title\>/i';
+        if( preg_match( $pattern, $content, $matched ) ) {
+            $data->setTitle( $matched[1] );
+            $content = preg_replace( $pattern, '', $content );
+        }
+        $data->setContents( $content );
+    }
+    // +-------------------------------------------------------------+
+    function loadMarkdown( &$data ) {
+        $data->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
     }
     // +-------------------------------------------------------------+
     /**
