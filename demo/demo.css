@@ -37,6 +37,14 @@ h1 {
     border-left: 2px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
 }
+h2 {
+    background: #F0F0F0;
+    font-size: 14px;
+    padding: 3px 5px 3px 5px;
+    margin: 5px 5px 5px -2px;
+    border-left: 2px solid #d2691e;
+    box-shadow: 3px 3px 3px #cccccc;
+}
 table {
     border: #CCCCCC solid 2px;
     border-collapse:collapse;
