@@ -9,4 +9,6 @@
 *   application1 error: [app1/test](app1/test)
 *   sub folder file not found: [sub/sub](sub/sub)
 
+##dev staff
+*   show debug info [debug on](_dev/)
 
