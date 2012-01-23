@@ -232,6 +232,25 @@ class Chain
     }
     // +-------------------------------------------------------------+
     /**
+     * execute action based on action name and default.
+     * @param $action      name of action to execute.
+     * @param null $data   data to pass if any.
+     * @param null $return data from the previous action.
+     * @return bool|mixed  returned value from exec object.
+     */
+    function execAction( $action, &$data=NULL, $return=NULL ) {
+        $exec = $this->getExecFromAction( $action );
+        if( !$exec ) {
+            $exec = $this->getExecFromAction( $this->defaultAct );
+        }
+        if( $exec ) {
+            $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
+            return $return;
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    /**
      * get exec object from action name.
      * either it is a model/method or function.
      * @param string $action   name of action.
@@ -252,30 +271,12 @@ class Chain
     // +-------------------------------------------------------------+
     /**
      * loads model if not exist, but *not* implemented!!
-     * overwrite thid method if autoload is not enough.
+     * overwrite this method for tailored auto-loading classes.
      * @param $model
      * @return \AmidaMVC\Framework\Chain
      */
     function loadModel( $model ) {
         return $this;
-    }
-    // +-------------------------------------------------------------+
-    /**
-     * execute action based on action name and default.
-     * @param $action      name of action to execute.
-     * @param null $data   data to pass if any.
-     * @return bool|mixed  returned value from exec object.
-     */
-    function execAction( $action, &$data=NULL, $return=NULL ) {
-        $exec = $this->getExecFromAction( $action );
-        if( !$exec ) {
-            $exec = $this->getExecFromAction( $this->defaultAct );
-        }
-        if( $exec ) {
-            $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
-            return $return;
-        }
-        return FALSE;
     }
     // +-------------------------------------------------------------+
 }
