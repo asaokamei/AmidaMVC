@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta charset="UTF-8" />
     <title><?php echo $head_title; ?></title>
     <link rel="stylesheet" href="<?php echo $_ctrl->base_url ?>/demo.css" />
 </head>
@@ -10,12 +11,16 @@
     <h1><?php echo $title; ?></h1>
     <?php echo $contents; ?>
 </div>
+<footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 <?php if( !empty( $debug ) ) { ?>
 <style>
     div.debugInfo {
         font-size: 12px;
+        color: #666666;
         margin: 10px;
-        background-color: #F0F0F0;
+        padding: 5px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
     }
     div.debugInfo table {
         border:1px solid gray; font-size: 11px; border-collapse: collapse;
@@ -23,10 +28,8 @@
     div.debugInfo td,th { border: 1px dotted gray; vertical-align: top; }
     div.debugInfo th { background-color: #E0E0E0; }
 </style>
-<hr>
 <div class='debugInfo'><?php echo $debug;?></div>
 </div>
-<?php } ?>
-<footer>AmidaMVC, yet another micro Framework for PHP.</footer>
+    <?php } ?>
 </body>
 </html>
