@@ -2,14 +2,22 @@
 namespace AmidaMVC\Component;
 
 /**
- * Router class
- * from Perfect PHP.
+ * Router class to determine files to load
+ * by route map, or scanning file systems.
  */
 
 class Router
 {
     static $router = array( '\AmidaMVC\Framework\Route', 'match' );
     // +-------------------------------------------------------------+
+    /**
+     * default is to use route map first, then scan the file system
+     * to determine which file to load.
+     * @static
+     * @param $ctrl
+     * @param $data
+     * @return array|bool|mixed    $loadInfo for Loader.
+     */
     static function actionDefault( $ctrl, $data ) {
         $loadInfo = call_user_func( self::$router, $ctrl->path );
         if( !$loadInfo ) {
@@ -71,14 +79,14 @@ class Router
             $folder .= "/{$action}";
             return self::searchRoutes( $ctrl, $routes, $folder );
         }
-        // search for action.php script.
+        // search for action file.
         if( $action && $file_name = self::getActionFiles( $folder, $action ) ) {
             $routes = array_slice( $routes, 1 );
             $loadInfo[ 'file' ] = "{$folder}/{$file_name}";
             return $loadInfo;
         }
-        // search for ./App.php
-        if( $file_name = self::getActionFiles( $folder, '_App' ) ) {
+        // search for _App.php
+        if( $file_name = self::getActionFiles( $folder, '_App.php' ) ) {
             $action = $routes[0];
             $loadInfo[ 'file' ] = "{$folder}/{$file_name}";
             $loadInfo[ 'action' ] = $action;
@@ -88,7 +96,8 @@ class Router
     }
     // +-------------------------------------------------------------+
     static function getActionFiles( $folder, $action ) {
-        $list = glob( "{$folder}/{$action}*", GLOB_NOSORT );
+        $ext  = pathinfo( $action, PATHINFO_EXTENSION );
+        $list = glob( "{$folder}/{$action}*.{$ext}", GLOB_NOSORT );
         foreach( $list as $file_name ) {
             $file_name = basename( $file_name );
             return $file_name;
