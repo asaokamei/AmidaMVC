@@ -16,11 +16,12 @@ $routes = array(
 
 AmidaMVC\Framework\Route::set( $routes );
 
-AmidaMVC\Component\Debug::_init();
+//AmidaMVC\Component\Debug::_init();
 
 $data = new \AmidaMVC\Component\SiteObj();
 $ctrl = new \AmidaMVC\Framework\Controller();
 $ctrl
+    ->addModel( 'Debug',  'debug' )
     ->addModel( 'Router', 'router' )
     ->addModel( 'Loader', 'loader' )
     ->addModel( 'Render', 'render' )

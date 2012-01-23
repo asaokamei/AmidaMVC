@@ -1,17 +1,36 @@
 <?php
 
 class Debug extends AmidaMVC\Component\Debug {
+    static function actionDefault( $ctrl, &$data ) {
+        if( in_array( '_dev', $ctrl->command ) ) {
+            self::_init();
+        }
+    }
     static function _init() {
         parent::_init();
+        self::setupListener();
+    }
+    // +-------------------------------------------------------------+
+    static function setupListener() {
         /* TODO: this initialization should not be here!! but where? */
         \AmidaMVC\Framework\Event::hook(
             'Controller::dispatch',
-            array( 'AmidaMVC\\Component\\Debug', 'listener' )
+            array( 'Debug', 'listener' )
         );
         \AmidaMVC\Framework\Event::hook(
             'Router::result',
-            array( 'AmidaMVC\\Component\\Debug', 'listener' )
+            array( 'Debug', 'listener' )
         );
-        return static::$self;
     }
+    // +-------------------------------------------------------------+
+    static function listener() {
+        $args  = func_get_args();
+        $event = $args[0];
+        $args  = array_slice( $args, 1 );
+        if( count( $args ) === 1 ) {
+            $args = $args[0];
+        }
+        self::bug( 'table', $args, '[event]'.$event );
+    }
+    // +-------------------------------------------------------------+
 }

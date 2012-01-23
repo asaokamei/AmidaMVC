@@ -22,7 +22,9 @@ class Debug
      * @return mixed
      */
     static function _init() {
-        static::$self = new Debug;
+        if( !isset( static::$self) ) {
+            static::$self = new Debug;
+        }
         return static::$self;
     }
     // +-------------------------------------------------------------+
@@ -45,16 +47,6 @@ class Debug
             call_user_func_array( array( static::$self, $method ), $args );
         }
         return TRUE;
-    }
-    // +-------------------------------------------------------------+
-    static function listener() {
-        $args  = func_get_args();
-        $event = $args[0];
-        $args  = array_slice( $args, 1 );
-        if( count( $args ) === 1 ) {
-            $args = $args[0];
-        }
-        self::bug( 'table', $args, '[event]'.$event );
     }
     // +-------------------------------------------------------------+
     static function result() {
@@ -143,17 +135,17 @@ class DebugHtml
     // +-------------------------------------------------------------+
     //  basic echo functions.
     // +-------------------------------------------------------------+
-    function head( $level, $string ) {
+    static function head( $level, $string ) {
         $string = "<h{$level}>{$string}</h{$level}>";
         return $string;
     }
     // +-------------------------------------------------------------+
-    function para( $level, $string ) {
+    static function para( $level, $string ) {
         $string = "<p>{$string}</p>";
         return $string;
     }
     // +-------------------------------------------------------------+
-    function text( $level, $string ) {
+    static function text( $level, $string ) {
         $string = "{$string}<br/>";
         return $string;
     }
