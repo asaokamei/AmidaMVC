@@ -90,33 +90,33 @@ class Loader
         $data = 'We are sorry about page not found. ';
     }
     // +-------------------------------------------------------------+
+    function findMimeType( $_file_ext ) {
+        switch( strtolower( $_file_ext ) ) {
+            case 'css':
+                $mime = 'text/css';
+                break;
+            case 'js':
+            case 'javascript':
+                $mime = 'text/javascript';
+                break;
+            case 'jpg':
+            case 'jpeg':
+                $mime = 'image/jpeg';
+                break;
+            case 'gif':
+                $mime = 'image/gif';
+                break;
+            case 'png':
+                $mime = 'image/png';
+                break;
+        }
+        return $mime;
+    }
+    // +-------------------------------------------------------------+
     function loadAsIs( &$data, $loadInfo, $_file_ext ) {
         $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
-        $mime  = mime_content_type( $loadInfo[ 'file' ] );
-        if( !$mime ) {
-            switch( strtolower( $_file_ext ) ) {
-                case 'css':
-                    $mime = 'text/css';
-                    break;
-                case 'js':
-                case 'javascript':
-                    $mime = 'text/javascript';
-                    break;
-                case 'jpg':
-                case 'jpeg':
-                    $mime = 'image/jpeg';
-                    break;
-                case 'gif':
-                    $mime = 'image/gif';
-                    break;
-                case 'png':
-                    $mime = 'image/png';
-                    break;
-            }
-        }
-        if( $mime ) {
-            $data->setMimeType( $mime );
-        }
+        $mime  = self::findMimeType( $_file_ext );
+        $data->setMimeType( $mime );
     }
     // +-------------------------------------------------------------+
     function loadPhpAsCode( &$data, $loadInfo ) {
