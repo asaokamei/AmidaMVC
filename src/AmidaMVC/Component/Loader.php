@@ -80,7 +80,7 @@ class Loader
     function loadPhpAsCode( &$data, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
         $content = highlight_string( $content, TRUE );
-        $title   = $loadInfo[ 'file' ];
+        $title   = pathinfo( $loadInfo[ 'file' ], PATHINFO_BASENAME );
         $data->setTitle( $title );
         $data->setContents( $content );
     }
