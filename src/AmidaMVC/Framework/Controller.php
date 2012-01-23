@@ -12,6 +12,10 @@ class Controller extends Chain
      */
     var $ctrl_root = NULL;
     /**
+     * @var null  base url where AmidaMVC application starts.
+     */
+    var $base_url = NULL;
+    /** TODO: rename from $path to $path_info.
      * @var null     path info starting from the root dir.
      */
     var $path = NULL;
@@ -34,6 +38,7 @@ class Controller extends Chain
             'ctrl_root'  => FALSE,
             'appDefault' => realpath( __DIR__ . '/../AppDefault' ),
             'path_info'  => FALSE,
+            'base_url'   => FALSE,
         );
         $option = $option + $default;
         // set ctrl root folder.
@@ -50,6 +55,11 @@ class Controller extends Chain
             $option[ 'path_info' ] = self::getPathInfo();
         }
         $this->path = $option[ 'path_info' ];
+        // set base url
+        if( !$option[ 'base_url' ] ) {
+            $option[ 'base_url' ] = self::getBaseUrl();
+        }
+        $this->base_url = $option[ 'base_url' ];
     }
     // +-------------------------------------------------------------+
     function getLocation() {
@@ -71,16 +81,23 @@ class Controller extends Chain
         return \AmidaMVC\Framework\Request::getPathInfo();
     }
     // +-------------------------------------------------------------+
+    function getBaseUrl() {
+        return \AmidaMVC\Framework\Request::getBaseUrl();
+    }
+    // +-------------------------------------------------------------+
     function getRoute() {
-        $this->command = explode( '/', $this->path );
+        $paths = explode( '/', $this->path );
+        $this->command = array();
         $this->routes = array();
-        foreach( $this->command as $cmd ) {
-            if( substr( $cmd, 0, 1 ) === $this->prefixCmd ) {
-                continue; // ignore this cmd as route.
-            }
+        foreach( $paths as $cmd ) {
             if( empty( $cmd ) ) continue;
             if( $cmd === '..' ) continue;
-            $this->routes[] = $cmd;
+            if( substr( $cmd, 0, 1 ) === $this->prefixCmd ) {
+                $this->command[] = $cmd;
+            }
+            else {
+                $this->routes[] = $cmd;
+            }
         }
     }
     // +-------------------------------------------------------------+

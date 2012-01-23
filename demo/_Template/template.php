@@ -2,7 +2,7 @@
 <html>
 <head>
     <title><?php echo $head_title; ?></title>
-    <link rel="stylesheet" href="demo.css" />
+    <link rel="stylesheet" href="<?php echo $_ctrl->base_url ?>/demo.css" />
 </head>
 <body>
 <header>AmidaMVC Demo</header>
