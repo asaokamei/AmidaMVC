@@ -70,8 +70,11 @@ class Loader
         if( $_file_ext == 'php') {
             include $ctrl->ctrl_root . '/' . $loadInfo[ 'file' ];
         }
-        else if( in_array( $_file_ext, array( 'html', 'text' ) ) ) {
+        else if( in_array( $_file_ext, array( 'html', 'html' ) ) ) {
             self::loadHtml( $data, $loadInfo );
+        }
+        else if( in_array( $_file_ext, array( 'text', 'md', 'markdown', 'mark' ) ) ) {
+            self::loadMarkdown( $data, $loadInfo );
         }
         else if( in_array( $_file_ext, array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' ) ) ) {
             $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
@@ -84,18 +87,46 @@ class Loader
         $data = 'We are sorry about page not found. ';
     }
     // +-------------------------------------------------------------+
+    /** load html file into view object.
+     * @param $data
+     * @param $loadInfo
+     */
     function loadHtml( &$data, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
-        $pattern = '/\<title\>([^<]*)\<\/title\>/i';
-        if( preg_match( $pattern, $content, $matched ) ) {
-            $data->setTitle( $matched[1] );
-            $content = preg_replace( $pattern, '', $content );
+        $title   = self::extractTitle( $content );
+        if( $title  ) {
+            $data->setTitle( $title );
         }
         $data->setContents( $content );
     }
     // +-------------------------------------------------------------+
-    function loadMarkdown( &$data ) {
-        $data->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
+    /** load markdown file into view object.
+     * @param $data
+     * @param $loadInfo
+     */
+    function loadMarkdown( &$data, $loadInfo ) {
+        include_once( __DIR__ .  '/../../../vendor/PHPMarkdown/markdown.php' );
+        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $title   = self::extractTitle( $content );
+        if( $title  ) {
+            $data->setTitle( $title );
+        }
+        $content = Markdown( $content );
+        $data->setContents( $content );
+    }
+    // +-------------------------------------------------------------+
+    /** extracts title tag from text/html, and remove it. 
+     * @param $content
+     * @return bool
+     */
+    function extractTitle( &$content ) {
+        $pattern = '/\<title\>([^<]*)\<\/title\>/i';
+        if( preg_match( $pattern, $content, $matched ) ) {
+            $title = $matched[1];
+            $content = preg_replace( $pattern, '', $content );
+            return $title;
+        }
+        return FALSE;
     }
     // +-------------------------------------------------------------+
     /**
