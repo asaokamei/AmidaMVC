@@ -77,7 +77,7 @@ class Loader
             self::loadMarkdown( $data, $loadInfo );
         }
         else if( in_array( $_file_ext, array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' ) ) ) {
-            $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
+            self::loadAsIs( $data, $loadInfo, $_file_ext );
         }
     }
     // +-------------------------------------------------------------+
@@ -85,6 +85,35 @@ class Loader
         // do something about error 404, a file not found.
         \AmidaMVC\Component\Debug::bug( 'wordy', 'Loader::Err404 happened!' );
         $data = 'We are sorry about page not found. ';
+    }
+    // +-------------------------------------------------------------+
+    function loadAsIs( &$data, $loadInfo, $_file_ext ) {
+        $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
+        $mime  = mime_content_type( $loadInfo[ 'file' ] );
+        if( !$mime ) {
+            switch( strtolower( $_file_ext ) ) {
+                case 'css':
+                    $mime = 'text/css';
+                    break;
+                case 'js':
+                case 'javascript':
+                    $mime = 'text/javascript';
+                    break;
+                case 'jpg':
+                case 'jpeg':
+                    $mime = 'image/jpeg';
+                    break;
+                case 'gif':
+                    $mime = 'image/gif';
+                    break;
+                case 'png':
+                    $mime = 'image/png';
+                    break;
+            }
+        }
+        if( $mime ) {
+            $data->setMimeType( $mime );
+        }
     }
     // +-------------------------------------------------------------+
     /** load html file into view object.

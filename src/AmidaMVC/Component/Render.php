@@ -17,7 +17,6 @@ class Render
     function actionPageNotFound( $ctrl, $data ) {
         // show some excuses, or blame user for not finding a page.
         $contents  = 'Error 404<br /><strong>page not found...</strong><br />';
-        $contents .= '<hr>' . $data->getHtml( 'contents' );
         $data->setHtml( 'title', 'Page Not Found' );
         $data->setHtml( 'contents', $contents );
         self::template( $ctrl, $data );
@@ -32,6 +31,8 @@ class Render
     // +-------------------------------------------------------------+
     function template( $_ctrl, $_siteObj ) {
         if( $_siteObj->isResponseReady() ) {
+            $mime_type = $_siteObj->getResponse( 'mime_type' );
+            header("Content-type:" . $mime_type );
             echo $_siteObj->getResponse( 'content' );
             return;
         }

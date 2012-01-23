@@ -32,6 +32,7 @@ class SiteObj
             'status_code' => 200,
             'status_text' => 'OK',
             'http_header' => array(),
+            'mime_type'   => 'text/html'
         );
         $this->responseObj->set( $responceDefault );
     }
@@ -48,6 +49,12 @@ class SiteObj
     function setHttpContent( $value ) {
         $this->setResponse( 'content', $value );
         $this->as_is = TRUE;
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    function setMimeType( $mime ) {
+        $this->setResponse( 'mime_type', $mime );
+        return $this;
     }
     // +-------------------------------------------------------------+
     function isResponseReady() {
@@ -56,7 +63,7 @@ class SiteObj
     // +-------------------------------------------------------------+
     function setResponseAsIs() {
         $this->as_is = TRUE;
-        return $this->as_is;
+        return $this;
     }
     // +-------------------------------------------------------------+
     /**
