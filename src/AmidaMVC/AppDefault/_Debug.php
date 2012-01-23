@@ -6,6 +6,7 @@ class Debug extends AmidaMVC\Component\Debug {
             self::_init();
         }
     }
+    // +-------------------------------------------------------------+
     static function _init() {
         parent::_init();
         self::setupListener();
@@ -15,6 +16,10 @@ class Debug extends AmidaMVC\Component\Debug {
         /* TODO: this initialization should not be here!! but where? */
         \AmidaMVC\Framework\Event::hook(
             'Controller::dispatch',
+            array( 'Debug', 'listener' )
+        );
+        \AmidaMVC\Framework\Event::hook(
+            'Controller::start',
             array( 'Debug', 'listener' )
         );
         \AmidaMVC\Framework\Event::hook(

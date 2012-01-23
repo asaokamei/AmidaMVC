@@ -82,13 +82,19 @@ class Controller extends Chain
             if( $cmd === '..' ) continue;
             $this->routes[] = $cmd;
         }
-        \AmidaMVC\Component\Debug::bug( 'table', $this->command, 'getRoute command:'.$this->path );
     }
     // +-------------------------------------------------------------+
-    function fireDispatch( $action ) {
+    function fireStart() {
+        Event::fire(
+            'Controller::start',
+            $this->command, 'command list'
+        );
+    }
+    // +-------------------------------------------------------------+
+    function fireDispatch() {
         Event::fire(
             'Controller::dispatch',
-            "model={$this->modelName} action={$action}"
+            "model={$this->modelName} action={$this->currAct}"
         );
     }
     // +-------------------------------------------------------------+

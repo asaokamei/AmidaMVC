@@ -199,13 +199,14 @@ class Chain
         // set current action.
         $return = NULL;
         $this->dispatchAct = $action;
+        $this->fireStart();
         // -----------------------------
         // chain of responsibility loop.
         while( $action )
         {
             $this->currAct( $action );
             $this->nextAct( FALSE ); // reset next action.
-            $this->fireDispatch( $action );
+            $this->fireDispatch();
             $return = $this->execAction( $action, $data, $return );
             $action = $this->nextAct();
             // automatically advance to next model.
@@ -219,11 +220,14 @@ class Chain
     }
     // +-------------------------------------------------------------+
     /**
-     * a method to hook before dispatching a model/action.
-     * overwrite this method to hook.
-     * @param $action
+     * methods to hook before dispatching a model/action.
+     * overwrite this method to observe dispatch chain.
      */
-    function fireDispatch( $action ) {
+    function fireStart() {
+        // do nothing.
+    }
+    // +-------------------------------------------------------------+
+    function fireDispatch() {
         // do nothing.
     }
     // +-------------------------------------------------------------+
