@@ -2,9 +2,10 @@ AmidaMVC ToDos.
 
 * Demo in AmidaMVC
 
-[O] read html as contents: title?
+[ ] make link url relative to $ctrl_root.
+[ ] restructure folders/files.
+    make Utility folder, move DataTO,Request,Route???
 [ ] make Config and _Config folder.
-[ ] make it easy to output debug info in apps.
 [ ] put routes to _Config older.
 [ ] make bread
 [X] 2012/01/20  use template
@@ -12,6 +13,10 @@ AmidaMVC ToDos.
 [X] 2012/01/21  make viewDto object for template; very simple ones.
 [X] 2012/01/21  output css as is.
 [X] 2012/01/23  control debug info output.
+[X] 2012/01/23  make it easy to output debug info in apps.
+                at least current Debug::bug works if Debug is loaded.
+[X] 2012/01/23  read html as contents and extracts title.
+[X] 2012/01/23  read markdown and convert to html
 
 * Demo in Cena-Dta
 
