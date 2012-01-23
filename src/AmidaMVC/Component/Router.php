@@ -19,16 +19,16 @@ class Router
      * @return array|bool|mixed    $loadInfo for Loader.
      */
     static function actionDefault( $ctrl, $data ) {
-        $loadInfo = call_user_func( self::$router, $ctrl->path );
+        $loadInfo = call_user_func( self::$router, $ctrl->path_info );
         if( !$loadInfo ) {
             $loadInfo = self::actionScan( $ctrl, $data );
         }
         if( !$loadInfo ) {
             $ctrl->nextModel( 'pageNotFound' );
-            \AmidaMVC\Component\Debug::bug( 'wordy', 'Router::not matched:'.$ctrl->path );
+            \AmidaMVC\Component\Debug::bug( 'wordy', 'Router::not matched:'.$ctrl->path_info );
         }
         else {
-            \AmidaMVC\Component\Debug::bug( 'table', $loadInfo, 'Router::path matched:'.$ctrl->path );
+            \AmidaMVC\Component\Debug::bug( 'table', $loadInfo, 'Router::path matched:'.$ctrl->path_info );
             // action is as is; probably default.
         }
         self::fireRouterResult( $loadInfo );

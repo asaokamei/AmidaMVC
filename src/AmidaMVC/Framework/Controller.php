@@ -20,6 +20,10 @@ class Controller extends Chain
      */
     var $path = NULL;
     /**
+     * @var null     path info without command (modified path for Route match).
+     */
+    var $path_info = NULL;
+    /**
      * @var array    command map from URI.
      */
     var $command = array();
@@ -98,6 +102,10 @@ class Controller extends Chain
             else {
                 $this->routes[] = $cmd;
             }
+        }
+        $this->path_info = implode( '/', $this->routes );
+        if( empty( $this->path_info ) ) {
+            $this->path_info = '/';
         }
     }
     // +-------------------------------------------------------------+
