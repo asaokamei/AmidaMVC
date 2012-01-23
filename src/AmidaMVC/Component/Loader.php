@@ -115,7 +115,7 @@ class Loader
         $data->setContents( $content );
     }
     // +-------------------------------------------------------------+
-    /** extracts title tag from text/html, and remove it. 
+    /** extracts title tag from text/html, and remove it.
      * @param $content
      * @return bool
      */

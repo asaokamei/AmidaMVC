@@ -2,6 +2,7 @@ AmidaMVC ToDos.
 
 * Demo in AmidaMVC
 
+[ ] Scan should be in Router, and pass loadInfo to Loader. 
 [ ] make link url relative to $ctrl_root.
 [ ] restructure folders/files.
     make Utility folder, move DataTO,Request,Route???
