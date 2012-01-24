@@ -8,7 +8,7 @@ files
 
 *   [Chain.php](Chain.php):  
     this is the "Amida-Chain" class. 
-    
+
 *   [Controller.php](Controller.php):  
     a class to control the web framework which inherits the Chain class.
     starts the chain with pathinfo to process. 

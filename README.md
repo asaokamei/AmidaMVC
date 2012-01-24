@@ -1,19 +1,21 @@
 AmidaMVC
 ========
 
-Yet another MVC Framework for PHP, based on amida-style dispatch chain.
-
+Yet another MVC Framework for PHP, based on amida-style dispatch chain.  
 I developed this framework for studying and some demo purpose.
 
-Source Code Viewing in AmidaMVC
--------------------
+View Source Codes
+-----------------
 
 *   [src/AmidaMVC](src/AmidaMVC/README.md):  
     source code of AmidaMVC Framework.
 
-*   [vendor](vendor):  
+*   vendor:  
     includes external library used in the Framework.
     Currently, PHPMarkdown is used.
+
+*   tests:  
+    going to contain some tests. almost empty now. 
 
 *   _Config:   
     configuration for viewin this source as a demo site.

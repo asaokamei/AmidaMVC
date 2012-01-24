@@ -1,3 +1,7 @@
+body,p,span,code {
+    margin: 0px;
+    padding: 0px;
+}
 body {
     width: 700px;
     margin: 20px auto 20px auto;
@@ -25,7 +29,7 @@ footer {
     font-weight: bold;
     text-align: center;
     padding: 5px 5px 5px 5px;
-    margin: 0px 0px 0px -5px;
+    margin: 20px 0px 0px -5px;
     border-left: 2px solid #d2691e;
     border-right: 2px solid #d2691e;
     box-shadow: 2px 2px 2px #cccccc;
@@ -43,8 +47,15 @@ h2 {
     font-size: 14px;
     padding: 3px 5px 3px 5px;
     margin: 5px 5px 5px -2px;
-    border-left: 2px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
+}
+code {
+    margin: 0px;
+    padding: 0px;
+    font-size: small;
+}
+code br {
+    line-height: 12px;
 }
 table {
     border: #CCCCCC solid 2px;
