@@ -10,12 +10,9 @@ class Loader
     static $ext_file = array( 'php', 'html', 'html', 'md', 'markdown', 'text', 'txt' );
     static $ext_asis = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
     // +-------------------------------------------------------------+
-    static function _init() {
-    }
-    // +-------------------------------------------------------------+
     /**
-     * loads file.
-     * specify absolute path of a file to load in $loadInfo[ 'file' ].
+     * loads file based on $loadInfo, determined by Router.
+     * specify absolute path of a file as $loadInfo[ 'file' ].
      * @static
      * @param $ctrl
      * @param $data
@@ -50,6 +47,12 @@ class Loader
         $data->setFileName( $loadInfo[ 'file' ] );
     }
     // +-------------------------------------------------------------+
+    function loadAsIs( &$data, $loadInfo, $_file_ext ) {
+        $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
+        $mime  = self::findMimeType( $_file_ext );
+        $data->setMimeType( $mime );
+    }
+    // +-------------------------------------------------------------+
     function findMimeType( $_file_ext ) {
         switch( strtolower( $_file_ext ) ) {
             case 'css':
@@ -71,18 +74,6 @@ class Loader
                 break;
         }
         return $mime;
-    }
-    // +-------------------------------------------------------------+
-    function loadAsIs( &$data, $loadInfo, $_file_ext ) {
-        $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
-        $mime  = self::findMimeType( $_file_ext );
-        $data->setMimeType( $mime );
-    }
-    // +-------------------------------------------------------------+
-    static function getAction( $string ) {
-        if( is_array( $string ) ) $string = $string[0];
-        $action = preg_replace( '/[^._a-zA-Z0-9]/m', '', $string );
-        return $action;
     }
     // +-------------------------------------------------------------+
 }
