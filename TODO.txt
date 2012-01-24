@@ -7,7 +7,7 @@ AmidaMVC ToDos.
 [ ] make Config and _Config folder.
 [ ] put routes to _Config older.
 [ ] make bread
-[ ] make AmidaMVC as demo site. 
+[ ] make AmidaMVC as demo site.
 [X] 2012/01/20  use template
 [X] 2012/01/21  Renamed Viewer to Render.
 [X] 2012/01/21  make viewDto object for template; very simple ones.
