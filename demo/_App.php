@@ -1,5 +1,7 @@
 <?php
 
+$ctrl->prependModel( 'appDemo', 'model' );
+
 class appDemo
 {
     static function actionDefault( $ctrl, &$data ) {
@@ -12,6 +14,4 @@ class appDemo
         $data->setContents( "Model::List action=".$ctrl->currAct() );
     }
 }
-
-$ctrl->prependModel( 'appDemo', 'model' );
 
