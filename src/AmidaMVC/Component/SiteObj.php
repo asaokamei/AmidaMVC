@@ -3,10 +3,6 @@ namespace AmidaMVC\Component;
 
 class SiteObj extends \AmidaMVC\Tools\DataTO
 {
-    /**
-     * @var \AmidaMVC\Tools\DataTO   about this web site. base url etc.
-     */
-    var $siteObj;
     /** @var bool
      * skip html template. directly output response content.
      */
@@ -44,16 +40,6 @@ class SiteObj extends \AmidaMVC\Tools\DataTO
             'mime_type'   => 'text/html'
         );
         $this->responseObj->set( $responseDefault );
-    }
-    // +-------------------------------------------------------------+
-    /**
-     * get dto (data transfer object) for site info.
-     * @param $name
-     * @param $value
-     * @return SiteObj
-     */
-    function getSiteObj( $name, $value ) {
-        return $this->siteObj;
     }
     // +-------------------------------------------------------------+
     /**
