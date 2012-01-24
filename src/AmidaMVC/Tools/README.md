@@ -17,3 +17,5 @@ files
 *   [Route.php](Route.php):  
     matches route patterns against path_info.  
 
+*   [Template.php](Template.php):
+    really dumb/simple template using PHP as is. 

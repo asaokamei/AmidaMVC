@@ -7,9 +7,7 @@ files
 -----
 
 *   [Config.php](Config.php):  
-    currently under development...
-    well, not developed at all.
-    Do *NOT* use this component...
+    creates configuration... still under development.
 
 *   [Debug.php](Debug.php):  
     include this module to use Debug class in models.
