@@ -39,7 +39,7 @@ class Render
         extract( $_siteObj->getHtml() );
         Debug::bug( 'table', $_siteObj->getHtml() );
         $debug    = self::showDebugInfo( $_ctrl );
-        include( $_ctrl->ctrl_root . '/_Template/template.php' );
+        include( $_ctrl->ctrl_root . '/_Config/template.php' );
     }
     // +-------------------------------------------------------------+
     function showDebugInfo( $ctrl ) {

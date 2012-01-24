@@ -8,7 +8,9 @@
 <body>
 <header>AmidaMVC Demo</header>
 <div id="contents">
+    <?php if( $title ) { ?>
     <h1><?php echo $title; ?></h1>
+    <?php } ?>
     <?php echo $contents; ?>
 </div>
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>

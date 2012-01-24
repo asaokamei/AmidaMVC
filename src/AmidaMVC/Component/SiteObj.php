@@ -20,7 +20,7 @@ class SiteObj
     function __construct() {
         $this->htmlObj = new \AmidaMVC\Tools\DataTO();
         $htmlDefault = array(
-            'title'      => 'title',
+            'title'      => '',
             'head_title' => false,
             'contents'   => '',
             'bread'      => '',
