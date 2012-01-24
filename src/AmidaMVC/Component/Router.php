@@ -8,7 +8,7 @@ namespace AmidaMVC\Component;
 
 class Router
 {
-    static $router = array( '\AmidaMVC\Framework\Route', 'match' );
+    static $router = array( '\AmidaMVC\Tools\Route', 'match' );
     // +-------------------------------------------------------------+
     /**
      * default is to use route map first, then scan the file system

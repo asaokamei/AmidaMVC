@@ -82,11 +82,11 @@ class Controller extends Chain
     }
     // +-------------------------------------------------------------+
     function getPathInfo() {
-        return \AmidaMVC\Framework\Request::getPathInfo();
+        return \AmidaMVC\Tools\Request::getPathInfo();
     }
     // +-------------------------------------------------------------+
     function getBaseUrl() {
-        return \AmidaMVC\Framework\Request::getBaseUrl();
+        return \AmidaMVC\Tools\Request::getBaseUrl();
     }
     // +-------------------------------------------------------------+
     function getRoute() {

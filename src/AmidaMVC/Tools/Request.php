@@ -1,5 +1,5 @@
 <?php
-namespace AmidaMVC\Framework;
+namespace AmidaMVC\Tools;
 
 /**
  * Request class

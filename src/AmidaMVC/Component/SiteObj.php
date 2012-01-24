@@ -7,18 +7,18 @@ class SiteObj
      * skip html template. directly output response content.
      */
     var $as_is = FALSE;
-    /** @var \AmidaMVC\Framework\DataTO
+    /** @var \AmidaMVC\Tools\DataTO
      * for html template: title, contents, bread, etc.
      */
     var $htmlObj;
     /**
-     * @var \AmidaMVC\Framework\DataTO
+     * @var \AmidaMVC\Tools\DataTO
      * for http response.
      */
     var $responseObj;
     // +-------------------------------------------------------------+
     function __construct() {
-        $this->htmlObj = new \AmidaMVC\Framework\DataTO();
+        $this->htmlObj = new \AmidaMVC\Tools\DataTO();
         $htmlDefault = array(
             'title'      => 'title',
             'head_title' => false,
@@ -26,7 +26,7 @@ class SiteObj
             'bread'      => '',
         );
         $this->htmlObj->set( $htmlDefault );
-        $this->responseObj = new \AmidaMVC\Framework\DataTO();
+        $this->responseObj = new \AmidaMVC\Tools\DataTO();
         $responceDefault = array(
             'content'     => '',
             'status_code' => 200,

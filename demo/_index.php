@@ -16,7 +16,7 @@ $routes = array(
 );
 
 
-AmidaMVC\Framework\Route::set( $routes );
+AmidaMVC\Tools\Route::set( $routes );
 
 //AmidaMVC\Component\Debug::_init();
 
