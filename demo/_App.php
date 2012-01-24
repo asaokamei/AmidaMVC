@@ -1,6 +1,6 @@
 <?php
 
-class modelApp1
+class appDemo
 {
     static function actionDefault( $ctrl, &$data ) {
         Debug::bug( 'head', 'app1Model::Default action' );
@@ -13,5 +13,5 @@ class modelApp1
     }
 }
 
-$ctrl->prependModel( 'modelApp1', 'model' );
+$ctrl->prependModel( 'appDemo', 'model' );
 
