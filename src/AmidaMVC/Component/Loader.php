@@ -6,6 +6,12 @@ namespace AmidaMVC\Component;
  */
 class Loader
 {
+    // extensions to determine which load types. 
+    static $ext_php  = array( 'php' );
+    static $ext_html = array( 'html', 'html' );
+    static $ext_md   = array( 'md', 'markdown' );
+    static $ext_text = array( 'text', 'txt' );
+    static $ext_asis = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
     // +-------------------------------------------------------------+
     static function _init() {
     }
@@ -32,13 +38,16 @@ class Loader
         else if( $file_ext == 'php' ) {
             self::loadPhpAsCode( $data, $loadInfo );
         }
-        else if( in_array( $file_ext, array( 'html', 'html' ) ) ) {
+        else if( in_array( $file_ext, static::$ext_html ) ) {
             self::loadHtml( $data, $loadInfo );
         }
-        else if( in_array( $file_ext, array( 'text', 'md', 'markdown', 'mark' ) ) ) {
+        else if( in_array( $file_ext, static::$ext_text ) ) {
+            self::loadText( $data, $loadInfo );
+        }
+        else if( in_array( $file_ext, static::$ext_md ) ) {
             self::loadMarkdown( $data, $loadInfo );
         }
-        else if( in_array( $file_ext, array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' ) ) ) {
+        else if( in_array( $file_ext, static::$ext_asis ) ) {
             self::loadAsIs( $data, $loadInfo, $file_ext );
         }
     }
@@ -80,6 +89,14 @@ class Loader
     function loadPhpAsCode( &$data, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
         $content = highlight_string( $content, TRUE );
+        $title   = pathinfo( $loadInfo[ 'file' ], PATHINFO_BASENAME );
+        $data->setTitle( $title );
+        $data->setContents( $content );
+    }
+    // +-------------------------------------------------------------+
+    function loadText( &$data, $loadInfo ) {
+        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $content = nl2br( $content );
         $title   = pathinfo( $loadInfo[ 'file' ], PATHINFO_BASENAME );
         $data->setTitle( $title );
         $data->setContents( $content );
