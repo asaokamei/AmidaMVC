@@ -23,10 +23,17 @@ header {
     border-right: 5px solid #d2691e;
     box-shadow: 5px 5px 5px #cccccc;
 }
+header a {
+    text-decoration: none;
+    color: #d2691e;
+}
+header a:hover {
+    color: red;
+}
 footer {
     background: #F0F0F0;
     font-size: 10px;
-    font-weight: bold;
+    font-weight: normal;
     text-align: center;
     padding: 5px 5px 5px 5px;
     margin: 20px 0px 0px -5px;

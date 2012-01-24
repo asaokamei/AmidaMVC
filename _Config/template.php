@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <title><?php echo $head_title; ?></title>
     <link rel="stylesheet" href="<?php echo $_ctrl->base_url ?>/demo.css" />
 </head>
 <body>
-<header>AmidaMVC Demo</header>
+<header><a href="<?php echo $_ctrl->base_url ?>/">AmidaMVC Framework</a></header>
 <div id="contents">
     <?php if( $title ) { ?>
     <h1><?php echo $title; ?></h1>
