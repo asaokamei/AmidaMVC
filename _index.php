@@ -1,5 +1,5 @@
 <?php
-require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php');
+require_once(__DIR__ . '/../src/AmidaMVC/bootstrap.php');
 
 /**
  * AmidaMVC's Demo Site...
