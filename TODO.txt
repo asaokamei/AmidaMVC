@@ -4,11 +4,10 @@ AmidaMVC ToDos.
 
 [O] make link url relative to $ctrl_root.
     demo.css works relative to $ctrl_root.
-[ ] restructure folders/files.
-    make Utility folder, move DataTO,Request,Route???
 [ ] make Config and _Config folder.
 [ ] put routes to _Config older.
 [ ] make bread
+[ ] make AmidaMVC as demo site. 
 [X] 2012/01/20  use template
 [X] 2012/01/21  Renamed Viewer to Render.
 [X] 2012/01/21  make viewDto object for template; very simple ones.
@@ -19,6 +18,8 @@ AmidaMVC ToDos.
 [X] 2012/01/23  read html as contents and extracts title.
 [X] 2012/01/23  read markdown and convert to html
 [X] 2012/01/23  Scan should be in Router, and pass loadInfo to Loader.
+[X] 2012/01/24  restructure folders/files.
+                made Tools folder, move DataTO,Request,Route.
 
 * Demo in Cena-Dta
 
