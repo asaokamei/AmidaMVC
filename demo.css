@@ -38,7 +38,7 @@ h1 {
     background: #F0F0F0;
     font-size: 16px;
     padding: 5px 5px 5px 5px;
-    margin: 15px 5px 5px -2px;
+    margin: 15px 5px 10px -2px;
     border-left: 2px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
 }
@@ -46,7 +46,7 @@ h2 {
     background: #F0F0F0;
     font-size: 14px;
     padding: 3px 5px 3px 5px;
-    margin: 5px 5px 5px -2px;
+    margin: 10px 5px 5px -2px;
     box-shadow: 3px 3px 3px #cccccc;
 }
 code {

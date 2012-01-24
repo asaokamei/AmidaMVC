@@ -10,7 +10,7 @@ View Source Codes
 *   [src/AmidaMVC](src/AmidaMVC/README.md):  
     source code of AmidaMVC Framework.
 
-*   vendor:  
+*   [vendor](vendor/README.md):  
     includes external library used in the Framework.
     Currently, PHPMarkdown is used.
 
