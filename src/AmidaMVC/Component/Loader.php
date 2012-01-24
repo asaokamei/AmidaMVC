@@ -7,10 +7,7 @@ namespace AmidaMVC\Component;
 class Loader
 {
     // extensions to determine which load types. 
-    static $ext_php  = array( 'php' );
-    static $ext_html = array( 'html', 'html' );
-    static $ext_md   = array( 'md', 'markdown' );
-    static $ext_text = array( 'text', 'txt' );
+    static $ext_file = array( 'php', 'html', 'html', 'md', 'markdown', 'text', 'txt' );
     static $ext_asis = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
     // +-------------------------------------------------------------+
     static function _init() {
@@ -35,17 +32,8 @@ class Loader
         if( $file_ext == 'php' && substr( $base_name, 0, 4 ) == '_App' ) {
             include $loadInfo[ 'file' ];
         }
-        else if( $file_ext == 'php' ) {
-            self::loadPhpAsCode( $data, $loadInfo );
-        }
-        else if( in_array( $file_ext, static::$ext_html ) ) {
-            self::loadHtml( $data, $loadInfo );
-        }
-        else if( in_array( $file_ext, static::$ext_text ) ) {
-            self::loadText( $data, $loadInfo );
-        }
-        else if( in_array( $file_ext, static::$ext_md ) ) {
-            self::loadMarkdown( $data, $loadInfo );
+        else if( in_array( $file_ext, static::$ext_file ) ) {
+            self::loadFile( $data, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_asis ) ) {
             self::loadAsIs( $data, $loadInfo, $file_ext );
@@ -55,6 +43,11 @@ class Loader
     function actionPageNotFound( $ctrl, &$data ) {
         // do something about error 404, a file not found.
         // maybe load sorry file.
+    }
+    // +-------------------------------------------------------------+
+    function loadFile( &$data, $loadInfo ) {
+        $data->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
+        $data->setFileName( $loadInfo[ 'file' ] );
     }
     // +-------------------------------------------------------------+
     function findMimeType( $_file_ext ) {
@@ -84,65 +77,6 @@ class Loader
         $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
         $mime  = self::findMimeType( $_file_ext );
         $data->setMimeType( $mime );
-    }
-    // +-------------------------------------------------------------+
-    function loadPhpAsCode( &$data, $loadInfo ) {
-        $content = file_get_contents( $loadInfo[ 'file' ] );
-        $content = highlight_string( $content, TRUE );
-        $title   = pathinfo( $loadInfo[ 'file' ], PATHINFO_BASENAME );
-        $data->setTitle( $title );
-        $data->setContents( $content );
-    }
-    // +-------------------------------------------------------------+
-    function loadText( &$data, $loadInfo ) {
-        $content = file_get_contents( $loadInfo[ 'file' ] );
-        $content = nl2br( $content );
-        $title   = pathinfo( $loadInfo[ 'file' ], PATHINFO_BASENAME );
-        $data->setTitle( $title );
-        $data->setContents( $content );
-    }
-    // +-------------------------------------------------------------+
-    /** load html file into view object.
-     * @param $data
-     * @param $loadInfo
-     */
-    function loadHtml( &$data, $loadInfo ) {
-        $content = file_get_contents( $loadInfo[ 'file' ] );
-        $title   = self::extractTitle( $content );
-        if( $title  ) {
-            $data->setTitle( $title );
-        }
-        $data->setContents( $content );
-    }
-    // +-------------------------------------------------------------+
-    /** load markdown file into view object.
-     * @param $data
-     * @param $loadInfo
-     * @return void
-     */
-    function loadMarkdown( &$data, $loadInfo ) {
-        include_once( __DIR__ .  '/../../../vendor/PHPMarkdown/markdown.php' );
-        $content = file_get_contents( $loadInfo[ 'file' ] );
-        $title   = self::extractTitle( $content );
-        if( $title  ) {
-            $data->setTitle( $title );
-        }
-        $content = Markdown( $content );
-        $data->setContents( $content );
-    }
-    // +-------------------------------------------------------------+
-    /** extracts title tag from text/html, and remove it.
-     * @param $content
-     * @return bool
-     */
-    function extractTitle( &$content ) {
-        $pattern = '/\<title\>([^<]*)\<\/title\>/i';
-        if( preg_match( $pattern, $content, $matched ) ) {
-            $title = $matched[1];
-            $content = preg_replace( $pattern, '', $content );
-            return $title;
-        }
-        return FALSE;
     }
     // +-------------------------------------------------------------+
     static function getAction( $string ) {

@@ -1,16 +1,20 @@
 <?php
 namespace AmidaMVC\Component;
 
-class SiteObj
+class SiteObj extends \AmidaMVC\Tools\DataTO
 {
+    /**
+     * @var \AmidaMVC\Tools\DataTO   about this web site. base url etc.
+     */
+    var $siteObj;
     /** @var bool
      * skip html template. directly output response content.
      */
     var $as_is = FALSE;
     /** @var \AmidaMVC\Tools\DataTO
-     * for html template: title, contents, bread, etc.
+     * contents data for template: title, contents, bread, etc.
      */
-    var $htmlObj;
+    var $contentObj;
     /**
      * @var \AmidaMVC\Tools\DataTO
      * for http response.
@@ -18,25 +22,46 @@ class SiteObj
     var $responseObj;
     // +-------------------------------------------------------------+
     function __construct() {
-        $this->htmlObj = new \AmidaMVC\Tools\DataTO();
+        parent::__construct();
+
+        $this->contentObj = new \AmidaMVC\Tools\DataTO();
         $htmlDefault = array(
+            'content_type'   => 'html',
+            'file_name'      => '',
             'title'      => '',
-            'head_title' => false,
+            'head_title' => '',
             'contents'   => '',
             'bread'      => '',
+            'debug'      => false,
         );
-        $this->htmlObj->set( $htmlDefault );
+        $this->contentObj->set( $htmlDefault );
         $this->responseObj = new \AmidaMVC\Tools\DataTO();
-        $responceDefault = array(
+        $responseDefault = array(
             'content'     => '',
             'status_code' => 200,
             'status_text' => 'OK',
             'http_header' => array(),
             'mime_type'   => 'text/html'
         );
-        $this->responseObj->set( $responceDefault );
+        $this->responseObj->set( $responseDefault );
     }
     // +-------------------------------------------------------------+
+    /**
+     * get dto (data transfer object) for site info.
+     * @param $name
+     * @param $value
+     * @return SiteObj
+     */
+    function getSiteObj( $name, $value ) {
+        return $this->siteObj;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * set data for response object.
+     * @param $name
+     * @param $value
+     * @return SiteObj
+     */
     function setResponse( $name, $value ) {
         $this->responseObj->set( $name, $value );
         return $this;
@@ -76,34 +101,42 @@ class SiteObj
      * @param $value
      * @return SiteObj
      */
-    function setHtml( $name, $value ) {
-        $this->htmlObj->set( $name, $value );
+    function setContent( $name, $value ) {
+        $this->contentObj->set( $name, $value );
         if( $name == 'title' ) {
-            if( !$this->htmlObj->get( 'head_title' ) ) {
-                $this->htmlObj->set( 'head_title', $value );
+            if( !$this->contentObj->get( 'head_title' ) ) {
+                $this->contentObj->set( 'head_title', $value );
             }
         }
         return $this;
     }
     // +-------------------------------------------------------------+
+    function setContentType( $type ) {
+        $this->setContent( 'content_type', $type );
+    }
+    // +-------------------------------------------------------------+
+    function setFileName( $name ) {
+        $this->setContent( 'file_name', $name );
+    }
+    // +-------------------------------------------------------------+
     function setTitle( $value ) {
-        $this->setHtml( 'title', $value );
+        $this->setContent( 'title', $value );
     }
     // +-------------------------------------------------------------+
     function setHeadTitle( $value ) {
-        $this->setHtml( 'head_title', $value );
+        $this->setContent( 'head_title', $value );
     }
     // +-------------------------------------------------------------+
     function setContents( $value ) {
-        $this->setHtml( 'contents', $value );
+        $this->setContent( 'contents', $value );
     }
     // +-------------------------------------------------------------+
     function setBread( $value ) {
-        $this->setHtml( 'bread', $value );
+        $this->setContent( 'bread', $value );
     }
     // +-------------------------------------------------------------+
     function getHtml( $name=NULL ) {
-        return $this->htmlObj->get( $name );
+        return $this->contentObj->get( $name );
     }
     // +-------------------------------------------------------------+
 }

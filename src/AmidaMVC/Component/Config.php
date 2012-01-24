@@ -8,33 +8,16 @@ namespace AmidaMVC\Component;
  */
 class Config
 {
-    static $loaded = FALSE;
-    static $prefix = '';
-    static $postfix = '';
-    static $folder  = 'Config';
-    static $appRoot = NULL;
-    static $currFolder = NULL;
-    static $modelToLoad = array();
     // +-------------------------------------------------------------+
-    static function _init() {
-        static::$modelToLoad = array(
-            'admin'  => 'Admin',
-            'review' => 'Admin',
-            'dev'    => 'Dev',
-            'en'     => 'Lang',
-            'ja'     => 'Lang',
+    function actionDefault( \AmidaMVC\Framework\Controller $ctrl, &$data ) {
+        $siteDefault = array(
+            'base_url'  => $ctrl->base_url,
+            'path_info' => $ctrl->path,
+            'routes'    => $ctrl->routes,
+            'command'   => $ctrl->command,
+            'prefix_cmd' => '_',
         );
-    }
-    // +-------------------------------------------------------------+
-    function actionDefault( $ctrl, $request ) {
-        // load extra models as in command list.
-        $command = $ctrl->command;
-        foreach( $command as $loadModel ) {
-            if( in_array( $loadModel, self::$modelToLoad ) ) {
-                $model = self::$modelToLoad[ $loadModel ];
-                $ctrl->loadModel( $model );
-            }
-        }
+        $data->set( 'siteObj', $siteDefault );
     }
     // +-------------------------------------------------------------+
 }

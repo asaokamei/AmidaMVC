@@ -25,7 +25,7 @@ class DataTO
         if( is_array( $name ) ) {
             $this->_data = array_merge( $this->_data, $name );
         }
-        else if( "{$value}" !== "" ) {
+        else {
             $this->_data[ $name ] = $value;
         }
         return $this;
