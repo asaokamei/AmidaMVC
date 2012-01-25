@@ -6,8 +6,7 @@ body {
     width: 700px;
     margin: 20px auto 20px auto;
     border:2px solid #E0E0E0;
-    padding: 10px;
-    padding-left:15px;
+    padding: 10px 15px 10px 20px;
     border-radius: 15px;
     font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
     box-shadow: 5px 5px 5px #aaaaaa;
@@ -18,7 +17,7 @@ header {
     font-weight: bold;
     text-align: center;
     padding: 15px 5px 15px 5px;
-    margin: 0px 0px 10px -5px;
+    margin: 0px -5px 10px -5px;
     border-left: 5px solid #d2691e;
     border-right: 5px solid #d2691e;
     box-shadow: 5px 5px 5px #cccccc;
@@ -45,7 +44,7 @@ h1 {
     background: #F0F0F0;
     font-size: 16px;
     padding: 5px 5px 5px 5px;
-    margin: 15px 5px 10px -2px;
+    margin: 20px 0px 15px -2px;
     border-left: 2px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
 }
@@ -53,8 +52,11 @@ h2 {
     background: #F0F0F0;
     font-size: 14px;
     padding: 3px 5px 3px 5px;
-    margin: 10px 5px 5px -2px;
+    margin: 15px 5px 15px -2px;
     box-shadow: 3px 3px 3px #cccccc;
+}
+p {
+    margin: 5px 0px 5px 0px;
 }
 code {
     margin: 0px;
