@@ -73,7 +73,7 @@ class Template
      * @return void
      */
     function loadMarkdown( &$data ) {
-        include_once( __DIR__ .  '/../../../vendor/PHPMarkdown/markdown.php' );
+        include_once( __DIR__ .  '/../../../vendor/PHPMarkdownExtra/markdown.php' );
         $content = $data[ 'contents' ];
         $content = Markdown( $content );
         $data[ 'contents' ] = $content;
