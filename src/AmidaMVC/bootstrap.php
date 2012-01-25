@@ -34,6 +34,7 @@ function AmidaMVC_ClassLoader( $path=FALSE )
         $sep  = $args[ 'sep' ];
         $ext  = $args[ 'ext' ];
         $path = $args[ 'path' ];
+        $className = ltrim( $className, '\\' );
         if( substr( $className, 0, strlen( $tip.$sep ) ) === $tip.$sep ) {
             $fileName = '';
             if( FALSE !== ( $lastNsPos = strripos( $className, $sep ) ) ) {
