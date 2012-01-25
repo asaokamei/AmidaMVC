@@ -12,6 +12,7 @@
     <h1><?php echo $title; ?></h1>
     <?php } ?>
     <?php echo $contents; ?>
+    <p style="clear: both;"></p>
 </div>
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 <?php if( !empty( $debug ) ) { ?>
