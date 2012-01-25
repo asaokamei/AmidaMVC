@@ -29,7 +29,27 @@ File Structure and View Source Code
 Amida-Chain
 -----------
 
-some technical note about amida-chain. 
+Amida chain dispatches the same method of classes in its chain. 
+As for the web framework, the classes are called components. 
+
+
+If everything is OK, the allOK method of each of the components are called. 
+if page is not found in the Router (which searches for a file from request), 
+the Router changes the default to err404 method, and Amida-chain keeps 
+calling the err404 method, instead of allOK. 
+
+
+class  | all OK  | page not found | login  |
+-------|---------|----------------|--------|
+Config |  allOK  |                |        |
+Auth   |  allOK  |                | login  |
+Router |  allOK  |    err404      |        |
+Loader |  allOK  |                |        |
+Render |  allOK  |    err404      | login  |
+
+
+As such, I hope this style of chain will make it easier to develop a 
+web framework. 
 
 Usage
 -----
