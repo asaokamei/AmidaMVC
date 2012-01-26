@@ -10,27 +10,27 @@ class AmidaChain
     /**
      * @var array   list of components. nextModel sets model to the next.
      */
-    var $components  = array();
+    var $_components  = array();
     /**
      * @var null    name of current action.
      */
-    var $action = NULL;
+    var $_action = NULL;
     /**
      * @var null    name of original dispatched action. set *only* after dispatched. 
      */
-    var $dispatchAct= NULL;
+    var $_dispatchAct= NULL;
     /**
      * @var bool   flag to advance the component in dispatch chain. 
      */
-    var $useNextComponent = TRUE;
+    var $_useNextComponent = TRUE;
     /**
      * @var string   default exec name if not matched.
      */
-    var $defaultAct = 'default';
+    var $_defaultAct = 'default';
     /**
      * @var string   prefixAct for action to func/method name.
      */
-    var $prefixAct = 'action';
+    var $_prefixAct = 'action';
     // +-------------------------------------------------------------+
     function __construct() {
         // nothing.
@@ -41,7 +41,7 @@ class AmidaChain
      * @return string    current model.
      */
     function getComponent() {
-        return $this->components[0][0];
+        return $this->_components[0][0];
     }
     // +-------------------------------------------------------------+
     /**
@@ -49,7 +49,7 @@ class AmidaChain
      * @return string     returns current model name.
      */
     function getComponentName() {
-        return $this->components[0][1];
+        return $this->_components[0][1];
     }
     // +-------------------------------------------------------------+
     /**
@@ -86,7 +86,7 @@ class AmidaChain
      */
     function appendComponent( $compInfo, $name=NULL ) {
         $compInfo = $this->_prepareComponent( $compInfo, $name );
-        $this->components = array_merge( $this->components, $compInfo );
+        $this->_components = array_merge( $this->_components, $compInfo );
         return $this;
     }
     // +-------------------------------------------------------------+
@@ -98,21 +98,21 @@ class AmidaChain
      */
     function prependComponent( $compInfo, $name=NULL ) {
         $compInfo = $this->_prepareComponent( $compInfo, $name );
-        if( isset( $this->dispatchAct ) ) {
+        if( isset( $this->_dispatchAct ) ) {
             // chain already started. 
             // the first component is the current one. 
             // so add the new component after the current component. 
-            $first_component  = $this->components[0];
-            $this->components = array_slice( $this->components, 1 );
-            $this->components = array_merge( 
+            $first_component  = $this->_components[0];
+            $this->_components = array_slice( $this->_components, 1 );
+            $this->_components = array_merge( 
                 array( $first_component ),
                 $compInfo, 
-                $this->components 
+                $this->_components 
             );
         }
         else {
             // add the component at the beginning of component chain. 
-            $this->components = array_merge( $compInfo, $this->components );
+            $this->_components = array_merge( $compInfo, $this->_components );
         }
         return $this;
     }
@@ -124,26 +124,22 @@ class AmidaChain
      */
     function useNextComponent( $next=NULL ) {
         if( $next === TRUE ) {
-            $this->useNextComponent = $next;
+            $this->_useNextComponent = $next;
         }
         elseif( $next === FALSE ) {
-            $this->useNextComponent = $next;
+            $this->_useNextComponent = $next;
         }
-        return $this->useNextComponent;
+        return $this->_useNextComponent;
     }
     // +-------------------------------------------------------------+
     /**
-     * use next model. for instance, the components can be: auth,
-     * cache, data model, and view.
-     * @param null $nextAct
-     *     sets action name to start the next model. if not set,
-     *     uses current action.
-     * @return bool/string    next action if next model exists. FALSE if not.
+     * use next component.
+     * @return \AmidaMVC\Framework\AmidaChain
      */
-    function _nextModel() {
-        if( isset( $this->components[0] ) ) {
+    function nextComponent() {
+        if( isset( $this->_components[0] ) ) {
             // replace model with the next model.
-            $this->components = array_slice( $this->components, 1 );
+            $this->_components = array_slice( $this->_components, 1 );
         }
         return $this;
     }
@@ -154,12 +150,12 @@ class AmidaChain
      * @return bool|string    returns model name set, or false if not found.
      */
     function skipToModel( $name ) {
-        while( $this->components ) {
-            if( $name === $this->components[0][1] ) {
+        while( $this->_components ) {
+            if( $name === $this->_components[0][1] ) {
                 return $name;
             }
             else {
-                $this->components = array_slice( $this->components, 1 );
+                $this->_components = array_slice( $this->_components, 1 );
             }
         }
         // should throw an exception, maybe.
@@ -170,7 +166,7 @@ class AmidaChain
      * @return bool   TRUE if more components exists.
      */
     function moreModels() {
-        return !empty( $this->components );
+        return !empty( $this->_components );
     }
     // +-------------------------------------------------------------+
     /**
@@ -185,7 +181,7 @@ class AmidaChain
      * @return string        returns action.
      */
     function getAction() {
-        return $this->action;
+        return $this->_action;
     }
     // +-------------------------------------------------------------+
     /**
@@ -194,14 +190,14 @@ class AmidaChain
      * @return string         returns the new action.
      */
     function setAction( $action ) {
-        $this->action = $action;
-        return $this->action;
+        $this->_action = $action;
+        return $this->_action;
     }
     // +-------------------------------------------------------------+
     function execOwnAction( $action ) {
         $this->setAction( $action );
         $this->useNextComponent( FALSE );
-        return $this->action;
+        return $this->_action;
     }
     // +-------------------------------------------------------------+
     /**
@@ -210,9 +206,9 @@ class AmidaChain
      */
     function defaultAct( $action=NULL ) {
         if( $action !== NULL ) {
-            $this->defaultAct = $action;
+            $this->_defaultAct = $action;
         }
-        return $this->defaultAct;
+        return $this->_defaultAct;
     }
     // +-------------------------------------------------------------+
     /**
@@ -227,7 +223,7 @@ class AmidaChain
     {
         // set current action.
         $return = NULL;
-        $this->dispatchAct = $action;
+        $this->_dispatchAct = $action;
         $this->setAction( $action );
         $this->fireStart();
         // -----------------------------
@@ -238,7 +234,7 @@ class AmidaChain
             $return = $this->execAction( $action, $data, $return );
             if( $this->useNextComponent() ) {
                 // go to next component. 
-                $this->_nextModel();
+                $this->nextComponent();
             }
             else {
                 $this->useNextComponent( TRUE ); // reset to TRUE. 
@@ -270,7 +266,7 @@ class AmidaChain
     function execAction( $action, &$data=NULL, $return=NULL ) {
         $exec = $this->getExecFromAction( $action );
         if( !$exec ) {
-            $exec = $this->getExecFromAction( $this->defaultAct );
+            $exec = $this->getExecFromAction( $this->_defaultAct );
         }
         if( $exec ) {
             $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
@@ -288,7 +284,7 @@ class AmidaChain
     function getExecFromAction( $action ) {
         $exec      = FALSE;
         $component = $this->getComponent();
-        $method    = $this->prefixAct . ucwords( $action );
+        $method    = $this->_prefixAct . ucwords( $action );
         if( !$action ) return $exec;
         if( !isset( $component ) ) return $exec;
 
