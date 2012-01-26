@@ -22,7 +22,11 @@ class Loader
      * @param $data
      * @param $loadInfo    info about file to load from Router.
      */
-    static function actionDefault( $ctrl, &$data, $loadInfo ) {
+    static function actionDefault( 
+        \AmidaMVC\Framework\Controller $ctrl, 
+        \AmidaMVC\Component\SiteObj &$data, 
+        $loadInfo ) 
+    {
         $file_name = $loadInfo['file'];
         $base_name = basename( $file_name );
         $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
@@ -64,36 +68,36 @@ class Loader
         include $loadInfo[ 'file' ];
     }
     // +-------------------------------------------------------------+
-    function loadPhpAsCode( &$data, $loadInfo ) {
+    function loadPhpAsCode( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
         $data->setContents( $content );
         $data->setContentType( 'php' );
     }
     // +-------------------------------------------------------------+
-    function loadText( &$data, $loadInfo ) {
+    function loadText( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
         $data->setContents( $content );
         $data->setContentType( 'text' );
     }
     // +-------------------------------------------------------------+
-    function loadHtml( &$data, $loadInfo ) {
+    function loadHtml( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
         $data->setContents( $content );
     }
     // +-------------------------------------------------------------+
-    function loadMarkdown( &$data, $loadInfo ) {
+    function loadMarkdown( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
         $data->setContents( $content );
         $data->setContentType( 'markdown' );
     }
     // +-------------------------------------------------------------+
-    function loadAsIs( &$data, $loadInfo, $_file_ext ) {
+    function loadAsIs( \AmidaMVC\Component\SiteObj &$data, $loadInfo, $_file_ext ) {
         $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
         $data->setFileName( $loadInfo[ 'file' ] );
         $data->setContentType( 'as_is' );
     }
     // +-------------------------------------------------------------+
-    function loadFile( &$data, $loadInfo ) {
+    function loadFile( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
         $data->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
         $data->setFileName( $loadInfo[ 'file' ] );
     }
