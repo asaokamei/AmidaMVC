@@ -2,10 +2,10 @@
 namespace AmidaMVC\Framework;
 /**
  * Dispatcher for application controller.
- * uses Chain of Responsibility pattern...
+ * uses AmidaChain of Responsibility pattern...
  */
 
-class Chain
+class AmidaChain
 {
     // ---------------------------------
     /**
@@ -148,7 +148,7 @@ class Chain
      * use next model. for instance, the models can be: auth,
      * cache, data model, and view.
         }
-        throw new RuntimeException( 'no next model in Chain. ' );
+        throw new RuntimeException( 'no next model in AmidaChain. ' );
     }
     // +-------------------------------------------------------------+
     /**
@@ -273,7 +273,7 @@ class Chain
      * loads model if not exist, but *not* implemented!!
      * overwrite this method for tailored auto-loading classes.
      * @param $model
-     * @return \AmidaMVC\Framework\Chain
+     * @return \AmidaChain\Framework\Chain
      */
     function loadModel( $model ) {
         return $this;

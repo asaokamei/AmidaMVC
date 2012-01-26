@@ -5,7 +5,7 @@ namespace AmidaMVC\Framework;
  * Controller for AmidaMVC.
  *
  */
-class Controller extends Chain
+class Controller extends AmidaChain
 {
     /**
      * @var null    control root where MVC controls.

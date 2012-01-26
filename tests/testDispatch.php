@@ -1,6 +1,6 @@
 <?php
 error_reporting( E_ALL );
-require_once( __DIR__ . "/../src/AmidaMVC/Framework/Chain.php");
+require_once(__DIR__ . "/../src/AmidaMVC/Framework/AmidaChain.php");
 
 function actionTestFunc( $ctrl, $data ) {
     global $test_dispatch;
@@ -85,7 +85,7 @@ class Util_DispatchTest extends PHPUnit_Framework_TestCase
     {
         global $test_dispatch;
         $test_dispatch  = FALSE;
-        $this->dispatch = new AmidaMVC\Framework\Chain();
+        $this->dispatch = new AmidaMVC\Framework\AmidaChain();
     }
     // +----------------------------------------------------------------------+
     function test_chainSkip() {
