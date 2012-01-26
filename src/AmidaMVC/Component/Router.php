@@ -42,7 +42,7 @@ class Router
     static function actionScan( $ctrl, &$data ) {
         // search routes.
         $folder = $ctrl->getLocation();
-        $routes = $ctrl->routes;
+        $routes = explode( '/', $ctrl->path_info );
         $loadInfo = self::searchRoutes( $ctrl, $routes, $folder );
         return $loadInfo;
     }

@@ -74,7 +74,11 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     function getPathInfo() {
-        return \AmidaMVC\Tools\Request::getPathInfo();
+        $path = \AmidaMVC\Tools\Request::getPathInfo();
+        if( substr( $path, 0, 1 ) === '/' ) {
+            $path = substr( $path, 1 );
+        }
+        return $path;
     }
     // +-------------------------------------------------------------+
     function getBaseUrl() {
