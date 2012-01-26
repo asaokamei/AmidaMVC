@@ -30,11 +30,11 @@ class Request
     }
     // +-------------------------------------------------------------+
     static function getRequestUri() {
-        return $_SERVER[ 'REQUEST_URI' ];
+        return urldecode( $_SERVER[ 'REQUEST_URI' ] );
     }
     // +-------------------------------------------------------------+
     static function getScriptName() {
-        return $_SERVER[ 'SCRIPT_NAME' ];
+        return urldecode( $_SERVER[ 'SCRIPT_NAME' ] );
     }
     // +-------------------------------------------------------------+
     /**

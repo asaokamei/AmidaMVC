@@ -7,7 +7,7 @@ file
 ----
 
 *   PHPMarkdown:  
-    *   [License.text](PHPMarkdown/License.text)
-    *   [markdown.php](PHPMarkdown/markdown.php)
-    *   [PHP Markdown Readme.text](PHPMarkdown/PHP%20Markdown%20Readme.text)  
+    *   [License.text](PHPMarkdownExtra/License.text)
+    *   [markdown.php](PHPMarkdownExtra/markdown.php)
+    *   [PHP Markdown Readme.text](PHPMarkdownExtra/PHP%20Markdown%20Extra%20Readme.text)  
         sorry, this link does not work (AmidaMVC's limitation...)
