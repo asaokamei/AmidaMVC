@@ -7,7 +7,7 @@ I developed this framework for studying and some demo purpose.
 *   [MIT License](LICENSE.txt)
 *   [README.md](README.md)
 *   [Source Code at gitHub](https://github.com/asaokamei/AmidaMVC)
-*   [sample HTML file](demo/index.html)
+*   [sample HTML file](example.html)
 
 File Structure and View Source Code
 -----------------------------------

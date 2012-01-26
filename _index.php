@@ -7,6 +7,7 @@ require_once(__DIR__ . '/src/AmidaMVC/bootstrap.php');
 
 $routes = array(
     '/demo.css' => array( 'file' => 'demo.css', 'action' => 'default' ),
+    '/example.html' => array( 'file' => 'demo/index.html', 'action' => 'default'),
     '/' => array( 'file' => 'index.md', 'action' => 'default' ),
     '/demo/:action' => array( 'file' => 'demo/_App.php', 'action' => 'index' ),
 );
