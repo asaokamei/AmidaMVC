@@ -21,17 +21,20 @@ class Template
     }
     // +-------------------------------------------------------------+
     function convertContents( &$data ) {
-        $file_ext = pathinfo( $data[ 'file_name' ], PATHINFO_EXTENSION );
-        if( in_array( $file_ext, static::$ext_php ) ) {
+        $content_type = $data[ 'content_type' ];
+        if( !$content_type ) {
+            $content_type = pathinfo( $data[ 'file_name' ], PATHINFO_EXTENSION );
+        }
+        if( in_array( $content_type, static::$ext_php ) ) {
             self::loadPhpAsCode( $data );
         }
-        else if( in_array( $file_ext, static::$ext_html ) ) {
+        else if( in_array( $content_type, static::$ext_html ) ) {
             self::loadHtml( $data );
         }
-        else if( in_array( $file_ext, static::$ext_text ) ) {
+        else if( in_array( $content_type, static::$ext_text ) ) {
             self::loadText( $data );
         }
-        else if( in_array( $file_ext, static::$ext_md ) ) {
+        else if( in_array( $content_type, static::$ext_md ) ) {
             self::loadMarkdown( $data );
         }
     }

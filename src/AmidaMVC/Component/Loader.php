@@ -37,7 +37,7 @@ class Loader
         // load the file
         $data->setFileName( $file_name );
         if( $file_ext == 'php' && substr( $base_name, 0, 4 ) == '_App' ) {
-            self::loadApp( $data, $loadInfo );
+            self::loadApp( $ctrl, $data, $loadInfo );
         }
         else if( $file_ext == 'php' ) {
             self::loadPhpAsCode( $data, $loadInfo );
@@ -64,7 +64,7 @@ class Loader
         // maybe load sorry file.
     }
     // +-------------------------------------------------------------+
-    function loadApp( &$data, $loadInfo ) {
+    function loadApp( $ctrl, &$data, $loadInfo ) {
         include $loadInfo[ 'file' ];
     }
     // +-------------------------------------------------------------+
