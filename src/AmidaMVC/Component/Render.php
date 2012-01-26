@@ -61,7 +61,8 @@ class Render
         $_siteObj->setContent( '_base_url',  $_ctrl->base_url );
         $_siteObj->setContent( '_path_info', $_ctrl->path_info );
         $_siteObj->setContent( 'debug', Debug::result() );
-        $template = $_ctrl->ctrl_root . '/_Config/template.php';
+        $site = $_siteObj->get( 'siteObj' );
+        $template = $site[ 'template_file' ];
         call_user_func( static::$template, $template, $_siteObj );
     }
     // +-------------------------------------------------------------+
