@@ -19,7 +19,7 @@ AmidaMVC\Component\Debug::_init();
 $data = new \AmidaMVC\Component\SiteObj();
 $ctrl = new \AmidaMVC\Framework\Controller();
 $ctrl
-//    ->addComponent( 'Config', 'config' )
+    ->addComponent( 'Config', 'config' )
     ->addComponent( 'Debug',  'debug' )
     ->addComponent( 'Router', 'router' )
     ->addComponent( 'Loader', 'loader' )

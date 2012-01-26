@@ -95,7 +95,7 @@ class Controller extends AmidaChain
     function fireDispatch() {
         Event::fire(
             'Controller::dispatch',
-            "model={$this->modelName} action={$this->_action}"
+            "model={$this->_components[0][0]} action={$this->_action}"
         );
     }
     // +-------------------------------------------------------------+

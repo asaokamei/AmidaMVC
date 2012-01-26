@@ -9,34 +9,39 @@ namespace AmidaMVC\Component;
 class Config
 {
     // +-------------------------------------------------------------+
-    function actionDefault( \AmidaMVC\Framework\Controller $ctrl, &$data ) {
+    function actionDefault(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$data )
+    {
         $siteDefault = array(
             'base_url'  => $ctrl->base_url,
-            'path_info' => $ctrl->path,
-            'routes'    => $ctrl->routes,
-            'command'   => $ctrl->command,
-            'prefix_cmd' => '_',
+            'path_info_ctrl' => $ctrl->path_info,
+            'path_info' => '',
+            'routes'    => array(),
+            'command'   => array(),
+            'prefix_cmd' => $ctrl->prefixCmd,
         );
+        self::setRoute( $siteDefault );
+        $ctrl->path_info = $siteDefault[ 'path_info' ];
         $data->set( 'siteObj', $siteDefault );
     }
     // +-------------------------------------------------------------+
-    function getRoute() {
-        $paths = explode( '/', $this->path );
-        $this->command = array();
-        $this->routes = array();
+    function setRoute( &$siteDefault ) {
+        $paths = explode( '/', $siteDefault[ 'path_info_ctrl' ] );
         foreach( $paths as $cmd ) {
             if( empty( $cmd ) ) continue;
             if( $cmd === '..' ) continue;
-            if( substr( $cmd, 0, 1 ) === $this->prefixCmd ) {
-                $this->command[] = $cmd;
+            if( substr( $cmd, 0, 1 ) === '.' ) continue;
+            if( substr( $cmd, 0, 1 ) === $siteDefault[ 'prefix_cmd' ] ) {
+                $siteDefault[ 'command' ][] = $cmd;
             }
             else {
-                $this->routes[] = $cmd;
+                $siteDefault[ 'routes' ][] = $cmd;
             }
         }
-        $this->path_info = implode( '/', $this->routes );
-        if( empty( $this->path_info ) ) {
-            $this->path_info = '/';
+        $siteDefault[ 'path_info' ] = implode( '/', $siteDefault[ 'routes' ] );
+        if( empty( $siteDefault[ 'path_info' ] ) ) {
+            $siteDefault[ 'path_info' ] = '/';
         }
     }
     // +-------------------------------------------------------------+
