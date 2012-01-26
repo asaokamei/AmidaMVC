@@ -41,6 +41,8 @@ class AmidaChain
      * @return string    current model.
      */
     function getComponent() {
+        if( empty( $this->_components ) ) return FALSE;
+        if( !isset( $this->_components[0][0] ) ) return FALSE;
         return $this->_components[0][0];
     }
     // +-------------------------------------------------------------+
@@ -49,6 +51,8 @@ class AmidaChain
      * @return string     returns current model name.
      */
     function getComponentName() {
+        if( empty( $this->_components ) ) return FALSE;
+        if( !isset( $this->_components[0][1] ) ) return FALSE;
         return $this->_components[0][1];
     }
     // +-------------------------------------------------------------+
@@ -65,7 +69,7 @@ class AmidaChain
     // +-------------------------------------------------------------+
     function _prepareComponent( $component, $name=NULL ) {
         if( is_array( $component ) ) {
-            if( is_array( $component[0] ) ) {
+            if( isset( $component[0] ) && is_array( $component[0] ) ) {
                 $compInfo = $component;
             }
             else {
@@ -194,7 +198,7 @@ class AmidaChain
         return $this->_action;
     }
     // +-------------------------------------------------------------+
-    function execOwnAction( $action ) {
+    function setMyAction( $action ) {
         $this->setAction( $action );
         $this->useNextComponent( FALSE );
         return $this->_action;
