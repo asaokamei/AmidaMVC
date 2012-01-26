@@ -20,4 +20,24 @@ class Config
         $data->set( 'siteObj', $siteDefault );
     }
     // +-------------------------------------------------------------+
+    function getRoute() {
+        $paths = explode( '/', $this->path );
+        $this->command = array();
+        $this->routes = array();
+        foreach( $paths as $cmd ) {
+            if( empty( $cmd ) ) continue;
+            if( $cmd === '..' ) continue;
+            if( substr( $cmd, 0, 1 ) === $this->prefixCmd ) {
+                $this->command[] = $cmd;
+            }
+            else {
+                $this->routes[] = $cmd;
+            }
+        }
+        $this->path_info = implode( '/', $this->routes );
+        if( empty( $this->path_info ) ) {
+            $this->path_info = '/';
+        }
+    }
+    // +-------------------------------------------------------------+
 }

@@ -24,7 +24,7 @@ class Router
             $loadInfo = self::actionScan( $ctrl, $data );
         }
         if( !$loadInfo ) {
-            $ctrl->nextModel( 'pageNotFound' );
+            $ctrl->setAction( 'pageNotFound' );
         }
         else {
             // action is as is; probably default.

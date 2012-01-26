@@ -7,7 +7,11 @@ namespace AmidaMVC\Component;
 class Loader
 {
     // extensions to determine which load types. 
-    static $ext_file = array( 'php', 'html', 'html', 'md', 'markdown', 'text', 'txt' );
+    static $ext_php  = array( 'php' );
+    static $ext_html = array( 'html', 'html' );
+    static $ext_md   = array( 'md', 'markdown' );
+    static $ext_text = array( 'text', 'txt' );
+    static $ext_file = array( '' );
     static $ext_asis = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
     // +-------------------------------------------------------------+
     /**
@@ -20,14 +24,28 @@ class Loader
      */
     static function actionDefault( $ctrl, &$data, $loadInfo ) {
         $file_name = $loadInfo['file'];
-        $base_name  = basename( $file_name );
+        $base_name = basename( $file_name );
         $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
-        $action    = ( $loadInfo['action'] ) ? $loadInfo['action'] : $ctrl->currAct();
-        \AmidaMVC\Component\Debug::bug( 'head', "loading file: ".$file_name );
+        $loadInfo[ 'ext' ] = $file_ext;
+        $action    = ( $loadInfo['action'] ) ? $loadInfo['action'] : $ctrl->getAction();
         \AmidaMVC\Framework\Event::fire( 'Loader::load', $loadInfo );
-        $ctrl->currAct( $action );
+        $ctrl->setAction( $action );
+        // load the file
+        $data->setFileName( $file_name );
         if( $file_ext == 'php' && substr( $base_name, 0, 4 ) == '_App' ) {
-            include $loadInfo[ 'file' ];
+            self::loadApp( $data, $loadInfo );
+        }
+        else if( $file_ext == 'php' ) {
+            self::loadPhpAsCode( $data, $loadInfo );
+        }
+        else if( in_array( $file_ext, static::$ext_html ) ) {
+            self::loadHtml( $data, $loadInfo );
+        }
+        else if( in_array( $file_ext, static::$ext_text ) ) {
+            self::loadText( $data, $loadInfo );
+        }
+        else if( in_array( $file_ext, static::$ext_md ) ) {
+            self::loadMarkdown( $data, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_file ) ) {
             self::loadFile( $data, $loadInfo );
@@ -42,40 +60,43 @@ class Loader
         // maybe load sorry file.
     }
     // +-------------------------------------------------------------+
+    function loadApp( &$data, $loadInfo ) {
+        include $loadInfo[ 'file' ];
+    }
+    // +-------------------------------------------------------------+
+    function loadPhpAsCode( &$data, $loadInfo ) {
+        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $data->setContents( $content );
+        $data->setContentType( 'php' );
+    }
+    // +-------------------------------------------------------------+
+    function loadText( &$data, $loadInfo ) {
+        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $data->setContents( $content );
+        $data->setContentType( 'text' );
+    }
+    // +-------------------------------------------------------------+
+    function loadHtml( &$data, $loadInfo ) {
+        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $data->setContents( $content );
+    }
+    // +-------------------------------------------------------------+
+    function loadMarkdown( &$data, $loadInfo ) {
+        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $data->setContents( $content );
+        $data->setContentType( 'markdown' );
+    }
+    // +-------------------------------------------------------------+
+    function loadAsIs( &$data, $loadInfo, $_file_ext ) {
+        $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
+        $data->setFileName( $loadInfo[ 'file' ] );
+        $data->setContentType( 'as_is' );
+    }
+    // +-------------------------------------------------------------+
     function loadFile( &$data, $loadInfo ) {
         $data->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
         $data->setFileName( $loadInfo[ 'file' ] );
     }
     // +-------------------------------------------------------------+
-    function loadAsIs( &$data, $loadInfo, $_file_ext ) {
-        $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
-        $mime  = self::findMimeType( $_file_ext );
-        $data->setMimeType( $mime );
-    }
-    // +-------------------------------------------------------------+
-    function findMimeType( $_file_ext ) {
-        switch( strtolower( $_file_ext ) ) {
-            case 'css':
-                $mime = 'text/css';
-                break;
-            case 'js':
-            case 'javascript':
-                $mime = 'text/javascript';
-                break;
-            case 'jpg':
-            case 'jpeg':
-                $mime = 'image/jpeg';
-                break;
-            case 'gif':
-                $mime = 'image/gif';
-                break;
-            case 'png':
-                $mime = 'image/png';
-                break;
-        }
-        return $mime;
-    }
-    // +-------------------------------------------------------------+
 }
-
 

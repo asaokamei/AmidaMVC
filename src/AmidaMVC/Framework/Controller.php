@@ -41,29 +41,22 @@ class Controller extends AmidaChain
         $default = array(
             'ctrl_root'  => FALSE,
             'appDefault' => realpath( __DIR__ . '/../AppDefault' ),
-            'path_info'  => FALSE,
-            'base_url'   => FALSE,
         );
         $option = $option + $default;
+        
+        // set path_info and base_url. 
+        $this->path_info = $this->getPathInfo();
+        $this->base_url = $this->getBaseUrl();
+        
         // set ctrl root folder.
         if( !$option[ 'ctrl_root' ] ) {
-            $traces = debug_backtrace(false);
-            $option[ 'ctrl_root' ] = dirname( $traces[0]['file'] );
+            $option[ 'ctrl_root' ] = getcwd();
         }
         $this->ctrl_root    = $option[ 'ctrl_root' ];
+        
         // set loadFolder as ctrl_root and appDefault.
         $this->loadFolder[] = $this->ctrl_root;
         $this->loadFolder[] = $option[ 'appDefault' ];
-        // set path_info
-        if( !$option[ 'path_info' ] ) {
-            $option[ 'path_info' ] = self::getPathInfo();
-        }
-        $this->path = $option[ 'path_info' ];
-        // set base url
-        if( !$option[ 'base_url' ] ) {
-            $option[ 'base_url' ] = self::getBaseUrl();
-        }
-        $this->base_url = $option[ 'base_url' ];
     }
     // +-------------------------------------------------------------+
     function getLocation() {
@@ -71,7 +64,6 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     function start( &$view ) {
-        $this->getRoute();
         if( isset( $this->routes[0] ) && "" !== "{$this->routes[0]}" ) {
             $action = $this->routes[0];
         }
@@ -87,26 +79,6 @@ class Controller extends AmidaChain
     // +-------------------------------------------------------------+
     function getBaseUrl() {
         return \AmidaMVC\Tools\Request::getBaseUrl();
-    }
-    // +-------------------------------------------------------------+
-    function getRoute() {
-        $paths = explode( '/', $this->path );
-        $this->command = array();
-        $this->routes = array();
-        foreach( $paths as $cmd ) {
-            if( empty( $cmd ) ) continue;
-            if( $cmd === '..' ) continue;
-            if( substr( $cmd, 0, 1 ) === $this->prefixCmd ) {
-                $this->command[] = $cmd;
-            }
-            else {
-                $this->routes[] = $cmd;
-            }
-        }
-        $this->path_info = implode( '/', $this->routes );
-        if( empty( $this->path_info ) ) {
-            $this->path_info = '/';
-        }
     }
     // +-------------------------------------------------------------+
     function fireStart() {

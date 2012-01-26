@@ -39,11 +39,15 @@ class Render
      */
     function template( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         if( $_siteObj->isResponseReady() ) {
-            $mime_type = $_siteObj->getResponse( 'mime_type' );
+            $file_name = $_siteObj->getHtml( 'file_name' );
+            $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
+            $mime_type = self::findMimeType( $file_ext );
             header("Content-type:" . $mime_type );
             echo $_siteObj->getResponse( 'content' );
             return;
         }
+        $_siteObj->setContent( '_base_url',  $_ctrl->base_url );
+        $_siteObj->setContent( '_path_info', $_ctrl->path_info );
         $template = $_ctrl->ctrl_root . '/_Config/template.php';
         Debug::bug( 'table', $_siteObj, 'template data' );
         call_user_func( static::$template, $template, $_siteObj );
