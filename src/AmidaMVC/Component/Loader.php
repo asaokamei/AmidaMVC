@@ -68,6 +68,12 @@ class Loader
         include $loadInfo[ 'file' ];
     }
     // +-------------------------------------------------------------+
+    function loadPhpAsExec( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
+        $content = self::getContentsByOb( $loadInfo[ 'file' ] );
+        $data->setContents( $content );
+        $data->setContentType( 'html' );
+    }
+    // +-------------------------------------------------------------+
     function loadPhpAsCode( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
         $data->setContents( $content );
@@ -75,20 +81,29 @@ class Loader
     }
     // +-------------------------------------------------------------+
     function loadText( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
-        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $content = self::getContentsByOb( $loadInfo[ 'file' ] );
         $data->setContents( $content );
         $data->setContentType( 'text' );
     }
     // +-------------------------------------------------------------+
     function loadHtml( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
-        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $content = self::getContentsByOb( $loadInfo[ 'file' ] );
         $data->setContents( $content );
+        $data->setContentType( 'html' );
     }
     // +-------------------------------------------------------------+
     function loadMarkdown( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
-        $content = file_get_contents( $loadInfo[ 'file' ] );
+        $content = self::getContentsByOb( $loadInfo[ 'file' ] );
         $data->setContents( $content );
         $data->setContentType( 'markdown' );
+    }
+    // +-------------------------------------------------------------+
+    function getContentsByOb( $file_name ) {
+        ob_start();
+        ob_implicit_flush(0);
+        require( $file_name );
+        $content = ob_get_clean();
+        return $content;
     }
     // +-------------------------------------------------------------+
     function loadAsIs( \AmidaMVC\Component\SiteObj &$data, $loadInfo, $_file_ext ) {
