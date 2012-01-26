@@ -17,6 +17,44 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
         $this->amida = new AmidaMVC\Framework\AmidaChain();
     }
     // +----------------------------------------------------------------------+
+    function test_prependInModel() {
+        $chained = 'prep: ';
+        $this->amida
+            ->addComponent( array(
+                array( 'chainAuth',  'auth' ),
+                array( 'chainView',  'view' ),
+            )
+        );
+        $this->amida->dispatch( 'prepend', $chained );
+        $this->assertEquals( 'prep: prependAuth prependModel prependView ', $chained );
+    }
+    // +----------------------------------------------------------------------+
+    function test_chainSkip() {
+        $chained = 'skip: ';
+        $this->amida
+            ->addComponent( array(
+                array( 'chainAuth',  'auth' ),
+                array( 'chainModel', 'model' ),
+                array( 'chainView',  'view' ),
+            )
+        );
+        $this->amida->dispatch( 'skip', $chained );
+        $this->assertEquals( 'skip: skipAuth skipView ', $chained );
+    }
+    // +----------------------------------------------------------------------+
+    function test_chainModel() {
+        $chained = 'chain: ';
+        $this->amida
+            ->addComponent( array(
+                array( 'chainAuth',  'auth' ),
+                array( 'chainModel', 'model' ),
+                array( 'chainView',  'view' ),
+            )
+        );
+        $this->amida->dispatch( 'start', $chained );
+        $this->assertEquals( 'chain: defaultAuth startModel normalView ', $chained );
+    }
+    // +----------------------------------------------------------------------+
     function test_SingleModel() {
         $model = 'oneModel';
         $this->amida->addComponent( $model, 'oneModel' );
@@ -26,9 +64,9 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
         $this->assertEquals( $model, $check );
 
         // dispatch simple function: test_func.
-        $data = '';
+        $data = 'single: ';
         $this->amida->dispatch( 'start', $data );
-        $this->assertEquals( 'oneStart oneMore oneDone ', $data );
+        $this->assertEquals( 'single: oneStart oneMore oneDone ', $data );
     }
     // +----------------------------------------------------------------------+
     function test_prependComp() {
@@ -132,6 +170,14 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
         $more2_name = $this->amida->getComponentName();
         $this->assertEquals( 'more2', $more2_name );
     }
+
+    private function assertEquals($string1, $chained)
+    {
+    }
+
+    private function assertFalse($no_comp)
+    {
+    }
     // +----------------------------------------------------------------------+
 }
 
@@ -151,3 +197,52 @@ class oneModel
     }
 }
 
+// ======================================================================= //
+class chainAuth
+{
+    function actionDefault( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'defaultAuth ';
+    }
+    function actionSkip( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'skipAuth ';
+        $ctrl->skipToModel( 'view' );
+    }
+    function actionPrepend( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'prependAuth ';
+        $ctrl->prependComponent( 'chainModel', 'model' );
+    }
+}
+
+class chainModel
+{
+    function actionDefault( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'defaultModel ';
+    }
+    function actionStart( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'startModel ';
+        $ctrl->setAction( 'normal' );
+    }
+    function actionSkip( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'skipModel ';
+    }
+    function actionPrepend( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'prependModel ';
+    }
+}
+
+class chainView
+{
+    function actionDefault( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'defaultView ';
+    }
+    function actionNormal( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'normalView ';
+    }
+    function actionSkip( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'skipView ';
+        $ctrl->setAction( 'normal' );
+    }
+    function actionPrepend( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'prependView ';
+    }
+}
