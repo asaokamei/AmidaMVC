@@ -79,6 +79,9 @@ class AmidaChain
         else if( $name !== NULL ) {
             $compInfo = array( array( $component, $name ) );
         }
+        else {
+            throw new \RuntimeException( 'wrong arg in _prepareComponent: '. $component );
+        }
         return $compInfo;
     }
     // +-------------------------------------------------------------+
@@ -154,16 +157,21 @@ class AmidaChain
      * @return bool|string    returns model name set, or false if not found.
      */
     function skipToModel( $name ) {
+        // keep the current component at idx=0.
+        $current_component = $this->_components[0];
+        $this->_components = array_slice( $this->_components, 1 );
+        
         while( $this->_components ) {
             if( $name === $this->_components[0][1] ) {
-                return $name;
+                break;
             }
             else {
                 $this->_components = array_slice( $this->_components, 1 );
             }
         }
+        $this->_components = array_merge( $current_component, $this->_components );
         // should throw an exception, maybe.
-        return FALSE;
+        return $this;
     }
     // +-------------------------------------------------------------+
     /**
