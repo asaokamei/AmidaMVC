@@ -16,6 +16,18 @@ class Render
     // +-------------------------------------------------------------+
     function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $data ) {
         // show some excuses, or blame user for not finding a page.
+        $siteObj = $data->get( 'siteObj' );
+        if( isset( $siteObj[ 'pageNotFound' ] ) ) {
+            $loadInfo = array(
+                'file' => $siteObj[ 'pageNotFound' ],
+            );
+            $ctrl->setAction( $ctrl->defaultAct() );
+            $ctrl->prependComponent( array(
+                array( 'Loader', 'loader' ),
+                array( 'Render', 'render' ),
+            ) );
+            return $loadInfo;
+        }
         $contents  = 'Error 404<br /><strong>page not found...</strong><br />';
         $data->setContent( 'title', 'Page Not Found' );
         $data->setContent( 'contents', $contents );

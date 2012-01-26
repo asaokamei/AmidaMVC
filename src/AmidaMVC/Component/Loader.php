@@ -31,7 +31,7 @@ class Loader
         $base_name = basename( $file_name );
         $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
         $loadInfo[ 'ext' ] = $file_ext;
-        $action    = ( $loadInfo['action'] ) ? $loadInfo['action'] : $ctrl->getAction();
+        $action    = ( isset( $loadInfo['action'] ) ) ? $loadInfo['action'] : $ctrl->getAction();
         \AmidaMVC\Framework\Event::fire( 'Loader::load', $loadInfo );
         $ctrl->setAction( $action );
         // load the file
