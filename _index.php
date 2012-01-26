@@ -19,7 +19,7 @@ AmidaMVC\Tools\Route::set( $routes );
 $data = new \AmidaMVC\Component\SiteObj();
 $ctrl = new \AmidaMVC\Framework\Controller();
 $ctrl
-    ->addModel( 'Config', 'config' )
+    ->addComponent( 'Config', 'config' )
     ->addModel( 'Debug',  'debug' )
     ->addModel( 'Router', 'router' )
     ->addModel( 'Loader', 'loader' )

@@ -12,4 +12,4 @@ class modelRoute
     }
 }
 
-$ctrl->prependModel( 'modelRoute', 'model' );
+$ctrl->prependComponent( 'modelRoute', 'model' );

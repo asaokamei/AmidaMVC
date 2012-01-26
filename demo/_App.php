@@ -1,6 +1,6 @@
 <?php
 
-$ctrl->prependModel( 'appDemo', 'model' );
+$ctrl->prependComponent( 'appDemo', 'model' );
 
 class appDemo
 {
