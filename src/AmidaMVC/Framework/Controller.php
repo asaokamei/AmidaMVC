@@ -76,7 +76,7 @@ class Controller extends AmidaChain
             $action = $this->routes[0];
         }
         else {
-            $action = $this->defaultAct;
+            $action = $this->_defaultAct;
         }
         return $this->dispatch( $action, $view );
     }
@@ -119,7 +119,7 @@ class Controller extends AmidaChain
     function fireDispatch() {
         Event::fire(
             'Controller::dispatch',
-            "model={$this->modelName} action={$this->action}"
+            "model={$this->modelName} action={$this->_action}"
         );
     }
     // +-------------------------------------------------------------+
