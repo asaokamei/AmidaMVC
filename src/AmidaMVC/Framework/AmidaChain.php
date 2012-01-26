@@ -2,38 +2,27 @@
 namespace AmidaMVC\Framework;
 /**
  * Dispatcher for application controller.
- * uses AmidaChain of Responsibility pattern...
+ * uses Chain of Responsibility pattern...
  */
 
 class AmidaChain
 {
-    // ---------------------------------
     /**
-     * @var null    object model.
+     * @var array   list of components. nextModel sets model to the next.
      */
-    var $model   = NULL;
-    /**
-     * @var null    current model name.
-     */
-    var $modelName = NULL;
-    /**
-     * @var array   list of models. nextModel sets model to the next.
-     */
-    var $models  = array();
-
-    // ---------------------------------
-    /**
-     * @var null    name of next action.
-     */
-    var $nextAct = NULL;
+    var $components  = array();
     /**
      * @var null    name of current action.
      */
-    var $currAct = NULL;
+    var $action = NULL;
     /**
-     * @var null    name of original dispatched action.
+     * @var null    name of original dispatched action. set *only* after dispatched. 
      */
     var $dispatchAct= NULL;
+    /**
+     * @var bool   flag to advance the component in dispatch chain. 
+     */
+    var $useNextComponent = TRUE;
     /**
      * @var string   default exec name if not matched.
      */
@@ -51,72 +40,112 @@ class AmidaChain
      * get current model.
      * @return string    current model.
      */
-    function getModel() {
-        return $this->model;
+    function getComponent() {
+        return $this->components[0][0];
     }
     // +-------------------------------------------------------------+
     /**
      * get current model name.
      * @return string     returns current model name.
      */
-    function getModelName() {
-        return $this->modelName;
+    function getComponentName() {
+        return $this->components[0][1];
     }
     // +-------------------------------------------------------------+
     /**
-     * adds models to Dispatcher.
-     * the first model is set to $this->model, the subsequent ones
-     * are stored in $this->models[].
-     * @param $model      model class or object.
-     * @param $name       name of model.
+     * adds components to AmidaChain.
+     * @param $component  class or object to plug-in as component.
+     * @param $name       name of component.
      * @return Dispatch   returns this.
      */
-    function addModel( $model, $name=NULL ) {
-        if( is_null( $this->model ) ) {
-            $this->model = $model;
-            $this->modelName = $name;
-        }
-        else {
-            $this->models[] = array( $model, $name );
-        }
+    function addComponent( $component, $name=NULL ) {
+        $this->appendComponent( $component, $name );
         return $this;
     }
     // +-------------------------------------------------------------+
+    function _prepareComponent( $component, $name=NULL ) {
+        if( is_array( $component ) ) {
+            if( is_array( $component[0] ) ) {
+                $compInfo = $component;
+            }
+            else {
+                $compInfo = array( $component );
+            }
+        }
+        else if( $name !== NULL ) {
+            $compInfo = array( array( $component, $name ) );
+        }
+        return $compInfo;
+    }
+    // +-------------------------------------------------------------+
     /**
-     * prepend a model to models.
-     * @param $model       model.
-     * @param null $name   name of the model.
+     * append a component to AmidaChain.
+     * @param $compInfo    component and its name in array.
+     * @param null $name   name of component
      * @return Dispatch    returns this.
      */
-    function prependModel( $model, $name=NULL ) {
-        $this->models = array_merge( array( array( $model, $name ) ), $this->models );
+    function appendComponent( $compInfo, $name=NULL ) {
+        $compInfo = $this->_prepareComponent( $compInfo, $name );
+        $this->components = array_merge( $this->components, $compInfo );
         return $this;
     }
     // +-------------------------------------------------------------+
     /**
-     * use next model. for instance, the models can be: auth,
+     * prepend a component to AmidaChain.
+     * @param $compInfo    component and its name in array.
+     * @param null $name   name of component
+     * @return Dispatch    returns this.
+     */
+    function prependComponent( $compInfo, $name=NULL ) {
+        $compInfo = $this->_prepareComponent( $compInfo, $name );
+        if( isset( $this->dispatchAct ) ) {
+            // chain already started. 
+            // the first component is the current one. 
+            // so add the new component after the current component. 
+            $first_component  = $this->components[0];
+            $this->components = array_slice( $this->components, 1 );
+            $this->components = array_merge( 
+                array( $first_component ),
+                $compInfo, 
+                $this->components 
+            );
+        }
+        else {
+            // add the component at the beginning of component chain. 
+            $this->components = array_merge( $compInfo, $this->components );
+        }
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * getter/setter for useNextComponent flag. 
+     * @param null $next
+     * @return bool
+     */
+    function useNextComponent( $next=NULL ) {
+        if( $next === TRUE ) {
+            $this->useNextComponent = $next;
+        }
+        elseif( $next === FALSE ) {
+            $this->useNextComponent = $next;
+        }
+        return $this->useNextComponent;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * use next model. for instance, the components can be: auth,
      * cache, data model, and view.
      * @param null $nextAct
      *     sets action name to start the next model. if not set,
      *     uses current action.
      * @return bool/string    next action if next model exists. FALSE if not.
      */
-    function nextModel( $nextAct=NULL ) {
-        if( isset( $this->models[0] ) ) {
+    function _nextModel() {
+        if( isset( $this->components[0] ) ) {
             // replace model with the next model.
-            $this->model  = $this->models[0][0];
-            $this->modelName = $this->models[0][1];
-            $this->models = array_slice( $this->models, 1 );
-            // sets next action for the next model.
-            if( $nextAct === NULL ) {
-                $nextAct = $this->currAct( $this->currAct() );
-            }
-            else {
-                $this->nextAct( $nextAct );
-            }
-            return $nextAct;
+            $this->components = array_slice( $this->components, 1 );
         }
-        return FALSE;
+        return $this;
     }
     // +-------------------------------------------------------------+
     /**
@@ -125,12 +154,12 @@ class AmidaChain
      * @return bool|string    returns model name set, or false if not found.
      */
     function skipToModel( $name ) {
-        while( $this->models ) {
-            if( $name === $this->models[0][1] ) {
+        while( $this->components ) {
+            if( $name === $this->components[0][1] ) {
                 return $name;
             }
             else {
-                $this->models = array_slice( $this->models, 1 );
+                $this->components = array_slice( $this->components, 1 );
             }
         }
         // should throw an exception, maybe.
@@ -138,41 +167,41 @@ class AmidaChain
     }
     // +-------------------------------------------------------------+
     /**
-     * @return bool   TRUE if more models exists.
+     * @return bool   TRUE if more components exists.
      */
     function moreModels() {
-        return !empty( $this->models );
+        return !empty( $this->components );
     }
     // +-------------------------------------------------------------+
     /**
-     * use next model. for instance, the models can be: auth,
+     * use next model. for instance, the components can be: auth,
      * cache, data model, and view.
         }
         throw new RuntimeException( 'no next model in AmidaChain. ' );
     }
     // +-------------------------------------------------------------+
     /**
-     * set/get next action.
-     * @param null $action   sets next action if set.
-     * @return string        returns next action.
+     * getter for action.
+     * @return string        returns action.
      */
-    function nextAct( $action=NULL ) {
-        if( $action !== NULL ) {
-            $this->nextAct = $action;
-        }
-        return $this->nextAct;
+    function getAction() {
+        return $this->action;
     }
     // +-------------------------------------------------------------+
     /**
-     * set/get current action.
-     * @param null $action    sets current action if set.
-     * @return string         returns current action.
+     * setter for action.
+     * @param null $action    sets action.
+     * @return string         returns the new action.
      */
-    function currAct( $action=NULL ) {
-        if( $action !== NULL ) {
-            $this->currAct = $action;
-        }
-        return $this->currAct;
+    function setAction( $action ) {
+        $this->action = $action;
+        return $this->action;
+    }
+    // +-------------------------------------------------------------+
+    function execOwnAction( $action ) {
+        $this->setAction( $action );
+        $this->useNextComponent( FALSE );
+        return $this->action;
     }
     // +-------------------------------------------------------------+
     /**
@@ -199,20 +228,20 @@ class AmidaChain
         // set current action.
         $return = NULL;
         $this->dispatchAct = $action;
+        $this->setAction( $action );
         $this->fireStart();
         // -----------------------------
         // chain of responsibility loop.
-        while( $action )
+        while( $this->moreModels() )
         {
-            $this->currAct( $action );
-            $this->nextAct( FALSE ); // reset next action.
             $this->fireDispatch();
             $return = $this->execAction( $action, $data, $return );
-            $action = $this->nextAct();
-            // automatically advance to next model.
-            if( !$action &&  // next action not set
-                $this->moreModels() ) { // still model exists
-                $action = $this->nextModel(); // advance model using current action
+            if( $this->useNextComponent() ) {
+                // go to next component. 
+                $this->_nextModel();
+            }
+            else {
+                $this->useNextComponent( TRUE ); // reset to TRUE. 
             }
         }
         // -----------------------------
@@ -257,14 +286,15 @@ class AmidaChain
      * @return array|bool      found exec object.
      */
     function getExecFromAction( $action ) {
-        $exec = FALSE;
+        $exec      = FALSE;
+        $component = $this->getComponent();
+        $method    = $this->prefixAct . ucwords( $action );
         if( !$action ) return $exec;
-        if( !isset( $this->model ) ) return $exec;
+        if( !isset( $component ) ) return $exec;
 
-        $action = $this->prefixAct . ucwords( $action );
-        $this->loadModel( $this->model );
-        if( is_callable( array( $this->model, $action ) ) ) {
-            $exec = array( $this->model, $action );
+        $this->loadModel( $component );
+        if( is_callable( array( $component, $method ) ) ) {
+            $exec = array( $component, $method );
         }
         return $exec;
     }
