@@ -58,8 +58,8 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * adds components to AmidaChain.
-     * @param $component  class or object to plug-in as component.
-     * @param $name       name of component.
+     * @param mixed $component  class or object to plug-in as component.
+     * @param null $name       name of component.
      * @return Dispatch   returns this.
      */
     function addComponent( $component, $name=NULL ) {
@@ -67,6 +67,13 @@ class AmidaChain
         return $this;
     }
     // +-------------------------------------------------------------+
+    /**
+     * wraps component input as array( array( comp, name ) ). 
+     * @param mixed $component
+     * @param null $name
+     * @return array
+     * @throws \RuntimeException
+     */
     function _prepareComponent( $component, $name=NULL ) {
         if( is_array( $component ) ) {
             if( isset( $component[0] ) && is_array( $component[0] ) ) {
@@ -87,9 +94,9 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * append a component to AmidaChain.
-     * @param $compInfo    component and its name in array.
-     * @param null $name   name of component
-     * @return Dispatch    returns this.
+     * @param array|string $compInfo
+     * @param null $name
+     * @return AmidaChain
      */
     function appendComponent( $compInfo, $name=NULL ) {
         $compInfo = $this->_prepareComponent( $compInfo, $name );
@@ -99,7 +106,7 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * prepend a component to AmidaChain.
-     * @param $compInfo    component and its name in array.
+     * @param array|string $compInfo    component and its name in array.
      * @param null $name   name of component
      * @return Dispatch    returns this.
      */
@@ -227,8 +234,8 @@ class AmidaChain
      * starts loop. I think this is chain of responsibility pattern.
      * TODO: current loop is a bit too complicated.
      * TODO: remove nextAction?
-     * @param $action           name of action to start.
-     * @param null $data        data to pass to each exec method.
+     * @param string $action           name of action to start.
+     * @param mixed $data        data to pass to each exec method.
      * @return bool|mixed|null  returns the last returned value.
      */
     function dispatch( $action, &$data=NULL )
@@ -271,7 +278,7 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * execute action based on action name and default.
-     * @param $action      name of action to execute.
+     * @param string $action      name of action to execute.
      * @param null $data   data to pass if any.
      * @param null $return data from the previous action.
      * @return bool|mixed  returned value from exec object.
@@ -311,7 +318,7 @@ class AmidaChain
     /**
      * loads model if not exist, but *not* implemented!!
      * overwrite this method for tailored auto-loading classes.
-     * @param $model
+     * @param mixed $model   class or object. maybe a function?
      * @return \AmidaChain\Framework\Chain
      */
     function loadModel( $model ) {
