@@ -121,7 +121,7 @@ class SiteObj extends \AmidaMVC\Tools\DataTO
         $this->setContent( 'bread', $value );
     }
     // +-------------------------------------------------------------+
-    function getHtml( $name=NULL ) {
+    function getContent( $name=NULL ) {
         return $this->contentObj->get( $name );
     }
     // +-------------------------------------------------------------+

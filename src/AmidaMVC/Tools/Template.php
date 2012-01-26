@@ -13,7 +13,7 @@ class Template
     static $ext_text = array( 'text', 'txt' );
     // +-------------------------------------------------------------+
     function inject( $template, $_siteObj ) {
-        $_data = $_siteObj->getHtml();
+        $_data = $_siteObj->getContent();
         $_site = $_siteObj->get( 'siteObj' );
         self::convertContents( $_data );
         extract( $_data );

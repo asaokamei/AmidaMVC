@@ -39,7 +39,7 @@ class Render
      */
     function template( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         if( $_siteObj->isResponseReady() ) {
-            $file_name = $_siteObj->getHtml( 'file_name' );
+            $file_name = $_siteObj->getContent( 'file_name' );
             $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
             $mime_type = self::findMimeType( $file_ext );
             header("Content-type:" . $mime_type );
