@@ -14,7 +14,7 @@ class Render
         self::template( $ctrl, $data );
     }
     // +-------------------------------------------------------------+
-    function actionPageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $data ) {
+    function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $data ) {
         // show some excuses, or blame user for not finding a page.
         $contents  = 'Error 404<br /><strong>page not found...</strong><br />';
         $data->setContent( 'title', 'Page Not Found' );
@@ -48,8 +48,8 @@ class Render
         }
         $_siteObj->setContent( '_base_url',  $_ctrl->base_url );
         $_siteObj->setContent( '_path_info', $_ctrl->path_info );
+        $_siteObj->setContent( 'debug', Debug::result() );
         $template = $_ctrl->ctrl_root . '/_Config/template.php';
-        Debug::bug( 'table', $_siteObj, 'template data' );
         call_user_func( static::$template, $template, $_siteObj );
     }
     // +-------------------------------------------------------------+

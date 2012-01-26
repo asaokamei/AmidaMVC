@@ -59,7 +59,7 @@ class Loader
         }
     }
     // +-------------------------------------------------------------+
-    function actionPageNotFound( $ctrl, &$data ) {
+    function action_pageNotFound( $ctrl, &$data ) {
         // do something about error 404, a file not found.
         // maybe load sorry file.
     }

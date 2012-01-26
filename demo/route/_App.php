@@ -4,7 +4,7 @@ class modelRoute
 {
     static function actionDefault( $ctrl, $data ) {
         $data->setContents( "modelRoute::default page not found, action=".$ctrl->currAct() );
-        $ctrl->nextModel( 'pageNotFound' );
+        $ctrl->setAction( '_pageNotFound' );
     }
     static function actionList( $ctrl, $data ) {
         $data->setTitle( "Route List" );
