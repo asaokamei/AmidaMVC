@@ -15,22 +15,10 @@ class Controller extends AmidaChain
      * @var null  base url where AmidaMVC application starts.
      */
     var $base_url = NULL;
-    /** TODO: rename from $path to $path_info.
-     * @var null     path info starting from the root dir.
-     */
-    var $path = NULL;
     /**
      * @var null     path info without command (modified path for Route match).
      */
     var $path_info = NULL;
-    /**
-     * @var array    command map from URI.
-     */
-    var $command = array();
-    /**
-     * @var array    route map from URI, without _*.
-     */
-    var $routes = array();
     /**
      * @var string   prefixAct to specify command.
      */
@@ -88,7 +76,7 @@ class Controller extends AmidaChain
     function fireStart() {
         Event::fire(
             'Controller::start',
-            $this->command, 'command list'
+            $this->path_info, 'path info'
         );
     }
     // +-------------------------------------------------------------+
