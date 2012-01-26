@@ -39,6 +39,7 @@ class Config
                 $siteDefault[ 'routes' ][] = $cmd;
             }
         }
+        $siteDefault[ 'command' ] = array_unique( $siteDefault[ 'command' ] );
         $siteDefault[ 'path_info' ] = implode( '/', $siteDefault[ 'routes' ] );
         if( empty( $siteDefault[ 'path_info' ] ) ) {
             $siteDefault[ 'path_info' ] = '/';
