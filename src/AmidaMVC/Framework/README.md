@@ -6,7 +6,7 @@ core of the AmidaMVC Framework, consisted of only 3 files (as of writing 2012/01
 files
 -----
 
-*   [Chain.php](Chain.php):  
+*   [AmidaChain.php](AmidaChain.php):  
     this is the "Amida-Chain" class. 
 
 *   [Controller.php](Controller.php):  
