@@ -17,6 +17,20 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
         $this->amida = new AmidaMVC\Framework\AmidaChain();
     }
     // +----------------------------------------------------------------------+
+    function test_SingleModel() {
+        $model = 'oneModel';
+        $this->amida->addComponent( $model, 'oneModel' );
+
+        // check if model is set.
+        $check = $this->amida->getComponent();
+        $this->assertEquals( $model, $check );
+
+        // dispatch simple function: test_func.
+        $data = '';
+        $this->amida->dispatch( 'start', $data );
+        $this->assertEquals( 'oneStart oneMore oneDone ', $data );
+    }
+    // +----------------------------------------------------------------------+
     function test_prependComp() {
         // get empty component. 
         $no_comp = $this->amida->getComponent();
@@ -120,3 +134,20 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
     }
     // +----------------------------------------------------------------------+
 }
+
+// ======================================================================= //
+class oneModel
+{
+    function actionStart( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'oneStart ';
+        $ctrl->setMyAction( 'more' );
+    }
+    function actionMore( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'oneMore ';
+        $ctrl->setMyAction( 'done' );
+    }
+    function actionDone( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
+        $data .= 'oneDone ';
+    }
+}
+

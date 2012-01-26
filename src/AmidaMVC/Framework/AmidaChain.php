@@ -235,6 +235,7 @@ class AmidaChain
         while( $this->moreModels() )
         {
             $this->fireDispatch();
+            $action = $this->getAction();
             $return = $this->execAction( $action, $data, $return );
             if( $this->useNextComponent() ) {
                 // go to next component. 
