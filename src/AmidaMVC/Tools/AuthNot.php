@@ -16,9 +16,11 @@ class AuthNot
     function getAuth() {
         $auth_info = FALSE;
         if( $auth_info = static::_verifySession() ) {
+            $auth_info[ 'auth_method' ] = 'session';
             static::$auth_info = $auth_info;
         }
         elseif( $auth_info = static::_verifyPost() ) {
+            $auth_info[ 'auth_method' ] = 'post';
             static::$auth_info = $auth_info;
             static::_saveSession( $auth_info );
         }

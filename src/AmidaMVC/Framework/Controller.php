@@ -23,7 +23,14 @@ class Controller extends AmidaChain
      * @var string   prefixAct to specify command.
      */
     var $prefixCmd = '_';
+    /**
+     * @var array   list of folders to look for components. 
+     */
     var $loadFolder = array();
+    /**
+     * @var string  admin/dev mode of AmidaMVC. 
+     */
+    var $mode = '';
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) {
         $default = array(
@@ -102,6 +109,20 @@ class Controller extends AmidaChain
             }
         }
         return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    function redirect( $path=NULL ) {
+        $base_url = $this->base_url;
+        if( substr( $base_url, -1 ) !== '/' ) {
+            $base_url .= '/';
+        }
+        $mode = $ctrl->mode;
+        if( $mode && substr( $mode, -1 ) !== '/' ) {
+            $mode .= '/';
+        }
+        $url = "{$base_url}{$mode}{$path}";
+        header( "Location: {$url}" );
+        exit;
     }
     // +-------------------------------------------------------------+
 }

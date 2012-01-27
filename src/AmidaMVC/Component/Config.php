@@ -17,7 +17,7 @@ class Config
         self::setRoute( $ctrl, $data );
     }
     // +-------------------------------------------------------------+
-    function setMode( $command )
+    function findMode( $command )
     {
         foreach( static::$modes as $mode ) {
             if( in_array( $mode, $command ) ) {
@@ -52,17 +52,20 @@ class Config
                 $siteDefault[ 'routes' ][] = $cmd;
             }
         }
-        $siteDefault[ 'command' ] = array_unique( $siteDefault[ 'command' ] );
-        if( !empty( $siteDefault[ 'command'] ) ) {
-            if( $mode = static::setMode( $siteDefault[ 'command'] ) ) {
-                $ctrl->setAction( $mode );
-            }
-        }
+        // setup path_info.
         $siteDefault[ 'path_info' ] = implode( '/', $siteDefault[ 'routes' ] );
         if( empty( $siteDefault[ 'path_info' ] ) ) {
             $siteDefault[ 'path_info' ] = '/';
         }
         $ctrl->path_info = $siteDefault[ 'path_info' ];
+        // setup command. 
+        $siteDefault[ 'command' ] = array_unique( $siteDefault[ 'command' ] );
+        if( !empty( $siteDefault[ 'command'] ) ) {
+            if( $mode = static::findMode( $siteDefault[ 'command'] ) ) {
+                $ctrl->mode = $mode;
+                $ctrl->setAction( $mode );
+            }
+        }
         $data->set( 'siteObj', $siteDefault );
     }
     // +-------------------------------------------------------------+
