@@ -36,8 +36,10 @@ some other interesting demo:
 
 *   [sample HTML file](example.html)
 
-*   [Show Debug Info](_dev/)
+*   [Login for Developer's Mode](_dev/)  
+    Shows Debug Info. 
 
+*   [Logout](_logout/)
 
 Amida-Chain
 -----------

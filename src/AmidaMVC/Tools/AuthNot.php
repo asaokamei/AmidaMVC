@@ -27,6 +27,11 @@ class AuthNot
         return $auth_info;
     }
     // +-------------------------------------------------------------+
+    function logout(){
+        Session::start();
+        Session::del( static::$auth_id );
+    }
+    // +-------------------------------------------------------------+
     function _verifyPost() {
         if( !isset( $_POST ) || 
             !isset( $_POST[ static::$act_name ] ) || 

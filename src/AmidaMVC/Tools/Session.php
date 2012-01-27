@@ -18,6 +18,13 @@ class Session
         return $value;
     }
     // +-------------------------------------------------------------+
+    static function del( $name ) {
+        if( isset( $_SESSION ) && array_key_exists( $name,  $_SESSION ) ) {
+            unset( $_SESSION[ $name ] );
+        }
+        return TRUE;
+    }
+    // +-------------------------------------------------------------+
     static function get( $name ) {
         if( isset( $_SESSION ) && array_key_exists( $name,  $_SESSION ) ) {
             return $_SESSION[ $name ];

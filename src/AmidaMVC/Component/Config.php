@@ -8,7 +8,7 @@ namespace AmidaMVC\Component;
  */
 class Config
 {
-    static $modes = array( '_dev' );
+    static $modes = array( '_logout', '_dev' );
     // +-------------------------------------------------------------+
     function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
