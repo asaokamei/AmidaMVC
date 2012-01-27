@@ -232,8 +232,6 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * starts loop. I think this is chain of responsibility pattern.
-     * TODO: current loop is a bit too complicated.
-     * TODO: remove nextAction?
      * @param string $action           name of action to start.
      * @param mixed $data        data to pass to each exec method.
      * @return bool|mixed|null  returns the last returned value.
@@ -308,7 +306,7 @@ class AmidaChain
         if( !$action ) return $exec;
         if( !isset( $component ) ) return $exec;
 
-        $this->loadModel( $component );
+        $this->loadComponent( $component );
         if( is_callable( array( $component, $method ) ) ) {
             $exec = array( $component, $method );
         }
@@ -318,10 +316,10 @@ class AmidaChain
     /**
      * loads model if not exist, but *not* implemented!!
      * overwrite this method for tailored auto-loading classes.
-     * @param mixed $model   class or object. maybe a function?
+     * @param mixed $component   class or object. maybe a function?
      * @return \AmidaChain\Framework\Chain
      */
-    function loadModel( $model ) {
+    function loadComponent( $component ) {
         return $this;
     }
     // +-------------------------------------------------------------+

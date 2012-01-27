@@ -1,5 +1,8 @@
 <?php
 namespace AmidaMVC\Component;
+/**
+ * Authentication component class.  
+ */
 
 class Auth
 {
@@ -31,6 +34,7 @@ class Auth
         Debug::bug( 'wordy', 'Auth for _dev... require authentification. ');
         $auth_info = call_user_func( static::$auth_callback );
         if( $auth_info ) {
+            // authentication OK. 
             $data->set( 'authInfo', $auth_info );
             if( $auth_info[ 'login_method'] == 'post' ) {
                 // just logged in. redirect to the top.

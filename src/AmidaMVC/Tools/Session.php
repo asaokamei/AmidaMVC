@@ -1,5 +1,8 @@
 <?php
 namespace AmidaMVC\Tools;
+/**
+ * Session wrapper.  
+ */
 
 class Session
 {

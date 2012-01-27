@@ -58,6 +58,11 @@ class Controller extends AmidaChain
         return $this->ctrl_root;
     }
     // +-------------------------------------------------------------+
+    /**
+     * starts the Amida-chain loop. 
+     * @param $view             parameter to pass through.
+     * @return bool|mixed|null  returned value from the last component.
+     */
     function start( &$view ) {
         if( isset( $this->routes[0] ) && "" !== "{$this->routes[0]}" ) {
             $action = $this->routes[0];
@@ -94,10 +99,14 @@ class Controller extends AmidaChain
         );
     }
     // +-------------------------------------------------------------+
-    function loadModel( $model ) {
-        if( is_object( $model ) ) return TRUE;
-        if( class_exists( $model, FALSE ) ) return TRUE;
-        $base_name = $this->prefixCmd . $model . '.php';
+    /**
+     * @param $component
+     * @return Controller|bool
+     */
+    function loadComponent( $component ) {
+        if( is_object( $component ) ) return TRUE;
+        if( class_exists( $component, FALSE ) ) return TRUE;
+        $base_name = $this->prefixCmd . $component . '.php';
         foreach( $this->loadFolder as $folder ) {
             $file_name = $folder. '/' . $base_name;
             if( file_exists( $file_name ) ) {
@@ -111,6 +120,13 @@ class Controller extends AmidaChain
         return FALSE;
     }
     // +-------------------------------------------------------------+
+    /**
+     * redirect to base_url/mode/path. terminates by exit.
+     * base_url is where your site is.  
+     * mode is AmidaMVC's mode (_dev etc.)
+     * path is path-info relative to base_url.
+     * @param null $path 
+     */
     function redirect( $path=NULL ) {
         $base_url = $this->base_url;
         if( substr( $base_url, -1 ) !== '/' ) {

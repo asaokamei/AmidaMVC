@@ -1,9 +1,10 @@
 <?php
 namespace AmidaMVC\Tools;
-
 /**
- * Authorization class which does not really authorize. 
+ * Authentication class which does not really authorize. 
+ * only requires login_id and password to match. 
  */
+
 class AuthNot
 {
     static $auth_id    = 'AuthNot_id';
@@ -14,7 +15,6 @@ class AuthNot
     static $auth_info  = array();
     // +-------------------------------------------------------------+
     function getAuth() {
-        $auth_info = FALSE;
         if( $auth_info = static::_verifySession() ) {
             $auth_info[ 'auth_method' ] = 'session';
             static::$auth_info = $auth_info;
