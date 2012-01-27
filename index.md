@@ -6,8 +6,8 @@ I developed this framework for studying and some demo purpose.
 
 *   [MIT License](LICENSE.txt)
 *   [README.md](README.md)
-*   [Source Code at gitHub](https://github.com/asaokamei/AmidaMVC)
-*   [sample HTML file](example.html)
+*   Source Code at gitHub:    
+    [(https://github.com/asaokamei/AmidaMVC)](https://github.com/asaokamei/AmidaMVC)
 
 File Structure and View Source Code
 -----------------------------------
@@ -24,6 +24,18 @@ File Structure and View Source Code
 
 *   _Config:   
     configuration for viewin this source as a demo site.
+
+Example and Demo
+----------------
+
+This git entry itself is a demo site.  
+download the source code from the [github](https://github.com/asaokamei/AmidaMVC) 
+and deploy it anywhere under root document of Apache with PHP >= 5.3.0. Then, access the url. 
+
+some other interesting demo: 
+
+*   [sample HTML file](example.html)
+
 
 
 Amida-Chain
