@@ -27,6 +27,7 @@ AmidaMVC ToDos.
                 all other Framework and Components are working. 
 [X] 2012/01/26  make link url relative to $ctrl_root.
                 probably OK. demo.css works relative to $ctrl_root.
+[X] 2012/01/27  made login/out nicely. 
 
 * Demo in Cena-Dta
 
