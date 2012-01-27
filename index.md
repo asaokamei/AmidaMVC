@@ -39,7 +39,7 @@ some other interesting demo:
 *   [Login for Developer's Mode](_dev/)  
     Shows Debug Info. 
 
-*   [Logout](_logout/)
+*   [Logout](_logout/)<?php echo $_site['mode']; ?>
 
 Amida-Chain
 -----------

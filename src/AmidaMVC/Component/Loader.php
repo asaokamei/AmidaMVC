@@ -40,22 +40,22 @@ class Loader
             self::loadApp( $ctrl, $data, $loadInfo );
         }
         else if( $file_ext == 'php' ) {
-            self::loadPhpAsCode( $data, $loadInfo );
+            self::loadPhpAsCode( $ctrl, $data, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_html ) ) {
-            self::loadHtml( $data, $loadInfo );
+            self::loadHtml( $ctrl, $data, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_text ) ) {
-            self::loadText( $data, $loadInfo );
+            self::loadText( $ctrl, $data, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_md ) ) {
-            self::loadMarkdown( $data, $loadInfo );
+            self::loadMarkdown( $ctrl, $data, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_file ) ) {
-            self::loadFile( $data, $loadInfo );
+            self::loadFile( $ctrl, $data, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_asis ) ) {
-            self::loadAsIs( $data, $loadInfo, $file_ext );
+            self::loadAsIs( $ctrl, $data, $loadInfo, $file_ext );
         }
     }
     // +-------------------------------------------------------------+
@@ -64,41 +64,42 @@ class Loader
         // maybe load sorry file.
     }
     // +-------------------------------------------------------------+
-    function loadApp( $ctrl, &$data, $loadInfo ) {
+    function loadApp( $_ctrl, &$_siteObj, $loadInfo ) {
         include $loadInfo[ 'file' ];
     }
     // +-------------------------------------------------------------+
-    function loadPhpAsExec( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
-        $content = self::getContentsByOb( $loadInfo[ 'file' ] );
-        $data->setContents( $content );
-        $data->setContentType( 'html' );
+    function loadPhpAsExec( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+        $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+        $_siteObj->setContents( $content );
+        $_siteObj->setContentType( 'html' );
     }
     // +-------------------------------------------------------------+
-    function loadPhpAsCode( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
+    function loadPhpAsCode( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
-        $data->setContents( $content );
-        $data->setContentType( 'php' );
+        $_siteObj->setContents( $content );
+        $_siteObj->setContentType( 'php' );
     }
     // +-------------------------------------------------------------+
-    function loadText( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
-        $content = self::getContentsByOb( $loadInfo[ 'file' ] );
-        $data->setContents( $content );
-        $data->setContentType( 'text' );
+    function loadText( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+        $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+        $_siteObj->setContents( $content );
+        $_siteObj->setContentType( 'text' );
     }
     // +-------------------------------------------------------------+
-    function loadHtml( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
-        $content = self::getContentsByOb( $loadInfo[ 'file' ] );
-        $data->setContents( $content );
-        $data->setContentType( 'html' );
+    function loadHtml( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+        $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+        $_siteObj->setContents( $content );
+        $_siteObj->setContentType( 'html' );
     }
     // +-------------------------------------------------------------+
-    function loadMarkdown( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
-        $content = self::getContentsByOb( $loadInfo[ 'file' ] );
-        $data->setContents( $content );
-        $data->setContentType( 'markdown' );
+    function loadMarkdown( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+        $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+        $_siteObj->setContents( $content );
+        $_siteObj->setContentType( 'markdown' );
     }
     // +-------------------------------------------------------------+
-    function getContentsByOb( $file_name ) {
+    function getContentsByOb( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $file_name ) {
+        $_site = $_siteObj->get( 'siteObj' );
         ob_start();
         ob_implicit_flush(0);
         require( $file_name );
@@ -106,15 +107,15 @@ class Loader
         return $content;
     }
     // +-------------------------------------------------------------+
-    function loadAsIs( \AmidaMVC\Component\SiteObj &$data, $loadInfo, $_file_ext ) {
-        $data->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
-        $data->setFileName( $loadInfo[ 'file' ] );
-        $data->setContentType( 'as_is' );
+    function loadAsIs( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo, $_file_ext ) {
+        $_siteObj->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
+        $_siteObj->setFileName( $loadInfo[ 'file' ] );
+        $_siteObj->setContentType( 'as_is' );
     }
     // +-------------------------------------------------------------+
-    function loadFile( \AmidaMVC\Component\SiteObj &$data, $loadInfo ) {
-        $data->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
-        $data->setFileName( $loadInfo[ 'file' ] );
+    function loadFile( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+        $_siteObj->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
+        $_siteObj->setFileName( $loadInfo[ 'file' ] );
     }
     // +-------------------------------------------------------------+
 }

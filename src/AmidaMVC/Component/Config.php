@@ -8,7 +8,10 @@ namespace AmidaMVC\Component;
  */
 class Config
 {
-    static $modes = array( '_logout', '_dev' );
+    /**
+     * @var array  list of available mode. 
+     */
+    static $mode_list = array( '_logout', '_dev' );
     // +-------------------------------------------------------------+
     function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
@@ -19,7 +22,7 @@ class Config
     // +-------------------------------------------------------------+
     function findMode( $command )
     {
-        foreach( static::$modes as $mode ) {
+        foreach( static::$mode_list as $mode ) {
             if( in_array( $mode, $command ) ) {
                 // found special mode. 
                 return $mode;
@@ -64,6 +67,7 @@ class Config
             if( $mode = static::findMode( $siteDefault[ 'command'] ) ) {
                 $ctrl->mode = $mode;
                 $ctrl->setAction( $mode );
+                $siteDefault[ 'mode' ] = $mode;
             }
         }
         $data->set( 'siteObj', $siteDefault );
