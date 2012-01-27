@@ -6,6 +6,9 @@ class Debug extends AmidaMVC\Component\Debug {
         if( in_array( '_dev', $siteObj[ 'command' ] ) ) {
             self::_init();
         }
+        else {
+            self::_unset();
+        }
     }
     // +-------------------------------------------------------------+
     static function _init() {

@@ -47,6 +47,20 @@ class Router
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    static function action_LoginForm( 
+        \AmidaMVC\Framework\Controller $ctrl, 
+        \AmidaMVC\Component\SiteObj &$data ) {
+        // show login form.
+        $siteInfo = $data->get( 'siteObj' );
+        if( isset( $siteInfo[ 'loginForm' ] ) ) {
+            $loadInfo = array(
+                'file' => $siteInfo[ 'loginForm' ],
+                'action' => 'default',
+            );
+            return $loadInfo;
+        }
+    }
+    // +-------------------------------------------------------------+
     /** search for a file in a $folder.
      * @static
      * @param $ctrl

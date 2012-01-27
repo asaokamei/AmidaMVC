@@ -6,7 +6,7 @@ class Debug
     const HTML_TYPE = 'DebugHtml';
     const MARK_TYPE = 'DebugMD';
 
-    static $self;
+    static $self = NULL;
 
     var $outputTo   = FALSE;
     var $formatType = self::HTML_TYPE;
@@ -26,6 +26,13 @@ class Debug
             static::$self = new Debug;
         }
         return static::$self;
+    }
+    // +-------------------------------------------------------------+
+    static function _unset() {
+        if( isset( static::$self ) ) {
+            static::$self = NULL;
+        }
+        return TRUE;
     }
     // +-------------------------------------------------------------+
     /**

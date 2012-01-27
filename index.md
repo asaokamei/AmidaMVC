@@ -36,6 +36,7 @@ some other interesting demo:
 
 *   [sample HTML file](example.html)
 
+*   [Show Debug Info](_dev/)
 
 
 Amida-Chain
@@ -70,4 +71,3 @@ Seriously, how I can write a usage for a framework?
 Except to provide some demo and ask to look at the code...
 
 
-[Show Debug Info](_dev/)

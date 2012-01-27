@@ -8,10 +8,29 @@ namespace AmidaMVC\Component;
  */
 class Config
 {
+    static $modes = array( '_dev' );
     // +-------------------------------------------------------------+
     function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$data )
+    {
+        self::setRoute( $ctrl, $data );
+    }
+    // +-------------------------------------------------------------+
+    function setMode( $command )
+    {
+        foreach( static::$modes as $mode ) {
+            if( in_array( $mode, $command ) ) {
+                // found special mode. 
+                return $mode;
+            }
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    function setRoute( 
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$data ) 
     {
         $siteDefault = array(
             'base_url'  => $ctrl->base_url,
@@ -21,12 +40,6 @@ class Config
             'command'   => array(),
             'prefix_cmd' => $ctrl->prefixCmd,
         );
-        self::setRoute( $siteDefault );
-        $ctrl->path_info = $siteDefault[ 'path_info' ];
-        $data->set( 'siteObj', $siteDefault );
-    }
-    // +-------------------------------------------------------------+
-    function setRoute( &$siteDefault ) {
         $paths = explode( '/', $siteDefault[ 'path_info_ctrl' ] );
         foreach( $paths as $cmd ) {
             if( empty( $cmd ) ) continue;
@@ -40,10 +53,17 @@ class Config
             }
         }
         $siteDefault[ 'command' ] = array_unique( $siteDefault[ 'command' ] );
+        if( !empty( $siteDefault[ 'command'] ) ) {
+            if( $mode = static::setMode( $siteDefault[ 'command'] ) ) {
+                $ctrl->setAction( $mode );
+            }
+        }
         $siteDefault[ 'path_info' ] = implode( '/', $siteDefault[ 'routes' ] );
         if( empty( $siteDefault[ 'path_info' ] ) ) {
             $siteDefault[ 'path_info' ] = '/';
         }
+        $ctrl->path_info = $siteDefault[ 'path_info' ];
+        $data->set( 'siteObj', $siteDefault );
     }
     // +-------------------------------------------------------------+
 }
