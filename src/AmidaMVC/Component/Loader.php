@@ -68,37 +68,37 @@ class Loader
         include $loadInfo[ 'file' ];
     }
     // +-------------------------------------------------------------+
-    function loadPhpAsExec( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+    function loadPhpAsExec( $_ctrl, &$_siteObj, $loadInfo ) {
         $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
         $_siteObj->setContentType( 'html' );
     }
     // +-------------------------------------------------------------+
-    function loadPhpAsCode( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+    function loadPhpAsCode( $_ctrl, &$_siteObj, $loadInfo ) {
         $content = file_get_contents( $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
         $_siteObj->setContentType( 'php' );
     }
     // +-------------------------------------------------------------+
-    function loadText( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+    function loadText( $_ctrl, &$_siteObj, $loadInfo ) {
         $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
         $_siteObj->setContentType( 'text' );
     }
     // +-------------------------------------------------------------+
-    function loadHtml( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+    function loadHtml( $_ctrl, &$_siteObj, $loadInfo ) {
         $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
         $_siteObj->setContentType( 'html' );
     }
     // +-------------------------------------------------------------+
-    function loadMarkdown( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+    function loadMarkdown( $_ctrl, &$_siteObj, $loadInfo ) {
         $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
         $_siteObj->setContentType( 'markdown' );
     }
     // +-------------------------------------------------------------+
-    function getContentsByOb( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $file_name ) {
+    function getContentsByOb( $_ctrl, &$_siteObj, $file_name ) {
         $_site = $_siteObj->get( 'siteObj' );
         ob_start();
         ob_implicit_flush(0);
@@ -107,13 +107,13 @@ class Loader
         return $content;
     }
     // +-------------------------------------------------------------+
-    function loadAsIs( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo, $_file_ext ) {
+    function loadAsIs( $_ctrl, &$_siteObj, $loadInfo, $_file_ext ) {
         $_siteObj->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
         $_siteObj->setFileName( $loadInfo[ 'file' ] );
         $_siteObj->setContentType( 'as_is' );
     }
     // +-------------------------------------------------------------+
-    function loadFile( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj &$_siteObj, $loadInfo ) {
+    function loadFile( $_ctrl, &$_siteObj, $loadInfo ) {
         $_siteObj->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
         $_siteObj->setFileName( $loadInfo[ 'file' ] );
     }

@@ -36,9 +36,9 @@ class Auth
         if( $auth_info ) {
             // authentication OK. 
             $data->set( 'authInfo', $auth_info );
-            if( $auth_info[ 'login_method'] == 'post' ) {
+            if( $auth_info[ 'auth_method'] == 'post' ) {
                 // just logged in. redirect to the top.
-                $ctrl->redirect();  
+                $ctrl->redirect( $ctrl->path_info );  
             }
         }
         else {

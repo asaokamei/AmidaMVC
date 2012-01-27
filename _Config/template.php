@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <title><?php echo $head_title; ?></title>
-    <link rel="stylesheet" href="<?php echo $_base_url; ?>/demo.css" />
+    <link rel="stylesheet" href="<?php echo $_site[ 'base_url' ]; ?>/demo.css" />
 </head>
 <body>
-<header><a href="<?php echo $_site[ 'base_url' ]; ?>/">AmidaMVC Framework</a></header>
+<header><a href="<?php echo $_ctrl->getBaseUrl(); ?>">AmidaMVC Framework</a></header>
 <div id="contents">
     <?php if( $title ) { ?>
     <h1><?php echo $title; ?></h1>

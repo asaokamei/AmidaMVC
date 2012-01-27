@@ -40,8 +40,8 @@ class Controller extends AmidaChain
         $option = $option + $default;
         
         // set path_info and base_url. 
-        $this->path_info = $this->getPathInfo();
-        $this->base_url = $this->getBaseUrl();
+        $this->path_info = $this->_obtainPathInfo();
+        $this->base_url = $this->_obtainBaseUrl();
         
         // set ctrl root folder.
         if( !$option[ 'ctrl_root' ] ) {
@@ -73,7 +73,7 @@ class Controller extends AmidaChain
         return $this->dispatch( $action, $view );
     }
     // +-------------------------------------------------------------+
-    function getPathInfo() {
+    function _obtainPathInfo() {
         $path = \AmidaMVC\Tools\Request::getPathInfo();
         if( substr( $path, 0, 1 ) === '/' ) {
             $path = substr( $path, 1 );
@@ -81,7 +81,7 @@ class Controller extends AmidaChain
         return $path;
     }
     // +-------------------------------------------------------------+
-    function getBaseUrl() {
+    function _obtainBaseUrl() {
         return \AmidaMVC\Tools\Request::getBaseUrl();
     }
     // +-------------------------------------------------------------+
@@ -128,17 +128,26 @@ class Controller extends AmidaChain
      * @param null $path 
      */
     function redirect( $path=NULL ) {
-        $base_url = $this->base_url;
-        if( substr( $base_url, -1 ) !== '/' ) {
-            $base_url .= '/';
-        }
-        $mode = $ctrl->mode;
-        if( $mode && substr( $mode, -1 ) !== '/' ) {
-            $mode .= '/';
-        }
-        $url = "{$base_url}{$mode}{$path}";
+        $url = $this->getBaseUrl() . $path;
         header( "Location: {$url}" );
         exit;
     }
     // +-------------------------------------------------------------+
+    /**
+     * returns base url containing mode (_dev etc.).
+     * @return string   base url where your web site is at.
+     */
+    function getBaseUrl() {
+        $base_url = $this->base_url;
+        if( substr( $base_url, -1 ) !== '/' ) {
+            $base_url .= '/';
+        }
+        $mode = $this->mode;
+        if( $mode && substr( $mode, -1 ) !== '/' ) {
+            $mode .= '/';
+        }
+        $base = "{$base_url}{$mode}";
+        return $base;
+    }
+   // +-------------------------------------------------------------+
 }

@@ -63,7 +63,7 @@ class Render
         $_siteObj->setContent( 'debug', Debug::result() );
         $site = $_siteObj->get( 'siteObj' );
         $template = $site[ 'template_file' ];
-        call_user_func( static::$template, $template, $_siteObj );
+        call_user_func( static::$template, $template, $_ctrl, $_siteObj );
     }
     // +-------------------------------------------------------------+
     function findMimeType( $file_ext ) {

@@ -12,7 +12,7 @@ class Template
     static $ext_md   = array( 'md', 'markdown' );
     static $ext_text = array( 'text', 'txt' );
     // +-------------------------------------------------------------+
-    function inject( $template, $_siteObj ) {
+    function inject( $template, $_ctrl, $_siteObj ) {
         $_data = $_siteObj->getContent();
         $_site = $_siteObj->get( 'siteObj' );
         self::convertContents( $_data );

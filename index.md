@@ -4,8 +4,8 @@ AmidaMVC
 Yet another MVC micro framework for PHP, based on amida-style dispatch chain.  
 I developed this framework for studying and some demo purpose.
 
-*   [MIT License](LICENSE.txt)
 *   [README.md](README.md)
+*   [MIT License](LICENSE.txt)
 *   Source Code at gitHub:    
     [(https://github.com/asaokamei/AmidaMVC)](https://github.com/asaokamei/AmidaMVC)
 
@@ -36,10 +36,10 @@ some other interesting demo:
 
 *   [sample HTML file](example.html)
 
-*   [Login for Developer's Mode](_dev/)  
+*   <?php echo ( $_site['mode'] == '_dev' ) ? 'Login (already logged in...)' : '[Login for Developer\'s Mode](_dev/)'; ?>  
     Shows Debug Info. 
 
-*   [Logout](_logout/)<?php echo $_site['mode']; ?>
+*   <?php echo ( $_site['mode'] == '_dev' ) ? '[Logout](_logout/)' : 'Logout (not logged in...)'; ?>
 
 Amida-Chain
 -----------
