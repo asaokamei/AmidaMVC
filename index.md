@@ -35,12 +35,10 @@ and deploy it anywhere under root document of Apache with PHP >= 5.3.0. Then, ac
 some other interesting demo: 
 
 *   [sample HTML file](example.html)
-
+*   [AmidaMVC application (_index.php)](indexView)
 *   [To-Do demo application](todo/list)
-
 *   <?php echo ( $_site['mode'] == '_dev' ) ? 'Login (already logged in...)' : '[Login for Developer\'s Mode](_dev/)'; ?>  
     Shows Debug Info. 
-
 *   <?php echo ( $_site['mode'] == '_dev' ) ? '[Logout](_logout/)' : 'Logout (not logged in...)'; ?>
 
 Amida-Chain
