@@ -79,7 +79,7 @@ class appTodo extends AmidaMVC\Component\Model
         return $todo;
     }
     // +-------------------------------------------------------------+
-    static function actionAdd(
+    static function actionPost(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$siteObj  ) 
     {
@@ -161,7 +161,7 @@ class ViewTodo extends \AmidaMVC\Component\View
     static function viewNewField() {
         $addField = '<input type="text" name="what" size="40" />';
         $html = "
-          <form name='addTodo' method='post' action='add'>
+          <form name='addTodo' method='post' action='post'>
           {$addField}
           <input type='submit' name='submit' value='add todo' />
           </form>";
