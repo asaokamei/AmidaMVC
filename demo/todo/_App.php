@@ -171,8 +171,9 @@ class appTodo extends AmidaMVC\Component\Model
     // +-------------------------------------------------------------+
 }
 
-class ViewTodo extends \AmidaMVC\Component\View
+class viewTodo extends \AmidaMVC\Component\View
 {
+    static $title = "<title>ToDo List Application</title>\n";
     // +-------------------------------------------------------------+
     // VIEWS
     // +-------------------------------------------------------------+
@@ -182,21 +183,21 @@ class ViewTodo extends \AmidaMVC\Component\View
         $todo )
     {
         // view for list
-        $todoTable = self::viewTodoTable( $todo );
-        $addField  = self::viewNewField();
+        $todoTable = self::makeTodoTable( $todo );
+        $addField  = self::makeNewField();
         $html  = "
-          <title>ToDo List</title>
           <h2>add new todo</h2>
           {$addField}
           <h2>To Do List</h2>
           {$todoTable}
           <p>&nbsp;</p>
-          <p style='text-align: right;'><a href='reset'>reset</a></p>
+          <p style='text-align: right;'>[ <a href='reset'>reset todo list</a> ]</p>
         ";
+        $html = self::makeTodoContents( $html );
         $siteObj->setContents( $html );
     }
     // +-------------------------------------------------------------+
-    static function viewNewField() {
+    static function makeNewField() {
         $addField = '<input type="text" name="what" size="40" />';
         $html = "
           <form name='addTodo' method='post' action='post'>
@@ -206,7 +207,7 @@ class ViewTodo extends \AmidaMVC\Component\View
         return $html;
     }
     // +-------------------------------------------------------------+
-    static function viewTodoTable( $todo ) {
+    static function makeTodoTable( $todo ) {
         if( empty( $todo ) ) {
             $html = "<p>Congratulations<br />there's nothing to do!</p>";
         }
@@ -214,23 +215,20 @@ class ViewTodo extends \AmidaMVC\Component\View
             $html = '';
             foreach( $todo as $do ) {
                 $id   = $do[0];
-                $done = ( $do[1] === "1" ) ? 'not yet' : 'done';
+                $done = ( $do[1] === "1" ) ? 'close' : 'reopen';
                 $what = $do[2];
                 $html .= "
                 <tr>
-                  <td>$id</td>
-                  <td>{$done}</td>
-                  <td>{$what}</td>
-                  <td><a href='detail/{$id}'>mod</a></td>
-                  <td><a href='toggle/{$id}'>done</a></td>
+                  <td align=\"right\">$id</td>
+                  <td><span class=\"{$done}\"><a href='detail/{$id}'>{$what}</a></span></td>
+                  <td align=\"center\">[<a href='toggle/{$id}'>{$done}</a>]</td>
                 </tr>
                 ";
             }
-            $html = "<table><thead><tr>
-            <th>#</th><th>status</th>
-            <th>what to do...</th>
-            <th>modify</th>
-            <th>finished</th>
+            $html = "<table width=\"80%\"><thead><tr>
+            <th width=\"5%\">#</th>
+            <th width=\"80%\">what to do...</th>
+            <th width=\"15%\">toggle</th>
             </tr></thead>{$html}
             </table>";
         }
@@ -248,14 +246,40 @@ class ViewTodo extends \AmidaMVC\Component\View
         $what = $todo[2];
         $target = $ctrl->getBaseUrl() .  "todo/put/$id";
         $html = "
-          <title>ToDo List</title>
           <h2>Modify To Do</h2>
           <form name=\"todoDetail\" method=\"post\" action=\"{$target}\">
           <input type=\"text\" name=\"what\" size=\"40\" value=\"{$what}\" />
           <input type='submit' name='submit' value='modify todo' />
           </form>
         ";
+        $html = self::makeTodoContents( $html );
         $siteObj->setContents( $html );
+    }
+    // +-------------------------------------------------------------+
+    static function makeTodoContents( $html ) {
+        $content = "
+        <style>
+        div#todoApp .reopen {
+          color:#888888;
+          text-decoration: line-through;
+        }
+        div#todoApp a:link {
+          color:#000060;
+          text-decoration: none;
+        }
+        div#todoApp a:visited {
+          color:#000060;
+        }
+        div#todoApp a:hover {
+          color:#3333CC;
+        }
+        </style>
+        <div id=\"todoApp\">
+        <title>ToDo List Application</title>\n
+        {$html}
+        </div>
+        ";
+        return $content;
     }
     // +-------------------------------------------------------------+
 }
