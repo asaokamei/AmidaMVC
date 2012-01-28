@@ -18,7 +18,10 @@ class Router
      * @param $data
      * @return array|bool|mixed    $loadInfo for Loader.
      */
-    static function actionDefault( \AmidaMVC\Framework\Controller $ctrl, $data ) {
+    static function actionDefault( 
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj $data ) 
+    {
         $loadInfo = call_user_func( self::$router, $ctrl->path_info );
         if( !$loadInfo ) {
             $loadInfo = self::actionScan( $ctrl, $data );
@@ -28,6 +31,7 @@ class Router
         }
         else {
             // action is as is; probably default.
+            $data->set( 'loadInfo', $loadInfo );
         }
         static::fireRouterResult( $loadInfo );
         return $loadInfo;
@@ -39,7 +43,10 @@ class Router
      * @param $data
      * @return array|bool   return $loadInfo or FALSE if not found
      */
-    static function actionScan( \AmidaMVC\Framework\Controller $ctrl, &$data ) {
+    static function actionScan( 
+        \AmidaMVC\Framework\Controller $ctrl, 
+        \AmidaMVC\Component\SiteObj &$data ) 
+    {
         // search routes.
         $folder = $ctrl->getLocation();
         $routes = explode( '/', $ctrl->path_info );

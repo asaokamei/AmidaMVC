@@ -4,7 +4,7 @@ namespace AmidaMVC\Component;
 class Model
 {
     // +-------------------------------------------------------------+
-    function actionDefault( $ctrl, $view ) {
+    static function actionDefault( $ctrl, $view ) {
 
     }
     // +-------------------------------------------------------------+

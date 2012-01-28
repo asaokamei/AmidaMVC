@@ -1,10 +1,10 @@
 <?php
 namespace AmidaMVC\Component;
 
-class Model
+class View
 {
     // +-------------------------------------------------------------+
-    function actionDefault( $ctrl, $view ) {
+    static function actionDefault( $ctrl, $view ) {
 
     }
     // +-------------------------------------------------------------+

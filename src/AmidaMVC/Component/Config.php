@@ -42,6 +42,7 @@ class Config
             'routes'    => array(),
             'command'   => array(),
             'prefix_cmd' => $ctrl->prefixCmd,
+            'mode' => NULL,
         );
         $paths = explode( '/', $siteDefault[ 'path_info_ctrl' ] );
         foreach( $paths as $cmd ) {
