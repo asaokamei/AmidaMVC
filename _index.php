@@ -10,6 +10,8 @@ $routes = array(
     '/example.html' => array( 'file' => 'demo/index.html', 'action' => 'default'),
     '/' => array( 'file' => 'index.md', 'action' => 'default' ),
     '/todo/toggle/:id' => array( 'file' => 'demo/todo/_App.php', 'action' => 'toggle' ),
+    '/todo/detail/:id' => array( 'file' => 'demo/todo/_App.php', 'action' => 'detail' ),
+    '/todo/put/:id' => array( 'file' => 'demo/todo/_App.php', 'action' => 'put' ),
     '/todo/:action' => array( 'file' => 'demo/todo/_App.php', 'action' => 'list' ),
     '/demo/:action' => array( 'file' => 'demo/_App.php', 'action' => 'index' ),
 );

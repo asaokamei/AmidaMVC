@@ -131,6 +131,44 @@ class appTodo extends AmidaMVC\Component\Model
         $ctrl->redirect( '/todo/list' );
     }
     // +-------------------------------------------------------------+
+    static function actionDetail(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$siteObj  )
+    {
+        self::_init();
+        $loadInfo = $siteObj->get( 'loadInfo' );
+        $id = $loadInfo[ 'id' ];
+        if( $id ) {
+            $todo = self::getTodo();
+            foreach( $todo as $do ) {
+                if( $do[0] == $id ) {
+                    break;
+                }
+            }
+        }
+        return $do;
+    }
+    // +-------------------------------------------------------------+
+    static function actionPut(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$siteObj  )
+    {
+        self::_init();
+        $loadInfo = $siteObj->get( 'loadInfo' );
+        $id = $loadInfo[ 'id' ];
+        $what = addslashes( $_POST[ 'what'] );
+        if( $id && $what ) {
+            $todo = self::getTodo();
+            foreach( $todo as &$do ) {
+                if( $do[0] == $id ) {
+                    $do[2] = $what;
+                }
+            }
+            self::putTodo( $todo );
+        }
+        $ctrl->redirect( '/todo/list' );
+    }
+    // +-------------------------------------------------------------+
 }
 
 class ViewTodo extends \AmidaMVC\Component\View
@@ -183,6 +221,7 @@ class ViewTodo extends \AmidaMVC\Component\View
                   <td>$id</td>
                   <td>{$done}</td>
                   <td>{$what}</td>
+                  <td><a href='detail/{$id}'>mod</a></td>
                   <td><a href='toggle/{$id}'>done</a></td>
                 </tr>
                 ";
@@ -190,11 +229,33 @@ class ViewTodo extends \AmidaMVC\Component\View
             $html = "<table><thead><tr>
             <th>#</th><th>status</th>
             <th>what to do...</th>
+            <th>modify</th>
             <th>finished</th>
             </tr></thead>{$html}
             </table>";
         }
         return $html;
+    }
+    // +-------------------------------------------------------------+
+    static function actionDetail(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$siteObj,
+        $todo )
+    {
+        //
+        $id   = $todo[0];
+        $done = ( $todo[1] === "1" ) ? 'not yet' : 'done';
+        $what = $todo[2];
+        $target = $ctrl->getBaseUrl() .  "todo/put/$id";
+        $html = "
+          <title>ToDo List</title>
+          <h2>Modify To Do</h2>
+          <form name=\"todoDetail\" method=\"post\" action=\"{$target}\">
+          <input type=\"text\" name=\"what\" size=\"40\" value=\"{$what}\" />
+          <input type='submit' name='submit' value='modify todo' />
+          </form>
+        ";
+        $siteObj->setContents( $html );
     }
     // +-------------------------------------------------------------+
 }
