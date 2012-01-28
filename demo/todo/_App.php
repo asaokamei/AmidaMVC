@@ -61,7 +61,11 @@ class appTodo extends AmidaMVC\Component\Model
     // +-------------------------------------------------------------+
     // ACTIONS
     // +-------------------------------------------------------------+
-    static function actionDefault( $ctrl, $siteObj ) {
+    static function actionDefault(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$siteObj  )
+    {
+
         // default is page not found error. 
         $ctrl->setAction( '_pageNotFound' );
     }
@@ -100,6 +104,30 @@ class appTodo extends AmidaMVC\Component\Model
             unlink( static::$todo_file );
         }
         self::_init();
+        $ctrl->redirect( '/todo/list' );
+    }
+    // +-------------------------------------------------------------+
+    static function actionToggle(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$siteObj  )
+    {
+        self::_init();
+        $loadInfo = $siteObj->get( 'loadInfo' );
+        $id = $loadInfo[ 'id' ];
+        if( $id ) {
+            $todo = self::getTodo();
+            foreach( $todo as &$do ) {
+                if( $do[0] == $id ) {
+                    if( $do[1] == '1' ) { // active -> done
+                        $do[1] = '9';
+                    }
+                    else {                // done -> active
+                        $do[1] = '1';
+                    }
+                }
+            }
+            self::putTodo( $todo );
+        }
         $ctrl->redirect( '/todo/list' );
     }
     // +-------------------------------------------------------------+
@@ -142,7 +170,7 @@ class ViewTodo extends \AmidaMVC\Component\View
     // +-------------------------------------------------------------+
     static function viewTodoTable( $todo ) {
         if( empty( $todo ) ) {
-            $html = "<p>Congraturations<br />there's nothing to do!</p>";
+            $html = "<p>Congratulations<br />there's nothing to do!</p>";
         }
         else {
             $html = '';
@@ -150,9 +178,21 @@ class ViewTodo extends \AmidaMVC\Component\View
                 $id   = $do[0];
                 $done = ( $do[1] === "1" ) ? 'not yet' : 'done';
                 $what = $do[2];
-                $html .= "<tr><td>$id</td><td>{$done}</td><td>{$what}</td></tr>";
+                $html .= "
+                <tr>
+                  <td>$id</td>
+                  <td>{$done}</td>
+                  <td>{$what}</td>
+                  <td><a href='toggle/{$id}'>done</a></td>
+                </tr>
+                ";
             }
-            $html = "<table><thead><tr><th>#</th><th>status</th><th>what to do...</th></tr></thead>{$html}</table>";
+            $html = "<table><thead><tr>
+            <th>#</th><th>status</th>
+            <th>what to do...</th>
+            <th>finished</th>
+            </tr></thead>{$html}
+            </table>";
         }
         return $html;
     }
