@@ -4,6 +4,9 @@ AmidaMVC ToDos.
 
 [O] put routes to _Config folder -> use it.
 [ ] make bread
+[ ] add _edit/_put/_post/_delete command. 
+[ ] add _backup command. 
+[ ] restrict command with mode. 
 [ ] refactor
     - Render/Template. 
     - SiteObj DTO is not easy to use. 
