@@ -38,11 +38,11 @@ Some features I like are:
     I think it is simple [Citation Needed].  
 
 *   various view mode:  
-    view php file as source code, converts markdown file to html, 
-    showing text file after nl2br... although this feature is not the 
-    core framework but example implementation as a plug-in component. 
-
-*   
+    *   view php file as source code, 
+    *   view markdown file automatically converted to html, 
+    *   show text file after nl2br...
+    interestingly, php code won't run as php, 
+    but php code in md and text file works as php.
 
 Amida-Chain
 -----------

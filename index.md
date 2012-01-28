@@ -36,6 +36,8 @@ some other interesting demo:
 
 *   [sample HTML file](example.html)
 
+*   [To-Do demo application](todo/list)
+
 *   <?php echo ( $_site['mode'] == '_dev' ) ? 'Login (already logged in...)' : '[Login for Developer\'s Mode](_dev/)'; ?>  
     Shows Debug Info. 
 
