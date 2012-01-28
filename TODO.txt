@@ -4,10 +4,10 @@ AmidaMVC ToDos.
 
 [O] put routes to _Config folder -> use it.
 [ ] make bread
-[ ] make todo app.
 [ ] refactor
     - Render/Template. 
     - SiteObj DTO is not easy to use. 
+[ ] add delete in todo app. 
 [X] 2012/01/20  use template
 [X] 2012/01/21  Renamed Viewer to Render.
 [X] 2012/01/21  make viewDto object for template; very simple ones.
@@ -28,6 +28,7 @@ AmidaMVC ToDos.
 [X] 2012/01/26  make link url relative to $ctrl_root.
                 probably OK. demo.css works relative to $ctrl_root.
 [X] 2012/01/27  made login/out nicely. 
+[X] 2012/01/28  make todo app.
 
 * Demo in Cena-Dta
 
