@@ -16,6 +16,13 @@ class View
         static::$app_url = $ctrl->getBaseUrl();
     }
     // +-------------------------------------------------------------+
+    /**
+     * displays page link list from \CenaDta\Dba\Pager. 
+     * @static
+     * @param array $pn      pagers information
+     * @param null $action   action/etc to add to the base url.
+     * @return string        resulting page link list
+     */
     static function Pager( $pn, $action=NULL ) {
         $url = static::$app_url . $action;
         $html  = '';
@@ -23,14 +30,20 @@ class View
         $html .= '&nbsp;|&nbsp;';
         $html .= static::Pager_DisplayLink( $pn['prev'], $url, '<' );
         $html .= '&nbsp;';
-        $html .= static::pn_disp_pages( $pn['page'], $url );
+        $html .= static::Pager_DisplayPages( $pn['page'], $url );
         $html .= static::Pager_DisplayLink( $pn['next'], $url, '>' );
         $html .= '&nbsp;|&nbsp;';
         $html .= static::Pager_DisplayLink( $pn['last'], $url, 'last' );
         return $html;
     }
     // +-------------------------------------------------------------+
-    function pn_disp_pages( &$pages, $url, $word=NULL )
+    /**
+     * displays page list (i.e. 1, 2, 3... ).
+     * @param $pages      page info from \CenaDta\Dba\Pager.
+     * @param $url        app url.
+     * @return string
+     */
+    function Pager_DisplayPages( &$pages, $url )
     {
         $link = '';
         if( !empty( $pages ) ) {
@@ -47,6 +60,15 @@ class View
         return $link;
     }
     // +-------------------------------------------------------------+
+    /**
+     * displays a pager's link from \CenaDta\Dba\Pager.
+     * @static
+     * @param $args         link info (start=n&limit=&).
+     * @param $url          app url. 
+     * @param $word         word to use
+     * @param bool $disp    nothing to display if no link info. 
+     * @return null|string  resulting link info. 
+     */
     static function Pager_DisplayLink( $args, $url, $word, $disp=TRUE )
     {
         if( WORDY > 4 ) echo " --disp_pv_link( &$args, $url, $word )-- \n";
