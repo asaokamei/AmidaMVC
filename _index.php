@@ -22,7 +22,6 @@ AmidaMVC\Tools\Route::set( $routes );
 
 AmidaMVC\Component\Debug::_init();
 
-$data = new \AmidaMVC\Component\SiteObj();
 $ctrl = new \AmidaMVC\Framework\Controller();
 $ctrl
     ->addComponent( 'Config', 'config' )
@@ -32,7 +31,7 @@ $ctrl
     ->addComponent( 'Loader', 'loader' )
     ->addComponent( 'Render', 'render' )
 ;
-
+$data = new \AmidaMVC\Component\SiteObj();
 $ctrl->start( $data );
 
 
