@@ -17,6 +17,6 @@ RewriteEngine On
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule . _index.php
-RewriteRule ^$ _index.php
-RewriteRule ^/$ _index.php
+RewriteRule . ../_index.php
+RewriteRule ^$ ../_index.php
+RewriteRule ^/$ ../_index.php
