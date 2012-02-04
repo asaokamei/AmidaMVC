@@ -32,6 +32,7 @@ AmidaMVC ToDos.
                 probably OK. demo.css works relative to $ctrl_root.
 [X] 2012/01/27  made login/out nicely. 
 [X] 2012/01/28  make todo app.
+[X] 2012/02/04  refactored siteObj; everything is an object. 
 
 * Demo in Cena-Dta
 
