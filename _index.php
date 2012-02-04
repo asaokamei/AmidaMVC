@@ -22,6 +22,7 @@ AmidaMVC\Tools\Route::set( $routes );
 AmidaMVC\Component\Debug::_init();
 
 $ctrl = new \AmidaMVC\Framework\Controller();
+$ctrl    ->actionFatal();
 $ctrl
     ->addComponent( 'Config', 'config' )
     ->addComponent( 'Debug',  'debug' )
