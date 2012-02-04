@@ -15,9 +15,9 @@ class Config
     // +-------------------------------------------------------------+
     function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$data )
+        \AmidaMVC\Component\SiteObj &$siteObj )
     {
-        self::setRoute( $ctrl, $data );
+        self::setRoute( $ctrl, $siteObj );
     }
     // +-------------------------------------------------------------+
     function findMode( $command )
@@ -33,7 +33,7 @@ class Config
     // +-------------------------------------------------------------+
     function setRoute( 
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$data ) 
+        \AmidaMVC\Component\SiteObj &$_siteObj ) 
     {
         $siteDefault = array(
             'base_url'  => $ctrl->base_url,
@@ -71,7 +71,7 @@ class Config
                 $siteDefault[ 'mode' ] = $mode;
             }
         }
-        $data->set( 'siteObj', $siteDefault );
+        $_siteObj->set( 'siteObj', $siteDefault );
     }
     // +-------------------------------------------------------------+
 }

@@ -19,12 +19,12 @@ class Loader
      * specify absolute path of a file as $loadInfo[ 'file' ].
      * @static
      * @param $ctrl
-     * @param $data
+     * @param $_siteObj
      * @param $loadInfo    info about file to load from Router.
      */
     static function actionDefault( 
         \AmidaMVC\Framework\Controller $ctrl, 
-        \AmidaMVC\Component\SiteObj &$data, 
+        \AmidaMVC\Component\SiteObj &$_siteObj, 
         $loadInfo ) 
     {
         $file_name = $loadInfo['file'];
@@ -35,31 +35,31 @@ class Loader
         \AmidaMVC\Framework\Event::fire( 'Loader::load', $loadInfo );
         $ctrl->setAction( $action );
         // load the file
-        $data->setFileName( $file_name );
+        $_siteObj->setFileName( $file_name );
         if( $file_ext == 'php' && substr( $base_name, 0, 4 ) == '_App' ) {
-            self::loadApp( $ctrl, $data, $loadInfo );
+            self::loadApp( $ctrl, $_siteObj, $loadInfo );
         }
         else if( $file_ext == 'php' ) {
-            self::loadPhpAsCode( $ctrl, $data, $loadInfo );
+            self::loadPhpAsCode( $ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_html ) ) {
-            self::loadHtml( $ctrl, $data, $loadInfo );
+            self::loadHtml( $ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_text ) ) {
-            self::loadText( $ctrl, $data, $loadInfo );
+            self::loadText( $ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_md ) ) {
-            self::loadMarkdown( $ctrl, $data, $loadInfo );
+            self::loadMarkdown( $ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_file ) ) {
-            self::loadFile( $ctrl, $data, $loadInfo );
+            self::loadFile( $ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_asis ) ) {
-            self::loadAsIs( $ctrl, $data, $loadInfo, $file_ext );
+            self::loadAsIs( $ctrl, $_siteObj, $loadInfo, $file_ext );
         }
     }
     // +-------------------------------------------------------------+
-    function action_pageNotFound( $ctrl, &$data ) {
+    function action_pageNotFound( $ctrl, &$_siteObj ) {
         // do something about error 404, a file not found.
         // maybe load sorry file.
     }

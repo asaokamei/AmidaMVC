@@ -10,7 +10,7 @@ class View
     // +-------------------------------------------------------------+
     static function _init(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$siteObj  )
+        \AmidaMVC\Component\SiteObj &$_siteObj  )
     {
         // set to base url as default. 
         static::$app_url = $ctrl->getBaseUrl();

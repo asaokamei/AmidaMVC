@@ -113,7 +113,7 @@ class appTodo extends AmidaMVC\Component\Model
     {
         self::_init();
         $loadInfo = $siteObj->get( 'loadInfo' );
-        $id = $loadInfo[ 'id' ];
+        $id = $loadInfo->id;
         if( $id ) {
             $todo = self::getTodo();
             foreach( $todo as &$do ) {

@@ -14,9 +14,9 @@ class Render
         self::template( $ctrl, $data );
     }
     // +-------------------------------------------------------------+
-    function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $data ) {
+    function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         // show some excuses, or blame user for not finding a page.
-        $siteObj = $data->get( 'siteObj' );
+        $siteObj = $_siteObj->get( 'siteObj' );
         if( isset( $siteObj[ 'pageNotFound' ] ) ) {
             $loadInfo = array(
                 'file' => $siteObj[ 'pageNotFound' ],
@@ -29,16 +29,16 @@ class Render
             return $loadInfo;
         }
         $contents  = 'Error 404<br /><strong>page not found...</strong><br />';
-        $data->setContent( 'title', 'Page Not Found' );
-        $data->setContent( 'contents', $contents );
-        self::template( $ctrl, $data );
+        $_siteObj->setContent( 'title', 'Page Not Found' );
+        $_siteObj->setContent( 'contents', $contents );
+        self::template( $ctrl, $_siteObj );
     }
     // +-------------------------------------------------------------+
-    function actionException( $ctrl, $data ) {
+    function actionException( $ctrl, $_siteObj ) {
         // show some nasty things happened and apologize.
         echo 'something terrible has happend...<br />';
-        var_dump( $data );
-        self::template( $ctrl, $data );
+        var_dump( $_siteObj );
+        self::template( $ctrl, $_siteObj );
     }
     // +-------------------------------------------------------------+
     /**

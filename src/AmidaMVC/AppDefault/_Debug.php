@@ -1,8 +1,8 @@
 <?php
 
 class Debug extends AmidaMVC\Component\Debug {
-    static function actionDefault( $ctrl, \AmidaMVC\Component\SiteObj &$data ) {
-        $siteObj = $data->get( 'siteObj' );
+    static function actionDefault( $ctrl, \AmidaMVC\Component\SiteObj &$_siteObj ) {
+        $siteObj = $_siteObj->get( 'siteObj' );
         if( in_array( '_dev', $siteObj->command ) ) {
             self::_init();
         }

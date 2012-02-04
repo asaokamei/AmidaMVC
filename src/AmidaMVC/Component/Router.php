@@ -15,23 +15,23 @@ class Router
      * to determine which file to load.
      * @static
      * @param $ctrl
-     * @param $data
+     * @param $_siteObj
      * @return array|bool|mixed    $loadInfo for Loader.
      */
     static function actionDefault( 
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj $data ) 
+        \AmidaMVC\Component\SiteObj $_siteObj ) 
     {
         $loadInfo = call_user_func( self::$router, $ctrl->path_info );
         if( !$loadInfo ) {
-            $loadInfo = self::actionScan( $ctrl, $data );
+            $loadInfo = self::actionScan( $ctrl, $_siteObj );
         }
         if( !$loadInfo ) {
             $ctrl->setAction( '_pageNotFound' );
         }
         else {
             // action is as is; probably default.
-            $data->set( 'loadInfo', $loadInfo );
+            $_siteObj->set( 'loadInfo', $loadInfo );
         }
         static::fireRouterResult( $loadInfo );
         return $loadInfo;
@@ -40,12 +40,12 @@ class Router
     /** search file system for routes.
      * @static
      * @param $ctrl
-     * @param $data
+     * @param $_siteObj
      * @return array|bool   return $loadInfo or FALSE if not found
      */
     static function actionScan( 
         \AmidaMVC\Framework\Controller $ctrl, 
-        \AmidaMVC\Component\SiteObj &$data ) 
+        \AmidaMVC\Component\SiteObj &$_siteObj ) 
     {
         // search routes.
         $folder = $ctrl->getLocation();
@@ -56,12 +56,12 @@ class Router
     // +-------------------------------------------------------------+
     static function action_LoginForm( 
         \AmidaMVC\Framework\Controller $ctrl, 
-        \AmidaMVC\Component\SiteObj &$data ) {
+        \AmidaMVC\Component\SiteObj &$_siteObj ) {
         // show login form.
-        $siteInfo = $data->get( 'siteObj' );
-        if( isset( $siteInfo[ 'loginForm' ] ) ) {
+        $siteInfo = $_siteObj->get( 'siteObj' );
+        if( isset( $siteInfo->loginForm ) ) {
             $loadInfo = array(
-                'file' => $siteInfo[ 'loginForm' ],
+                'file' => $siteInfo->loginForm,
                 'action' => 'default',
             );
             return $loadInfo;

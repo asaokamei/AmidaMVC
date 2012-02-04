@@ -11,7 +11,7 @@ class Auth
     // +-------------------------------------------------------------+
     function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$data )
+        \AmidaMVC\Component\SiteObj &$_siteObj )
     {
         // default: do nothing...
         Debug::bug( 'wordy', 'Auth default... do nothing. ');
@@ -19,7 +19,7 @@ class Auth
     // +-------------------------------------------------------------+
     function action_logout(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$data )
+        \AmidaMVC\Component\SiteObj &$_siteObj )
     {
         // ok logout from 
         call_user_func( static::$logout_callback );
@@ -29,13 +29,13 @@ class Auth
     // +-------------------------------------------------------------+
     function action_dev(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$data )
+        \AmidaMVC\Component\SiteObj &$_siteObj )
     {
         Debug::bug( 'wordy', 'Auth for _dev... require authentification. ');
         $auth_info = call_user_func( static::$auth_callback );
         if( $auth_info ) {
             // authentication OK. 
-            $data->set( 'authInfo', $auth_info );
+            $_siteObj->set( 'authInfo', $auth_info );
             if( $auth_info[ 'auth_method'] == 'post' ) {
                 // just logged in. redirect to the top.
                 $ctrl->redirect( $ctrl->path_info );  

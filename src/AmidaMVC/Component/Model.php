@@ -4,7 +4,7 @@ namespace AmidaMVC\Component;
 class Model
 {
     // +-------------------------------------------------------------+
-    static function actionDefault( $ctrl, $view ) {
+    static function actionDefault( $ctrl, &$_siteObj ) {
 
     }
     // +-------------------------------------------------------------+
@@ -13,14 +13,14 @@ class Model
      * creates actionAction_Method like 'actionResource_put'.   
      * @static
      * @param \AmidaMVC\Framework\Controller $ctrl
-     * @param SiteObj $siteObj
+     * @param SiteObj $_siteObj
      */
     static function setRestMethod(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$siteObj )
+        \AmidaMVC\Component\SiteObj &$_siteObj )
     {
         $methods = array( '_post', '_put', '_delete', '_edit', '_new', '_get' );
-        $siteInfo = $siteObj->get( 'siteObj' );
+        $siteInfo = $_siteObj->get( 'siteObj' );
         $restMethod = FALSE;
         foreach( $methods as $method ) {
             if( in_array( $method, $siteInfo[ 'command' ] ) ) {
