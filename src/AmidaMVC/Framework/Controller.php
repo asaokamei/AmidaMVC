@@ -150,4 +150,12 @@ class Controller extends AmidaChain
         return $base;
     }
     // +-------------------------------------------------------------+
+    function actionFatal( $e=NULL ) {
+        if( !isset( $e ) ) {
+            set_exception_handler( array( $this, 'actionFatal' ) );
+            return $this;
+        }
+        \AmidaMVC\Component\Debug::format( 'table', $e->getTrace() );
+    }
+    // +-------------------------------------------------------------+
 }
