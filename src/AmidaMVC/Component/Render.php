@@ -62,7 +62,7 @@ class Render
         $_siteObj->setContent( '_path_info', $_ctrl->path_info );
         $_siteObj->setContent( 'debug', Debug::result() );
         $site = $_siteObj->get( 'siteObj' );
-        $template = $site[ 'template_file' ];
+        $template = $site->template_file;
         call_user_func( static::$template, $template, $_ctrl, $_siteObj );
     }
     // +-------------------------------------------------------------+

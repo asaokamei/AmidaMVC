@@ -6,11 +6,16 @@ namespace AmidaMVC\Tools;
  */
 class DataTO
 {
-    /** @var array   contains _data to transfer. */
-    var $_data = array();
     // +-------------------------------------------------------------+
-    function __construct() {
-        $this->_data = array();
+    function __construct( $data=NULL ) {
+        if( isset( $data ) ) {
+            $this->set( $data );
+        }
+    }
+    // +-------------------------------------------------------------+
+    function getInstance() {
+        $class = get_called_class();
+        return new $class;
     }
     // +-------------------------------------------------------------+
     //  setter and getter
@@ -22,13 +27,26 @@ class DataTO
      * @return $this.
      */
     function set( $name, $value=NULL ) {
-        if( is_array( $name ) ) {
-            $this->_data = array_merge( $this->_data, $name );
+        if( isset( $value ) ) {
+            if( is_array( $value ) ) {
+                $value = new DataTO( $value );
+            }
+            $this->$name = $value;
         }
-        else {
-            $this->_data[ $name ] = $value;
+        else if( is_array( $name ) ) {
+            foreach( $name as $k=>$v ) {
+                $this->$k = $v;
+            }
         }
         return $this;
+    }
+    // +-------------------------------------------------------------+
+    function _find( $name, $src=NULL ) {
+        if( !isset( $src ) ) $src = $this;
+        if( isset( $src->$name ) ) {
+            $value = $src->$name;
+        }
+        return $value;
     }
     // +-------------------------------------------------------------+
     /**
@@ -37,14 +55,15 @@ class DataTO
      * @return mix        returns the named value,
      *                     or all _data if name is not given.
      */
-    function get( $name=NULL ) {
+    function get( $name, $name2=NULL ) {
         if( $name === NULL ) {
-            return $this->_data;
+            return $this;
         }
-        if( isset( $this->_data[ $name ] ) ) {
-            return $this->_data[ $name ];
+        $value = $this->_find( $name );
+        if( isset( $name2 ) ) {
+            $value = $this->_find( $name2, $value );
         }
-        return FALSE;
+        return $value;
     }
     // +-------------------------------------------------------------+
 }

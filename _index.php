@@ -30,7 +30,7 @@ $ctrl
     ->addComponent( 'Loader', 'loader' )
     ->addComponent( 'Render', 'render' )
 ;
-$data = new \AmidaMVC\Component\SiteObj();
+$data = \AmidaMVC\Component\SiteObj::getInstance();
 $ctrl->start( $data );
 
 

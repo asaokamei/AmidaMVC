@@ -20,7 +20,6 @@ class SiteObj extends \AmidaMVC\Tools\DataTO
     function __construct() {
         parent::__construct();
 
-        $this->contentObj = new \AmidaMVC\Tools\DataTO();
         $htmlDefault = array(
             'content_type'   => 'html',
             'file_name'      => '',
@@ -30,8 +29,7 @@ class SiteObj extends \AmidaMVC\Tools\DataTO
             'bread'      => '',
             'debug'      => false,
         );
-        $this->contentObj->set( $htmlDefault );
-        $this->responseObj = new \AmidaMVC\Tools\DataTO();
+        $this->set( 'contentObj', $htmlDefault );
         $responseDefault = array(
             'content'     => '',
             'status_code' => 200,
@@ -39,7 +37,7 @@ class SiteObj extends \AmidaMVC\Tools\DataTO
             'http_header' => array(),
             'mime_type'   => 'text/html'
         );
-        $this->responseObj->set( $responseDefault );
+        $this->set( 'responseObj', $responseDefault );
     }
     // +-------------------------------------------------------------+
     /**
