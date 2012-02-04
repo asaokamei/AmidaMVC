@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title><?php echo $head_title; ?></title>
-    <link rel="stylesheet" href="<?php echo $_ctrl->getBaseUrl(); ?>/demo.css" />
+    <link rel="stylesheet" href="<?php echo $_siteObj->siteObj->base_url; ?>/demo.css" />
 </head>
 <body>
 <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>">AmidaMVC Framework</a></header>

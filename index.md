@@ -37,8 +37,8 @@ some other interesting demo:
 *   [sample HTML file](example.html)
 *   [AmidaMVC application (_index.php)](indexView)
 *   [To-Do demo application](todo/list)
-*   <?php echo ( $_site->mode == '_dev' ) ? 'Login (already logged in...)' : '[Login for Developer\'s Mode](_dev/)'; ?>  
-    Shows Debug Info$_site->mode['mode'] == '_dev' ) ? '[Logout](_logout/)' : 'Logout (not logged in...)'; ?>
+*   Developer's Mode shows debug info: 
+    <?php echo ( $_siteObj->siteObj->mode == '_dev' ) ? '[Logout](_logout/)' : '[Login](_dev/)'; ?>  
 
 Amida-Chain
 -----------

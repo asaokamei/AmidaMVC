@@ -99,7 +99,6 @@ class Loader
     }
     // +-------------------------------------------------------------+
     function getContentsByOb( $_ctrl, &$_siteObj, $file_name ) {
-        $_site = $_siteObj->get( 'siteObj' );
         ob_start();
         ob_implicit_flush(0);
         require( $file_name );
