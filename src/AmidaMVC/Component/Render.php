@@ -4,6 +4,7 @@ namespace AmidaMVC\Component;
 class Render
 {
     static $template = array( '\AmidaMVC\Tools\Template', 'inject' );
+    static $convert  = array( '\AmidaMVC\Tools\Template', 'convertContents' );
     // +-------------------------------------------------------------+
     /**
      * renders data (to html) and output data.
@@ -61,9 +62,15 @@ class Render
         $_siteObj->setContent( '_base_url',  $_ctrl->base_url );
         $_siteObj->setContent( '_path_info', $_ctrl->path_info );
         $_siteObj->setContent( 'debug', Debug::result() );
-        $site = $_siteObj->get( 'siteObj' );
-        $template = $site->template_file;
-        call_user_func( static::$template, $template, $_ctrl, $_siteObj );
+        $siteObj = $_siteObj->get( 'siteObj' );
+        $template = $siteObj->template_file;
+        $args = (array) $_siteObj->getContent();
+
+        $args = call_user_func( static::$convert, $args );
+        $args[ '_ctrl' ] = $_ctrl;
+        $args[ '_siteObj' ] = $_siteObj;
+
+        call_user_func( static::$template, $template, $args );
     }
     // +-------------------------------------------------------------+
     function findMimeType( $file_ext ) {

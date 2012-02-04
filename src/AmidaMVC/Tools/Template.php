@@ -12,15 +12,12 @@ class Template
     static $ext_md   = array( 'md', 'markdown' );
     static $ext_text = array( 'text', 'txt' );
     // +-------------------------------------------------------------+
-    function inject( $template, $_ctrl, $_siteObj ) {
-        $_data = (array) $_siteObj->getContent();
-        $_site = $_siteObj->get( 'siteObj' );
-        self::convertContents( $_data );
+    function inject( $template, $_data ) {
         extract( $_data );
         include( $template );
     }
     // +-------------------------------------------------------------+
-    function convertContents( &$data ) {
+    function convertContents( $data ) {
         $content_type = $data[ 'content_type' ];
         if( !$content_type ) {
             $content_type = pathinfo( $data[ 'file_name' ], PATHINFO_EXTENSION );
@@ -37,6 +34,7 @@ class Template
         else if( in_array( $content_type, static::$ext_md ) ) {
             self::loadMarkdown( $data );
         }
+        return $data;
     }
     // +-------------------------------------------------------------+
     function loadPhpAsCode( &$data ) {
