@@ -28,8 +28,18 @@ class Debug extends AmidaMVC\Component\Debug {
         );
         \AmidaMVC\Framework\Event::hook(
             'Router::result',
-            array( 'Debug', 'listener' )
+            array( 'Debug', 'listenerTable' )
         );
+    }
+    // +-------------------------------------------------------------+
+    static function listenerTable() {
+        $args  = func_get_args();
+        $event = $args[0];
+        $args  = array_slice( $args, 1 );
+        if( count( $args ) <= 1 ) {
+            $args[1] = '[event]' . $event;
+        }
+        self::bug( 'table', $args[0], $args[1] );
     }
     // +-------------------------------------------------------------+
     static function listener() {
