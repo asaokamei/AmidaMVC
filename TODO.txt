@@ -7,8 +7,6 @@ AmidaMVC ToDos.
 [ ] add _edit/_put/_post/_delete command. 
 [ ] add _backup command. 
 [ ] restrict command with mode. 
-[ ] refactor
-    - Render/Template. 
 [ ] add delete in todo app. 
 [X] 2012/01/20  use template
 [X] 2012/01/21  Renamed Viewer to Render.
@@ -33,6 +31,7 @@ AmidaMVC ToDos.
 [X] 2012/01/28  make todo app.
 [X] 2012/02/04  refactored siteObj; everything is an object. 
 [X] 2012/02/05  added _view/_src/_raw loadMode. 
+[X] 2012/02/05  refactored Render and Loader... slightly. 
 
 * Demo in Cena-Dta
 
