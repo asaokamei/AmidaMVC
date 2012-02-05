@@ -13,9 +13,9 @@ class Render
      */
     function actionDefault( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         if( !$_siteObj->isResponseReady() ) {
-            self::template( $_ctrl, $_siteObj );
+            static::template( $_ctrl, $_siteObj );
         }
-        self::emitResponse( $_ctrl, $_siteObj );
+        static::emitResponse( $_ctrl, $_siteObj );
         return;
     }
     // +-------------------------------------------------------------+
@@ -36,14 +36,14 @@ class Render
         $contents  = 'Error 404<br /><strong>page not found...</strong><br />';
         $_siteObj->setContent( 'title', 'Page Not Found' );
         $_siteObj->setContent( 'contents', $contents );
-        self::template( $ctrl, $_siteObj );
+        static::template( $ctrl, $_siteObj );
     }
     // +-------------------------------------------------------------+
     function actionException( $ctrl, $_siteObj ) {
         // show some nasty things happened and apologize.
         echo 'something terrible has happend...<br />';
         var_dump( $_siteObj );
-        self::template( $ctrl, $_siteObj );
+        static::template( $ctrl, $_siteObj );
     }
     // +-------------------------------------------------------------+
     /**
@@ -56,7 +56,7 @@ class Render
      */
     function template( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         if( $_siteObj->isResponseReady() ) {
-            self::emitResponse( $_ctrl, $_siteObj );
+            static::emitResponse( $_ctrl, $_siteObj );
             return;
         }
         $_siteObj->setContent( 'debug', Debug::result() );

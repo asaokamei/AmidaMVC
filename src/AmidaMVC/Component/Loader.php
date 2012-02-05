@@ -31,7 +31,7 @@ class Loader
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $loadInfo ) 
     {
-        $loadMode  = self::findLoadMode( $_siteObj );
+        $loadMode  = static::findLoadMode( $_siteObj );
         $file_name = $loadInfo['file'];
         $base_name = basename( $file_name );
         $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
@@ -45,14 +45,14 @@ class Loader
         // load the file
         static::fireLoad( $loadInfo );
         if( $file_ext == 'php' && substr( $base_name, 0, 4 ) == '_App' ) {
-            self::loadApp( $ctrl, $_siteObj, $loadInfo );
+            static::loadApp( $ctrl, $_siteObj, $loadInfo );
         }
         else if( isset( static::$ext_type[$file_ext] ) ) {
             $method = 'load' . $loadMode;
-            self::$method( $ctrl, $_siteObj, $loadInfo );
+            static::$method( $ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_asis ) ) {
-            self::loadAsIs( $ctrl, $_siteObj, $loadInfo, $file_ext );
+            static::loadAsIs( $ctrl, $_siteObj, $loadInfo, $file_ext );
         }
     }
     // +-------------------------------------------------------------+
@@ -78,7 +78,7 @@ class Loader
     }
     // +-------------------------------------------------------------+
     function load_view( $_ctrl, $_siteObj, $loadInfo ) {
-        $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+        $content = static::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
         $file_ext  = pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION );
         $file_type = static::$ext_type[ $file_ext ];
@@ -86,13 +86,13 @@ class Loader
     }
     // +-------------------------------------------------------------+
     function load_src( $_ctrl, $_siteObj, $loadInfo ) {
-        $content = self::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+        $content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
         $_siteObj->setContentType( 'php' );
     }
     // +-------------------------------------------------------------+
     function load_raw( $_ctrl, $_siteObj, $loadInfo ) {
-        $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+        $content = static::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setHttpContent( $content );
         $_siteObj->setContentType( 'text' );
     }
@@ -111,7 +111,7 @@ class Loader
     // +-------------------------------------------------------------+
     function loadAsIs( $_ctrl, &$_siteObj, $loadInfo, $_file_ext ) {
         $responseObj = $_siteObj->get( 'responseObj' );
-        $responseObj->content = self::getContentsByGet( $_ctrl, $_siteObj, $loadInfo['file'] );
+        $responseObj->content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo['file'] );
         $responseObj->mime_type = '';
         $_siteObj->setFileName( $loadInfo[ 'file' ] );
         $_siteObj->setContentType( 'as_is' );
