@@ -121,6 +121,7 @@ class Loader
         $_siteObj->setFileName( $loadInfo[ 'file' ] );
         $_siteObj->setContentType( 'as_is' );
         $_siteObj->set( 'responseObj', $responseObj );
+        $_siteObj->setEmitAsIs();
     }
     // +-------------------------------------------------------------+
 }

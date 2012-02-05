@@ -55,8 +55,7 @@ class SiteObj extends \AmidaMVC\Tools\DataTO
         return $this->responseObj->get( $name );
     }
     // +-------------------------------------------------------------+
-    function setHttpContent( $value ) {
-        $this->setResponse( 'content', $value );
+    function setEmitAsIs() {
         $this->as_is = TRUE;
         return $this;
     }
