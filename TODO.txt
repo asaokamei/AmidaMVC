@@ -9,7 +9,6 @@ AmidaMVC ToDos.
 [ ] restrict command with mode. 
 [ ] refactor
     - Render/Template. 
-    - SiteObj DTO is not easy to use. 
 [ ] add delete in todo app. 
 [X] 2012/01/20  use template
 [X] 2012/01/21  Renamed Viewer to Render.
@@ -33,6 +32,7 @@ AmidaMVC ToDos.
 [X] 2012/01/27  made login/out nicely. 
 [X] 2012/01/28  make todo app.
 [X] 2012/02/04  refactored siteObj; everything is an object. 
+[X] 2012/02/05  added _view/_src/_raw loadMode. 
 
 * Demo in Cena-Dta
 
