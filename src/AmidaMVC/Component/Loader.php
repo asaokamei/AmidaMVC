@@ -13,6 +13,15 @@ class Loader
     static $ext_text = array( 'text', 'txt' );
     static $ext_file = array( '' );
     static $ext_asis = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
+    static $ext_type = array(
+        'php'      => 'html',
+        'html'     => 'html',
+        'html'     => 'html',
+        'md'       => 'markdown',
+        'markdown' => 'markdown',
+        'text'     => 'text',
+        'txt'      => 'text',
+    );
     // +-------------------------------------------------------------+
     /**
      * loads file based on $loadInfo, determined by Router.
@@ -27,6 +36,9 @@ class Loader
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $loadInfo ) 
     {
+        $loadMode  = self::findLoadMode( $_siteObj );
+        $loadInfo[ 'loaadMode' ] = $loadMode;
+        
         $file_name = $loadInfo['file'];
         $base_name = basename( $file_name );
         $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
@@ -34,25 +46,15 @@ class Loader
         $action    = ( isset( $loadInfo['action'] ) ) ? $loadInfo['action'] : $ctrl->getAction();
         \AmidaMVC\Framework\Event::fire( 'Loader::load', $loadInfo );
         $ctrl->setAction( $action );
-        // load the file
+        $_siteObj->set( 'loadInfo', $loadInfo );
         $_siteObj->setFileName( $file_name );
+        // load the file
         if( $file_ext == 'php' && substr( $base_name, 0, 4 ) == '_App' ) {
             self::loadApp( $ctrl, $_siteObj, $loadInfo );
         }
-        else if( $file_ext == 'php' ) {
-            self::loadPhpAsCode( $ctrl, $_siteObj, $loadInfo );
-        }
-        else if( in_array( $file_ext, static::$ext_html ) ) {
-            self::loadHtml( $ctrl, $_siteObj, $loadInfo );
-        }
-        else if( in_array( $file_ext, static::$ext_text ) ) {
-            self::loadText( $ctrl, $_siteObj, $loadInfo );
-        }
-        else if( in_array( $file_ext, static::$ext_md ) ) {
-            self::loadMarkdown( $ctrl, $_siteObj, $loadInfo );
-        }
-        else if( in_array( $file_ext, static::$ext_file ) ) {
-            self::loadFile( $ctrl, $_siteObj, $loadInfo );
+        else if( isset( static::$ext_type[$file_ext] ) ) {
+            $method = 'load' . $loadMode;
+            self::$method( $ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_asis ) ) {
             self::loadAsIs( $ctrl, $_siteObj, $loadInfo, $file_ext );
@@ -64,38 +66,44 @@ class Loader
         // maybe load sorry file.
     }
     // +-------------------------------------------------------------+
+    function findLoadMode( &$_siteObj ) {
+        $modes = array( '_raw', '_src' );
+        $loadMode  = '_view';
+        foreach( $modes as $mode ) {
+            if( in_array( $mode, $_siteObj->siteObj->command ) ) {
+                $loadMode = $mode;
+                break;
+            }
+        }
+        return $loadMode;
+    }
+    // +-------------------------------------------------------------+
     function loadApp( $_ctrl, &$_siteObj, $loadInfo ) {
         include $loadInfo[ 'file' ];
     }
     // +-------------------------------------------------------------+
-    function loadPhpAsExec( $_ctrl, &$_siteObj, $loadInfo ) {
+    function load_view( $_ctrl, $_siteObj, $loadInfo ) {
         $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
-        $_siteObj->setContentType( 'html' );
+        $file_ext  = pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION );
+        $file_type = static::$ext_type[ $file_ext ];
+        $_siteObj->setContentType( $file_type );
     }
     // +-------------------------------------------------------------+
-    function loadPhpAsCode( $_ctrl, &$_siteObj, $loadInfo ) {
-        $content = file_get_contents( $loadInfo[ 'file' ] );
+    function load_src( $_ctrl, $_siteObj, $loadInfo ) {
+        $content = self::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
         $_siteObj->setContents( $content );
         $_siteObj->setContentType( 'php' );
     }
     // +-------------------------------------------------------------+
-    function loadText( $_ctrl, &$_siteObj, $loadInfo ) {
+    function load_raw( $_ctrl, $_siteObj, $loadInfo ) {
         $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
-        $_siteObj->setContents( $content );
+        $_siteObj->setHttpContent( $content );
         $_siteObj->setContentType( 'text' );
     }
     // +-------------------------------------------------------------+
-    function loadHtml( $_ctrl, &$_siteObj, $loadInfo ) {
-        $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
-        $_siteObj->setContents( $content );
-        $_siteObj->setContentType( 'html' );
-    }
-    // +-------------------------------------------------------------+
-    function loadMarkdown( $_ctrl, &$_siteObj, $loadInfo ) {
-        $content = self::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
-        $_siteObj->setContents( $content );
-        $_siteObj->setContentType( 'markdown' );
+    function getContentsByGet( $_ctrl, &$_siteObj, $file_name ) {
+        return file_get_contents( $file_name );
     }
     // +-------------------------------------------------------------+
     function getContentsByOb( $_ctrl, &$_siteObj, $file_name ) {
@@ -107,14 +115,12 @@ class Loader
     }
     // +-------------------------------------------------------------+
     function loadAsIs( $_ctrl, &$_siteObj, $loadInfo, $_file_ext ) {
-        $_siteObj->setHttpContent( file_get_contents( $loadInfo[ 'file' ] ) );
+        $responseObj = $_siteObj->get( 'responseObj' );
+        $responseObj->content = self::getContentsByGet( $_ctrl, $_siteObj, $loadInfo['file'] );
+        $responseObj->mime_type = '';
         $_siteObj->setFileName( $loadInfo[ 'file' ] );
         $_siteObj->setContentType( 'as_is' );
-    }
-    // +-------------------------------------------------------------+
-    function loadFile( $_ctrl, &$_siteObj, $loadInfo ) {
-        $_siteObj->setContents( file_get_contents( $loadInfo[ 'file' ] ) );
-        $_siteObj->setFileName( $loadInfo[ 'file' ] );
+        $_siteObj->set( 'responseObj', $responseObj );
     }
     // +-------------------------------------------------------------+
 }
