@@ -7,11 +7,6 @@ namespace AmidaMVC\Component;
 class Loader
 {
     // extensions to determine which load types. 
-    static $ext_php  = array( 'php' );
-    static $ext_html = array( 'html', 'html' );
-    static $ext_md   = array( 'md', 'markdown' );
-    static $ext_text = array( 'text', 'txt' );
-    static $ext_file = array( '' );
     static $ext_asis = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
     static $ext_type = array(
         'php'      => 'html',
@@ -37,18 +32,18 @@ class Loader
         $loadInfo ) 
     {
         $loadMode  = self::findLoadMode( $_siteObj );
-        $loadInfo[ 'loaadMode' ] = $loadMode;
-        
         $file_name = $loadInfo['file'];
         $base_name = basename( $file_name );
         $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
+        
         $loadInfo[ 'ext' ] = $file_ext;
+        $loadInfo[ 'loaadMode' ] = $loadMode;
         $action    = ( isset( $loadInfo['action'] ) ) ? $loadInfo['action'] : $ctrl->getAction();
-        \AmidaMVC\Framework\Event::fire( 'Loader::load', $loadInfo );
         $ctrl->setAction( $action );
         $_siteObj->set( 'loadInfo', $loadInfo );
         $_siteObj->setFileName( $file_name );
         // load the file
+        static::fireLoad( $loadInfo );
         if( $file_ext == 'php' && substr( $base_name, 0, 4 ) == '_App' ) {
             self::loadApp( $ctrl, $_siteObj, $loadInfo );
         }
@@ -122,6 +117,9 @@ class Loader
         $_siteObj->setContentType( 'as_is' );
         $_siteObj->set( 'responseObj', $responseObj );
         $_siteObj->setEmitAsIs();
+    }
+    // +-------------------------------------------------------------+
+    function fireLoad( $loadInfo ) {
     }
     // +-------------------------------------------------------------+
 }
