@@ -11,8 +11,12 @@ class Render
      * @param $ctrl
      * @param $data
      */
-    function actionDefault( $ctrl, $data ) {
-        self::template( $ctrl, $data );
+    function actionDefault( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+        if( !$_siteObj->isResponseReady() ) {
+            self::template( $_ctrl, $_siteObj );
+        }
+        self::emitResponse( $_ctrl, $_siteObj );
+        return;
     }
     // +-------------------------------------------------------------+
     function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
@@ -52,18 +56,9 @@ class Render
      */
     function template( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         if( $_siteObj->isResponseReady() ) {
-            $mime_type = $_siteObj->get( 'responseObj', 'mime_type' );
-            if( !$mime_type ) {
-                $file_name = $_siteObj->getContent( 'file_name' );
-                $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
-                $mime_type = self::findMimeType( $file_ext );
-            }
-            header("Content-type:" . $mime_type );
-            echo $_siteObj->getResponse( 'content' );
+            self::emitResponse( $_ctrl, $_siteObj );
             return;
         }
-        $_siteObj->setContent( '_base_url',  $_ctrl->base_url );
-        $_siteObj->setContent( '_path_info', $_ctrl->path_info );
         $_siteObj->setContent( 'debug', Debug::result() );
         $siteObj = $_siteObj->get( 'siteObj' );
         $template = $siteObj->template_file;
@@ -73,7 +68,24 @@ class Render
         $args[ '_ctrl' ] = $_ctrl;
         $args[ '_siteObj' ] = $_siteObj;
 
+        ob_start();
+        ob_implicit_flush(0);
         call_user_func( static::$template, $template, $args );
+        $content = ob_get_clean();
+        $_siteObj->setResponse( 'content', $content );
+        return;
+    }
+    // +-------------------------------------------------------------+
+    function emitResponse( $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+        $mime_type = $_siteObj->get( 'responseObj', 'mime_type' );
+        if( !$mime_type ) {
+            $file_name = $_siteObj->getContent( 'file_name' );
+            $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
+            $mime_type = self::findMimeType( $file_ext );
+        }
+        header("Content-type:" . $mime_type );
+        echo $_siteObj->getResponse( 'content' );
+        return;
     }
     // +-------------------------------------------------------------+
     function findMimeType( $file_ext ) {
