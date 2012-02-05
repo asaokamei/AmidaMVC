@@ -6,7 +6,7 @@ view source code for AmidaMVC Framework.
 file
 ----
 
-*   [bootstrap.php](bootstrap.php):  
+*   [bootstrap.php](bootstrap.php/_src):  
     include this file when using AmidaMVC.
     setup auto loading for AmidaMVC's classes.
 
