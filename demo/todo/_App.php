@@ -124,6 +124,7 @@ class appTodo extends AmidaMVC\Component\Model
                     else {                // done -> active
                         $do[1] = '1';
                     }
+                    break;
                 }
             }
             self::putTodo( $todo );
