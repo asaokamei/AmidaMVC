@@ -31,7 +31,7 @@ class appTodo extends AmidaMVC\Component\Model
             $line = '"' . implode( '","', $do ) . '"';
             $data .= $line . "\n";
         }
-        file_put_contents( static::$todo_file, $data );
+        $return = file_put_contents( static::$todo_file, $data );
     }
     // +-------------------------------------------------------------+
     static function getTodo( $raw=FALSE ) {

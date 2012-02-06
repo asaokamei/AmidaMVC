@@ -22,9 +22,9 @@ class Render
     function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         // show some excuses, or blame user for not finding a page.
         $siteObj = $_siteObj->get( 'siteObj' );
-        if( isset( $siteObj[ 'pageNotFound' ] ) ) {
+        if( isset( $siteObj->pageNotFound ) ) {
             $loadInfo = array(
-                'file' => $siteObj[ 'pageNotFound' ],
+                'file' => $siteObj->pageNotFound,
             );
             $ctrl->setAction( $ctrl->defaultAct() );
             $ctrl->prependComponent( array(

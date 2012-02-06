@@ -39,21 +39,24 @@ class Loader
         $loadInfo[ 'ext' ] = $file_ext;
         $loadInfo[ 'loaadMode' ] = $loadMode;
         $action    = ( isset( $loadInfo['action'] ) ) ? $loadInfo['action'] : $_ctrl->getAction();
-        $_ctrl->setAction( $action );
-        $_siteObj->set( 'loadInfo', $loadInfo );
-        $_siteObj->setFileName( $file_name );
         // load the file
         static::fireLoad( $loadInfo );
         if( $file_ext == 'php' && substr( $base_name, 0, 4 ) == '_App' ) {
             static::loadApp( $_ctrl, $_siteObj, $loadInfo );
+            $loadInfo[ 'loadMode' ] = '_App';
         }
         else if( isset( static::$ext_type[$file_ext] ) ) {
             $method = 'load' . $loadMode;
+            $loadInfo[ 'loadMode' ] = $loadMode;
             static::$method( $_ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_asis ) ) {
             static::loadAsIs( $_ctrl, $_siteObj, $loadInfo );
+            $loadInfo[ 'loadMode' ] = 'AsIs';
         }
+        $_ctrl->setAction( $action );
+        $_siteObj->set( 'loadInfo', $loadInfo );
+        $_siteObj->setFileName( $file_name );
     }
     // +-------------------------------------------------------------+
     function action_pageNotFound( $_ctrl, &$_siteObj ) {

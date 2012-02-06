@@ -18,7 +18,7 @@ class Filer
         $folder    = dirname( $file_name );
         $basename  = basename( $file_name );
         $curr_mode = $siteObj->siteObj->mode;
-        $file_to_edit  = "{$folder}/{$curr_mode}.{$basename}";
+        $file_to_edit  = "{$folder}/{$curr_mode}-{$basename}";
         return $file_to_edit;
     }
     // +-------------------------------------------------------------+
@@ -46,6 +46,8 @@ class Filer
             $content = $_POST[ '_putContent' ];
             file_put_contents( $file_to_edit, $content );
             $loadInfo[ 'file' ] = $file_to_edit;
+            $reload = $ctrl->getPathInfo();
+            $ctrl->redirect( $reload );
         }
         return $loadInfo;
     }

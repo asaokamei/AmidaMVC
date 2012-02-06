@@ -37,6 +37,9 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
     <p style="clear: both;"></p>
 </div>
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
+<?php if( $_siteObj->loadInfo->loadMode == '_view' ) { ?>
+    <div><a href="<?php echo $self;?>/_edit" >edit</a> </div>
+<?php } ?>
 <?php if( !empty( $debug ) ) { ?>
 <style>
     div.debugInfo {
