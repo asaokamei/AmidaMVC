@@ -6,6 +6,7 @@ class Config extends \AmidaMVC\Component\Config {
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
+        if( static::checkInit( $ctrl, $_siteObj ) ) return;
         parent::actionDefault( $ctrl, $_siteObj );
         $siteObj = $_siteObj->get( 'siteObj' );
         $option = array(
@@ -14,6 +15,31 @@ class Config extends \AmidaMVC\Component\Config {
             'loginForm'     => $ctrl->ctrl_root . '/_Config/loginForm.md',
         );
         $siteObj->set( $option ); 
+        if( $siteObj->mode ) {
+            $ctrl->setAction( $siteObj->mode );
+            $ctrl->addComponentAfter( 'auth', 'Config', 'config' );
+        }
+    }
+    // +-------------------------------------------------------------+
+    function action_dev(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj )
+    {
+        $siteObj = $_siteObj->get( 'siteObj' );
+        $option = array(
+            'template_file' => $ctrl->ctrl_root . '/_Config/template._dev.php',
+        );
+        $siteObj->set( $option );
+    }
+    // +-------------------------------------------------------------+
+    function checkInit(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj )
+    {
+        if( $_siteObj->get( 'siteObj' ) ) {
+            return TRUE;
+        }
+        return FALSE;
     }
     // +-------------------------------------------------------------+
 }

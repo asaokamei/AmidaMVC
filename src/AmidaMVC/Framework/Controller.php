@@ -70,6 +70,7 @@ class Controller extends AmidaChain
         else {
             $action = $this->_defaultAct;
         }
+        $action = $this->_defaultAct;
         return $this->dispatch( $action, $view );
     }
     // +-------------------------------------------------------------+

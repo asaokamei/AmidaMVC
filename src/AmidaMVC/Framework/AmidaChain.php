@@ -131,6 +131,17 @@ class AmidaChain
         return $this;
     }
     // +-------------------------------------------------------------+
+    function addComponentAfter( $addAfterThisName, $compInfo, $name ) {
+        $new_components = array();
+        foreach( $this->_components as $comp ) {
+            $new_components[] = $comp;
+            if( $addAfterThisName === $comp[1] ) {
+                $new_components[] = array( $compInfo, $name );
+            }
+        }
+        $this->_components = $new_components;
+    }
+    // +-------------------------------------------------------------+
     /**
      * getter/setter for useNextComponent flag. 
      * @param null $next
