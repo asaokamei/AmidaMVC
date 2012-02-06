@@ -32,14 +32,4 @@ class Config extends \AmidaMVC\Component\Config {
         $siteObj->set( $option );
     }
     // +-------------------------------------------------------------+
-    function checkInit(
-        \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$_siteObj )
-    {
-        if( $_siteObj->get( 'siteObj' ) ) {
-            return TRUE;
-        }
-        return FALSE;
-    }
-    // +-------------------------------------------------------------+
 }

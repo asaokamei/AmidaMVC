@@ -20,6 +20,16 @@ class Config
         self::setRoute( $ctrl, $siteObj );
     }
     // +-------------------------------------------------------------+
+    function checkInit(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj )
+    {
+        if( $_siteObj->get( 'siteObj' ) ) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
     function findMode( $command )
     {
         foreach( static::$mode_list as $mode ) {
