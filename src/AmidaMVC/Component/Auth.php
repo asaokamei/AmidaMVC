@@ -31,7 +31,7 @@ class Auth
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
-        Debug::bug( 'wordy', 'Auth for _dev... require authentification. ');
+        Debug::bug( 'wordy', 'Auth for _dev... require authentication. ');
         $auth_info = call_user_func( static::$auth_callback );
         if( $auth_info ) {
             // authentication OK. 
