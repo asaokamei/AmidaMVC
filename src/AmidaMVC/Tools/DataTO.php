@@ -41,7 +41,14 @@ class DataTO
         return $this;
     }
     // +-------------------------------------------------------------+
+    /**
+     * finds property $name from $this, or from $src if given. 
+     * @param $name       name of property to find. 
+     * @param null $src   source to look at. 
+     * @return null       found data.
+     */
     function _find( $name, $src=NULL ) {
+        $value = NULL;
         if( !isset( $src ) ) $src = $this;
         if( isset( $src->$name ) ) {
             $value = $src->$name;
@@ -51,9 +58,10 @@ class DataTO
     // +-------------------------------------------------------------+
     /**
      * getter for $name. if $name is not given, return all the _data.
-     * @param string $name name of value to get.
-     * @return mix        returns the named value,
-     *                     or all _data if name is not given.
+     * @param string $name    name of value to get.
+     * @param null $name2     name of value in sub-data.
+     * @return mix            returns the named value,
+     *                        or all _data if name is not given.
      */
     function get( $name, $name2=NULL ) {
         if( $name === NULL ) {
