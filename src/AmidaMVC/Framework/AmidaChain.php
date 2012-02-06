@@ -94,8 +94,8 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * append a component to AmidaChain.
-     * @param array|string $compInfo
-     * @param null $name
+     * @param array|string $compInfo   
+     * @param null $name 
      * @return AmidaChain
      */
     function appendComponent( $compInfo, $name=NULL ) {
@@ -131,6 +131,12 @@ class AmidaChain
         return $this;
     }
     // +-------------------------------------------------------------+
+    /**
+     * add a component after given component name (addAfterThisName). 
+     * @param $addAfterThisName    add new component after this name. 
+     * @param $compInfo            component class or object. 
+     * @param $name                name of the new component. 
+     */
     function addComponentAfter( $addAfterThisName, $compInfo, $name ) {
         $new_components = array();
         foreach( $this->_components as $comp ) {
@@ -224,6 +230,11 @@ class AmidaChain
         return $this->_action;
     }
     // +-------------------------------------------------------------+
+    /**
+     * setter for action, but uses the same component. 
+     * @param $action      action name. 
+     * @return string      returns the new action. 
+     */
     function setMyAction( $action ) {
         $this->setAction( $action );
         $this->useNextComponent( FALSE );
@@ -231,6 +242,7 @@ class AmidaChain
     }
     // +-------------------------------------------------------------+
     /**
+     * setter/getter for default action. 
      * @param null $action
      * @return string
      */
