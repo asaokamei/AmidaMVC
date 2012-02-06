@@ -64,12 +64,6 @@ class Controller extends AmidaChain
      * @return bool|mixed|null  returned value from the last component.
      */
     function start( &$view ) {
-        if( isset( $this->routes[0] ) && "" !== "{$this->routes[0]}" ) {
-            $action = $this->routes[0];
-        }
-        else {
-            $action = $this->_defaultAct;
-        }
         $action = $this->_defaultAct;
         return $this->dispatch( $action, $view );
     }
