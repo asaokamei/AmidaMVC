@@ -1,3 +1,11 @@
+<?php
+
+// filer's mode; _edit, _put, _pub, _del,...
+$file_mode = $_siteObj->siteObj->file_mode;
+// myself.
+$self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
+    
+?>
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -11,7 +19,21 @@
     <?php if( $title ) { ?>
     <h1><?php echo $title; ?></h1>
     <?php } ?>
-    <?php echo $contents; ?>
+    <?php 
+    if( $file_mode == '_edit' ) {
+        // show form to edit contents.
+?>
+        <form method="post" name="_editFile" action="<?php echo $self?>/_put">
+            <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;"><?php echo htmlspecialchars( $contents ); ?></textarea>
+            <input type="submit" name="submit" value="put contents"/>
+        </form>
+<?php 
+    }
+    else {
+        echo $contents;
+    }
+    
+    ?>
     <p style="clear: both;"></p>
 </div>
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>

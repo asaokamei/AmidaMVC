@@ -148,6 +148,10 @@ class Controller extends AmidaChain
         return $base;
     }
     // +-------------------------------------------------------------+
+    function getPathInfo() {
+        return $this->path_info;
+    }
+    // +-------------------------------------------------------------+
     function actionFatal( $e=NULL ) {
         if( !isset( $e ) ) {
             set_exception_handler( array( $this, 'actionFatal' ) );

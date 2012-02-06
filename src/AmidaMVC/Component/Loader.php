@@ -62,7 +62,7 @@ class Loader
     }
     // +-------------------------------------------------------------+
     function findLoadMode( &$_siteObj ) {
-        $modes = array( '_raw', '_src' );
+        $modes = array( '_raw', '_src', '_edit' );
         $loadMode  = '_view';
         foreach( $modes as $mode ) {
             if( in_array( $mode, $_siteObj->siteObj->command ) ) {
@@ -108,6 +108,15 @@ class Loader
         $_siteObj->setHttpContent( $content );
         $_siteObj->setContentType( 'text' );
         $_siteObj->setEmitAsIs();
+    }
+// +-------------------------------------------------------------+
+    function load_edit(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        $loadInfo ) {
+        $content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+        $_siteObj->setContents( $content );
+        $_siteObj->setContentType( 'as_is' );
     }
     // +-------------------------------------------------------------+
     function getContentsByGet(

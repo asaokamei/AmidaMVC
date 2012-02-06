@@ -37,6 +37,7 @@ some other interesting demo:
 *   [sample HTML file](example.html)
 *   [AmidaMVC application (_index.php)](indexView/_src)
 *   [To-Do demo application](todo/list)
+*   [Command List of AmidaMVC](Command.md)
 *   Developer's Mode shows debug info: 
     <?php echo ( $_siteObj->siteObj->mode == '_dev' ) ? '[Logout](_logout/)' : '[Login](_dev/)'; ?>  
 
