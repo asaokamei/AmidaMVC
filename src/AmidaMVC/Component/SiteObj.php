@@ -60,6 +60,11 @@ class SiteObj extends \AmidaMVC\Tools\DataTO
         return $this;
     }
     // +-------------------------------------------------------------+
+    public function setHttpContent( $content ) {
+        $this->setResponse( 'content', $content );
+        return $this;
+    }
+    // +-------------------------------------------------------------+
     function setMimeType( $mime ) {
         $this->setResponse( 'mime_type', $mime );
         return $this;
