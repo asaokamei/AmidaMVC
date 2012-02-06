@@ -14,17 +14,14 @@ class Config extends \AmidaMVC\Component\Config {
             'template_file' => $ctrl->ctrl_root . '/_Config/template.php',
             'loginForm'     => $ctrl->ctrl_root . '/_Config/loginForm.md',
         );
-        $siteObj->set( $option ); 
-        if( $siteObj->mode ) {
-            $ctrl->setAction( $siteObj->mode );
-            $ctrl->addComponentAfter( 'auth', 'Config', 'config' );
-        }
+        $siteObj->set( $option );
     }
     // +-------------------------------------------------------------+
     function action_dev(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
+        parent::action_dev( $ctrl, $_siteObj );
         $siteObj = $_siteObj->get( 'siteObj' );
         $option = array(
             'template_file' => $ctrl->ctrl_root . '/_Config/template._dev.php',

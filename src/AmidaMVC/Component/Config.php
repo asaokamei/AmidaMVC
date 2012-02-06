@@ -12,12 +12,36 @@ class Config
      * @var array  list of available mode. 
      */
     static $mode_list = array( '_logout', '_dev' );
+    static $edit_list = array( '_edit', '_put', '_pub', '_del' );
     // +-------------------------------------------------------------+
     function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$siteObj )
     {
         self::setRoute( $ctrl, $siteObj );
+        if( $siteObj->siteObj->mode ) {
+            $ctrl->setAction( $siteObj->siteObj->mode );
+            $ctrl->addComponentAfter( 'auth', 'Config', 'config' );
+        }
+    }
+    // +-------------------------------------------------------------+
+    function action_dev(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj )
+    {
+        $command   = $_siteObj->siteObj->command;
+        $filer_cmd = FALSE;
+        foreach( static::$edit_list as $cmd ) {
+            if( in_array( $cmd, $command ) ) {
+                $filer_cmd = $cmd;
+                break;
+            }
+        }
+        if( $filer_cmd ) {
+            // set to filer's command. 
+            $ctrl->setAction( $filer_cmd );
+        }
+        return;
     }
     // +-------------------------------------------------------------+
     function checkInit(
