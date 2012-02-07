@@ -12,7 +12,6 @@ class Config
      * @var array  list of available mode. 
      */
     static $mode_list = array( '_logout', '_dev' );
-    static $file_list = array( '_edit', '_put', '_pub', '_del' );
     // +-------------------------------------------------------------+
     function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
@@ -29,20 +28,7 @@ class Config
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
-        $command   = $_siteObj->siteObj->command;
-        $filer_cmd = FALSE;
-        foreach( static::$file_list as $cmd ) {
-            if( in_array( $cmd, $command ) ) {
-                $filer_cmd = $cmd;
-                break;
-            }
-        }
-        if( $filer_cmd ) {
-            // set to filer's command. 
-            $ctrl->setAction( $filer_cmd );
-            $_siteObj->siteObj->file_mode = $filer_cmd;
-            $ctrl->addComponentAfter( 'router', 'Filer', 'filer' );
-        }
+        $ctrl->addComponentAfter( 'router', 'Filer', 'filer' );
         return;
     }
     // +-------------------------------------------------------------+

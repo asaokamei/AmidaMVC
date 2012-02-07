@@ -3,13 +3,27 @@ namespace AmidaMVC\Component;
 
 class Filer
 {
+    static $file_list = array( '_edit', '_put', '_pub', '_del' );
     // +-------------------------------------------------------------+
     function actionDefault(
-        \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$siteObj, 
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj, 
         array $loadInfo )
     {
-        // do nothing as default. 
+        // see if Filer command is in.  
+        $command   = $_siteObj->siteObj->command;
+        foreach( static::$file_list as $cmd ) {
+            if( in_array( $cmd, $command ) ) {
+                $_ctrl->setMyAction( $cmd );
+                $_siteObj->siteObj->file_mode = $cmd;
+                return $loadInfo;
+            }
+        }
+        $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
+        if( file_exists( $file_to_edit ) ) {
+            $loadInfo[ 'file' ] = $file_to_edit;
+            $_siteObj->siteObj->file_mode = '_filer';
+        }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
