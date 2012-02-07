@@ -3,7 +3,7 @@ namespace AmidaMVC\Component;
 
 class Filer
 {
-    static $file_list = array( '_edit', '_put', '_pub', '_del' );
+    static $file_list = array( '_edit', '_put', '_pub', '_del', '_purge' );
     static $backup    = '_Backup';
     // +-------------------------------------------------------------+
     /**
@@ -47,6 +47,15 @@ class Filer
             $_siteObj->filerObj->file_cmd[] = '_edit';
             $_siteObj->filerObj->file_cmd[] = '_purge';
         }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    function action_pageNotFound(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        $loadInfo )
+    {
+        // do nothing. 
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
@@ -154,6 +163,34 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    /**
+     * purges (i.e. move to backup) file. won't purge if _dev-file exists.  
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     * @return array
+     */
+    function action_purge(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        $file_to_publish = static::getFileToEdit( $_siteObj, $loadInfo );
+        if( !file_exists( $file_to_publish ) ) {
+            $file_to_purge = $loadInfo[ 'file' ];
+            static::backup( $file_to_purge );
+            $reload = $ctrl->getPathInfo();
+            $ctrl->redirect( $reload );
+        }
+        $ctrl->setAction( '_pageNotFound' );
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * backup the replaced file to _Backup folder with datetime. 
+     * @param $file_replaced
+     * @return mixed
+     */
     function backup( $file_replaced ) {
         $folder    = dirname( $file_replaced );
         $backup_folder = $folder . '/' . static::$backup;
@@ -167,7 +204,7 @@ class Filer
         $file_ext  = pathinfo( $file_replaced, PATHINFO_EXTENSION  );
         $file_body = pathinfo( $file_replaced, PATHINFO_FILENAME  );
         $now       = date( 'YmdHis' );
-        $backup_file = "{$backup_folder}/{$file_body}-{$now}.{$file_ext}";
+        $backup_file = "{$backup_folder}/_{$file_body}-{$now}.{$file_ext}";
         rename( $file_replaced, $backup_file );
     }
     // +-------------------------------------------------------------+
