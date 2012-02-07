@@ -3,7 +3,7 @@ namespace AmidaMVC\Component;
 
 class Filer
 {
-    static $file_list = array( '_edit', '_put', '_pub', '_del', '_purge' );
+    static $file_list = array( '_edit', '_put', '_pub', '_del', '_purge', '_bkView', '_bkDiff' );
     static $backup    = '_Backup';
     // +-------------------------------------------------------------+
     /**
@@ -28,14 +28,12 @@ class Filer
         );
         $_siteObj->set( 'filerObj', $filerObj );
         // see if Filer command is in.  
-        $command   = $_siteObj->siteObj->command;
-        foreach( static::$file_list as $cmd ) {
-            if( in_array( $cmd, $command ) ) {
-                // set file_mode and dispatch $cmd as myAction. 
-                $_ctrl->setMyAction( $cmd );
-                $_siteObj->filerObj->file_mode = $cmd;
-                return $loadInfo;
-            }
+        $command = static::findFilerCommand( $_siteObj );
+        if( $command ) {
+            // set file_mode and dispatch $cmd as myAction. 
+            $_ctrl->setMyAction( $command );
+            $_siteObj->filerObj->file_mode = $command;
+            return $loadInfo;
         }
         // standard Filer mode. setup mode, and add available command. 
         $file_target  = $loadInfo[ 'file' ];
@@ -55,6 +53,21 @@ class Filer
         $backup_list = static::backupList( $file_target );
         $_siteObj->filerObj->backup_list = $backup_list;
         return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    function findFilerCommand( 
+        \AmidaMVC\Component\SiteObj &$_siteObj, 
+        &$command=NULL ) 
+    {
+        foreach( $_siteObj->siteObj->command as $command ) {
+            $cmds = explode( ':', $command );
+            $cmd  = $cmds[0];
+            if( in_array( $cmd, static::$file_list ) ) {
+                // found command. 
+                return $cmd;
+            }
+        }
+        return FALSE;
     }
     // +-------------------------------------------------------------+
     function action_pageNotFound(
@@ -190,6 +203,25 @@ class Filer
             $ctrl->redirect( $reload );
         }
         $ctrl->setAction( '_pageNotFound' );
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    //  backup methods
+    // +-------------------------------------------------------------+
+    function action_bkView(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        if( static::findFilerCommand( $_siteObj, $command ) ) {
+            list( $cmd, $file_backup ) = explode( ':', $command );
+            $file_name = $loadInfo[ 'file' ];
+            static::getFileInfo( $file_name, $folder, $base, $file_body, $file_ext );
+            $backup_folder = $folder . '/' . static::$backup;
+            $file_to_view = "{$backup_folder}/{$file_backup}";
+            $loadInfo[ 'file' ] = $file_to_view;
+            $_siteObj->filerObj->src_type   = '_bkView:'.$file_backup;
+        }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
