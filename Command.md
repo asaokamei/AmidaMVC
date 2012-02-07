@@ -30,10 +30,20 @@ These commands are valid only for file mode (not in application).
     saves the contents to _dev.file_name.ext. 
 *   _del:  
     deletes the _dev.file_name.ext. 
-*   _purge:  
-    deletes the file_name.ext. 
 *   _pub:  
     publishes the file. rename _dev.file_name.ext to file_name.ext. 
+    The original file is backup to _Backup folder. 
+*   _purge:  
+    deletes the file_name.ext. 
+    The file is backup to _Backup folder. 
 
+File Back Up
+------------
 
+When a file is published (_pub) or purged (_purge), 
+the original file is backed up to _Backup folder. 
+The file name will be:
 
+*   _Backup/file_name-YYYYmmddHHiiss.ext  
+
+There is no way to check the back up file currently. 
