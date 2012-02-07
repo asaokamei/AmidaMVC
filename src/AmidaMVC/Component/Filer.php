@@ -10,6 +10,12 @@ class Filer
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         array $loadInfo )
     {
+        // create filerObj.
+        $filerObj = array(
+            'file_mode' => '_filer',
+            'file_cmd'  => array(),
+        );
+        $_siteObj->set( 'filerObj', $filerObj );
         // see if Filer command is in.  
         $command   = $_siteObj->siteObj->command;
         foreach( static::$file_list as $cmd ) {
@@ -22,26 +28,33 @@ class Filer
         $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
         if( file_exists( $file_to_edit ) ) {
             $loadInfo[ 'file' ] = $file_to_edit;
-            $_siteObj->siteObj->file_mode = '_filer';
+            $_siteObj->filerObj->file_cmd[] = '_edit';
+            $_siteObj->filerObj->file_cmd[] = '_pub';
+            $_siteObj->filerObj->file_cmd[] = '_del';
+        }
+        else {
+            $_siteObj->filerObj->file_cmd[] = '_edit';
+            $_siteObj->filerObj->file_cmd[] = '_purge';
         }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
-    function getFileToEdit( $siteObj, $loadInfo ) {
+    function getFileToEdit( $_siteObj, $loadInfo ) {
         $file_name = $loadInfo[ 'file' ];
         $folder    = dirname( $file_name );
         $basename  = basename( $file_name );
-        $curr_mode = $siteObj->siteObj->mode;
+        $curr_mode = $_siteObj->siteObj->mode;
         $file_to_edit  = "{$folder}/{$curr_mode}-{$basename}";
         return $file_to_edit;
     }
     // +-------------------------------------------------------------+
     function action_edit(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$siteObj,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
     {
-        $file_to_edit = static::getFileToEdit( $siteObj, $loadInfo );
+        $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
+        $_siteObj->filerObj->file_mode = '_edit';
         if( file_exists( $file_to_edit ) ) {
             $loadInfo[ 'file' ] = $file_to_edit;
         }
@@ -50,11 +63,11 @@ class Filer
     // +-------------------------------------------------------------+
     function action_put(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$siteObj,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
     {
         // do nothing as default. 
-        $file_to_edit = static::getFileToEdit( $siteObj, $loadInfo );
+        $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
         // TODO: verify input! Security alert!
         if( isset( $_POST[ '_putContent' ] ) ) {
             $content = $_POST[ '_putContent' ];
@@ -63,24 +76,37 @@ class Filer
             $reload = $ctrl->getPathInfo();
             $ctrl->redirect( $reload );
         }
+        $_siteObj->filerObj->file_mode = '_filer';
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
     function action_pub(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$siteObj,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
     {
-        // do nothing as default. 
+        $file_to_publish = static::getFileToEdit( $_siteObj, $loadInfo );
+        if( file_exists( $file_to_publish ) ) {
+            $file_replaced = $loadInfo[ 'file' ];
+            unlink( $file_replaced );
+            rename( $file_to_publish, $file_replaced );
+            $reload = $ctrl->getPathInfo();
+            $ctrl->redirect( $reload );
+        }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
     function action_del(
         \AmidaMVC\Framework\Controller $ctrl,
-        \AmidaMVC\Component\SiteObj &$siteObj,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
     {
-        // do nothing as default. 
+        $file_to_publish = static::getFileToEdit( $_siteObj, $loadInfo );
+        if( file_exists( $file_to_publish ) ) {
+            unlink( $file_to_publish );
+            $reload = $ctrl->getPathInfo();
+            $ctrl->redirect( $reload );
+        }
         return $loadInfo;
     }
 }
