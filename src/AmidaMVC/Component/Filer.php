@@ -21,7 +21,7 @@ class Filer
         foreach( static::$file_list as $cmd ) {
             if( in_array( $cmd, $command ) ) {
                 $_ctrl->setMyAction( $cmd );
-                $_siteObj->siteObj->file_mode = $cmd;
+                $_siteObj->filerObj->file_mode = $cmd;
                 return $loadInfo;
             }
         }
