@@ -1,7 +1,7 @@
 <?php
 
 // filer's mode; _edit, _put, _pub, _del,...
-$file_mode = $_siteObj->siteObj->file_mode;
+$file_mode = ( isset( $_siteObj->siteObj->file_mode ) ) ? $_siteObj->siteObj->file_mode: FALSE;;
 // myself.
 $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
     
@@ -41,7 +41,7 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
 </div>
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 <?php
-  if( isset( $_siteObj->filerObj ) && !empty( $_siteObj->filerObj->file_cmd ) ): 
+  if( isset( $file_mode ) ): 
 ?>
 <style>
     div#filerMenu {
@@ -49,25 +49,42 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
         padding: 5px 5px 5px 25px;
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
-        height:30px;
     }
     div#filerMenu ul {
-        margin:0;
-        padding:0;
+        margin:0px;
+        padding:0px;
         list-style-type: none;
+        height: 25px;
     }
     div#filerMenu li {
         float: left;
         margin: 2px 5px 2px 5px; 
     }
+    div#backUpList {
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
 </style>
 <div id="filerMenu">
-    <ul>
-<?php foreach( $_siteObj->filerObj->file_cmd as $cmd ) { ?>
+  <p>source_type: <?php echo $_siteObj->filerObj->src_type;?></p>
+  <ul>
+  <?php foreach( $_siteObj->filerObj->file_cmd as $cmd ) { ?>
     <li><a href="<?php echo "$self/$cmd";?>" ><?php echo $cmd;?></a> </li>
-<?php } ?>
-
-    </ul>
+    <?php } ?>
+  </ul>
+</div>
+<div id="backUpList">
+  <ul>
+    <?php foreach( $_siteObj->filerObj->backup_list as $backup ) { ?>
+    <li>
+        <?php echo $backup;?>: 
+        [<a href="<?php echo "{$self}/_bkView:{$backup}";?>" >view</a>]
+        [<a href="<?php echo "{$self}/_bkDiff:{$backup}";?>" >diff</a>]
+    </li>
+    <?php } ?>
+  </ul>
 </div>
 <?php endif; ?>
 <?php if( !empty( $debug ) ) { ?>

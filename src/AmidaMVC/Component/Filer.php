@@ -23,6 +23,8 @@ class Filer
         $filerObj = array(
             'file_mode' => '_filer',
             'file_cmd'  => array(),
+            'backup_list' => array(),
+            'src_type' => NULL,
         );
         $_siteObj->set( 'filerObj', $filerObj );
         // see if Filer command is in.  
@@ -36,9 +38,11 @@ class Filer
             }
         }
         // standard Filer mode. setup mode, and add available command. 
+        $file_target  = $loadInfo[ 'file' ];
         $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
         if( file_exists( $file_to_edit ) ) {
             $loadInfo[ 'file' ] = $file_to_edit;
+            $_siteObj->filerObj->src_type   = '_dev';
             $_siteObj->filerObj->file_cmd[] = '_edit';
             $_siteObj->filerObj->file_cmd[] = '_pub';
             $_siteObj->filerObj->file_cmd[] = '_del';
@@ -47,6 +51,9 @@ class Filer
             $_siteObj->filerObj->file_cmd[] = '_edit';
             $_siteObj->filerObj->file_cmd[] = '_purge';
         }
+        // get backup file list
+        $backup_list = static::backupList( $file_target );
+        $_siteObj->filerObj->backup_list = $backup_list;
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
@@ -192,7 +199,7 @@ class Filer
      * @return mixed
      */
     function backup( $file_replaced ) {
-        $folder    = dirname( $file_replaced );
+        static::getFileInfo( $file_replaced, $folder, $base, $file_body, $file_ext );
         $backup_folder = $folder . '/' . static::$backup;
         if( !file_exists( $backup_folder ) ) {
             mkdir( $backup_folder, 0777 );
@@ -201,11 +208,30 @@ class Filer
             unlink( $file_replaced );
             return;
         }
-        $file_ext  = pathinfo( $file_replaced, PATHINFO_EXTENSION  );
-        $file_body = pathinfo( $file_replaced, PATHINFO_FILENAME  );
         $now       = date( 'YmdHis' );
         $backup_file = "{$backup_folder}/_{$file_body}-{$now}.{$file_ext}";
         rename( $file_replaced, $backup_file );
+    }
+    // +-------------------------------------------------------------+
+    function backupList( $file_name ) {
+        static::getFileInfo( $file_name, $folder, $base, $file_body, $file_ext );
+        $backup_folder = $folder . '/' . static::$backup;
+        if( !file_exists( $backup_folder ) ) {
+            return;
+        }
+        $backup_glob = "{$backup_folder}/_{$file_body}-*.{$file_ext}";
+        $backup_list = glob( $backup_glob );
+        foreach( $backup_list as &$backup ) {
+            $backup = basename( $backup );
+        }
+        return $backup_list;
+    }
+    // +-------------------------------------------------------------+
+    function getFileInfo( $file_name, &$folder, &$base, &$body, &$ext ) {
+        $folder  = dirname(  $file_name );
+        $base    = basename( $file_name );
+        $ext     = pathinfo( $file_name, PATHINFO_EXTENSION  );
+        $body    = pathinfo( $file_name, PATHINFO_FILENAME  );
     }
     // +-------------------------------------------------------------+
 }
