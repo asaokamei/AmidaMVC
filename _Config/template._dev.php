@@ -45,6 +45,17 @@ $base = $_ctrl->getBaseUrl();
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 <?php
 if (isset($_siteObj->filerObj)) { ?>
+<script type="text/javascript">
+    function toggle( id ) {
+        var ele = document.getElementById( id );
+        if ( ele.style.display == undefined || ele.style.display == 'none' || ele.style.display == '' ) {
+            ele.style.display = 'block';
+        }
+        else {
+            ele.style.display = 'none';
+        }
+    }
+</script>
 <style>
     div#filerMenu {
         margin: 10px;
@@ -63,6 +74,7 @@ if (isset($_siteObj->filerObj)) { ?>
         margin: 2px 5px 2px 5px;
     }
     div#filerBackUpList {
+        display: none;
         margin: 10px;
         padding: 5px 5px 5px 25px;
         border: 1px solid #cccccc;
@@ -79,18 +91,21 @@ if (isset($_siteObj->filerObj)) { ?>
         color: red;
     }
     div#filerAddFolder {
+        display: none;
         margin: 10px;
         padding: 5px 5px 5px 25px;
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
     }
     div#filerNewForm {
+        display: none;
         margin: 10px;
         padding: 5px 5px 5px 25px;
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
     }
     div#filerDirList {
+        display: none;
         margin: 10px;
         padding: 5px 5px 5px 25px;
         border: 1px solid #cccccc;
@@ -105,10 +120,17 @@ if (isset($_siteObj->filerObj)) { ?>
             <?php foreach( $_siteObj->filerObj->file_cmd as $cmd ) { ?>
             <li><a href="<?php echo "$self/$cmd";?>"><?php echo $cmd;?></a></li>
             <?php } ?>
+            <li><a href="javascript:toggle('filerNewForm')">add file▼</a></li>
+            <li><a href="javascript:toggle('filerAddFolder')">new folder▼</a></li>
+            <?php if( !empty( $_siteObj->filerObj->file_list) ) {
+            echo '<li><a href="javascript:toggle(\'filerDirList\');">file list▼</a></li>';  } ?>
+            <?php if( !empty( $_siteObj->filerObj->backup_list) ) {
+            echo '<li><a href="javascript:toggle(\'filerBackUpList\');">backups▼</a></li>';  } ?>
+            <?php if( !empty( $debug ) ) {
+            echo '<li><a href="javascript:toggle(\'debugInfo\');">debug info▼</a></li>';  } ?>
         </ul>
     </div>
     <!-- adding new folder -->
-    <?php if( in_array( '_fileFolder', $_siteObj->filerObj->file_cmd) ) { ?>
     <div id="filerAddFolder">
         <form method="post" name="_addFolder" action="<?php echo $self?>/_fileFolder">
             <input type="text" name="_folderName" width="30">
@@ -116,9 +138,7 @@ if (isset($_siteObj->filerObj)) { ?>
             creates new folder at <strong>'/<?php echo $_siteObj->filerObj->curr_folder; ?>'</strong>.
         </form>
     </div>
-    <?php } ?>
     <!-- adding new file; show empty edit page -->
-    <?php if( in_array( '_fileNew', $_siteObj->filerObj->file_cmd) ) { ?>
     <div id="filerNewForm">
         <form method="post" name="_showNewForm" action="<?php echo $self?>/_fileNew">
             <input type="text" name="_newFileName" width="30">
@@ -126,7 +146,6 @@ if (isset($_siteObj->filerObj)) { ?>
             creates new file at <strong>'/<?php echo $_siteObj->filerObj->curr_folder; ?>'</strong>.
         </form>
     </div>
-    <?php } ?>
     <!-- show error message from _dev components -->
     <?php if (isset($_siteObj->filerObj->error)) { ?>
     <div id="filerError">
@@ -137,7 +156,7 @@ if (isset($_siteObj->filerObj)) { ?>
     </div>
     <?php } ?>
     <!-- show backup file list -->
-    <?php if( !empty( $_siteObj->filerObj->file_list) ) { ?>
+    <?php if( !empty( $_siteObj->filerObj->file_list ) ) { ?>
     <div id="filerDirList">
         File/Folder Lists at <?php echo $curr_folder = $_siteObj->filerObj->curr_folder; ?>:
         <?php foreach( $_siteObj->filerObj->file_list as $file ) {  ?>
@@ -167,6 +186,7 @@ if (isset($_siteObj->filerObj)) { ?>
     <?php if (!empty($debug)) { ?>
     <style>
         div#debugInfo {
+            display: none;
             font-size: 12px;
             color: #666666;
             margin: 10px;

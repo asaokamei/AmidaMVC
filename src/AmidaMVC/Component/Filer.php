@@ -100,8 +100,6 @@ class Filer
         if( $_siteObj->filerObj->curr_folder == '.' ) {
             $_siteObj->filerObj->curr_folder = '';
         }
-        $_siteObj->filerObj->file_cmd[] = '_fileNew';
-        $_siteObj->filerObj->file_cmd[] = '_fileFolder';
         // get backup file list
         $backup_list = static::backupList( $file_target );
         $_siteObj->filerObj->backup_list = $backup_list;
