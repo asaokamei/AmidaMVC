@@ -16,6 +16,16 @@ class SiteObj extends \AmidaMVC\Tools\DataTO
      * for http response.
      */
     var $responseObj;
+    /**
+     * @var \AmidaMVC\Tools\DataTO
+     * for _dev menu and debug info.
+     */
+    var $filerObj;
+    /**
+     * @var \AmidaMVC\Tools\DataTO
+     * for site information.
+     */
+    var $siteObj;
     // +-------------------------------------------------------------+
     function __construct() {
         parent::__construct();
