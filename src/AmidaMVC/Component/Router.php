@@ -28,6 +28,7 @@ class Router
         }
         if( !$loadInfo ) {
             $ctrl->setAction( '_pageNotFound' );
+            $loadInfo = array();
         }
         else {
             // action is as is; probably default.
@@ -66,6 +67,7 @@ class Router
             );
             return $loadInfo;
         }
+        return array();
     }
     // +-------------------------------------------------------------+
     /** search for a file in a $folder.
