@@ -6,9 +6,43 @@ class Filer
     static $file_list = array( 
         '_edit', '_put', '_pub', '_del', '_purge', 
         '_bkView', '_bkDiff', 
-        '_fileFolder' 
+        '_fileFolder', '_fileNew' 
     );
     static $backup    = '_Backup';
+    // +-------------------------------------------------------------+
+    static function _init(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        // create filerObj.
+        if( isset( $loadInfo[ 'file' ] ) ) {
+            $folder = dirname( $loadInfo['file'] );
+        } 
+        else {
+            // router could not find a file. find folder myself. 
+            $path = $_ctrl->getPathInfo();
+            $dir  = dirname( $path );
+            if( is_dir( $path ) ) {
+                $folder = $path;
+            }
+            elseif( is_dir( $dir ) ) {
+                $folder = $dir;
+            }
+        }
+        if( $folder == '.' ) {
+            $folder = '';
+        }
+        $filerObj = array(
+            'file_mode' => '_filer',
+            'file_cmd'  => array(),
+            'backup_list' => array(),
+            'src_type' => NULL,
+            'curr_folder' => $folder,
+        );
+        $_siteObj->set( 'filerObj', $filerObj );
+        return;
+    }
     // +-------------------------------------------------------------+
     /**
      * default action to setup Filer. 
@@ -18,20 +52,13 @@ class Filer
      * @param array $loadInfo
      * @return array
      */
-    function actionDefault(
+    static function actionDefault(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         array $loadInfo )
     {
-        // create filerObj.
-        $filerObj = array(
-            'file_mode' => '_filer',
-            'file_cmd'  => array(),
-            'backup_list' => array(),
-            'src_type' => NULL,
-        );
-        $_siteObj->set( 'filerObj', $filerObj );
-        // see if Filer command is in.  
+        // see if Filer command is in.
+        static::_init( $_ctrl, $_siteObj, $loadInfo );
         $command = static::findFilerCommand( $_siteObj );
         if( $command ) {
             // set file_mode and dispatch $cmd as myAction. 
@@ -57,6 +84,7 @@ class Filer
         if( $_siteObj->filerObj->curr_folder == '.' ) {
             $_siteObj->filerObj->curr_folder = '';
         }
+        $_siteObj->filerObj->file_cmd[] = '_fileNew';
         $_siteObj->filerObj->file_cmd[] = '_fileFolder';
         // get backup file list
         $backup_list = static::backupList( $file_target );
@@ -79,19 +107,14 @@ class Filer
         return FALSE;
     }
     // +-------------------------------------------------------------+
-    function action_pageNotFound(
+    static function action_pageNotFound(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
-        $loadInfo )
+        array $loadInfo )
     {
-        // create filerObj.
-        $filerObj = array(
-            'file_mode' => '_filer',
-            'file_cmd'  => array(),
-            'backup_list' => array(),
-            'src_type' => NULL,
-        );
-        $_siteObj->set( 'filerObj', $filerObj );
+        // why?
+        static::_init( $_ctrl, $_siteObj, $loadInfo );
+        $_siteObj->filerObj->file_cmd[] = '_fileNew';
         $_siteObj->filerObj->file_cmd[] = '_fileFolder';
         return $loadInfo;
     }
