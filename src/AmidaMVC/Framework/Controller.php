@@ -123,12 +123,22 @@ class Controller extends AmidaChain
      * @param null $path 
      */
     function redirect( $path=NULL ) {
-        if( substr( $path, 0, 1 ) === '/' ) {
+        $url = $this->getPath( $path );
+        header( "Location: {$url}" );
+        exit;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * gets path with base url. 
+     * @param null $path
+     * @return string
+     */
+    function getPath( $path=NULL ) {
+        if( isset( $path ) && substr( $path, 0, 1 ) === '/' ) {
             $path = substr( $path, 1 );
         }
         $url = $this->getBaseUrl() . $path;
-        header( "Location: {$url}" );
-        exit;
+        return $url;
     }
     // +-------------------------------------------------------------+
     /**
