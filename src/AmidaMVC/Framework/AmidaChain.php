@@ -222,7 +222,7 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * setter for action.
-     * @param null $action    sets action.
+     * @param string $action    sets action.
      * @return string         returns the new action.
      */
     function setAction( $action ) {
@@ -232,7 +232,7 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * setter for action, but uses the same component. 
-     * @param $action      action name. 
+     * @param string $action      action name. 
      * @return string      returns the new action. 
      */
     function setMyAction( $action ) {

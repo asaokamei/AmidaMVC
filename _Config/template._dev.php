@@ -1,7 +1,7 @@
 <?php
 
 // filer's mode; _edit, _put, _pub, _del,...
-$file_mode = ( isset( $_siteObj->siteObj->file_mode ) ) ? $_siteObj->siteObj->file_mode: FALSE;;
+$file_mode = ( isset( $_siteObj->filerObj->file_mode ) ) ? $_siteObj->siteObj->file_mode: FALSE;;
 // myself.
 $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
     
@@ -41,7 +41,7 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
 </div>
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 <?php
-  if( isset( $file_mode ) ): 
+  if( isset( $_siteObj->filerObj ) ): 
 ?>
 <style>
     div#filerMenu {
@@ -66,7 +66,18 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
     }
+    div#filerError {
+        margin: 10px;
+        padding: 2px 2px 2px 25px;
+        border: 2px solid #d59392;
+        box-shadow: 3px 3px 3px #d59392;
+    }
+    div#filerError dt {
+        font-weight: bold;
+        color: red;
+    }
 </style>
+<div id="filerDivArea">
 <div id="filerMenu">
   <p>source_type: <?php echo $_siteObj->filerObj->src_type;?></p>
   <ul>
@@ -75,6 +86,15 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
     <?php } ?>
   </ul>
 </div>
+<?php if( isset( $_siteObj->filerObj->error ) ) { ?>
+<div id="filerError">
+    <dl>
+        <dt>Error: <?php echo $_siteObj->filerObj->error; ?></dt>
+        <dd><?php echo $_siteObj->filerObj->err_msg; ?></dd>
+    </dl>
+</div>
+<?php }  ?>
+<?php if( !empty( $_siteObj->filerObj->backup_list ) ) { ?>
 <div id="backUpList">
   <ul>
     <?php foreach( $_siteObj->filerObj->backup_list as $backup ) { ?>
@@ -86,6 +106,7 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
     <?php } ?>
   </ul>
 </div>
+      <?php }  ?>
 <?php endif; ?>
 <?php if( !empty( $debug ) ) { ?>
 <style>
@@ -113,6 +134,6 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
 </style>
 <div id='debugInfo'><?php echo $debug;?></div>
 </div>
-    <?php } ?>
+<?php }    // end of if on isset( $_siteObj->filerObj ) //  ?>
 </body>
 </html>

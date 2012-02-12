@@ -130,12 +130,38 @@ class Filer
         // TODO: verify input! Security alert!
         if( isset( $_POST[ '_putContent' ] ) ) {
             $content = $_POST[ '_putContent' ];
-            file_put_contents( $file_to_edit, $content );
-            $loadInfo[ 'file' ] = $file_to_edit;
-            $reload = $ctrl->getPathInfo();
-            $ctrl->redirect( $reload );
+            $success = file_put_contents( $file_to_edit, $content );
+            if( $success !== FALSE ) {
+                $loadInfo[ 'file' ] = $file_to_edit;
+                $reload = $ctrl->getPathInfo();
+                $ctrl->redirect( $reload );
+            }
+            $ctrl->setMyAction( '_reedit' );
         }
-        $_siteObj->filerObj->file_mode = '_filer';
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * re-call this action when edit fails to put content. 
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     * @return array
+     */
+    function action_reedit(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
+        if( file_exists( $file_to_edit ) ) {
+            $loadInfo[ 'file' ] = $file_to_edit;
+        }
+        $_siteObj->filerObj->error = 'failed_to_put_content.';
+        $_siteObj->filerObj->err_msg = 'maybe folder\'s permission problem?';
+        $loadInfo[ 'content' ] = $_POST[ '_putContent' ];
+        $_siteObj->filerObj->file_mode = '_edit';
+        $_siteObj->filerObj->src_type   = '_re-edit';
         return $loadInfo;
     }
     // +-------------------------------------------------------------+

@@ -64,6 +64,21 @@ class Loader
         // maybe load sorry file.
     }
     // +-------------------------------------------------------------+
+    /**
+     * re-edit contents when edit fails to put content.
+     * put content as $loadInfo[ 'content' ] to use.
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param $loadInfo
+     */
+    function action_reedit(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        $loadInfo ) {
+        $_siteObj->setContents( $loadInfo[ 'content' ] );
+        $_siteObj->setContentType( 'as_is' );
+    }
+    // +-------------------------------------------------------------+
     function findLoadMode( &$_siteObj ) {
         $modes = array( '_raw', '_src', '_edit' );
         $loadMode  = '_view';
@@ -112,7 +127,7 @@ class Loader
         $_siteObj->setContentType( 'text' );
         $_siteObj->setEmitAsIs();
     }
-// +-------------------------------------------------------------+
+    // +-------------------------------------------------------------+
     function load_edit(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
