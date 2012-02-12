@@ -48,8 +48,7 @@ class Template
     }
     // +-------------------------------------------------------------+
     function loadText( &$data ) {
-        $content = $data[ 'contents' ];
-        $content = nl2br( $content );
+        $content = '<pre>'. $data[ 'contents' ] . '</pre>';
         $data[ 'contents' ] = $content;
         if( !$data[ 'title' ] ) {
             $title   = pathinfo( $data[ 'file_name' ], PATHINFO_BASENAME );
