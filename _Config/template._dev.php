@@ -4,7 +4,7 @@
 $file_mode = (isset($_siteObj->filerObj->file_mode)) ? $_siteObj->siteObj->file_mode : FALSE;
 ;
 // myself.
-$self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
+$self = $_ctrl->getPath( $_ctrl->getPathInfo() );
 
 ?>
 <!DOCTYPE HTML>
@@ -43,8 +43,7 @@ $self = $_ctrl->getBaseUrl() . $_ctrl->getPathInfo();
 </div>
 <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 <?php
-if (isset($_siteObj->filerObj)):
-    ?>
+if (isset($_siteObj->filerObj)) { ?>
 <style>
     div#filerMenu {
         margin: 10px;
@@ -65,34 +64,47 @@ if (isset($_siteObj->filerObj)):
         margin: 2px 5px 2px 5px;
     }
 
-    div#backUpList {
+    div#filerBackUpList {
         margin: 10px;
         padding: 5px 5px 5px 25px;
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
     }
-
     div#filerError {
         margin: 10px;
         padding: 2px 2px 2px 25px;
         border: 2px solid #d59392;
         box-shadow: 3px 3px 3px #d59392;
     }
-
     div#filerError dt {
         font-weight: bold;
         color: red;
     }
+    div#filerAddFolder {
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
 </style>
 <div id="filerDivArea">
-<div id="filerMenu">
-    <p>source_type: <?php echo $_siteObj->filerObj->src_type;?></p>
-    <ul>
-        <?php foreach ($_siteObj->filerObj->file_cmd as $cmd) { ?>
-        <li><a href="<?php echo "$self/$cmd";?>"><?php echo $cmd;?></a></li>
-        <?php } ?>
-    </ul>
-</div>
+    <div id="filerMenu">
+        <p>source_type: <?php echo $_siteObj->filerObj->src_type;?></p>
+        <ul>
+            <?php foreach( $_siteObj->filerObj->file_cmd as $cmd ) { ?>
+            <li><a href="<?php echo "$self/$cmd";?>"><?php echo $cmd;?></a></li>
+            <?php } ?>
+        </ul>
+    </div>
+    <?php if( in_array( '_fileFolder', $_siteObj->filerObj->file_cmd) ) { ?>
+    <div id="filerAddFolder">
+        <form method="post" name="_addFolder" action="<?php echo $self?>/_fileFolder">
+            <input type="text" name="_folderName" width="30">
+            <input type="submit" name="submit" value="add new folder"/><br />
+            creates new folder at <strong>'/<?php echo $_siteObj->filerObj->curr_folder; ?>'</strong>.
+        </form>
+    </div>
+    <?php } ?>
     <?php if (isset($_siteObj->filerObj->error)) { ?>
     <div id="filerError">
         <dl>
@@ -102,7 +114,7 @@ if (isset($_siteObj->filerObj)):
     </div>
     <?php } ?>
     <?php if (!empty($_siteObj->filerObj->backup_list)) { ?>
-    <div id="backUpList">
+    <div id="filerBackUpList">
         <ul>
             <?php foreach ($_siteObj->filerObj->backup_list as $backup) { ?>
             <li>
@@ -114,8 +126,7 @@ if (isset($_siteObj->filerObj)):
         </ul>
     </div>
     <?php } ?>
-    <?php endif; ?>
-<?php if (!empty($debug)) { ?>
+    <?php if (!empty($debug)) { ?>
     <style>
         div#debugInfo {
             font-size: 12px;
@@ -152,7 +163,8 @@ if (isset($_siteObj->filerObj)):
         }
     </style>
     <div id='debugInfo'><?php echo $debug;?></div>
+    <?php } ?>
 </div>
-<?php }    // end of if on isset( $_siteObj->filerObj ) //  ?>
+<?php }   // end of if on isset( $_siteObj->filerObj ) //  ?>
 </body>
 </html>

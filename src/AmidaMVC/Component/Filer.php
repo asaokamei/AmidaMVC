@@ -3,7 +3,11 @@ namespace AmidaMVC\Component;
 
 class Filer
 {
-    static $file_list = array( '_edit', '_put', '_pub', '_del', '_purge', '_bkView', '_bkDiff' );
+    static $file_list = array( 
+        '_edit', '_put', '_pub', '_del', '_purge', 
+        '_bkView', '_bkDiff', 
+        '_fileFolder' 
+    );
     static $backup    = '_Backup';
     // +-------------------------------------------------------------+
     /**
@@ -49,6 +53,11 @@ class Filer
             $_siteObj->filerObj->file_cmd[] = '_edit';
             $_siteObj->filerObj->file_cmd[] = '_purge';
         }
+        $_siteObj->filerObj->curr_folder = dirname( $loadInfo['file'] );
+        if( $_siteObj->filerObj->curr_folder == '.' ) {
+            $_siteObj->filerObj->curr_folder = '';
+        }
+        $_siteObj->filerObj->file_cmd[] = '_fileFolder';
         // get backup file list
         $backup_list = static::backupList( $file_target );
         $_siteObj->filerObj->backup_list = $backup_list;
@@ -75,7 +84,15 @@ class Filer
         \AmidaMVC\Component\SiteObj &$_siteObj,
         $loadInfo )
     {
-        // do nothing. 
+        // create filerObj.
+        $filerObj = array(
+            'file_mode' => '_filer',
+            'file_cmd'  => array(),
+            'backup_list' => array(),
+            'src_type' => NULL,
+        );
+        $_siteObj->set( 'filerObj', $filerObj );
+        $_siteObj->filerObj->file_cmd[] = '_fileFolder';
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
@@ -229,6 +246,30 @@ class Filer
             $ctrl->redirect( $reload );
         }
         $ctrl->setAction( '_pageNotFound' );
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    function action_fileFolder(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        if( isset( $_POST['_folderName'] ) ) {
+            $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
+            $folder = dirname( $file_to_edit ) . '/' . $_POST['_folderName'];
+            if( file_exists( $folder ) ) {
+                $_siteObj->filerObj->error = 'folder_already_exists.';
+                $_siteObj->filerObj->err_msg = 'folder: ' . $_POST['_filderName'] .'already exists.';
+            }
+            elseif( mkdir( $folder, 0777 ) ) {
+                $reload = $ctrl->getPathInfo();
+                $ctrl->redirect( $reload );
+            }
+            else {
+                $_siteObj->filerObj->error = 'failed_to_add_folder.';
+                $_siteObj->filerObj->err_msg = 'maybe folder\'s permission problem?';
+            }
+        }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
