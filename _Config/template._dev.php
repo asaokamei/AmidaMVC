@@ -51,19 +51,16 @@ if (isset($_siteObj->filerObj)) { ?>
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
     }
-
     div#filerMenu ul {
         margin: 0px;
         padding: 0px;
         list-style-type: none;
         height: 25px;
     }
-
     div#filerMenu li {
         float: left;
         margin: 2px 5px 2px 5px;
     }
-
     div#filerBackUpList {
         margin: 10px;
         padding: 5px 5px 5px 25px;
@@ -88,6 +85,7 @@ if (isset($_siteObj->filerObj)) { ?>
     }
 </style>
 <div id="filerDivArea">
+    <!-- menu for Filer Component  -->
     <div id="filerMenu">
         <p>source_type: <?php echo $_siteObj->filerObj->src_type;?></p>
         <ul>
@@ -96,6 +94,7 @@ if (isset($_siteObj->filerObj)) { ?>
             <?php } ?>
         </ul>
     </div>
+    <!-- adding new folder -->
     <?php if( in_array( '_fileFolder', $_siteObj->filerObj->file_cmd) ) { ?>
     <div id="filerAddFolder">
         <form method="post" name="_addFolder" action="<?php echo $self?>/_fileFolder">
@@ -113,6 +112,7 @@ if (isset($_siteObj->filerObj)) { ?>
         </dl>
     </div>
     <?php } ?>
+    <!-- show backup file list -->
     <?php if (!empty($_siteObj->filerObj->backup_list)) { ?>
     <div id="filerBackUpList">
         <ul>
@@ -126,6 +126,7 @@ if (isset($_siteObj->filerObj)) { ?>
         </ul>
     </div>
     <?php } ?>
+    <!-- show debug info -->
     <?php if (!empty($debug)) { ?>
     <style>
         div#debugInfo {
