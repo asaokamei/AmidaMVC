@@ -34,6 +34,7 @@ and deploy it anywhere under root document of Apache with PHP >= 5.3.0. Then, ac
 
 some other interesting demo: 
 
+*   [TO-Do file](TODO.txt)
 *   [sample HTML file](example.html)
 *   [AmidaMVC application (_index.php)](indexView/_src)
 *   [To-Do demo application](todo/list)
