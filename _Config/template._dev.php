@@ -29,8 +29,8 @@ $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
             // show form to edit contents.
             ?>
             <form method="post" name="_editFile" action="<?php echo $self?>/_put">
-                <textarea name="_putContent"
-                          style="width:95%; height:350px; font-family: courier;"><?php echo htmlspecialchars($contents); ?></textarea>
+                <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;"
+                    ><?php echo htmlspecialchars($contents); ?></textarea>
                 <input type="submit" name="submit" value="put contents"/>
             </form>
             <?php
@@ -83,6 +83,12 @@ if (isset($_siteObj->filerObj)) { ?>
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
     }
+    div#filerNewForm {
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
 </style>
 <div id="filerDivArea">
     <!-- menu for Filer Component  -->
@@ -104,6 +110,17 @@ if (isset($_siteObj->filerObj)) { ?>
         </form>
     </div>
     <?php } ?>
+    <!-- adding new file; show empty edit page -->
+    <?php if( in_array( '_fileNew', $_siteObj->filerObj->file_cmd) ) { ?>
+    <div id="filerNewForm">
+        <form method="post" name="_showNewForm" action="<?php echo $self?>/_fileNew">
+            <input type="text" name="_newFileName" width="30">
+            <input type="submit" name="submit" value="edit new file"/><br />
+            creates new file at <strong>'/<?php echo $_siteObj->filerObj->curr_folder; ?>'</strong>.
+        </form>
+    </div>
+    <?php } ?>
+    <!-- show error message from _dev components -->
     <?php if (isset($_siteObj->filerObj->error)) { ?>
     <div id="filerError">
         <dl>

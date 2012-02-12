@@ -112,11 +112,46 @@ class Filer
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
     {
-        // why?
+        // _fileNew command. 
+        $command = static::findFilerCommand( $_siteObj );
+        if( $command === '_fileNew' ) {
+            $_ctrl->setMyAction( $command );
+            return $loadInfo;
+        }
+        // other case. 
+        $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
+        if( file_exists( $file_to_edit ) ) {
+            // already _dev file exists. load it. 
+            $loadInfo[ 'file' ] = $file_to_edit;
+            $_ctrl->setMyAction( 'default' );
+            return $loadInfo;
+        }
+        // really nothing to do. 
         static::_init( $_ctrl, $_siteObj, $loadInfo );
+        if( $command ) {
+            // set file_mode and dispatch $cmd as myAction. 
+            $_ctrl->setMyAction( $command );
+            $_siteObj->filerObj->file_mode = $command;
+            return $loadInfo;
+        }
         $_siteObj->filerObj->file_cmd[] = '_fileNew';
         $_siteObj->filerObj->file_cmd[] = '_fileFolder';
         return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    function action_fileNew(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        static::_init( $_ctrl, $_siteObj, $loadInfo );
+        $new_file = $_POST[ '_newFileName' ];
+        $folder   = $_siteObj->filerObj->curr_folder;
+        if( substr( $folder, -1 ) !== '/' ) {
+            $folder .= '/';
+        }
+        $reload = $folder . $new_file . '/_edit';
+        $_ctrl->redirect( $reload );
     }
     // +-------------------------------------------------------------+
     /**
@@ -126,11 +161,21 @@ class Filer
      * @return string
      */
     function getFileToEdit( $_siteObj, $loadInfo ) {
-        $file_name = $loadInfo[ 'file' ];
+        if( isset( $loadInfo[ 'file' ] ) ) {
+            $file_name = $loadInfo[ 'file' ];
+        }
+        else {
+            $file_name = $_siteObj->siteObj->path_info;
+        }
         $folder    = dirname( $file_name );
         $basename  = basename( $file_name );
         $curr_mode = $_siteObj->siteObj->mode;
-        $file_to_edit  = "{$folder}/{$curr_mode}-{$basename}";
+        if( substr( $basename, 0, strlen( $curr_mode ) ) == $curr_mode ) {
+            $file_to_edit  = $basename;
+        }
+        else {
+            $file_to_edit  = "{$folder}/{$curr_mode}-{$basename}";
+        }
         return $file_to_edit;
     }
     // +-------------------------------------------------------------+
