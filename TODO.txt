@@ -2,10 +2,15 @@ AmidaMVC ToDos.
 
 * Demo in AmidaMVC
 
+[ ] clean up Router; file list behavior is strange. 
+[ ] upload files (images etc.)
+[ ] edit template/css files in _Config folder.
+[ ] diff between _dev.file and file.
+[ ] diff between any file (file, _dev, and _backup). 
 [O] put routes to _Config folder -> use it.
+[ ] create config for _dev. 
+[ ] AuthBasic (not AuthNot...)
 [ ] make bread
-[ ] add _edit/_put/_post/_delete command. 
-[ ] add _backup command. 
 [ ] restrict command with mode. 
 [ ] add delete in todo app. 
 [X] 2012/01/20  use template
@@ -32,6 +37,12 @@ AmidaMVC ToDos.
 [X] 2012/02/04  refactored siteObj; everything is an object. 
 [X] 2012/02/05  added _view/_src/_raw loadMode. 
 [X] 2012/02/05  refactored Render and Loader... slightly. 
+[X] 2012/02/07  add _edit/_put/_post/_delete command. 
+[X] 2012/02/07  add _backup command. 
+[X] 2012/02/12  add new folder. 
+[X] 2012/02/12  add text files (.md, .html, etc.) by new form.
+[X] 2012/02/12  show list of files under folder/view the file. 
+[X] 2012/02/12  shows error message in _dev mode.
 
 * Demo in Cena-Dta
 
