@@ -5,6 +5,7 @@ $file_mode = (isset($_siteObj->filerObj->file_mode)) ? $_siteObj->siteObj->file_
 ;
 // myself.
 $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
+$base = $_ctrl->getBaseUrl();
 
 ?>
 <!DOCTYPE HTML>
@@ -89,6 +90,12 @@ if (isset($_siteObj->filerObj)) { ?>
         border: 1px solid #cccccc;
         box-shadow: 2px 2px 2px #cccccc;
     }
+    div#filerDirList {
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
 </style>
 <div id="filerDivArea">
     <!-- menu for Filer Component  -->
@@ -130,8 +137,21 @@ if (isset($_siteObj->filerObj)) { ?>
     </div>
     <?php } ?>
     <!-- show backup file list -->
+    <?php if( !empty( $_siteObj->filerObj->file_list) ) { ?>
+    <div id="filerDirList">
+        File/Folder Lists at <?php echo $curr_folder = $_siteObj->filerObj->curr_folder; ?>:
+        <?php foreach( $_siteObj->filerObj->file_list as $file ) {  ?>
+        <li>
+            <?php echo $file;?>:
+            [<a href="<?php echo "{$base}/{$curr_folder}/{$file}";?>">view</a>]
+        </li>
+        <?php } ?>
+    </div>
+    <?php } ?>
+    <!-- show backup file list -->
     <?php if (!empty($_siteObj->filerObj->backup_list)) { ?>
     <div id="filerBackUpList">
+        Back Up File List:
         <ul>
             <?php foreach ($_siteObj->filerObj->backup_list as $backup) { ?>
             <li>

@@ -10,12 +10,20 @@ class Filer
     );
     static $backup    = '_Backup';
     // +-------------------------------------------------------------+
+    /**
+     * create filerObj in _siteObj. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     * @return mixed
+     */
     static function _init(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
     {
-        // create filerObj.
+        // find current folder.
         if( isset( $loadInfo[ 'file' ] ) ) {
             $folder = dirname( $loadInfo['file'] );
         } 
@@ -39,8 +47,16 @@ class Filer
             'backup_list' => array(),
             'src_type' => NULL,
             'curr_folder' => $folder,
+            'file_list ' => array(),
         );
         $_siteObj->set( 'filerObj', $filerObj );
+        // list files under the current folder.
+        $filer_folder = getcwd();
+        chdir( $filer_folder . '/' . $folder );
+        $file_list = glob( "*", GLOB_MARK );
+        sort( $file_list );
+        $_siteObj->filerObj->file_list = $file_list;
+        chdir( $filer_folder );
         return;
     }
     // +-------------------------------------------------------------+
