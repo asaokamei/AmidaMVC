@@ -2,7 +2,7 @@
 
 class Config extends \AmidaMVC\Component\Config {
     // +-------------------------------------------------------------+
-    function actionDefault(
+    static function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
@@ -17,7 +17,7 @@ class Config extends \AmidaMVC\Component\Config {
         $siteObj->set( $option );
     }
     // +-------------------------------------------------------------+
-    function action_dev(
+    static function action_dev(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {

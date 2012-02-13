@@ -14,7 +14,7 @@ class AuthNot
     static $act_value  = 'authNot';
     static $auth_info  = array();
     // +-------------------------------------------------------------+
-    function getAuth() {
+    static function getAuth() {
         if( $auth_info = static::_verifySession() ) {
             $auth_info[ 'auth_method' ] = 'session';
             static::$auth_info = $auth_info;
@@ -27,12 +27,12 @@ class AuthNot
         return $auth_info;
     }
     // +-------------------------------------------------------------+
-    function logout(){
+    static function logout(){
         Session::start();
         Session::del( static::$auth_id );
     }
     // +-------------------------------------------------------------+
-    function _verifyPost() {
+    static function _verifyPost() {
         if( !isset( $_POST ) || 
             !isset( $_POST[ static::$act_name ] ) || 
             !isset( $_POST[ static::$login_name ] ) ||
@@ -49,11 +49,11 @@ class AuthNot
         return $auth_info;
     }
     // +-------------------------------------------------------------+
-    function _saveSession( $auth_info ) {
+    static function _saveSession( $auth_info ) {
         Session::set( static::$auth_id, $auth_info );
     }
     // +-------------------------------------------------------------+
-    function _verifySession() {
+    static function _verifySession() {
         Session::start();
         $auth_info = Session::get( static::$auth_id );
         if( $auth_info && 

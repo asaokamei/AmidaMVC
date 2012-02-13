@@ -13,7 +13,7 @@ class Config
      */
     static $mode_list = array( '_logout', '_dev' );
     // +-------------------------------------------------------------+
-    function actionDefault(
+    static function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$siteObj )
     {
@@ -24,7 +24,7 @@ class Config
         }
     }
     // +-------------------------------------------------------------+
-    function action_dev(
+    static function action_dev(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
@@ -32,7 +32,7 @@ class Config
         return;
     }
     // +-------------------------------------------------------------+
-    function checkInit(
+    static function checkInit(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
@@ -42,7 +42,7 @@ class Config
         return FALSE;
     }
     // +-------------------------------------------------------------+
-    function findMode( $command )
+    static function findMode( $command )
     {
         foreach( static::$mode_list as $mode ) {
             if( in_array( $mode, $command ) ) {
@@ -53,7 +53,7 @@ class Config
         return FALSE;
     }
     // +-------------------------------------------------------------+
-    function setRoute( 
+    static function setRoute( 
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj ) 
     {

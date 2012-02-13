@@ -12,12 +12,12 @@ class Template
     static $ext_md   = array( 'md', 'markdown' );
     static $ext_text = array( 'text', 'txt' );
     // +-------------------------------------------------------------+
-    function inject( $template, $_data ) {
+    static function inject( $template, $_data ) {
         extract( $_data );
         include( $template );
     }
     // +-------------------------------------------------------------+
-    function convertContents( $data ) {
+    static function convertContents( $data ) {
         $content_type = $data[ 'content_type' ];
         if( !$content_type ) {
             $content_type = pathinfo( $data[ 'file_name' ], PATHINFO_EXTENSION );
@@ -37,7 +37,7 @@ class Template
         return $data;
     }
     // +-------------------------------------------------------------+
-    function loadPhpAsCode( &$data ) {
+    static function loadPhpAsCode( &$data ) {
         $content = $data[ 'contents' ];
         $content = highlight_string( $content, TRUE );
         $data[ 'contents' ] = $content;
@@ -47,7 +47,7 @@ class Template
         }
     }
     // +-------------------------------------------------------------+
-    function loadText( &$data ) {
+    static function loadText( &$data ) {
         $content = '<pre>'. $data[ 'contents' ] . '</pre>';
         $data[ 'contents' ] = $content;
         if( !$data[ 'title' ] ) {
@@ -59,7 +59,7 @@ class Template
     /** load html file into view object.
      * @param $data
      */
-    function loadHtml( &$data ) {
+    static function loadHtml( &$data ) {
         $content = $data[ 'contents' ];
         $data[ 'contents' ] = $content;
         if( !$data[ 'title' ] ) {
@@ -72,7 +72,7 @@ class Template
      * @param $data
      * @return void
      */
-    function loadMarkdown( &$data ) {
+    static function loadMarkdown( &$data ) {
         include_once( __DIR__ .  '/../../../vendor/PHPMarkdownExtra/markdown.php' );
         $content = $data[ 'contents' ];
         $content = Markdown( $content );
@@ -87,7 +87,7 @@ class Template
      * @param $content
      * @return bool
      */
-    function extractTitle( &$content ) {
+    static function extractTitle( &$content ) {
         $pattern = '/\<title\>([^<]*)\<\/title\>/i';
         if( preg_match( $pattern, $content, $matched ) ) {
             $title = $matched[1];

@@ -59,7 +59,7 @@ class Loader
         $_siteObj->setFileName( $file_name );
     }
     // +-------------------------------------------------------------+
-    function action_pageNotFound( $_ctrl, &$_siteObj ) {
+    static function action_pageNotFound( $_ctrl, &$_siteObj ) {
         // do something about error 404, a file not found.
         // maybe load sorry file.
     }
@@ -71,7 +71,7 @@ class Loader
      * @param SiteObj $_siteObj
      * @param $loadInfo
      */
-    function action_reedit(
+    static function action_reedit(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         $loadInfo ) {
@@ -79,7 +79,7 @@ class Loader
         $_siteObj->setContentType( 'as_is' );
     }
     // +-------------------------------------------------------------+
-    function findLoadMode( &$_siteObj ) {
+    static function findLoadMode( &$_siteObj ) {
         $modes = array( '_raw', '_src', '_edit' );
         $loadMode  = '_view';
         foreach( $modes as $mode ) {
@@ -91,14 +91,14 @@ class Loader
         return $loadMode;
     }
     // +-------------------------------------------------------------+
-    function loadApp(
+    static function loadApp(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $loadInfo ) {
         include $loadInfo[ 'file' ];
     }
     // +-------------------------------------------------------------+
-    function load_view(
+    static function load_view(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $loadInfo ) {
@@ -109,7 +109,7 @@ class Loader
         $_siteObj->setContentType( $file_type );
     }
     // +-------------------------------------------------------------+
-    function load_src(
+    static function load_src(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $loadInfo ) {
@@ -118,7 +118,7 @@ class Loader
         $_siteObj->setContentType( 'php' );
     }
     // +-------------------------------------------------------------+
-    function load_raw(
+    static function load_raw(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $loadInfo ) {
@@ -128,7 +128,7 @@ class Loader
         $_siteObj->setEmitAsIs();
     }
     // +-------------------------------------------------------------+
-    function load_edit(
+    static function load_edit(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         $loadInfo ) {
@@ -137,14 +137,14 @@ class Loader
         $_siteObj->setContentType( 'as_is' );
     }
     // +-------------------------------------------------------------+
-    function getContentsByGet(
+    static function getContentsByGet(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $file_name ) {
         return file_get_contents( $file_name );
     }
     // +-------------------------------------------------------------+
-    function getContentsByOb(
+    static function getContentsByOb(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $file_name ) {
@@ -155,7 +155,7 @@ class Loader
         return $content;
     }
     // +-------------------------------------------------------------+
-    function loadAsIs(
+    static function loadAsIs(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         $loadInfo ) {
@@ -168,7 +168,7 @@ class Loader
         $_siteObj->setEmitAsIs();
     }
     // +-------------------------------------------------------------+
-    function fireLoad( $loadInfo ) {
+    static function fireLoad( $loadInfo ) {
     }
     // +-------------------------------------------------------------+
 }

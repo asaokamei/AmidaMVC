@@ -106,7 +106,7 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
-    function findFilerCommand( 
+    static function findFilerCommand( 
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         &$command=NULL ) 
     {
@@ -153,7 +153,7 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
-    function action_fileNew(
+    static function action_fileNew(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -174,7 +174,7 @@ class Filer
      * @param $loadInfo
      * @return string
      */
-    function getFileToEdit( $_siteObj, $loadInfo ) {
+    static function getFileToEdit( $_siteObj, $loadInfo ) {
         if( isset( $loadInfo[ 'file' ] ) ) {
             $file_name = $loadInfo[ 'file' ];
         }
@@ -200,7 +200,7 @@ class Filer
      * @param array $loadInfo
      * @return array
      */
-    function action_edit(
+    static function action_edit(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -220,7 +220,7 @@ class Filer
      * @param array $loadInfo
      * @return array
      */
-    function action_put(
+    static function action_put(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -247,7 +247,7 @@ class Filer
      * @param array $loadInfo
      * @return array
      */
-    function action_reedit(
+    static function action_reedit(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -271,7 +271,7 @@ class Filer
      * @param array $loadInfo
      * @return array
      */
-    function action_pub(
+    static function action_pub(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -294,7 +294,7 @@ class Filer
      * @param array $loadInfo
      * @return array
      */
-    function action_del(
+    static function action_del(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -315,7 +315,7 @@ class Filer
      * @param array $loadInfo
      * @return array
      */
-    function action_purge(
+    static function action_purge(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -331,7 +331,7 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
-    function action_fileFolder(
+    static function action_fileFolder(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -357,7 +357,7 @@ class Filer
     // +-------------------------------------------------------------+
     //  backup methods
     // +-------------------------------------------------------------+
-    function action_bkView(
+    static function action_bkView(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
         array $loadInfo )
@@ -379,7 +379,7 @@ class Filer
      * @param $file_replaced
      * @return mixed
      */
-    function backup( $file_replaced ) {
+    static function backup( $file_replaced ) {
         static::getFileInfo( $file_replaced, $folder, $base, $file_body, $file_ext );
         $backup_folder = $folder . '/' . static::$backup;
         if( !file_exists( $backup_folder ) ) {
@@ -394,7 +394,7 @@ class Filer
         rename( $file_replaced, $backup_file );
     }
     // +-------------------------------------------------------------+
-    function backupList( $file_name ) {
+    static function backupList( $file_name ) {
         static::getFileInfo( $file_name, $folder, $base, $file_body, $file_ext );
         $backup_folder = $folder . '/' . static::$backup;
         if( !file_exists( $backup_folder ) ) {
@@ -408,7 +408,7 @@ class Filer
         return $backup_list;
     }
     // +-------------------------------------------------------------+
-    function getFileInfo( $file_name, &$folder, &$base, &$body, &$ext ) {
+    static function getFileInfo( $file_name, &$folder, &$base, &$body, &$ext ) {
         $folder  = dirname(  $file_name );
         $base    = basename( $file_name );
         $ext     = pathinfo( $file_name, PATHINFO_EXTENSION  );

@@ -11,7 +11,7 @@ class Render
      * @param $ctrl
      * @param $data
      */
-    function actionDefault( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+    static function actionDefault( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         if( !$_siteObj->isResponseReady() ) {
             static::template( $_ctrl, $_siteObj );
         }
@@ -19,7 +19,7 @@ class Render
         return;
     }
     // +-------------------------------------------------------------+
-    function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+    static function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         // show some excuses, or blame user for not finding a page.
         $siteObj = $_siteObj->get( 'siteObj' );
         if( isset( $siteObj->pageNotFound ) ) {
@@ -39,7 +39,7 @@ class Render
         static::template( $ctrl, $_siteObj );
     }
     // +-------------------------------------------------------------+
-    function actionException( $ctrl, $_siteObj ) {
+    static function actionException( $ctrl, $_siteObj ) {
         // show some nasty things happened and apologize.
         echo 'something terrible has happend...<br />';
         var_dump( $_siteObj );
@@ -54,7 +54,7 @@ class Render
      * @param SiteObj $_siteObj
      * @return mixed
      */
-    function template( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+    static function template( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         if( $_siteObj->isResponseReady() ) {
             static::emitResponse( $_ctrl, $_siteObj );
             return;
@@ -76,7 +76,7 @@ class Render
         return;
     }
     // +-------------------------------------------------------------+
-    function emitResponse( $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+    static function emitResponse( $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
         $mime_type = $_siteObj->get( 'responseObj', 'mime_type' );
         if( !$mime_type ) {
             $file_name = $_siteObj->getContent( 'file_name' );
@@ -88,7 +88,7 @@ class Render
         return;
     }
     // +-------------------------------------------------------------+
-    function findMimeType( $file_ext ) {
+    static function findMimeType( $file_ext ) {
         switch( strtolower( $file_ext ) ) {
             case 'css':
                 $mime = 'text/css';
