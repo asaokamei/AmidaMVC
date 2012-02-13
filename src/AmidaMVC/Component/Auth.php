@@ -9,7 +9,7 @@ class Auth
     static $auth_callback = array( '\\AmidaMVC\\Tools\\AuthNot', 'getAuth' );
     static $logout_callback = array( '\\AmidaMVC\\Tools\\AuthNot', 'logout' );
     // +-------------------------------------------------------------+
-    function actionDefault(
+    static function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
@@ -17,7 +17,7 @@ class Auth
         Debug::bug( 'wordy', 'Auth default... do nothing. ');
     }
     // +-------------------------------------------------------------+
-    function action_logout(
+    static function action_logout(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
@@ -27,7 +27,7 @@ class Auth
         $ctrl->redirect();
     }
     // +-------------------------------------------------------------+
-    function action_dev(
+    static function action_dev(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
     {
