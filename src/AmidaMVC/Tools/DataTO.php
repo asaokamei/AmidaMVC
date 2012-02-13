@@ -8,6 +8,10 @@ namespace AmidaMVC\Tools;
  * @property string file_cmd
  * @property mixed curr_folder
  * @property array backup_list
+ * @property string error
+ * @property string err_msg
+ * @property mixed command
+ * @property array|bool file_list
  */
 class DataTO
 {
