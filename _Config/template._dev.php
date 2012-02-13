@@ -1,7 +1,7 @@
 <?php
 
 // filer's mode; _edit, _put, _pub, _del,...
-$file_mode = (isset($_siteObj->filerObj->file_mode)) ? $_siteObj->siteObj->file_mode : FALSE;
+$file_mode = (isset($_siteObj->filerObj->file_mode)) ? $_siteObj->filerObj->file_mode : FALSE;
 ;
 // myself.
 $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
