@@ -37,6 +37,9 @@ class Filer
             elseif( is_dir( $dir ) ) {
                 $folder = $dir;
             }
+            else {
+                $folder = FALSE;
+            }
         }
         if( $folder == '.' ) {
             $folder = '';
@@ -398,7 +401,7 @@ class Filer
         static::getFileInfo( $file_name, $folder, $base, $file_body, $file_ext );
         $backup_folder = $folder . '/' . static::$backup;
         if( !file_exists( $backup_folder ) ) {
-            return;
+            return FALSE;
         }
         $backup_glob = "{$backup_folder}/_{$file_body}-*.{$file_ext}";
         $backup_list = glob( $backup_glob );
