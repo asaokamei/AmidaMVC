@@ -106,18 +106,6 @@ class Router
         return array();
     }
     // +-------------------------------------------------------------+
-    static function getActionFiles( $folder, $action ) {
-        $ext  = pathinfo( $action, PATHINFO_EXTENSION );
-        $base = pathinfo( $action, PATHINFO_FILENAME );
-        $find = "{$folder}/{$base}*.{$ext}";
-        $list = glob( $find, GLOB_NOSORT );
-        foreach( $list as $file_name ) {
-            $file_name = basename( $file_name );
-            return $file_name;
-        }
-        return FALSE;
-    }
-    // +-------------------------------------------------------------+
     static function fireRouterResult( $loadInfo ) {
         // do nothing
     }
