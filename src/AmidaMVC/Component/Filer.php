@@ -24,6 +24,7 @@ class Filer
         array $loadInfo )
     {
         // find current folder.
+        $folder = '';
         if( isset( $loadInfo[ 'file' ] ) ) {
             $folder = dirname( $loadInfo['file'] );
         } 
