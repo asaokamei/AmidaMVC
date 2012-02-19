@@ -229,6 +229,8 @@ class Filer
         // TODO: verify input! Security alert!
         if( isset( $_POST[ '_putContent' ] ) ) {
             $content = $_POST[ '_putContent' ];
+            $content = str_replace( "\r\n", "\n", $content );
+            $content = str_replace( "\r", "\n", $content );
             $success = file_put_contents( $file_to_edit, $content );
             if( $success !== FALSE ) {
                 $loadInfo[ 'file' ] = $file_to_edit;
