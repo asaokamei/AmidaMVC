@@ -22,7 +22,7 @@ class Router
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj $_siteObj ) 
     {
-        if( $loadInfo  = call_user_func( self::$router, $ctrl->path_info ) ) {
+        if( $loadInfo  = call_user_func( self::$router, $ctrl->getPathInfo() ) ) {
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
         }
@@ -59,14 +59,14 @@ class Router
         );
         // find a file to load. 
         // ex: path_info = path/to/file_name.
-        $file_name = $ctrl->getLocation() . '/' . $ctrl->path_info;
+        $file_name = $ctrl->getLocation() . '/' . $ctrl->getPathInfo();
         if( file_exists( $file_name ) ) {
-            $loadInfo[ 'file' ] = $ctrl->path_info;
+            $loadInfo[ 'file' ] = $ctrl->getPathInfo();
             return $loadInfo;
         }
         // find an app to load.
         // ex: path_info = path/to/_App.php/action.
-        $routes = explode( '/', $ctrl->path_info );
+        $routes = explode( '/', $ctrl->getPathInfo() );
         if( empty( $routes ) ) {
             $routes = array( '' );
         }
