@@ -107,6 +107,13 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    /**
+     * find commands for Filer. commands are in static::$file_list. 
+     * @static
+     * @param SiteObj $_siteObj
+     * @param null $command
+     * @return bool
+     */
     static function findFilerCommand( 
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         &$command=NULL ) 
@@ -122,6 +129,14 @@ class Filer
         return FALSE;
     }
     // +-------------------------------------------------------------+
+    /**
+     * dispatch commands (_fileNew, etc.) when pageNotFound. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     * @return array
+     */
     static function action_pageNotFound(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
@@ -154,6 +169,13 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    /**
+     * add new file. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     */
     static function action_fileNew(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
