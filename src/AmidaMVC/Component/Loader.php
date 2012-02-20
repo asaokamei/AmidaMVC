@@ -32,12 +32,16 @@ class Loader
         $loadInfo ) 
     {
         $loadMode  = static::findLoadMode( $_siteObj );
+        if( $loadMode != '_view' ) {
+            $_ctrl->setMyAction( $loadMode );
+            return $loadInfo;
+        }
         $file_name = $loadInfo['file'];
         $base_name = basename( $file_name );
         $file_ext  = pathinfo( $file_name, PATHINFO_EXTENSION );
         
         $loadInfo[ 'ext' ] = $file_ext;
-        $loadInfo[ 'loaadMode' ] = $loadMode;
+        $loadInfo[ 'loadMode' ] = $loadMode;
         $action    = ( isset( $loadInfo['action'] ) ) ? $loadInfo['action'] : $_ctrl->getAction();
         // load the file
         static::fireLoad( $loadInfo );
@@ -46,9 +50,8 @@ class Loader
             $loadInfo[ 'loadMode' ] = '_App';
         }
         else if( isset( static::$ext_type[$file_ext] ) ) {
-            $method = 'load' . $loadMode;
             $loadInfo[ 'loadMode' ] = $loadMode;
-            static::$method( $_ctrl, $_siteObj, $loadInfo );
+            static::load_view( $_ctrl, $_siteObj, $loadInfo );
         }
         else if( in_array( $file_ext, static::$ext_asis ) ) {
             static::loadAsIs( $_ctrl, $_siteObj, $loadInfo );
@@ -79,8 +82,68 @@ class Loader
         $_siteObj->setContentType( 'as_is' );
     }
     // +-------------------------------------------------------------+
+    static function action_edit(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        $file_ext  = pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION );
+        if( static::loadAsIs( $_ctrl, $_siteObj, $loadInfo ) ) {
+            $_ctrl->setAction( $_ctrl->defaultAct() );
+        }
+        else if( isset( static::$ext_type[ $file_ext ] ) ) {
+            $content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+            $_siteObj->setContents( $content );
+            $_siteObj->setContentType( 'text' );
+            $_siteObj->setFileName( $loadInfo[ 'file' ] );
+        }
+        else {
+            // ignore this type of file.  
+        }
+    }
+    // +-------------------------------------------------------------+
+    static function action_src(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        $file_ext  = pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION );
+        if( static::loadAsIs( $_ctrl, $_siteObj, $loadInfo ) ) {
+            $_ctrl->setAction( $_ctrl->defaultAct() );
+        }
+        else if( isset( static::$ext_type[ $file_ext ] ) ) {
+            $content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+            $_siteObj->setContents( $content );
+            $_siteObj->setContentType( 'php' );
+            $_siteObj->setFileName( $loadInfo[ 'file' ] );
+        }
+        else {
+            // ignore this type of file.  
+        }
+    }
+    // +-------------------------------------------------------------+
+    static function action_raw(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        $file_ext  = pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION );
+        if( static::loadAsIs( $_ctrl, $_siteObj, $loadInfo ) ) {
+            $_ctrl->setAction( $_ctrl->defaultAct() );
+        }
+        else if( isset( static::$ext_type[ $file_ext ] ) ) {
+            $content = static::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
+            $_siteObj->setHttpContent( $content );
+            $_siteObj->setContentType( 'text' );
+            $_siteObj->setEmitAsIs();
+        }
+        else {
+            // ignore this type of file.  
+        }
+    }
+    // +-------------------------------------------------------------+
     static function findLoadMode( &$_siteObj ) {
-        $modes = array( '_raw', '_src', '_edit' );
+        $modes = array( '_raw', '_src' );
         $loadMode  = '_view';
         foreach( $modes as $mode ) {
             if( in_array( $mode, $_siteObj->siteObj->command ) ) {
@@ -107,25 +170,6 @@ class Loader
         $file_ext  = pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION );
         $file_type = static::$ext_type[ $file_ext ];
         $_siteObj->setContentType( $file_type );
-    }
-    // +-------------------------------------------------------------+
-    static function load_src(
-        \AmidaMVC\Framework\Controller $_ctrl,
-        \AmidaMVC\Component\SiteObj &$_siteObj, 
-        $loadInfo ) {
-        $content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
-        $_siteObj->setContents( $content );
-        $_siteObj->setContentType( 'php' );
-    }
-    // +-------------------------------------------------------------+
-    static function load_raw(
-        \AmidaMVC\Framework\Controller $_ctrl,
-        \AmidaMVC\Component\SiteObj &$_siteObj, 
-        $loadInfo ) {
-        $content = static::getContentsByOb( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
-        $_siteObj->setHttpContent( $content );
-        $_siteObj->setContentType( 'text' );
-        $_siteObj->setEmitAsIs();
     }
     // +-------------------------------------------------------------+
     static function load_edit(
@@ -158,14 +202,20 @@ class Loader
     static function loadAsIs(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
-        $loadInfo ) {
-        $responseObj = $_siteObj->get( 'responseObj' );
-        $responseObj->content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo['file'] );
-        $responseObj->mime_type = '';
-        $_siteObj->setFileName( $loadInfo[ 'file' ] );
-        $_siteObj->setContentType( 'as_is' );
-        $_siteObj->set( 'responseObj', $responseObj );
-        $_siteObj->setEmitAsIs();
+        $loadInfo ) 
+    {
+        $file_ext  = pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION );
+        if( in_array( $file_ext, static::$ext_asis ) ) {
+            $responseObj = $_siteObj->get( 'responseObj' );
+            $responseObj->content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo['file'] );
+            $responseObj->mime_type = '';
+            $_siteObj->setFileName( $loadInfo[ 'file' ] );
+            $_siteObj->setContentType( 'as_is' );
+            $_siteObj->set( 'responseObj', $responseObj );
+            $_siteObj->setEmitAsIs();
+            return TRUE;
+        }
+        return FALSE;
     }
     // +-------------------------------------------------------------+
     static function fireLoad( $loadInfo ) {

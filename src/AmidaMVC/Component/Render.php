@@ -17,6 +17,9 @@ class Render
         \AmidaMVC\Component\SiteObj $_siteObj ) 
     {
         if( !$_siteObj->isResponseReady() ) {
+            $content = (array) $_siteObj->getContent();
+            $content = call_user_func( static::$convert, $content );
+            $_siteObj->set( 'contentObj', $content );
             static::template( $_ctrl, $_siteObj );
         }
         static::emitResponse( $_ctrl, $_siteObj );
@@ -46,6 +49,40 @@ class Render
         static::template( $ctrl, $_siteObj );
     }
     // +-------------------------------------------------------------+
+    static function action_edit(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj $_siteObj )
+    {
+        if( !$_siteObj->isResponseReady() ) {
+            static::template( $_ctrl, $_siteObj );
+        }
+        static::emitResponse( $_ctrl, $_siteObj );
+        return;
+    }
+    // +-------------------------------------------------------------+
+    static function action_src(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj $_siteObj )
+    {
+        if( !$_siteObj->isResponseReady() ) {
+            $content = (array) $_siteObj->getContent();
+            $content = call_user_func( static::$convert, $content );
+            $_siteObj->set( 'contentObj', $content );
+            static::template( $_ctrl, $_siteObj );
+        }
+        static::emitResponse( $_ctrl, $_siteObj );
+        return;
+    }
+    // +-------------------------------------------------------------+
+    static function action_raw(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj $_siteObj )
+    {
+        $_siteObj->setMimeType( 'text/plain' );
+        static::emitResponse( $_ctrl, $_siteObj );
+        return;
+    }
+    // +-------------------------------------------------------------+
     static function actionException( $ctrl, $_siteObj ) {
         // show some nasty things happened and apologize.
         echo 'something terrible has happend...<br />';
@@ -73,8 +110,6 @@ class Render
         $siteObj = $_siteObj->get( 'siteObj' );
         $template = $siteObj->template_file;
         $args = (array) $_siteObj->getContent();
-
-        $args = call_user_func( static::$convert, $args );
         $args[ '_ctrl' ] = $_ctrl;
         $args[ '_siteObj' ] = $_siteObj;
 
@@ -103,6 +138,9 @@ class Render
     // +-------------------------------------------------------------+
     static function findMimeType( $file_ext ) {
         switch( strtolower( $file_ext ) ) {
+            case 'text':
+                $mime = 'text/plain';
+                break;
             case 'css':
                 $mime = 'text/css';
                 break;
