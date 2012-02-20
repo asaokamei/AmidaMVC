@@ -7,7 +7,14 @@ namespace AmidaMVC\Component;
 class Loader
 {
     // extensions to determine which load types. 
+    
+    /**
+     * @var array   file extensions to load as is.
+     */
     static $ext_asis = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
+    /**
+     * @var array   file extensions to load. 
+     */
     static $ext_type = array(
         'php'      => 'html',
         'html'     => 'html',
@@ -16,6 +23,12 @@ class Loader
         'markdown' => 'markdown',
         'text'     => 'text',
         'txt'      => 'text',
+    );
+    /**
+     * @var array   file extensions to edit as file.
+     */
+    static $ext_edit = array(
+        'css'   => 'css',
     );
     // +-------------------------------------------------------------+
     /**
@@ -88,15 +101,17 @@ class Loader
         array $loadInfo )
     {
         $file_ext  = pathinfo( $loadInfo[ 'file' ], PATHINFO_EXTENSION );
-        if( static::loadAsIs( $_ctrl, $_siteObj, $loadInfo ) ) {
-            $_ctrl->setAction( $_ctrl->defaultAct() );
-        }
-        else if( isset( static::$ext_type[ $file_ext ] ) ) {
+        if( isset( static::$ext_type[ $file_ext ] ) ||
+            isset( static::$ext_edit[ $file_ext ] ))
+        {
             $content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
             $_siteObj->setContents( $content );
             $_siteObj->setContentType( 'text' );
             $_siteObj->setFileName( $loadInfo[ 'file' ] );
         }
+        else if( static::loadAsIs( $_ctrl, $_siteObj, $loadInfo ) ) {
+                $_ctrl->setAction( $_ctrl->defaultAct() );
+            }
         else {
             // ignore this type of file.  
         }
