@@ -24,6 +24,7 @@ class Filer
         array $loadInfo )
     {
         // find current folder.
+        $folder = '';
         if( isset( $loadInfo[ 'file' ] ) ) {
             $folder = dirname( $loadInfo['file'] );
         } 
@@ -109,6 +110,13 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    /**
+     * find commands for Filer. commands are in static::$file_list. 
+     * @static
+     * @param SiteObj $_siteObj
+     * @param null $command
+     * @return bool
+     */
     static function findFilerCommand( 
         \AmidaMVC\Component\SiteObj &$_siteObj, 
         &$command=NULL ) 
@@ -124,6 +132,14 @@ class Filer
         return FALSE;
     }
     // +-------------------------------------------------------------+
+    /**
+     * dispatch commands (_fileNew, etc.) when pageNotFound. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     * @return array
+     */
     static function action_pageNotFound(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
@@ -156,6 +172,13 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    /**
+     * add new file. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     */
     static function action_fileNew(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
@@ -232,6 +255,8 @@ class Filer
         // TODO: verify input! Security alert!
         if( isset( $_POST[ '_putContent' ] ) ) {
             $content = $_POST[ '_putContent' ];
+            $content = str_replace( "\r\n", "\n", $content );
+            $content = str_replace( "\r", "\n", $content );
             $success = file_put_contents( $file_to_edit, $content );
             if( $success !== FALSE ) {
                 $loadInfo[ 'file' ] = $file_to_edit;

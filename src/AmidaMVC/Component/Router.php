@@ -22,9 +22,13 @@ class Router
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj $_siteObj ) 
     {
-        $loadInfo = call_user_func( self::$router, $ctrl->path_info );
-        if( !$loadInfo ) {
-            $loadInfo = self::actionScan( $ctrl, $_siteObj );
+        if( $loadInfo  = call_user_func( self::$router, $ctrl->getPathInfo() ) ) {
+            // found by route map.
+            $loadInfo[ 'foundBy' ] = 'route';
+        }
+        else if( $loadInfo = self::actionScan( $ctrl, $_siteObj ) ) {
+            // found by scan file system.
+            $loadInfo[ 'foundBy' ] = 'scan';
         }
         if( !$loadInfo ) {
             $ctrl->setAction( '_pageNotFound' );
@@ -38,7 +42,8 @@ class Router
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
-    /** search file system for routes.
+    /** 
+     * search file system for path info.
      * @static
      * @param $ctrl
      * @param $_siteObj
@@ -48,11 +53,42 @@ class Router
         \AmidaMVC\Framework\Controller $ctrl, 
         \AmidaMVC\Component\SiteObj &$_siteObj ) 
     {
-        // search routes.
-        $folder = $ctrl->getLocation();
-        $routes = explode( '/', $ctrl->path_info );
-        $loadInfo = self::searchRoutes( $ctrl, $routes, $folder );
-        return $loadInfo;
+        $loadInfo = array(
+            'file' => FALSE,
+            'action' => $ctrl->defaultAct(),
+        );
+        // find a file to load. 
+        // ex: path_info = path/to/file_name.
+        $file_name = $ctrl->getLocation() . '/' . $ctrl->getPathInfo();
+        if( file_exists( $file_name ) ) {
+            $loadInfo[ 'file' ] = $ctrl->getPathInfo();
+            return $loadInfo;
+        }
+        // find an app to load.
+        // ex: path_info = path/to/_App.php/action.
+        $routes = explode( '/', $ctrl->getPathInfo() );
+        if( empty( $routes ) ) {
+            $routes = array( '' );
+        }
+        $folder = '';
+        $found  = FALSE;
+        foreach( $routes as $loc ) {
+            if( $found ) {
+                // found an _App to load. next loc is the action.
+                $loadInfo[ 'action' ] = $loc;
+                return $loadInfo;
+            }
+            $folder .= $loc . '/';
+            $file_name = $ctrl->getLocation() . '/' . $folder . '_App.php';
+            if( file_exists( $file_name ) ) {
+                $loadInfo[ 'file' ] = $folder . '_App.php';
+                $found = TRUE;
+            }
+        }
+        if( $found ) {
+            return $loadInfo;
+        }
+        return FALSE;
     }
     // +-------------------------------------------------------------+
     static function action_LoginForm( 
@@ -68,64 +104,6 @@ class Router
             return $loadInfo;
         }
         return array();
-    }
-    // +-------------------------------------------------------------+
-    /** search for a file in a $folder.
-     * @static
-     * @param $ctrl
-     * @param $routes
-     * @param $folder        folder to search.
-     * @return array|bool    return $loadInfo or FALSE if not found.
-     */
-    static function searchRoutes( $ctrl, &$routes, &$folder ) {
-        // loads from existing app file.
-        if( is_array( $routes ) && isset( $routes[0] ) ) {
-            // search folder, action.php, or _App.php
-            $action  = $routes[0];
-        }
-        else {
-            // search _App.php only.
-            $action = FALSE;
-        }
-        $loadInfo = array(
-            'file' => FALSE,
-            'action' => $action
-        );
-        // search in subsequent action folder.
-        if( $action && is_dir( $folder . "/{$action}" ) ) {
-            // search in the directory.
-            if( !empty( $routes ) ) {
-                $routes = array_slice( $routes, 1 ); // shorten routes.
-            }
-            $folder .= "/{$action}";
-            return self::searchRoutes( $ctrl, $routes, $folder );
-        }
-        // search for action file.
-        if( $action && $file_name = self::getActionFiles( $folder, $action ) ) {
-            $routes = array_slice( $routes, 1 );
-            $loadInfo[ 'file' ] = "{$folder}/{$file_name}";
-            return $loadInfo;
-        }
-        // search for _App.php
-        if( $file_name = self::getActionFiles( $folder, '_App.php' ) ) {
-            $action = $routes[0];
-            $loadInfo[ 'file' ] = "{$folder}/{$file_name}";
-            $loadInfo[ 'action' ] = $action;
-            return $loadInfo;
-        }
-        return FALSE;
-    }
-    // +-------------------------------------------------------------+
-    static function getActionFiles( $folder, $action ) {
-        $ext  = pathinfo( $action, PATHINFO_EXTENSION );
-        $base = pathinfo( $action, PATHINFO_FILENAME );
-        $find = "{$folder}/{$base}*.{$ext}";
-        $list = glob( $find, GLOB_NOSORT );
-        foreach( $list as $file_name ) {
-            $file_name = basename( $file_name );
-            return $file_name;
-        }
-        return FALSE;
     }
     // +-------------------------------------------------------------+
     static function fireRouterResult( $loadInfo ) {

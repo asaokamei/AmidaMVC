@@ -8,10 +8,14 @@ class Render
     // +-------------------------------------------------------------+
     /**
      * renders data (to html) and output data.
-     * @param $ctrl
-     * @param $data
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param \AmidaMVC\Component\SiteObj $_siteObj
+     * @return
      */
-    static function actionDefault( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+    static function actionDefault( 
+        \AmidaMVC\Framework\Controller $_ctrl, 
+        \AmidaMVC\Component\SiteObj $_siteObj ) 
+    {
         if( !$_siteObj->isResponseReady() ) {
             static::template( $_ctrl, $_siteObj );
         }
@@ -19,7 +23,10 @@ class Render
         return;
     }
     // +-------------------------------------------------------------+
-    static function action_PageNotFound( \AmidaMVC\Framework\Controller $ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+    static function action_PageNotFound( 
+        \AmidaMVC\Framework\Controller $ctrl, 
+        \AmidaMVC\Component\SiteObj $_siteObj ) 
+    {
         // show some excuses, or blame user for not finding a page.
         $siteObj = $_siteObj->get( 'siteObj' );
         if( isset( $siteObj->pageNotFound ) ) {
@@ -54,7 +61,10 @@ class Render
      * @param SiteObj $_siteObj
      * @return mixed
      */
-    static function template( \AmidaMVC\Framework\Controller $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+    static function template( 
+        \AmidaMVC\Framework\Controller $_ctrl, 
+        \AmidaMVC\Component\SiteObj $_siteObj ) 
+    {
         if( $_siteObj->isResponseReady() ) {
             static::emitResponse( $_ctrl, $_siteObj );
             return;
@@ -76,7 +86,10 @@ class Render
         return;
     }
     // +-------------------------------------------------------------+
-    static function emitResponse( $_ctrl, \AmidaMVC\Component\SiteObj $_siteObj ) {
+    static function emitResponse(
+        \AmidaMVC\Framework\Controller $_ctrl, 
+        \AmidaMVC\Component\SiteObj $_siteObj ) 
+    {
         $mime_type = $_siteObj->get( 'responseObj', 'mime_type' );
         if( !$mime_type ) {
             $file_name = $_siteObj->getContent( 'file_name' );
