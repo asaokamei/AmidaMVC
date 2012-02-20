@@ -4,8 +4,9 @@ namespace AmidaMVC\Component;
 class Model
 {
     // +-------------------------------------------------------------+
-    static function actionDefault( $ctrl, &$_siteObj ) {
-
+    static function actionDefault( 
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$siteObj ) {
     }
     // +-------------------------------------------------------------+
     /**
