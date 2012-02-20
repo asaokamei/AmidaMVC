@@ -235,6 +235,7 @@ class Filer
         $_siteObj->filerObj->file_mode = '_edit';
         if( file_exists( $file_to_edit ) ) {
             $loadInfo[ 'file' ] = $file_to_edit;
+            $_siteObj->filerObj->file_cmd[] = '_pub';
         }
         return $loadInfo;
     }
