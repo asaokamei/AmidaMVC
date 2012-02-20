@@ -172,15 +172,6 @@ class Loader
         $_siteObj->setContentType( $file_type );
     }
     // +-------------------------------------------------------------+
-    static function load_edit(
-        \AmidaMVC\Framework\Controller $_ctrl,
-        \AmidaMVC\Component\SiteObj &$_siteObj,
-        $loadInfo ) {
-        $content = static::getContentsByGet( $_ctrl, $_siteObj, $loadInfo[ 'file' ] );
-        $_siteObj->setContents( $content );
-        $_siteObj->setContentType( 'as_is' );
-    }
-    // +-------------------------------------------------------------+
     static function getContentsByGet(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
