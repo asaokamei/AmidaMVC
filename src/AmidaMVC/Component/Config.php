@@ -1,10 +1,8 @@
 <?php
 namespace AmidaMVC\Component;
 /**
- * TODO: make Config
  *  for controlling multiple-lang, admin, debug info,
  *  dev/staging/real server.
-*
  */
 class Config
 {
@@ -13,6 +11,12 @@ class Config
      */
     static $mode_list = array( '_logout', '_dev' );
     // +-------------------------------------------------------------+
+    /**
+     * set up configuration for all mode. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $siteObj
+     */
     static function actionDefault(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$siteObj )
@@ -24,6 +28,13 @@ class Config
         }
     }
     // +-------------------------------------------------------------+
+    /**
+     * set up configuration for _dev mode. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $_siteObj
+     * @return mixed
+     */
     static function action_dev(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
@@ -32,6 +43,13 @@ class Config
         return;
     }
     // +-------------------------------------------------------------+
+    /**
+     * do not initialize _siteObj for second time Config. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $_siteObj
+     * @return bool
+     */
     static function checkInit(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj )
@@ -42,6 +60,12 @@ class Config
         return FALSE;
     }
     // +-------------------------------------------------------------+
+    /**
+     * find mode (_dev or _login, for instance).
+     * @static
+     * @param $command
+     * @return bool
+     */
     static function findMode( $command )
     {
         foreach( static::$mode_list as $mode ) {
@@ -53,6 +77,12 @@ class Config
         return FALSE;
     }
     // +-------------------------------------------------------------+
+    /**
+     * set up siteObj. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $_siteObj
+     */
     static function setRoute( 
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj ) 

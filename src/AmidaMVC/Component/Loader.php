@@ -3,6 +3,9 @@ namespace AmidaMVC\Component;
 
 /**
  * Loader class to load file.
+ * TODO: simplify methods. 
+ *  - lots of similar code?
+ *  - _raw mode to save contents to contentObj?
  */
 class Loader
 {
@@ -29,15 +32,18 @@ class Loader
      */
     static $ext_edit = array(
         'css'   => 'css',
+        'js'    => 'javascript'
     );
     // +-------------------------------------------------------------+
     /**
      * loads file based on $loadInfo, determined by Router.
      * specify absolute path of a file as $loadInfo[ 'file' ].
+     * setMyAction for _src and _raw mode
      * @static
      * @param $_ctrl
      * @param $_siteObj
      * @param array $loadInfo    info about file to load from Router.
+     * @return array
      */
     static function actionDefault( 
         \AmidaMVC\Framework\Controller $_ctrl, 
@@ -75,6 +81,12 @@ class Loader
         $_siteObj->setFileName( $file_name );
     }
     // +-------------------------------------------------------------+
+    /**
+     * nothing to do for page not found case. 
+     * @static
+     * @param $_ctrl
+     * @param $_siteObj
+     */
     static function action_pageNotFound( $_ctrl, &$_siteObj ) {
         // do something about error 404, a file not found.
         // maybe load sorry file.
@@ -83,6 +95,7 @@ class Loader
     /**
      * re-edit contents when edit fails to put content.
      * put content as $loadInfo[ 'content' ] to use.
+     * this action is called only from Filer. 
      * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param SiteObj $_siteObj
      * @param $loadInfo
@@ -95,6 +108,14 @@ class Loader
         $_siteObj->setContentType( 'as_is' );
     }
     // +-------------------------------------------------------------+
+    /**
+     * load file source for editing, set content type to text.
+     * this action is called only from Filer.
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     */
     static function action_edit(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
@@ -117,6 +138,13 @@ class Loader
         }
     }
     // +-------------------------------------------------------------+
+    /**
+     * load file source for _src, set content type to php (source code).
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     */
     static function action_src(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
@@ -137,6 +165,14 @@ class Loader
         }
     }
     // +-------------------------------------------------------------+
+    /**
+     * load file contents for _raw mode, load contents to 
+     * responseObj and set content type to text. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     */
     static function action_raw(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
@@ -157,6 +193,13 @@ class Loader
         }
     }
     // +-------------------------------------------------------------+
+    /**
+     * check load mode (_raw, _src, or default as _view). 
+     * note: _edit and _reedit set only by Filer. 
+     * @static
+     * @param $_siteObj
+     * @return string
+     */
     static function findLoadMode( &$_siteObj ) {
         $modes = array( '_raw', '_src' );
         $loadMode  = '_view';
@@ -169,6 +212,15 @@ class Loader
         return $loadMode;
     }
     // +-------------------------------------------------------------+
+    /**
+     * loads _App.php. just include the file. all the work must
+     * be done in the _App.php, though.
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param $loadInfo
+     * @return void
+     */
     static function loadApp(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
@@ -176,6 +228,13 @@ class Loader
         include $loadInfo[ 'file' ];
     }
     // +-------------------------------------------------------------+
+    /**
+     * load file contents for _view. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param $loadInfo
+     */
     static function load_view(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
@@ -187,6 +246,14 @@ class Loader
         $_siteObj->setContentType( $file_type );
     }
     // +-------------------------------------------------------------+
+    /**
+     * get file source using file_get_contents function. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param $file_name
+     * @return null|string
+     */
     static function getContentsByGet(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
@@ -194,6 +261,14 @@ class Loader
         return file_get_contents( $file_name );
     }
     // +-------------------------------------------------------------+
+    /**
+     * get file contents by executing file and ob_{start|get_clean}.
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param $file_name
+     * @return string
+     */
     static function getContentsByOb(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 
@@ -205,6 +280,15 @@ class Loader
         return $content;
     }
     // +-------------------------------------------------------------+
+    /**
+     * get file source by get_file_content as is; save contents in
+     * responseObj (skip html content). 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param $loadInfo
+     * @return bool
+     */
     static function loadAsIs(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj, 

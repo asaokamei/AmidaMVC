@@ -196,6 +196,7 @@ class Filer
     // +-------------------------------------------------------------+
     /**
      * returns a file for edit; _dev-file_name.ext. 
+     * TODO: add an option to edit file itself. no _dev-file. 
      * @param $_siteObj
      * @param $loadInfo
      * @return string
@@ -360,6 +361,14 @@ class Filer
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    /**
+     * add new folder. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     * @return array
+     */
     static function action_fileFolder(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
@@ -386,6 +395,14 @@ class Filer
     // +-------------------------------------------------------------+
     //  backup methods
     // +-------------------------------------------------------------+
+    /**
+     * load back up file. 
+     * @static
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     * @return array
+     */
     static function action_bkView(
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,
@@ -423,6 +440,12 @@ class Filer
         rename( $file_replaced, $backup_file );
     }
     // +-------------------------------------------------------------+
+    /**
+     * lists the back up file for the file_name. 
+     * @static
+     * @param $file_name
+     * @return array|bool
+     */
     static function backupList( $file_name ) {
         static::getFileInfo( $file_name, $folder, $base, $file_body, $file_ext );
         $backup_folder = $folder . '/' . static::$backup;
@@ -437,6 +460,15 @@ class Filer
         return $backup_list;
     }
     // +-------------------------------------------------------------+
+    /**
+     * generic method to get all info about file. 
+     * @static
+     * @param $file_name    input file name. 
+     * @param $folder
+     * @param $base
+     * @param $body
+     * @param $ext
+     */
     static function getFileInfo( $file_name, &$folder, &$base, &$body, &$ext ) {
         $folder  = dirname(  $file_name );
         $base    = basename( $file_name );
