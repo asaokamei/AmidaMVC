@@ -13,137 +13,94 @@ $base = $_ctrl->getBaseUrl();
 <head>
     <meta charset="UTF-8"/>
     <title><?php echo $head_title; ?></title>
-    <link rel="stylesheet" href="<?php echo $_siteObj->siteObj->base_url; ?>/demo.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Le styles -->
+    <link href="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+    </style>
+    <link href="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- link rel="stylesheet" href="<?php echo $_siteObj->siteObj->base_url; ?>/demo.css"/ -->
 </head>
 <body>
-<header><a href="<?php echo $_ctrl->getBaseUrl(); ?>">AmidaMVC Framework</a></header>
-<div id="contents">
-    <?php if ($title) { ?>
-    <h1><?php echo $title; ?></h1>
-    <?php } ?>
-    <?php
-    if (!isset($_siteObj->filerObj)) {
-        echo $contents;
-    }
-    else
-        if ($_siteObj->filerObj->file_mode == '_edit') {
-            // show form to edit contents.
-            ?>
-            <form method="post" name="_editFile" action="<?php echo $self?>/_put">
-                <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;"
-                    ><?php echo htmlspecialchars($contents); ?></textarea>
-                <input type="submit" name="submit" value="put contents"/>
-            </form>
-            <?php
-        }
-        else {
-            echo $contents;
-        }
-    ?>
-    <p style="clear: both;"></p>
-</div>
-<footer>AmidaMVC, yet another micro Framework for PHP.</footer>
-<?php
-if (isset($_siteObj->filerObj)) { ?>
-<script type="text/javascript">
-    function toggle( id ) {
-        var ele = document.getElementById( id );
-        if ( ele.style.display == undefined || ele.style.display == 'none' || ele.style.display == '' ) {
-            ele.style.display = 'block';
-        }
-        else {
-            ele.style.display = 'none';
-        }
-    }
-</script>
-<style>
-    div#filerMenu {
-        margin: 10px;
-        padding: 5px 5px 5px 25px;
-        border: 1px solid #cccccc;
-        box-shadow: 2px 2px 2px #cccccc;
-    }
-    div#filerMenu ul {
-        margin: 0px;
-        padding: 0px;
-        list-style-type: none;
-        height: 25px;
-    }
-    div#filerMenu li {
-        float: left;
-        margin: 2px 5px 2px 5px;
-    }
-    div#filerBackUpList {
-        display: none;
-        margin: 10px;
-        padding: 5px 5px 5px 25px;
-        border: 1px solid #cccccc;
-        box-shadow: 2px 2px 2px #cccccc;
-    }
-    div#filerError {
-        margin: 10px;
-        padding: 2px 2px 2px 25px;
-        border: 2px solid #d59392;
-        box-shadow: 3px 3px 3px #d59392;
-    }
-    div#filerError dt {
-        font-weight: bold;
-        color: red;
-    }
-    div#filerAddFolder {
-        display: none;
-        margin: 10px;
-        padding: 5px 5px 5px 25px;
-        border: 1px solid #cccccc;
-        box-shadow: 2px 2px 2px #cccccc;
-    }
-    div#filerNewForm {
-        display: none;
-        margin: 10px;
-        padding: 5px 5px 5px 25px;
-        border: 1px solid #cccccc;
-        box-shadow: 2px 2px 2px #cccccc;
-    }
-    div#filerDirList {
-        display: none;
-        margin: 10px;
-        padding: 5px 5px 5px 25px;
-        border: 1px solid #cccccc;
-        box-shadow: 2px 2px 2px #cccccc;
-    }
-</style>
-<div id="filerDivArea">
-    <!-- menu for Filer Component  -->
-    <div id="filerMenu">
-        <p>source_type: <?php echo $_siteObj->filerObj->src_type;?></p>
-        <ul>
-            <?php foreach( $_siteObj->filerObj->file_cmd as $cmd ) { ?>
-            <li><a href="<?php echo "$self/$cmd";?>"><?php echo $cmd;?></a></li>
-            <?php } ?>
-            <li><a href="javascript:toggle('filerNewForm')">add file▼</a></li>
-            <li><a href="javascript:toggle('filerAddFolder')">new folder▼</a></li>
-            <?php if( !empty( $_siteObj->filerObj->file_list) ) {
-            echo '<li><a href="javascript:toggle(\'filerDirList\');">file list▼</a></li>';  } ?>
-            <?php if( !empty( $_siteObj->filerObj->backup_list) ) {
-            echo '<li><a href="javascript:toggle(\'filerBackUpList\');">backups▼</a></li>';  } ?>
-            <?php if( !empty( $debug ) ) {
-            echo '<li><a href="javascript:toggle(\'debugInfo\');">debug info▼</a></li>';  } ?>
-        </ul>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">AmidaMVC_dev</a>
+            <p style="float: right; color: pink;">source_type: <?php echo $_siteObj->filerObj->src_type;?></p>
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <?php if( in_array( '_edit', $_siteObj->filerObj->file_cmd ) ) { ?>
+                    <li><a href="<?php echo "$self/_edit";?>">edit</a></li>
+                    <?php } ?>
+                    <?php if( in_array( '_purge', $_siteObj->filerObj->file_cmd ) ) { ?>
+                    <li><a data-toggle="modal" href="#filerPurgeModal">purge file</a></li>
+                    <?php } ?>
+                    <?php foreach( $_siteObj->filerObj->file_cmd as $cmd ) { 
+                    if( in_array( $cmd, array('_edit','_purge') ) ) { continue; } ?>
+                    <li><a href="<?php echo "$self/$cmd";?>"><?php echo $cmd;?></a></li>
+                    <?php } ?>
+                    <li><a href="javascript:toggle('filerNewForm')">add file▼</a></li>
+                    <li><a href="javascript:toggle('filerAddFolder')">new folder▼</a></li>
+                    <?php if( !empty( $_siteObj->filerObj->file_list) ) { ?>
+                    <li><a href="javascript:toggle('filerDirList');">file list▼</a></li>
+                    <?php } ?>
+                    <?php if( !empty( $_siteObj->filerObj->backup_list) ) {
+                    echo '<li><a href="javascript:toggle(\'filerBackUpList\');">backups▼</a></li>';  } ?>
+                    <?php if( !empty( $debug ) ) {
+                    echo '<li><a href="javascript:toggle(\'debugInfo\');">debug info▼</a></li>';  } ?>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
     </div>
-    <!-- adding new folder -->
-    <div id="filerAddFolder">
-        <form method="post" name="_addFolder" action="<?php echo $self?>/_fileFolder">
-            <input type="text" name="_folderName" width="30">
-            <input type="submit" name="submit" value="add new folder"/><br />
-            creates new folder at <strong>'/<?php echo $_siteObj->filerObj->curr_folder; ?>'</strong>.
-        </form>
+</div>
+<div class="container filerBoxes">
+    <!-- modal for purge -->
+    <div class="modal hide fade" id="filerPurgeModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>Purge This File</h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure to purge this file?</p>
+            <p>File: at folder:</p>
+        </div>
+        <div class="modal-footer">
+            <a href="<?php echo "{$self}/_purge" ?>" class="btn btn-primary">Purge File</a>
+            <a href="javascript:$('#filerPurgeModal').modal('hide')" class="btn">Cancel</a>
+        </div>
     </div>
     <!-- adding new file; show empty edit page -->
     <div id="filerNewForm">
-        <form method="post" name="_showNewForm" action="<?php echo $self?>/_fileNew">
-            <input type="text" name="_newFileName" width="30">
-            <input type="submit" name="submit" value="edit new file"/><br />
-            creates new file at <strong>'/<?php echo $_siteObj->filerObj->curr_folder; ?>'</strong>.
+        <form method="post" name="_showNewForm" action="<?php echo $self?>/_fileNew" class="well form-inline">
+            <label>
+                add file:<input type="text" name="_newFileName" width="50"
+                       placeholder="creates new file at '/<?php echo $_siteObj->filerObj->curr_folder; ?>'">
+            </label>
+            <input type="submit" name="submit" value="add new file"/>
+        </form>
+    </div>
+    <!-- adding new folder -->
+    <div id="filerAddFolder">
+        <form method="post" name="_addFolder" action="<?php echo $self?>/_fileFolder" class="well form-inline">
+            <label>
+                new folder:<input type="text" name="_folderName" width="50"
+                                  placeholder="new folder at '/<?php echo $_siteObj->filerObj->curr_folder; ?>'">
+            </label>
+            <input type="submit" name="submit" value="add new folder"/>
         </form>
     </div>
     <!-- show error message from _dev components -->
@@ -184,45 +141,136 @@ if (isset($_siteObj->filerObj)) { ?>
     <?php } ?>
     <!-- show debug info -->
     <?php if (!empty($debug)) { ?>
-    <style>
-        div#debugInfo {
-            display: none;
-            font-size: 12px;
-            color: #666666;
-            margin: 10px;
-            padding: 5px 5px 5px 25px;
-            border: 1px solid #cccccc;
-            box-shadow: 2px 2px 2px #cccccc;
-        }
-
-        div#debugInfo h3 {
-            margin: 0px;
-            padding: 2px;
-        }
-
-        div#debugInfo .debugTraceInfo {
-            float: left;
-            margin: 0px 0px 0px -20px;
-        }
-
-        div#debugInfo table {
-            border: 1px solid gray;
-            font-size: 11px;
-            border-collapse: collapse;
-        }
-
-        div#debugInfo td, th {
-            border: 1px dotted gray;
-            vertical-align: top;
-        }
-
-        div#debugInfo th {
-            background-color: #E0E0E0;
-        }
-    </style>
     <div id='debugInfo'><?php echo $debug;?></div>
     <?php } ?>
 </div>
-<?php }   // end of if on isset( $_siteObj->filerObj ) //  ?>
-</body>
-</html>
+<div class="container">
+    <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>">AmidaMVC Framework</a></header>
+    <div id="contents">
+        <?php if ($title) { ?>
+        <h1><?php echo $title; ?></h1>
+        <?php } ?>
+        <?php
+        if (!isset($_siteObj->filerObj)) {
+            echo $contents;
+        }
+        else
+            if ($_siteObj->filerObj->file_mode == '_edit') {
+                // show form to edit contents.
+                ?>
+                <form method="post" name="_editFile" action="<?php echo $self?>/_put">
+                    <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;"
+                        ><?php echo htmlspecialchars($contents); ?></textarea>
+                    <input type="submit" name="submit" value="put contents"/>
+                </form>
+                <?php
+            }
+            else {
+                echo $contents;
+            }
+        ?>
+        <p style="clear: both;"></p>
+    </div>
+    <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
+</div>
+<style>
+    div.filerBoxes form {
+        margin: 0px;
+        padding: 3px;
+    }
+    div#filerBackUpList {
+        display: none;
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
+    div#filerError {
+        margin: 10px;
+        padding: 2px 2px 2px 25px;
+        border: 2px solid #d59392;
+        box-shadow: 3px 3px 3px #d59392;
+    }
+    div#filerError dt {
+        font-weight: bold;
+        color: red;
+    }
+    div#filerAddFolder {
+        display: none;
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
+    div#filerNewForm {
+        display: none;
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
+    div#filerDirList {
+        display: none;
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
+    div#debugInfo {
+        display: none;
+        font-size: 12px;
+        color: #666666;
+        margin: 10px;
+        padding: 5px 5px 5px 25px;
+        border: 1px solid #cccccc;
+        box-shadow: 2px 2px 2px #cccccc;
+    }
+
+    div#debugInfo h3 {
+        margin: 0px;
+        padding: 2px;
+    }
+
+    div#debugInfo .debugTraceInfo {
+        float: left;
+        margin: 0px 0px 0px -20px;
+    }
+
+    div#debugInfo table {
+        border: 1px solid gray;
+        font-size: 11px;
+        border-collapse: collapse;
+    }
+
+    div#debugInfo td, th {
+        border: 1px dotted gray;
+        vertical-align: top;
+    }
+
+    div#debugInfo th {
+        background-color: #E0E0E0;
+    }
+</style>
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/jquery-1.7.1.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-transition.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-alert.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-modal.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-dropdown.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-scrollspy.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-tab.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-tooltip.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-popover.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-button.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-collapse.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-carousel.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-typeahead.js"></script></body>
+<script type="text/javascript">
+    $( "table" ).addClass( "table" );
+    function toggle( id ) {
+        $( "#" + id ).toggle("fast");
+    }
+</script></html>
