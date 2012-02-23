@@ -28,7 +28,7 @@ $base = $_ctrl->getBaseUrl();
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <!-- link rel="stylesheet" href="<?php echo $_siteObj->siteObj->base_url; ?>/demo.css"/ -->
+    <link rel="stylesheet" href="<?php echo $_siteObj->siteObj->base_url; ?>/demo.css"/>
 </head>
 <body>
 <div class="navbar navbar-fixed-top">
@@ -144,7 +144,7 @@ $base = $_ctrl->getBaseUrl();
     <div id='debugInfo'><?php echo $debug;?></div>
     <?php } ?>
 </div>
-<div class="container">
+<div class="mainbody">
     <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>">AmidaMVC Framework</a></header>
     <div id="contents">
         <?php if ($title) { ?>

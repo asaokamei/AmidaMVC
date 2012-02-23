@@ -8,7 +8,7 @@ body,p,span,code {
     margin: 0px;
     padding: 0px;
 }
-body {
+.mainbody {
     width: 700px;
     margin: 20px auto 20px auto;
     border:2px solid #E0E0E0;
