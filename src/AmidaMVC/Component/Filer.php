@@ -147,7 +147,7 @@ class Filer
     {
         // _fileNew command. 
         $command = static::findFilerCommand( $_siteObj );
-        if( $command === '_fileNew' ) {
+        if( in_array( $command, array( '_fileNew', '_pub' ) ) ) {
             $_ctrl->setMyAction( $command );
             return $loadInfo;
         }
@@ -308,7 +308,12 @@ class Filer
     {
         $file_to_publish = static::getFileToEdit( $_siteObj, $loadInfo );
         if( file_exists( $file_to_publish ) ) {
-            $file_replaced = $loadInfo[ 'file' ];
+            if( isset( $loadInfo[ 'file' ] ) ) {
+                $file_replaced = $loadInfo[ 'file' ];
+            }
+            else {
+                $file_replaced = basename( $_siteObj->siteObj->path_info );
+            }
             static::backup( $file_replaced );
             rename( $file_to_publish, $file_replaced );
             $reload = $ctrl->getPathInfo();
@@ -435,9 +440,11 @@ class Filer
             unlink( $file_replaced );
             return;
         }
-        $now       = date( 'YmdHis' );
-        $backup_file = "{$backup_folder}/_{$file_body}-{$now}.{$file_ext}";
-        rename( $file_replaced, $backup_file );
+        if( file_exists( $file_replaced ) ) {
+            $now       = date( 'YmdHis' );
+            $backup_file = "{$backup_folder}/_{$file_body}-{$now}.{$file_ext}";
+            rename( $file_replaced, $backup_file );
+        }
     }
     // +-------------------------------------------------------------+
     /**
