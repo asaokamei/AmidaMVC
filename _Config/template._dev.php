@@ -9,7 +9,7 @@ $base = $_ctrl->getBaseUrl();
 
 ?>
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8"/>
     <title><?php echo $head_title; ?></title>
@@ -113,14 +113,17 @@ $base = $_ctrl->getBaseUrl();
         </dl>
     </div>
     <?php } ?>
-    <!-- show backup file list -->
+    <!-- show file in the folder -->
     <?php if( !empty( $_siteObj->filerObj->file_list ) ) { ?>
     <div id="filerDirList">
         File/Folder Lists at <?php echo $curr_folder = $_siteObj->filerObj->curr_folder; ?>:
         <?php foreach( $_siteObj->filerObj->file_list as $file ) {  ?>
         <li>
             <?php echo $file;?>:
-            [<a href="<?php echo "{$base}/{$curr_folder}/{$file}";?>">view</a>]
+            [<a href="<?php echo "{$base}{$curr_folder}/{$file}";?>">view</a>]&nbsp;
+            [<a href="<?php echo "{$base}{$curr_folder}/{$file}/_src";?>">source</a>]&nbsp;
+            [<a href="<?php echo "{$base}{$curr_folder}/{$file}/_raw";?>">raw</a>]
+            [<a href="<?php echo "{$base}{$curr_folder}/{$file}/_edit";?>">edit</a>]
         </li>
         <?php } ?>
     </div>
