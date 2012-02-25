@@ -22,13 +22,16 @@ class Router
         \AmidaMVC\Framework\Controller $ctrl,
         \AmidaMVC\Component\SiteObj $_siteObj ) 
     {
-        if( $loadInfo  = call_user_func( self::$router, $ctrl->getPathInfo() ) ) {
+        $loadInfo  = call_user_func( self::$router, $ctrl->getPathInfo() );
+        if( $loadInfo ) {
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
         }
-        else if( $loadInfo = self::actionScan( $ctrl, $_siteObj ) ) {
-            // found by scan file system.
-            $loadInfo[ 'foundBy' ] = 'scan';
+        else {
+            $loadInfo = self::actionScan( $ctrl, $_siteObj );
+            if( $loadInfo ) {
+                $loadInfo[ 'foundBy' ] = 'scan';
+            }
         }
         if( !$loadInfo ) {
             $ctrl->setAction( '_pageNotFound' );
@@ -60,7 +63,7 @@ class Router
         // find a file to load. 
         // ex: path_info = path/to/file_name.
         $file_name = $ctrl->getLocation() . '/' . $ctrl->getPathInfo();
-        if( file_exists( $file_name ) ) {
+        if( file_exists( $file_name ) && !is_dir( $file_name ) ) {
             $loadInfo[ 'file' ] = $ctrl->getPathInfo();
             return $loadInfo;
         }
