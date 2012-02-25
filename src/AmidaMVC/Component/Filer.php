@@ -293,14 +293,11 @@ class Filer
             $ctrl->setAction( $ctrl->defaultAct() );
             return $loadInfo;
         }
-        require_once( 'Text/Diff.php' );
-        require_once( 'Text/Diff/Renderer/inline.php' );
+        require_once( __DIR__ . '/../../../vendor/simplediff/simplediff.php' );
         $lines1   = file_get_contents( $file_to_edit );
         $lines2   = file_get_contents( $file_target );
-        $diff     = new \Text_Diff('auto', array( $lines1, $lines2 ) );
-        $renderer = new \Text_Diff_Renderer_inline();
-        $result   = $renderer->render($diff);
-        $loadInfo[ 'content' ] = $result;
+        $loadInfo[ 'content' ] = htmlDiff( $lines1, $lines2 );
+        $_siteObj->setContentType( 'text' );
         $_siteObj->filerObj->file_mode = '_diff';
         $_siteObj->filerObj->file_src   = '_diff';
         return $loadInfo;

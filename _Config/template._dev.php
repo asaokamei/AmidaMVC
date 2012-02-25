@@ -183,6 +183,12 @@ $base = $_ctrl->getBaseUrl();
 </div>
 <!-- other stuff -->
 <style>
+    ins {
+        color: blue;
+    }
+    del {
+        color: red;
+    }
     div.filerBoxes form {
         margin: 0px;
         padding: 3px;
