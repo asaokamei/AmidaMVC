@@ -31,6 +31,7 @@ $base = $_ctrl->getBaseUrl();
     <link rel="stylesheet" href="<?php echo $_siteObj->siteObj->base_url; ?>/demo.css"/>
 </head>
 <body>
+<!-- developer's header section -->
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
@@ -105,7 +106,7 @@ $base = $_ctrl->getBaseUrl();
     </div>
     <!-- show error message from _dev components -->
     <?php if (isset($_siteObj->filerObj->error)) { ?>
-    <div id="filerError">
+    <div id="filerError" class="alert alert-error">
         <dl>
             <dt>Error: <?php echo $_siteObj->filerObj->error; ?></dt>
             <dd><?php echo $_siteObj->filerObj->err_msg; ?></dd>
@@ -144,6 +145,7 @@ $base = $_ctrl->getBaseUrl();
     <div id='debugInfo'><?php echo $debug;?></div>
     <?php } ?>
 </div>
+<!-- main body section: all contents in here -->
 <div class="mainbody">
     <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>">AmidaMVC Framework</a></header>
     <div id="contents">
@@ -161,7 +163,8 @@ $base = $_ctrl->getBaseUrl();
                 <form method="post" name="_editFile" action="<?php echo $self?>/_put">
                     <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;"
                         ><?php echo htmlspecialchars($contents); ?></textarea>
-                    <input type="submit" name="submit" value="put contents"/>
+                    <input type="submit" class="btn-primary" name="submit" value="put contents"/>
+                    <input type="button" class="btn" name="cancel" value="cancel" onclick="location.href='<?php echo $self?>'"/>
                 </form>
                 <?php
             }
@@ -173,6 +176,7 @@ $base = $_ctrl->getBaseUrl();
     </div>
     <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 </div>
+<!-- other stuff -->
 <style>
     div.filerBoxes form {
         margin: 0px;

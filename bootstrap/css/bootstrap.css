@@ -90,6 +90,7 @@ input[type="reset"],
 input[type="submit"] {
   cursor: pointer;
   -webkit-appearance: button;
+  margin-bottom: 2px;
 }
 input[type="search"] {
   -webkit-appearance: textfield;
