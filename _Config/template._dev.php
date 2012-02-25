@@ -91,7 +91,7 @@ $base = $_ctrl->getBaseUrl();
                 add file:<input type="text" name="_newFileName" width="50"
                        placeholder="creates new file at '/<?php echo $_siteObj->filerObj->curr_folder; ?>'">
             </label>
-            <input type="submit" name="submit" value="add new file"/>
+            <input class="btn-small btn-primary" type="submit" name="submit" value="add new file"/>
         </form>
     </div>
     <!-- adding new folder -->
@@ -101,7 +101,7 @@ $base = $_ctrl->getBaseUrl();
                 new folder:<input type="text" name="_folderName" width="50"
                                   placeholder="new folder at '/<?php echo $_siteObj->filerObj->curr_folder; ?>'">
             </label>
-            <input type="submit" name="submit" value="add new folder"/>
+            <input class="btn-small btn-primary" type="submit" name="submit" value="add new folder"/>
         </form>
     </div>
     <!-- show error message from _dev components -->
@@ -120,10 +120,12 @@ $base = $_ctrl->getBaseUrl();
         <?php foreach( $_siteObj->filerObj->file_list as $file ) {  ?>
         <li>
             <?php echo $file;?>:
-            [<a href="<?php echo "{$base}{$curr_folder}/{$file}";?>">view</a>]&nbsp;
-            [<a href="<?php echo "{$base}{$curr_folder}/{$file}/_src";?>">source</a>]&nbsp;
-            [<a href="<?php echo "{$base}{$curr_folder}/{$file}/_raw";?>">raw</a>]
-            [<a href="<?php echo "{$base}{$curr_folder}/{$file}/_edit";?>">edit</a>]
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}/{$file}";?>">view</a>&nbsp;
+            <?php if( substr( $file, -1 ) !== '/' ) { ?>
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}/{$file}/_src";?>">source</a>&nbsp;
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}/{$file}/_raw";?>">raw</a>&nbsp;
+            <a class="btn-mini btn-danger" href="<?php echo "{$base}{$curr_folder}/{$file}/_edit";?>">edit</a>
+            <?php } ?>
         </li>
         <?php } ?>
     </div>
@@ -136,8 +138,8 @@ $base = $_ctrl->getBaseUrl();
             <?php foreach ($_siteObj->filerObj->backup_list as $backup) { ?>
             <li>
                 <?php echo $backup;?>:
-                [<a href="<?php echo "{$self}/_bkView:{$backup}";?>">view</a>]
-                [<a href="<?php echo "{$self}/_bkDiff:{$backup}";?>">diff</a>]
+                <a class="btn-mini btn-info" href="<?php echo "{$self}/_bkView:{$backup}";?>">view</a>&nbsp;
+                <a class="btn-mini" href="<?php echo "{$self}/_bkDiff:{$backup}";?>">diff</a>
             </li>
             <?php } ?>
         </ul>
