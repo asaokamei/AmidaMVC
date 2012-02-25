@@ -49,6 +49,7 @@ footer {
 h1 {
     background: #F0F0F0;
     font-size: 16px;
+    line-height: 1.5em;
     padding: 5px 5px 5px 5px;
     margin: 20px 0px 15px -2px;
     border-left: 2px solid #d2691e;
@@ -58,6 +59,7 @@ h1 {
 h2 {
     background: #F0F0F0;
     font-size: 14px;
+    line-height: 1.5em;
     padding: 3px 5px 3px 5px;
     margin: 15px 5px 15px -2px;
     box-shadow: 3px 3px 3px #cccccc;
