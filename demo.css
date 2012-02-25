@@ -53,6 +53,7 @@ h1 {
     margin: 20px 0px 15px -2px;
     border-left: 2px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
+    font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 h2 {
     background: #F0F0F0;
@@ -60,9 +61,12 @@ h2 {
     padding: 3px 5px 3px 5px;
     margin: 15px 5px 15px -2px;
     box-shadow: 3px 3px 3px #cccccc;
+    font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 p {
     margin: 5px 0px 5px 0px;
+    font-size: 14px;
+    font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 code {
     margin: 0px;
