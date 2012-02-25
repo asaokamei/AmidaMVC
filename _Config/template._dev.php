@@ -40,8 +40,8 @@ $base = $_ctrl->getBaseUrl();
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#">AmidaMVC_dev</a>
-            <p style="float: right; color: pink;">source_type: <?php echo $_siteObj->filerObj->src_type;?></p>
+            <a class="brand" href="#">_dev</a>
+            <div style="float: right; color: gray;">source: <span style="color:pink;"><?php echo $_siteObj->filerObj->file_src;?></span></div>
             <div class="nav-collapse">
                 <ul class="nav">
                     <?php if( in_array( '_edit', $_siteObj->filerObj->file_cmd ) ) { ?>
@@ -116,15 +116,15 @@ $base = $_ctrl->getBaseUrl();
     <!-- show file in the folder -->
     <?php if( !empty( $_siteObj->filerObj->file_list ) ) { ?>
     <div id="filerDirList">
-        File/Folder Lists at <?php echo $curr_folder = $_siteObj->filerObj->curr_folder; ?>:
+        File/Folder Lists at <?php echo $curr_folder = $_siteObj->filerObj->curr_folder; if( $curr_folder) $curr_folder.='/'; ?>:
         <?php foreach( $_siteObj->filerObj->file_list as $file ) {  ?>
         <li>
             <?php echo $file;?>:
-            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}/{$file}";?>">view</a>&nbsp;
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}{$file}";?>">view</a>&nbsp;
             <?php if( substr( $file, -1 ) !== '/' ) { ?>
-            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}/{$file}/_src";?>">source</a>&nbsp;
-            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}/{$file}/_raw";?>">raw</a>&nbsp;
-            <a class="btn-mini btn-danger" href="<?php echo "{$base}{$curr_folder}/{$file}/_edit";?>">edit</a>
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}{$file}/_src";?>">source</a>&nbsp;
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}{$file}/_raw";?>">raw</a>&nbsp;
+            <a class="btn-mini btn-danger" href="<?php echo "{$base}{$curr_folder}{$file}/_edit";?>">edit</a>
             <?php } ?>
         </li>
         <?php } ?>

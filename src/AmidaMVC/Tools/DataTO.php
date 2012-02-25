@@ -4,7 +4,7 @@ namespace AmidaMVC\Tools;
 /**
  * Data Transfer Object.
  * @property string file_mode
- * @property string src_type
+ * @property string file_src
  * @property string file_cmd
  * @property mixed curr_folder
  * @property array backup_list

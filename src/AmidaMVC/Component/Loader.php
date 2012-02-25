@@ -100,6 +100,22 @@ class Loader
      * @param SiteObj $_siteObj
      * @param $loadInfo
      */
+    static function action_diff(
+        \AmidaMVC\Framework\Controller $_ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        $loadInfo ) {
+        $_siteObj->setContents( $loadInfo[ 'content' ] );
+       // $_siteObj->setContentType( 'as_is' );
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * re-edit contents when edit fails to put content.
+     * put content as $loadInfo[ 'content' ] to use.
+     * this action is called only from Filer.
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param SiteObj $_siteObj
+     * @param $loadInfo
+     */
     static function action_reedit(
         \AmidaMVC\Framework\Controller $_ctrl,
         \AmidaMVC\Component\SiteObj &$_siteObj,

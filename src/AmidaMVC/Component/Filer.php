@@ -4,7 +4,7 @@ namespace AmidaMVC\Component;
 class Filer
 {
     static $file_list = array( 
-        '_edit', '_put', '_pub', '_del', '_purge', 
+        '_edit', '_put', '_pub', '_del', '_purge', '_diff',
         '_bkView', '_bkDiff', 
         '_fileFolder', '_fileNew' 
     );
@@ -49,7 +49,7 @@ class Filer
             'file_mode' => '_filer',
             'file_cmd'  => array(),
             'backup_list' => array(),
-            'src_type' => NULL,
+            'file_src' => '',
             'curr_folder' => $folder,
             'file_list ' => array(),
         );
@@ -90,13 +90,15 @@ class Filer
         $file_target  = $loadInfo[ 'file' ];
         $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
         if( file_exists( $file_to_edit ) ) {
+            $_siteObj->filerObj->file_src   = basename( $file_to_edit );
             $loadInfo[ 'file' ] = $file_to_edit;
-            $_siteObj->filerObj->src_type   = '_dev';
             $_siteObj->filerObj->file_cmd[] = '_edit';
             $_siteObj->filerObj->file_cmd[] = '_pub';
             $_siteObj->filerObj->file_cmd[] = '_del';
+            $_siteObj->filerObj->file_cmd[] = '_diff';
         }
         else {
+            $_siteObj->filerObj->file_src   = basename( $file_target );
             $_siteObj->filerObj->file_cmd[] = '_edit';
             $_siteObj->filerObj->file_cmd[] = '_purge';
         }
@@ -238,6 +240,7 @@ class Filer
             $loadInfo[ 'file' ] = $file_to_edit;
             $_siteObj->filerObj->file_cmd[] = '_pub';
         }
+        $_siteObj->filerObj->file_src   = basename( $loadInfo[ 'file' ] );
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
@@ -271,6 +274,39 @@ class Filer
     }
     // +-------------------------------------------------------------+
     /**
+     * diff between _dev.file and file.
+     * @param \AmidaMVC\Framework\Controller $ctrl
+     * @param SiteObj $_siteObj
+     * @param array $loadInfo
+     * @return array
+     */
+    static function action_diff(
+        \AmidaMVC\Framework\Controller $ctrl,
+        \AmidaMVC\Component\SiteObj &$_siteObj,
+        array $loadInfo )
+    {
+        $file_target  = $loadInfo[ 'file' ];
+        $file_to_edit = static::getFileToEdit( $_siteObj, $loadInfo );
+        if( !file_exists( $file_to_edit ) || $file_target == $file_to_edit ) {
+            $_siteObj->filerObj->error = 'no_file_to_diff';
+            $_siteObj->filerObj->err_msg = 'there\'s no file to diff.';
+            $ctrl->setAction( $ctrl->defaultAct() );
+            return $loadInfo;
+        }
+        require_once( 'Text/Diff.php' );
+        require_once( 'Text/Diff/Renderer/inline.php' );
+        $lines1   = file_get_contents( $file_to_edit );
+        $lines2   = file_get_contents( $file_target );
+        $diff     = new \Text_Diff('auto', array( $lines1, $lines2 ) );
+        $renderer = new \Text_Diff_Renderer_inline();
+        $result   = $renderer->render($diff);
+        $loadInfo[ 'content' ] = $result;
+        $_siteObj->filerObj->file_mode = '_diff';
+        $_siteObj->filerObj->file_src   = '_diff';
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
      * re-call this action when edit fails to put content. 
      * @param \AmidaMVC\Framework\Controller $ctrl
      * @param SiteObj $_siteObj
@@ -290,7 +326,7 @@ class Filer
         $_siteObj->filerObj->err_msg = 'maybe folder\'s permission problem?';
         $loadInfo[ 'content' ] = $_POST[ '_putContent' ];
         $_siteObj->filerObj->file_mode = '_edit';
-        $_siteObj->filerObj->src_type   = '_re-edit';
+        $_siteObj->filerObj->file_src   = '_re-edit';
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
@@ -420,7 +456,7 @@ class Filer
             $backup_folder = $folder . '/' . static::$backup;
             $file_to_view = "{$backup_folder}/{$file_backup}";
             $loadInfo[ 'file' ] = $file_to_view;
-            $_siteObj->filerObj->src_type   = '_bkView:'.$file_backup;
+            $_siteObj->filerObj->file_src   = '_bkView:'.$file_backup;
         }
         return $loadInfo;
     }
