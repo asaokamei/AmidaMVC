@@ -19,6 +19,9 @@
 */
 
 function diff($old, $new){
+    $maxlen = 0;
+    $omax   = 0;
+    $nmax   = 0;
     foreach($old as $oindex => $ovalue){
         $nkeys = array_keys($new, $ovalue);
         foreach($nkeys as $nindex){
@@ -40,6 +43,7 @@ function diff($old, $new){
 
 function htmlDiff($old, $new){
     $diff = diff(explode(' ', $old), explode(' ', $new));
+    $ret  = '';
     foreach($diff as $k){
         if(is_array($k))
             $ret .= (!empty($k['d'])?"<del>".implode(' ',$k['d'])."</del> ":'').
