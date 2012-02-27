@@ -293,14 +293,20 @@ class Filer
             $ctrl->setAction( $ctrl->defaultAct() );
             return $loadInfo;
         }
-        require_once( __DIR__ . '/../../../vendor/simplediff/simplediff.php' );
-        $lines1   = file_get_contents( $file_to_edit );
-        $lines2   = file_get_contents( $file_target );
-        $loadInfo[ 'content' ] = htmlDiff( $lines1, $lines2 );
+        $lines1   = htmlspecialchars( file_get_contents( $file_to_edit ) );
+        $lines2   = htmlspecialchars( file_get_contents( $file_target ) );
+        $loadInfo[ 'content' ] = static::doDiff( $lines1, $lines2 );
         $_siteObj->setContentType( 'text' );
         $_siteObj->filerObj->file_mode = '_diff';
         $_siteObj->filerObj->file_src   = '_diff';
         return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    static function doDiff( &$lines1, &$lines2 ) {
+        $diff_path = realpath( __DIR__ . '/../../../vendor/SimpleDiff/simplediff.php' );
+        require_once( $diff_path );
+        $diff = htmlDiff( $lines1, $lines2 );
+        return $diff;
     }
     // +-------------------------------------------------------------+
     /**
