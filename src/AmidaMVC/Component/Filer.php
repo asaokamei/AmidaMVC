@@ -293,8 +293,8 @@ class Filer
             $ctrl->setAction( $ctrl->defaultAct() );
             return $loadInfo;
         }
-        $lines1   = htmlspecialchars( file_get_contents( $file_to_edit ) );
-        $lines2   = htmlspecialchars( file_get_contents( $file_target ) );
+        $lines1   = htmlspecialchars( file_get_contents( $file_target ) );
+        $lines2   = htmlspecialchars( file_get_contents( $file_to_edit ) );
         $loadInfo[ 'content' ] = static::doDiff( $lines1, $lines2 );
         $_siteObj->setContentType( 'text' );
         $_siteObj->filerObj->file_mode = '_diff';
