@@ -185,6 +185,7 @@ $base = $_ctrl->getBaseUrl();
 <style>
     ins {
         color: blue;
+        text-decoration: none;
     }
     del {
         color: red;
