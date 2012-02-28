@@ -7,30 +7,11 @@ $file_mode = (isset($_siteObj->filerObj->file_mode)) ? $_siteObj->filerObj->file
 $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
 $base = $_ctrl->getBaseUrl();
 
+// ------------------------------------------------------
+// Developer's Header Menu
+ob_start();
+ob_implicit_flush(0);
 ?>
-<!DOCTYPE HTML>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8"/>
-    <title><?php echo $head_title; ?></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Le styles -->
-    <link href="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-    </style>
-    <link href="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <link rel="stylesheet" href="<?php echo $_siteObj->siteObj->base_url; ?>/demo.css"/>
-</head>
-<body>
 <!-- developer's header section -->
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -150,39 +131,41 @@ $base = $_ctrl->getBaseUrl();
     <div id='debugInfo'><?php echo $debug;?></div>
     <?php } ?>
 </div>
-<!-- main body section: all contents in here -->
-<div class="mainbody">
-    <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>">AmidaMVC Framework</a></header>
-    <div id="contents">
-        <?php if ($title) { ?>
-        <h1><?php echo $title; ?></h1>
-        <?php } ?>
-        <?php
-        if (!isset($_siteObj->filerObj)) {
-            echo $contents;
-        }
-        else
-            if ($_siteObj->filerObj->file_mode == '_edit') {
-                // show form to edit contents.
-                ?>
-                <form method="post" name="_editFile" action="<?php echo $self?>/_put">
-                    <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;"
-                        ><?php echo htmlspecialchars($contents); ?></textarea>
-                    <input type="submit" class="btn-primary" name="submit" value="put contents"/>
-                    <input type="button" class="btn" name="cancel" value="cancel" onclick="location.href='<?php echo $self?>'"/>
-                </form>
-                <?php
-            }
-            else {
-                echo $contents;
-            }
-        ?>
-        <p style="clear: both;"></p>
-    </div>
-    <footer>AmidaMVC, yet another micro Framework for PHP.</footer>
 </div>
+<?php
+$_devHeader = ob_get_clean();
+
+// ------------------------------------------------------
+// Developer's Main Body; for editing maybe
+
+if( isset( $_siteObj->filerObj ) && 
+    $_siteObj->filerObj->file_mode == '_edit' ) {
+    // show form to edit contents.
+    ob_start();
+    ob_implicit_flush(0);
+    ?>
+    <form method="post" name="_editFile" action="<?php echo $self?>/_put">
+        <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;"
+            ><?php echo htmlspecialchars($contents); ?></textarea>
+        <input type="submit" class="btn-primary" name="submit" value="put contents"/>
+        <input type="button" class="btn" name="cancel" value="cancel" onclick="location.href='<?php echo $self?>'"/>
+    </form>
+    <?php
+    $contents = ob_get_clean();
+}
+
+// ------------------------------------------------------
+// Developer's Footer; include some more
+
+ob_start();
+ob_implicit_flush(0);
+
+?>    
 <!-- other stuff -->
 <style>
+    .mainbody {
+        margin-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    }
     ins {
         color: blue;
         text-decoration: none;
@@ -272,6 +255,24 @@ $base = $_ctrl->getBaseUrl();
 <!-- Placed at the end of the document so the pages load faster -->
 
 <script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/jquery-1.7.1.js"></script>
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-modal.js"></script>
+<script type="text/javascript">
+    $( "table" ).addClass( "table" );
+    function toggle( id ) {
+        $( "#" + id ).toggle("fast");
+    }
+</script>
+<?php
+$_devFooter = ob_get_clean();
+
+// ------------------------------------------------------
+// include template
+
+include( $_siteObj->siteObj->template_orig_file );
+
+/*
+
+<script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-alert.js"></script>
 <script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-transition.js"></script>
 <script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-alert.js"></script>
 <script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-modal.js"></script>
@@ -284,9 +285,7 @@ $base = $_ctrl->getBaseUrl();
 <script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-collapse.js"></script>
 <script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-carousel.js"></script>
 <script src="<?php echo $_siteObj->siteObj->base_url; ?>/bootstrap/js/bootstrap-typeahead.js"></script></body>
-<script type="text/javascript">
-    $( "table" ).addClass( "table" );
-    function toggle( id ) {
-        $( "#" + id ).toggle("fast");
-    }
-</script></html>
+
+ */
+
+?>

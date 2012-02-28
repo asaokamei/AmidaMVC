@@ -24,6 +24,7 @@ class Config extends \AmidaMVC\Component\Config {
         parent::action_dev( $ctrl, $_siteObj );
         $siteObj = $_siteObj->get( 'siteObj' );
         $option = array(
+            'template_orig_file' => $siteObj->template_file,
             'template_file' => $ctrl->ctrl_root . '/_Config/template._dev.php',
         );
         $siteObj->set( $option );
