@@ -132,6 +132,7 @@ ob_implicit_flush(0);
     <?php } ?>
 </div>
 </div>
+</div>
 <?php
 $_devHeader = ob_get_clean();
 
@@ -172,6 +173,10 @@ ob_implicit_flush(0);
     }
     del {
         color: red;
+    }
+    div.filerBoxes {
+        margin: 10px 30px 10px 30px;
+        background-color:white;
     }
     div.filerBoxes form {
         margin: 0px;
