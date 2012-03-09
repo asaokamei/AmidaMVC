@@ -1,11 +1,10 @@
-AmidaMVC ToDos.
+ToDo List
 
 * Demo in AmidaMVC
 
-[ ] clean up Router; file list behavior is strange. 
+[ ] Router to setup path. 
 [ ] upload files (images etc.)
 [ ] edit template/css files in _Config folder.
-[ ] diff between _dev.file and file.
 [ ] diff between any file (file, _dev, and _backup). 
 [O] put routes to _Config folder -> use it.
 [ ] create config for _dev. 
@@ -43,6 +42,9 @@ AmidaMVC ToDos.
 [X] 2012/02/12  add text files (.md, .html, etc.) by new form.
 [X] 2012/02/12  show list of files under folder/view the file. 
 [X] 2012/02/12  shows error message in _dev mode.
+[X] 2012/02/19  clean up Router; file list behavior is strange. 
+[X] 2012/02/25  use bootstrap's css for buttons, etc.
+[X] 2012/02/25  diff between _dev.file and file.
 
 * Demo in Cena-Dta
 
