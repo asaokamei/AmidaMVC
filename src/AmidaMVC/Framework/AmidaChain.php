@@ -60,7 +60,7 @@ class AmidaChain
      * adds components to AmidaChain.
      * @param mixed $component  class or object to plug-in as component.
      * @param null $name       name of component.
-     * @return Dispatch   returns this.
+     * @return AmidaChain      returns this.
      */
     function addComponent( $component, $name=NULL ) {
         $this->appendComponent( $component, $name );
@@ -108,7 +108,7 @@ class AmidaChain
      * prepend a component to AmidaChain.
      * @param array|string $compInfo    component and its name in array.
      * @param null $name   name of component
-     * @return Dispatch    returns this.
+     * @return AmidaChain    returns this.
      */
     function prependComponent( $compInfo, $name=NULL ) {
         $compInfo = $this->_prepareComponent( $compInfo, $name );
@@ -133,9 +133,9 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * add a component after given component name (addAfterThisName). 
-     * @param $addAfterThisName    add new component after this name. 
-     * @param $compInfo            component class or object. 
-     * @param $name                name of the new component. 
+     * @param string $addAfterThisName    add new component after this name. 
+     * @param string|object $compInfo     component class or object. 
+     * @param string $name                name of the new component. 
      */
     function addComponentAfter( $addAfterThisName, $compInfo, $name ) {
         $new_components = array();
@@ -177,7 +177,7 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * set current model to given name.
-     * @param $name           name of model to set.
+     * @param string $name           name of model to set.
      * @return bool|string    returns model name set, or false if not found.
      */
     function skipToModel( $name ) {
@@ -340,7 +340,7 @@ class AmidaChain
      * loads model if not exist, but *not* implemented!!
      * overwrite this method for tailored auto-loading classes.
      * @param mixed $component   class or object. maybe a function?
-     * @return \AmidaChain\Framework\Chain
+     * @return AmidaChain
      */
     function loadComponent( $component ) {
         return $this;

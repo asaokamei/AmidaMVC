@@ -48,8 +48,8 @@ class Route
     /**
      * matches $path against route patterns.
      * @static
-     * @param $path        path to match.
-     * @return array|bool  returns matched result, or FALSE if not found.
+     * @param string $path    path to match.
+     * @return array|bool     returns matched result, or FALSE if not found.
      */
     static function match( $path ) {
         if( substr( $path, 0, 1 ) !== '/' ) {
@@ -60,6 +60,53 @@ class Route
                 $match = array_merge( $match, $matches );
                 return $match;
             }
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * search file system for path info.
+     * @static
+     * @param string $root   root of the web document
+     * @param string $path   path of url
+     * @return array|bool    return $loadInfo or FALSE if not found
+     */
+    static function scan( $root, $path )
+    {
+        $loadInfo = array(
+            'file' => FALSE,
+            'action' => FALSE,
+        );
+        // find a file to load. 
+        // ex: file_name = /path/to/file_name.
+        $file_name = realpath( $root . '/' . $path );
+        if( file_exists( $file_name ) && !is_dir( $file_name ) ) {
+            $loadInfo[ 'file' ] = $path;
+            return $loadInfo;
+        }
+        // find an app to load.
+        // ex: path_info = path/to/_App.php/action.
+        $routes = explode( '/', $path );
+        if( empty( $routes ) ) {
+            $routes = array( '' );
+        }
+        $folder = '';
+        $found  = FALSE;
+        foreach( $routes as $loc ) {
+            if( $found ) {
+                // found an _App to load. next loc is the action.
+                $loadInfo[ 'action' ] = $loc;
+                return $loadInfo;
+            }
+            $folder .= $loc . '/';
+            $file_name = $root . '/' . $folder . '_App.php';
+            if( file_exists( $file_name ) ) {
+                $loadInfo[ 'file' ] = $folder . '_App.php';
+                $found = TRUE;
+            }
+        }
+        if( $found ) {
+            return $loadInfo;
         }
         return FALSE;
     }

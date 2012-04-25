@@ -6,27 +6,27 @@ class ResponseObj
     /**
      * @var integer   status code for http response.
      */
-    var $status = 200;
+    var $_status = 200;
     /**
      * @var string    content/body of response.
      */
-    var $content = '';
+    var $_content = '';
     /**
      * @var string    type of content. default is html.
      */
-    var $contentType = 'html';
+    var $_contentType = 'html';
     /**
      * @var array     list of http headers in type => value.
      */
-    var $headers = array();
+    var $_headers = array();
     /**
      * @var array     list of JavaScript and CSS files to include.
      */
-    var $includes = array();
+    var $_includes = array();
     /**
      * @var string    title of the content/page.
      */
-    var $title;
+    var $_title;
     // +-------------------------------------------------------------+
     function __construct() {
 
@@ -40,19 +40,19 @@ class ResponseObj
      * @return ResponseObj
      */
     function header( $type, $value, $append=FALSE ) {
-        if( $append && isset( $this->headers[ $type ] ) ) {
-            if( is_array( $this->headers[ $type ] ) ) {
-                $this->headers[ $type ][] = $value;
+        if( $append && isset( $this->_headers[ $type ] ) ) {
+            if( is_array( $this->_headers[ $type ] ) ) {
+                $this->_headers[ $type ][] = $value;
             }
             else {
-                $temp = $this->headers[ $type ];
-                $this->headers[ $type ] = array();
-                $this->headers[ $type ][] = $temp;
-                $this->headers[ $type ][] = $value;
+                $temp = $this->_headers[ $type ];
+                $this->_headers[ $type ] = array();
+                $this->_headers[ $type ][] = $temp;
+                $this->_headers[ $type ][] = $value;
             }
         }
         else {
-            $this->headers[ $type ] = $value;
+            $this->_headers[ $type ] = $value;
         }
         return $this;
     }
@@ -64,9 +64,9 @@ class ResponseObj
      */
     function content( $content=NULL ) {
         if( isset( $content ) ) {
-            $this->content = $content;
+            $this->_content = $content;
         }
-        return $this->content;
+        return $this->_content;
     }
     // +-------------------------------------------------------------+
     /**
@@ -74,7 +74,7 @@ class ResponseObj
      * @return string
      */
     function getContent() {
-        return $this->content;
+        return $this->_content;
     }
     // +-------------------------------------------------------------+
     /**
@@ -83,8 +83,8 @@ class ResponseObj
      * @return string
      */
     function setContent( $content ) {
-        $this->content = $content;
-        return $this->content;
+        $this->_content = $content;
+        return $this->_content;
     }
     // +-------------------------------------------------------------+
     /**
@@ -93,8 +93,8 @@ class ResponseObj
      * @return string
      */
     function appendContent( $content ) {
-        $this->content .= $content;
-        return $this->content;
+        $this->_content .= $content;
+        return $this->_content;
     }
     // +-------------------------------------------------------------+
     /**
@@ -103,8 +103,8 @@ class ResponseObj
      * @return string
      */
     function prependContent( $content ) {
-        $this->content = $content . $this->content;
-        return $this->content;
+        $this->_content = $content . $this->_content;
+        return $this->_content;
     }
     // +-------------------------------------------------------------+
     /**
@@ -114,9 +114,9 @@ class ResponseObj
      */
     function contentType( $type=NULL ) {
         if( isset( $type ) ) {
-            $this->contentType = $type;
+            $this->_contentType = $type;
         }
-        return $this->contentType;
+        return $this->_contentType;
     }
     // +-------------------------------------------------------------+
     /**
@@ -125,15 +125,22 @@ class ResponseObj
      * @return ResponseObj
      */
     function includeFile( $file ) {
-        $this->includes[] = $file;
+        $this->_includes[] = $file;
         return $this;
     }
     // +-------------------------------------------------------------+
     function title( $title=NULL ) {
         if( isset( $title ) ) {
-            $this->title = $title;
+            $this->_title = $title;
         }
-        return $this->title;
+        return $this->_title;
+    }
+    // +-------------------------------------------------------------+
+    function status( $status=NULL ) {
+        if( isset( $status ) ) {
+            $this->_status = $status;
+        }
+        return $this->_status;
     }
     // +-------------------------------------------------------------+
 }

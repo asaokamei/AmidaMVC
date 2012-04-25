@@ -32,13 +32,8 @@ class Controller extends AmidaChain
      */
     var $mode = '';
     // +-------------------------------------------------------------+
-    function __construct( $option=array() ) {
-        $default = array(
-            'ctrl_root'  => FALSE,
-            'appDefault' => realpath( __DIR__ . '/../AppDefault' ),
-        );
-        $option = $option + $default;
-        
+    function __construct( $option=array() ) 
+    {
         // set path_info and base_url. 
         $this->path_info = $this->_obtainPathInfo();
         $this->base_url = $this->_obtainBaseUrl();
