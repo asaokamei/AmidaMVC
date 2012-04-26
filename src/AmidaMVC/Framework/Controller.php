@@ -230,7 +230,7 @@ class Controller extends AmidaChain
      * @param $name
      * @return string
      */
-    function get( $name ) {
+    function getOption( $name ) {
         if( isset( $this->options[ $name ] ) ) {
             return $this->options[ $name ];
         }

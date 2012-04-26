@@ -46,7 +46,7 @@ class Emitter
     static function action_PageNotFound( $_ctrl, $_pageObj )
     {
         // show some excuses, or blame user for not finding a page.
-        if( $_ctrl->get( 'pageNotFound_file' ) ) {
+        if( $_ctrl->getOption( 'pageNotFound_file' ) ) {
             // pageNotFound file is set. should load this page.
             $_ctrl->prependComponent( array(
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),

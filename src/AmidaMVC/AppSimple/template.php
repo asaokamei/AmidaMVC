@@ -40,7 +40,7 @@
     }
 </style>
 <div class="mainbody">
-    <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->get( 'site_title' ); ?></a></header>
+    <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a></header>
     <div id="content" ><?php echo $_pageObj->getContent(); ?></div>
     <footer>
         <p>AppSimple Suites by AmidaMVC.</p>
