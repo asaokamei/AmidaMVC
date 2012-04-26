@@ -41,7 +41,11 @@ class Loader
         $loadInfo[ 'file_type' ] = $load::getFileType( $file_name );
 
         // load the file
-        if( $load::isView( $file_name ) ) {
+        if( is_callable( $file_name ) ) {
+            /** @var string $file_name  */
+            $_siteObj->setContent( $file_name( $_ctrl, $_siteObj, $loadInfo ) );
+        }
+        else if( $load::isView( $file_name ) ) {
             $_siteObj->setContent( $load::getContentsByBuffer( $file_name ) );
             $loadInfo[ 'loadMode' ] = '_view';
         }
@@ -49,16 +53,15 @@ class Loader
             $_siteObj->getContent( $load::getContentsByGet( $file_name ) );
             $loadInfo[ 'loadMode' ] = '_asIs';
         }
-        $action    = ( isset( $loadInfo['action'] ) ) ? $loadInfo['action'] : $_ctrl->getAction();
-        $_ctrl->setAction( $action );
+        if( isset( $loadInfo['action'] ) ) {
+            $_ctrl->setAction( $loadInfo['action'] );
+        }
         $_ctrl->loadInfo = $loadInfo;
         return TRUE;
     }
     // +-------------------------------------------------------------+
     /**
-     * action for page not found; this action is invoked only from
-     * _App.php or some other models... reload pageNofFound file if
-     * set in siteObj. if not, generate simple err404 contents.
+     * do nothing for pageNotFound. sorry page loaded by Emitter.
      * @static
      * @param \AmidaMVC\AppSimple\Controller $_ctrl
      * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
@@ -66,11 +69,6 @@ class Loader
      */
     static function action_PageNotFound( $_ctrl, $_siteObj )
     {
-        // show some excuses, or blame user for not finding a page.
-        $contents  = "#Error 404\n\npage not found...";
-        $_siteObj->status( '404' );
-        $_siteObj->title( 'Page Not Found' );
-        $_siteObj->setContent( $contents );
     }
     // +-------------------------------------------------------------+
 }

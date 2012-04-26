@@ -48,8 +48,9 @@ class Emitter
         // show some excuses, or blame user for not finding a page.
         $_siteObj->status( '404' );
         $_siteObj->title( 'Page Not Found' );
-        $contents  = "#Error 404\n\npage not found...";
+        $contents  = "#Error 404\n\nrequested page not found...";
         $_siteObj->setContent( $contents );
+        $_siteObj->contentType( 'markdown' );
         $_ctrl->setMyAction( $_ctrl->defaultAct() );
         return array();
     }

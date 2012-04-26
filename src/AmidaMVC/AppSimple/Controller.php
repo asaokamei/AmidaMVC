@@ -14,6 +14,7 @@ class Controller extends \AmidaMVC\Framework\Controller
     function __construct( $option=array() )
     {
         $default = array(
+            'site_title' => 'AmidaMVC/Simple Web Site',
             'template_file' => __DIR__ . '/template.php',
             'components' => array(
                 array( '\AmidaMVC\AppSimple\Router', 'router' ),
@@ -26,7 +27,7 @@ class Controller extends \AmidaMVC\Framework\Controller
         $this->addComponent( $option[ 'components' ] );
     }
     // +-------------------------------------------------------------+
-    function start( $siteObj=NULL ) {
+    function serve( $siteObj=NULL ) {
         if( !isset( $siteObj ) ) {
             $siteObj = new \AmidaMVC\Component\ResponseObj();
         }

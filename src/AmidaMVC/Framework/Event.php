@@ -7,13 +7,15 @@ namespace AmidaMVC\Framework;
  * http://stackoverflow.com/questions/6846118/event-driven-architecture-and-hooks-in-php
  * @author Asao Kamei
  */
+use RuntimeException;
+
 class Event
 {
     static $hooks = array();
     // +--------------------------------------------------------------- +
     static public function hook( $event, $callback ) {
         if( !is_callable( $callback ) ) {
-            throw new RuntimeException( "not callable hook to event '{$event}'" );
+            throw new \RuntimeException( "not callable hook to event '{$event}'" );
         }
         if( !isset( self::$hooks[ $event ] ) ) {
             static::$hooks[ $event ] = array();

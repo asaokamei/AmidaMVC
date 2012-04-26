@@ -59,6 +59,14 @@ class Controller extends AmidaChain
         $this->options = $option;
     }
     // +-------------------------------------------------------------+
+    static function getInstance( $option=array() ) {
+        static $self = NULL;
+        if( !isset( $self ) ) {
+            $self = new static( $option );
+        }
+        return $self;
+    }
+    // +-------------------------------------------------------------+
     function getLocation() {
         return $this->ctrl_root;
     }
@@ -173,6 +181,18 @@ class Controller extends AmidaChain
             return $this;
         }
         \AmidaMVC\Component\Debug::format( 'table', $e->getTrace() );
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * gets values in option.
+     * @param $name
+     * @return string
+     */
+    function get( $name ) {
+        if( isset( $this->options[ $name ] ) ) {
+            return $this->options[ $name ];
+        }
+        return '';
     }
     // +-------------------------------------------------------------+
 }
