@@ -3,12 +3,21 @@ namespace AmidaMVC\AppSimple;
 
 class Loader
 {
-    static $isView   = array( '\AmidaMVC\Tools\Load', 'isView' );
-    static $isText   = array( '\AmidaMVC\Tools\Load', 'isText' );
-    static $isAsIs   = array( '\AmidaMVC\Tools\Load', 'isAsIs' );
-    static $fileGet  = array( '\AmidaMVC\Tools\Load', 'isAsIs' );
-    static $fileBuf  = array( '\AmidaMVC\Tools\Load', 'isAsIs' );
-    static $fileType = array( '\AmidaMVC\Tools\Load', 'getFileType' );
+    /**
+     * @var \AmidaMVC\Tools\Load   static class for loading methods.
+     */
+    static $_load = '\AmidaMVC\Tools\Load';
+    // +-------------------------------------------------------------+
+    /**
+     * initialize class.
+     * @static
+     * @param array $option    option to initialize.
+     */
+    static function _init( $option=array() ) {
+        if( isset( $option[ 'loadClass' ] ) ) {
+            static::$_load = $option[ 'loadClass' ];
+        }
+    }
     // +-------------------------------------------------------------+
     /**
      * loads file based on $loadInfo, determined by Router.
@@ -18,30 +27,32 @@ class Loader
      * @param \AmidaMVC\AppSimple\Controller $_ctrl
      * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
      * @param array $loadInfo    info about file to load from Router.
-     * @return array
+     * @return bool
      */
     static function actionDefault( $_ctrl, &$_siteObj, $loadInfo )
     {
         if( !isset( $loadInfo[ 'file' ] ) ) {
             return FALSE;
         }
+        $load = static::$_load;
         $file_name = $loadInfo[ 'file' ];
         $loadInfo[ 'base_name' ] = basename( $file_name );
         $loadInfo[ 'file_ext'  ]  = pathinfo( $file_name, PATHINFO_EXTENSION );
-        $loadInfo[ 'file_type' ] = call_user_func( self::$fileType, $file_name );
+        $loadInfo[ 'file_type' ] = $load::getFileType( $file_name );
 
         // load the file
-        if( call_user_func( static::$isView, $file_name ) ) {
-            $_siteObj->setContent( call_user_func( static::$fileBuf, $file_name ) );
+        if( $load::isView( $file_name ) ) {
+            $_siteObj->setContent( $load::getContentsByBuffer( $file_name ) );
             $loadInfo[ 'loadMode' ] = '_view';
         }
-        else if( call_user_func( static::$isAsIs, $file_name ) ) {
-            $_siteObj->getContent( call_user_func( static::$fileGet, $file_name ) );
+        else if( $load::isAsIs( $file_name ) ) {
+            $_siteObj->getContent( $load::getContentsByGet( $file_name ) );
             $loadInfo[ 'loadMode' ] = '_asIs';
         }
         $action    = ( isset( $loadInfo['action'] ) ) ? $loadInfo['action'] : $_ctrl->getAction();
         $_ctrl->setAction( $action );
-        $_siteObj->loadInfo = $loadInfo;
+        $_ctrl->loadInfo = $loadInfo;
+        return TRUE;
     }
     // +-------------------------------------------------------------+
     /**

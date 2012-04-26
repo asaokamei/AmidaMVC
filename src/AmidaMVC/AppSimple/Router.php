@@ -3,8 +3,21 @@ namespace AmidaMVC\AppSimple;
 
 class Router
 {
-    static $router  = array( '\AmidaMVC\Tools\Route', 'match' );
-    static $scanner = array( '\AmidaMVC\Tools\Route', 'scan' );
+    /**
+     * @var \AmidaMVC\Tools\Route   a static class name for match and scan.
+     */
+    static $_route = '\AmidaMVC\Tools\Route';
+    // +-------------------------------------------------------------+
+    /**
+     * initialize class.
+     * @static
+     * @param array $option   options to initialize.
+     */
+    static function _init( $option=array() ) {
+        if( isset( $option[ 'routeClass' ] ) ) {
+            static::$_route = $option[ 'routeClass' ];
+        }
+    }
     // +-------------------------------------------------------------+
     /**
      * default is to use route map first, then scan the file system
@@ -12,22 +25,21 @@ class Router
      * @static
      * @param \AmidaMVC\AppSimple\Controller $_ctrl
      * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
-     * @return array|bool|mixed    $loadInfo for Loader.
+     * @return array   $loadInfo for Loader.
      */
     static function actionDefault( $_ctrl, $_siteObj )
     {
-        $loadInfo  = call_user_func( self::$router, $_ctrl->getPathInfo() );
-        if( $loadInfo ) {
+        $route = static::$_route;
+        $path  = $_ctrl->getPathInfo();
+        $base  = $_ctrl->getBaseUrl();
+        if( $loadInfo = $route::match( $path ) ) {
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
         }
-        else {
-            $loadInfo = call_user_func( self::$router, $_ctrl->getBaseUrl(), $_ctrl->getPathInfo() );
-            if( $loadInfo ) {
-                $loadInfo[ 'foundBy' ] = 'scan';
-            }
+        else if( $loadInfo = $route::scan( $base, $path ) ) {
+            $loadInfo[ 'foundBy' ] = 'scan';
         }
-        if( !$loadInfo ) {
+        else {
             $_ctrl->setAction( '_pageNotFound' );
             $loadInfo = array();
         }

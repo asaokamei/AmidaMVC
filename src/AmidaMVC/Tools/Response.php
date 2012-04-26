@@ -66,7 +66,7 @@ class Response
         return $statusText;
     }
     // +-------------------------------------------------------------+
-    function emitStatus( $status ) {
+    static function emitStatus( $status ) {
         if ( !empty($_SERVER[ 'FCGI_SERVER_VERSION' ] ) ) {
             $header = 'Status: '.$status.' ' . self::getStatusText( $status );
         }

@@ -31,6 +31,14 @@ class Controller extends AmidaChain
      * @var string  admin/dev mode of AmidaMVC. 
      */
     var $mode = '';
+    /**
+     * @var array   options for this site. use it freely.
+     */
+    var $options = array();
+    /**
+     * @var array   loaded file's information.
+     */
+    var $loadInfo = array();
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) 
     {
@@ -47,6 +55,8 @@ class Controller extends AmidaChain
         // set loadFolder as ctrl_root and appDefault.
         $this->loadFolder[] = $this->ctrl_root;
         $this->loadFolder[] = $option[ 'appDefault' ];
+
+        $this->options = $option;
     }
     // +-------------------------------------------------------------+
     function getLocation() {

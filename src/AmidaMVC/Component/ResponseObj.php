@@ -27,6 +27,10 @@ class ResponseObj
      * @var string    title of the content/page.
      */
     var $_title;
+    /**
+     * @var \AmidaMVC\Tools\Response    class to use for emitting various responses.
+     */
+    var $_emitter = '\AmidaMVC\Tools\Response';
     // +-------------------------------------------------------------+
     function __construct() {
 
@@ -141,6 +145,23 @@ class ResponseObj
             $this->_status = $status;
         }
         return $this->_status;
+    }
+    // +-------------------------------------------------------------+
+    function emitHeaders() {
+        $emit = $this->_emitter;
+        $emit::emitStatus( $this->_status );
+        if( !empty( $this->_headers ) )
+        foreach( $this->_headers as $name => $val ) {
+            header( "{$name}: {$val}" );
+        }
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * emits http response.
+     */
+    function emit() {
+        $this->emitHeaders();
+        echo $this->_content;
     }
     // +-------------------------------------------------------------+
 }

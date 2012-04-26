@@ -27,6 +27,10 @@ class Load
         'js'    => 'javascript'
     );
     // +-------------------------------------------------------------+
+    static function isWhat( $what, $file ) {
+        return static::$what( $file );
+    }
+    // +-------------------------------------------------------------+
     /**
      * checks if file is viewable in standard way. 
      * @static

@@ -3,26 +3,41 @@ namespace AmidaMVC\AppSimple;
 
 class Controller extends \AmidaMVC\Framework\Controller
 {
+    /**
+     * @var \AmidaMVC\Component\ResponseObj
+     */
     var $siteObj;
     // +-------------------------------------------------------------+
-    function __construct( $option=array() ) {
+    /**
+     * @param array $option   options to set
+     */
+    function __construct( $option=array() )
+    {
         $default = array(
+            'template_file' => __DIR__ . '/template.php',
+            'components' => array(
+                array( '\AmidaMVC\AppSimple\Router', 'router' ),
+                array( '\AmidaMVC\AppSimple\Loader', 'loader' ),
+                array( '\AmidaMVC\AppSimple\Render', 'render' ),
+            ),
         );
         $option = array_merge( $default, $option );
         parent::__construct( $option );
-        $this
-            ->addComponent( '\AmidaMVC\AppSimple\Router', 'router' )
-            ->addComponent( '\AmidaMVC\AppSimple\Loader', 'loader' )
-            ->addComponent( '\AmidaMVC\AppSimple\Render', 'render' )
-        ;
-        $this->siteObj = $this->newSiteObj();
-        return $this->start( $this->siteObj );
+        $this->addComponent( $option[ 'components' ] );
     }
     // +-------------------------------------------------------------+
-    function newSiteObj() {
-        return new \AmidaMVC\Component\ResponseObj();
+    function start( $siteObj=NULL ) {
+        if( !isset( $siteObj ) ) {
+            $siteObj = new \AmidaMVC\Component\ResponseObj();
+        }
+        $this->siteObj = $siteObj;
+        $return = $this->start( $this->siteObj );
+        return $return;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @return \AmidaMVC\Component\ResponseObj
+     */
     function getSiteObj() {
         return $this->siteObj;
     }
