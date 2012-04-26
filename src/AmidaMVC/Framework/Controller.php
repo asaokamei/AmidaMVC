@@ -58,8 +58,12 @@ class Controller extends AmidaChain
     function __construct( $option=array() ) 
     {
         // set path_info and base_url. 
-        $this->path_info = $this->_obtainPathInfo();
-        $this->base_url = $this->_obtainBaseUrl();
+        $class   = $this->_requestClass;
+        $this->path_info = $class::getPathInfo();
+        if( substr( $this->path_info, 0, 1 ) === '/' ) {
+            $this->path_info = substr( $this->path_info, 1 );
+        }
+        $this->base_url = $class::getBaseUrl();
         
         // set ctrl root folder.
         if( !$option[ 'ctrl_root' ] ) {
@@ -117,20 +121,6 @@ class Controller extends AmidaChain
         $this->pageObj = $pageObj;
         $action = $this->_defaultAct;
         return $this->dispatch( $action, $this->pageObj );
-    }
-    // +-------------------------------------------------------------+
-    function _obtainPathInfo() {
-        $class   = $this->_requestClass;
-        $path = $class::getPathInfo();
-        if( substr( $path, 0, 1 ) === '/' ) {
-            $path = substr( $path, 1 );
-        }
-        return $path;
-    }
-    // +-------------------------------------------------------------+
-    function _obtainBaseUrl() {
-        $class   = $this->_requestClass;
-        return $class::getBaseUrl();
     }
     // +-------------------------------------------------------------+
     function fireStart() {
