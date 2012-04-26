@@ -11,7 +11,7 @@ class Application extends \AmidaMVC\Framework\Controller
     function __construct( $option=array() )
     {
         $default = array(
-            'site_title' => 'AmidaMVC/Simple Web Site',
+            'site_title' => 'AppSimple Web Site',
             'template_file' => __DIR__ . '/template.php',
             'components' => array(
                 array( '\AmidaMVC\AppSimple\Router',  'router' ),
