@@ -62,8 +62,8 @@ class Emitter
      */
     static function convert( $_siteObj )
     {
-        $content = $_siteObj->contentType();
-        $type    = $_siteObj->getContent();
+        $content = $_siteObj->getContent();
+        $type    = $_siteObj->contentType();
         $emit    = static::$_emit;
         $emit::convertContentToHtml( $content, $type );
         $_siteObj->setContent( $content );
@@ -81,7 +81,7 @@ class Emitter
         if( $_siteObj->contentType() == 'html' ) {
             $emit     = static::$_emit;
             $template = $_ctrl->options[ 'template_file' ];
-            $content_data = array( $_ctrl, $_siteObj );
+            $content_data = array( '_ctrl' => $_ctrl, '_pageObj' => $_siteObj );
             $content = $emit::inject( $template, $content_data );
             $_siteObj->setContent( $content );
         }

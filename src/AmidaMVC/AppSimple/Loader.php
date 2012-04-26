@@ -36,22 +36,28 @@ class Loader
         }
         $load = static::$_load;
         $file_name = $loadInfo[ 'file' ];
-        $loadInfo[ 'base_name' ] = basename( $file_name );
-        $loadInfo[ 'file_ext'  ]  = pathinfo( $file_name, PATHINFO_EXTENSION );
-        $loadInfo[ 'file_type' ] = $load::getFileType( $file_name );
 
         // load the file
         if( is_callable( $file_name ) ) {
             /** @var string $file_name  */
-            $_siteObj->setContent( $file_name( $_ctrl, $_siteObj, $loadInfo ) );
+            $_siteObj->setContent( $file_name( $loadInfo ) );
         }
-        else if( $load::isView( $file_name ) ) {
-            $_siteObj->setContent( $load::getContentsByBuffer( $file_name ) );
-            $loadInfo[ 'loadMode' ] = '_view';
-        }
-        else if( $load::isAsIs( $file_name ) ) {
-            $_siteObj->getContent( $load::getContentsByGet( $file_name ) );
-            $loadInfo[ 'loadMode' ] = '_asIs';
+        else {
+            // it's a file. load contents.
+            $file_loc  = $_ctrl->getLocation( $file_name );
+            $loadInfo[ 'base_name' ] = basename( $file_name );
+            $loadInfo[ 'file_ext'  ]  = pathinfo( $file_name, PATHINFO_EXTENSION );
+            $loadInfo[ 'file_type' ] = $load::getFileType( $file_name );
+            if( $load::isView( $file_loc ) ) {
+                $_siteObj->setContent( $load::getContentsByBuffer( $file_loc ) );
+                $loadInfo[ 'loadMode' ] = '_view';
+            }
+            else if( $load::isAsIs( $file_loc ) ) {
+                $_siteObj->getContent( $load::getContentsByGet( $file_loc ) );
+                $loadInfo[ 'loadMode' ] = '_asIs';
+            }
+            $type = $load::getFileType( $file_name );
+            $_siteObj->contentType( $type );
         }
         if( isset( $loadInfo['action'] ) ) {
             $_ctrl->setAction( $loadInfo['action'] );

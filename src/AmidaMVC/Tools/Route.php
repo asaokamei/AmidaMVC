@@ -75,11 +75,10 @@ class Route
     {
         $loadInfo = array(
             'file' => FALSE,
-            'action' => FALSE,
         );
         // find a file to load. 
         // ex: file_name = /path/to/file_name.
-        $file_name = realpath( $root . '/' . $path );
+        $file_name = $root . '/' . $path;
         if( file_exists( $file_name ) && !is_dir( $file_name ) ) {
             $loadInfo[ 'file' ] = $path;
             return $loadInfo;

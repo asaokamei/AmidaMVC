@@ -63,6 +63,9 @@ class Controller extends AmidaChain
         $this->loadFolder[] = $this->ctrl_root;
         $this->loadFolder[] = $option[ 'appDefault' ];
 
+        if( isset( $option[ 'components' ] ) ) {
+            $this->addComponent( $option[ 'components' ] );
+        }
         $this->options = $option;
     }
     // +-------------------------------------------------------------+
@@ -83,8 +86,13 @@ class Controller extends AmidaChain
      * get location of the document/control root.
      * @return null
      */
-    function getLocation() {
-        return $this->ctrl_root;
+    function getLocation( $path=NULL ) {
+        if( isset( $path ) ) {
+            if( substr( $path, 0, 1 ) !== DIRECTORY_SEPARATOR ) {
+                $path = DIRECTORY_SEPARATOR . $path;
+            }
+        }
+        return $this->ctrl_root . $path;
     }
     // +-------------------------------------------------------------+
     /**

@@ -226,7 +226,9 @@ class AmidaChain
      * @return string         returns the new action.
      */
     function setAction( $action ) {
-        $this->_action = $action;
+        if( isset( $action ) ) {
+            $this->_action = $action;
+        }
         return $this->_action;
     }
     // +-------------------------------------------------------------+

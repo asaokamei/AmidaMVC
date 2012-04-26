@@ -14,7 +14,7 @@ class Emit
     static function inject( $template, $content_data ) {
         ob_start();
         ob_implicit_flush(0);
-        self::inject( $template, $content_data );
+        self::injectTemplate( $template, $content_data );
         $content = ob_get_clean();
         return $content;
     }

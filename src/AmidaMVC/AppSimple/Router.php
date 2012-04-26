@@ -31,18 +31,19 @@ class Router
     {
         $route = static::$_route;
         $path  = $_ctrl->getPathInfo();
-        $base  = $_ctrl->getBaseUrl();
+        $root  = $_ctrl->getLocation();
         if( $loadInfo = $route::match( $path ) ) {
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
+            return $loadInfo;
         }
-        else if( $loadInfo = $route::scan( $base, $path ) ) {
+        if( $loadInfo = $route::scan( $root, $path ) ) {
             $loadInfo[ 'foundBy' ] = 'scan';
+            $loadInfo[ 'action'  ] = $_ctrl->defaultAct();
+            return $loadInfo;
         }
-        else {
-            $_ctrl->setAction( '_pageNotFound' );
-            $loadInfo = array();
-        }
+        $_ctrl->setAction( '_pageNotFound' );
+        $loadInfo = array();
         return $loadInfo;
     }
     // +-------------------------------------------------------------+

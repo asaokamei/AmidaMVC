@@ -14,14 +14,13 @@ class Application extends \AmidaMVC\Framework\Controller
             'site_title' => 'AmidaMVC/Simple Web Site',
             'template_file' => __DIR__ . '/template.php',
             'components' => array(
-                array( '\AmidaMVC\AppSimple\Router', 'router' ),
-                array( '\AmidaMVC\AppSimple\Loader', 'loader' ),
-                array( '\AmidaMVC\AppSimple\Render', 'render' ),
+                array( '\AmidaMVC\AppSimple\Router',  'router' ),
+                array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
+                array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
             ),
         );
         $option = array_merge( $default, $option );
         parent::__construct( $option );
-        $this->addComponent( $option[ 'components' ] );
     }
     // +-------------------------------------------------------------+
 }
