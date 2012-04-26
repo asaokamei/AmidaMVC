@@ -39,7 +39,14 @@ class Controller extends AmidaChain
      * @var array   loaded file's information.
      */
     var $loadInfo = array();
+    /**
+     * @var \AmidaMVC\Framework\PageObj
+     */
+    var $pageObj;
     // +-------------------------------------------------------------+
+    /**
+     * @param array $option
+     */
     function __construct( $option=array() ) 
     {
         // set path_info and base_url. 
@@ -59,6 +66,11 @@ class Controller extends AmidaChain
         $this->options = $option;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @static
+     * @param array $option
+     * @return \AmidaMVC\Framework\Controller
+     */
     static function getInstance( $option=array() ) {
         static $self = NULL;
         if( !isset( $self ) ) {
@@ -67,18 +79,26 @@ class Controller extends AmidaChain
         return $self;
     }
     // +-------------------------------------------------------------+
+    /**
+     * get location of the document/control root.
+     * @return null
+     */
     function getLocation() {
         return $this->ctrl_root;
     }
     // +-------------------------------------------------------------+
     /**
      * starts the Amida-chain loop. 
-     * @param $view             parameter to pass through.
+     * @param \AmidaMVC\Framework\PageObj $pageObj     page info.
      * @return bool|mixed|null  returned value from the last component.
      */
-    function start( &$view ) {
+    function start( $pageObj=NULL ) {
+        if( !isset( $pageObj ) ) {
+            $pageObj = new \AmidaMVC\Framework\PageObj();
+        }
+        $this->pageObj = $pageObj;
         $action = $this->_defaultAct;
-        return $this->dispatch( $action, $view );
+        return $this->dispatch( $action, $this->pageObj );
     }
     // +-------------------------------------------------------------+
     function _obtainPathInfo() {
@@ -171,16 +191,26 @@ class Controller extends AmidaChain
         return $base;
     }
     // +-------------------------------------------------------------+
+    /**
+     * get path info
+     * @return null|string
+     */
     function getPathInfo() {
         return $this->path_info;
     }
     // +-------------------------------------------------------------+
+    /**
+     * to catch uncaught exceptions just in case.
+     * @param null $e
+     * @return Controller
+     */
     function actionFatal( $e=NULL ) {
         if( !isset( $e ) ) {
             set_exception_handler( array( $this, 'actionFatal' ) );
             return $this;
         }
-        \AmidaMVC\Component\Debug::format( 'table', $e->getTrace() );
+        echo "Sorry, terrible thing has happened...";
+        exit;
     }
     // +-------------------------------------------------------------+
     /**
@@ -193,6 +223,13 @@ class Controller extends AmidaChain
             return $this->options[ $name ];
         }
         return '';
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @return \AmidaMVC\Framework\PageObj
+     */
+    function getPageObj() {
+        return $this->pageObj;
     }
     // +-------------------------------------------------------------+
 }

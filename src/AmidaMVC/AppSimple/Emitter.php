@@ -22,8 +22,8 @@ class Emitter
     /**
      * renders data (to html) and output data.
      * @static
-     * @param \AmidaMVC\AppSimple\Controller $_ctrl
-     * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_siteObj
      * @return bool
      */
     static function actionDefault( $_ctrl, $_siteObj )
@@ -39,8 +39,8 @@ class Emitter
      * _App.php or some other models... reload pageNofFound file if
      * set in siteObj. if not, generate simple err404 contents.
      * @static
-     * @param \AmidaMVC\AppSimple\Controller $_ctrl
-     * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_siteObj
      * @return array
      */
     static function action_PageNotFound( $_ctrl, $_siteObj )
@@ -58,7 +58,7 @@ class Emitter
     /**
      * convert contents to HTML for md/text.
      * @static
-     * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
+     * @param \AmidaMVC\Framework\PageObj $_siteObj
      */
     static function convert( $_siteObj )
     {
@@ -73,8 +73,8 @@ class Emitter
     /**
      * inject into template if contentType is html.
      * @static
-     * @param \AmidaMVC\AppSimple\Controller $_ctrl
-     * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_siteObj
      */
     static function template( $_ctrl, $_siteObj )
     {

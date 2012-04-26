@@ -23,8 +23,8 @@ class Router
      * default is to use route map first, then scan the file system
      * to determine which file to load.
      * @static
-     * @param \AmidaMVC\AppSimple\Controller $_ctrl
-     * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_siteObj
      * @return array   $loadInfo for Loader.
      */
     static function actionDefault( $_ctrl, $_siteObj )

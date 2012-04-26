@@ -24,8 +24,8 @@ class Loader
      * specify absolute path of a file as $loadInfo[ 'file' ].
      * setMyAction for _src and _raw mode
      * @static
-     * @param \AmidaMVC\AppSimple\Controller $_ctrl
-     * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_siteObj
      * @param array $loadInfo    info about file to load from Router.
      * @return bool
      */
@@ -63,8 +63,8 @@ class Loader
     /**
      * do nothing for pageNotFound. sorry page loaded by Emitter.
      * @static
-     * @param \AmidaMVC\AppSimple\Controller $_ctrl
-     * @param \AmidaMVC\AppSimple\SiteObj $_siteObj
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_siteObj
      * @return array
      */
     static function action_PageNotFound( $_ctrl, $_siteObj )
