@@ -43,6 +43,14 @@ class Controller extends AmidaChain
      * @var \AmidaMVC\Framework\PageObj
      */
     var $pageObj;
+    /**
+     * @var \AmidaMVC\Tools\Request
+     */
+    var $_requestClass = '\AmidaMVC\Tools\Request';
+    /**
+     * @var \AmidaMVC\Framework\PageObj
+     */
+    var $_pageObjClass = '\AmidaMVC\Framework\PageObj';
     // +-------------------------------------------------------------+
     /**
      * @param array $option
@@ -84,6 +92,7 @@ class Controller extends AmidaChain
     // +-------------------------------------------------------------+
     /**
      * get location of the document/control root.
+     * @param null $path
      * @return null
      */
     function getLocation( $path=NULL ) {
@@ -102,7 +111,8 @@ class Controller extends AmidaChain
      */
     function start( $pageObj=NULL ) {
         if( !isset( $pageObj ) ) {
-            $pageObj = new \AmidaMVC\Framework\PageObj();
+            $class   = $this->_pageObjClass;
+            $pageObj = new $class();
         }
         $this->pageObj = $pageObj;
         $action = $this->_defaultAct;
@@ -110,7 +120,8 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     function _obtainPathInfo() {
-        $path = \AmidaMVC\Tools\Request::getPathInfo();
+        $class   = $this->_requestClass;
+        $path = $class::getPathInfo();
         if( substr( $path, 0, 1 ) === '/' ) {
             $path = substr( $path, 1 );
         }
@@ -118,7 +129,8 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     function _obtainBaseUrl() {
-        return \AmidaMVC\Tools\Request::getBaseUrl();
+        $class   = $this->_requestClass;
+        return $class::getBaseUrl();
     }
     // +-------------------------------------------------------------+
     function fireStart() {
@@ -139,11 +151,13 @@ class Controller extends AmidaChain
      * @param $component
      * @return Controller|bool
      */
-    function loadComponent( $component ) {
+    function loadComponent( $component )
+    {
         if( is_object( $component ) ) return TRUE;
         if( class_exists( $component, FALSE ) ) return TRUE;
         $base_name = $this->prefixCmd . $component . '.php';
-        foreach( $this->loadFolder as $folder ) {
+        foreach( $this->loadFolder as $folder )
+        {
             $file_name = $folder. '/' . $base_name;
             if( file_exists( $file_name ) ) {
                 require_once( $file_name );
