@@ -23,14 +23,14 @@ class Emitter
      * renders data (to html) and output data.
      * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_siteObj
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return bool
      */
-    static function actionDefault( $_ctrl, $_siteObj )
+    static function actionDefault( $_ctrl, $_pageObj )
     {
-        self::convert( $_siteObj );
-        self::template( $_ctrl, $_siteObj );
-        $_siteObj->emit();
+        self::convert( $_pageObj );
+        self::template( $_ctrl, $_pageObj );
+        $_pageObj->emit();
         return TRUE;
     }
     // +-------------------------------------------------------------+
@@ -40,17 +40,17 @@ class Emitter
      * set in siteObj. if not, generate simple err404 contents.
      * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_siteObj
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array
      */
-    static function action_PageNotFound( $_ctrl, $_siteObj )
+    static function action_PageNotFound( $_ctrl, $_pageObj )
     {
         // show some excuses, or blame user for not finding a page.
-        $_siteObj->status( '404' );
-        $_siteObj->title( 'Page Not Found' );
+        $_pageObj->status( '404' );
+        $_pageObj->title( 'Page Not Found' );
         $contents  = "#Error 404\n\nrequested page not found...";
-        $_siteObj->setContent( $contents );
-        $_siteObj->contentType( 'markdown' );
+        $_pageObj->setContent( $contents );
+        $_pageObj->contentType( 'markdown' );
         $_ctrl->setMyAction( $_ctrl->defaultAct() );
         return array();
     }
@@ -58,32 +58,32 @@ class Emitter
     /**
      * convert contents to HTML for md/text.
      * @static
-     * @param \AmidaMVC\Framework\PageObj $_siteObj
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
-    static function convert( $_siteObj )
+    static function convert( $_pageObj )
     {
-        $content = $_siteObj->getContent();
-        $type    = $_siteObj->contentType();
+        $content = $_pageObj->getContent();
+        $type    = $_pageObj->contentType();
         $emit    = static::$_emit;
         $emit::convertContentToHtml( $content, $type );
-        $_siteObj->setContent( $content );
-        $_siteObj->contentType( $type );
+        $_pageObj->setContent( $content );
+        $_pageObj->contentType( $type );
     }
     // +-------------------------------------------------------------+
     /**
      * inject into template if contentType is html.
      * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_siteObj
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
-    static function template( $_ctrl, $_siteObj )
+    static function template( $_ctrl, $_pageObj )
     {
-        if( $_siteObj->contentType() == 'html' ) {
+        if( $_pageObj->contentType() == 'html' ) {
             $emit     = static::$_emit;
             $template = $_ctrl->options[ 'template_file' ];
-            $content_data = array( '_ctrl' => $_ctrl, '_pageObj' => $_siteObj );
+            $content_data = array( '_ctrl' => $_ctrl, '_pageObj' => $_pageObj );
             $content = $emit::inject( $template, $content_data );
-            $_siteObj->setContent( $content );
+            $_pageObj->setContent( $content );
         }
     }
     // +-------------------------------------------------------------+

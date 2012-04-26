@@ -25,11 +25,11 @@ class Loader
      * setMyAction for _src and _raw mode
      * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_siteObj
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo    info about file to load from Router.
      * @return bool
      */
-    static function actionDefault( $_ctrl, &$_siteObj, $loadInfo )
+    static function actionDefault( $_ctrl, &$_pageObj, $loadInfo )
     {
         if( !isset( $loadInfo[ 'file' ] ) ) {
             return FALSE;
@@ -40,7 +40,7 @@ class Loader
         // load the file
         if( is_callable( $file_name ) ) {
             /** @var string $file_name  */
-            $_siteObj->setContent( $file_name( $loadInfo ) );
+            $_pageObj->setContent( $file_name( $loadInfo ) );
         }
         else {
             // it's a file. load contents.
@@ -49,15 +49,15 @@ class Loader
             $loadInfo[ 'file_ext'  ]  = pathinfo( $file_name, PATHINFO_EXTENSION );
             $loadInfo[ 'file_type' ] = $load::getFileType( $file_name );
             if( $load::isView( $file_loc ) ) {
-                $_siteObj->setContent( $load::getContentsByBuffer( $file_loc ) );
+                $_pageObj->setContent( $load::getContentsByBuffer( $file_loc ) );
                 $loadInfo[ 'loadMode' ] = '_view';
             }
             else if( $load::isAsIs( $file_loc ) ) {
-                $_siteObj->getContent( $load::getContentsByGet( $file_loc ) );
+                $_pageObj->getContent( $load::getContentsByGet( $file_loc ) );
                 $loadInfo[ 'loadMode' ] = '_asIs';
             }
             $type = $load::getFileType( $file_name );
-            $_siteObj->contentType( $type );
+            $_pageObj->contentType( $type );
         }
         if( isset( $loadInfo['action'] ) ) {
             $_ctrl->setAction( $loadInfo['action'] );
@@ -70,10 +70,10 @@ class Loader
      * do nothing for pageNotFound. sorry page loaded by Emitter.
      * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_siteObj
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array
      */
-    static function action_PageNotFound( $_ctrl, $_siteObj )
+    static function action_PageNotFound( $_ctrl, $_pageObj )
     {
     }
     // +-------------------------------------------------------------+

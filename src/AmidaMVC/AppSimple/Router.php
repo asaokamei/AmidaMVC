@@ -24,10 +24,10 @@ class Router
      * to determine which file to load.
      * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_siteObj
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array   $loadInfo for Loader.
      */
-    static function actionDefault( $_ctrl, $_siteObj )
+    static function actionDefault( $_ctrl, $_pageObj )
     {
         $route = static::$_route;
         $path  = $_ctrl->getPathInfo();
