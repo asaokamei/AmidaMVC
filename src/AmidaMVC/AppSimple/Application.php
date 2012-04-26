@@ -13,6 +13,7 @@ class Application extends \AmidaMVC\Framework\Controller
         $default = array(
             'site_title' => 'AppSimple Web Site',
             'template_file' => __DIR__ . '/template.php',
+            'pageNotFound_file' => FALSE,
             'components' => array(
                 array( '\AmidaMVC\AppSimple\Router',  'router' ),
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),

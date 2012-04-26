@@ -46,7 +46,14 @@ class Emitter
     static function action_PageNotFound( $_ctrl, $_pageObj )
     {
         // show some excuses, or blame user for not finding a page.
-        $_pageObj->status( '404' );
+        if( $_ctrl->get( 'pageNotFound_file' ) ) {
+            // pageNotFound file is set. should load this page.
+            $_ctrl->prependComponent( array(
+                array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
+                array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
+            ) );
+            return array();
+        }
         $_pageObj->title( 'Page Not Found' );
         $contents  = "#Error 404\n\nrequested page not found...";
         $_pageObj->setContent( $contents );

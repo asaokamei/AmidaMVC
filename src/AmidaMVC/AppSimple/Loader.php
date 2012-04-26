@@ -75,6 +75,15 @@ class Loader
      */
     static function action_PageNotFound( $_ctrl, $_pageObj )
     {
+        if( $_ctrl->get( 'pageNotFound_file' ) ) {
+            $loadInfo = array(
+                'file' => $_ctrl->get( 'pageNotFound_file' ),
+                'action' => $_ctrl->defaultAct(),
+            );
+            $_ctrl->setMyAction( $_ctrl->defaultAct() );
+            return $loadInfo;
+        }
+        return FALSE;
     }
     // +-------------------------------------------------------------+
 }
