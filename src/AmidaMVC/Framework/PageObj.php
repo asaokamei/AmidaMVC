@@ -1,7 +1,7 @@
 <?php
-namespace AmidaMVC\Component;
+namespace AmidaMVC\Framework;
 
-class ResponseObj
+class PageObj
 {
     /**
      * @var integer   status code for http response.
@@ -41,7 +41,7 @@ class ResponseObj
      * @param string $type
      * @param string $value
      * @param bool $append    set to TRUE to append values to header.
-     * @return ResponseObj
+     * @return PageObj
      */
     function header( $type, $value, $append=FALSE ) {
         if( $append && isset( $this->_headers[ $type ] ) ) {
@@ -126,7 +126,7 @@ class ResponseObj
     /**
      * set files to include (JavaScript or CSS) for template.
      * @param $file
-     * @return ResponseObj
+     * @return PageObj
      */
     function includeFile( $file ) {
         $this->_includes[] = $file;
