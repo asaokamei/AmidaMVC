@@ -1,15 +1,12 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Controller extends \AmidaMVC\Framework\Controller
+class Application extends \AmidaMVC\Framework\Controller
 {
-    /**
-     * @var \AmidaMVC\Component\ResponseObj
-     */
-    var $siteObj;
     // +-------------------------------------------------------------+
     /**
-     * @param array $option   options to set
+     * @param array $option
+     * @return \AmidaMVC\AppSimple\Application
      */
     function __construct( $option=array() )
     {
@@ -25,22 +22,6 @@ class Controller extends \AmidaMVC\Framework\Controller
         $option = array_merge( $default, $option );
         parent::__construct( $option );
         $this->addComponent( $option[ 'components' ] );
-    }
-    // +-------------------------------------------------------------+
-    function serve( $siteObj=NULL ) {
-        if( !isset( $siteObj ) ) {
-            $siteObj = new \AmidaMVC\Component\ResponseObj();
-        }
-        $this->siteObj = $siteObj;
-        $return = $this->start( $this->siteObj );
-        return $return;
-    }
-    // +-------------------------------------------------------------+
-    /**
-     * @return \AmidaMVC\Component\ResponseObj
-     */
-    function getSiteObj() {
-        return $this->siteObj;
     }
     // +-------------------------------------------------------------+
 }
