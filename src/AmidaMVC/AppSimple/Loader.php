@@ -41,6 +41,9 @@ class Loader
         if( is_callable( $file_name ) ) {
             /** @var string $file_name  */
             $_pageObj->setContent( $file_name( $loadInfo ) );
+            if( isset( $loadInfo[ 'type' ] ) ) {
+                $_pageObj->contentType( $loadInfo[ 'type' ] );
+            }
         }
         else {
             // it's a file. load contents.
