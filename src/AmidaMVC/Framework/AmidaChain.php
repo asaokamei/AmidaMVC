@@ -327,11 +327,12 @@ class AmidaChain
     function getExecFromAction( $action ) {
         $exec      = FALSE;
         $component = $this->getComponent();
+        $name      = $this->getComponentName();
         $method    = $this->_prefixAct . ucwords( $action );
         if( !$action ) return $exec;
         if( !isset( $component ) ) return $exec;
 
-        $this->loadComponent( $component );
+        $this->loadComponent( $component, $name );
         if( is_callable( array( $component, $method ) ) ) {
             $exec = array( $component, $method );
         }
@@ -342,9 +343,10 @@ class AmidaChain
      * loads model if not exist, but *not* implemented!!
      * overwrite this method for tailored auto-loading classes.
      * @param mixed $component   class or object. maybe a function?
+     * @param string $name
      * @return AmidaChain
      */
-    function loadComponent( $component ) {
+    function loadComponent( $component, $name ) {
         return $this;
     }
     // +-------------------------------------------------------------+

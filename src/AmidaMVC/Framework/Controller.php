@@ -73,7 +73,9 @@ class Controller extends AmidaChain
         
         // set loadFolder as ctrl_root and appDefault.
         $this->loadFolder[] = $this->ctrl_root;
-        $this->loadFolder[] = $option[ 'appDefault' ];
+        if( isset( $option[ 'appDefault' ] ) ) {
+            $this->loadFolder[] = $option[ 'appDefault' ];
+        }
 
         if( isset( $option[ 'components' ] ) ) {
             $this->addComponent( $option[ 'components' ] );
@@ -138,26 +140,41 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     /**
-     * @param $component
+     * @param mixed $component
+     * @param string $name
+     * @throws \RuntimeException
      * @return Controller|bool
      */
-    function loadComponent( $component )
+    function loadComponent( $component, $name )
     {
-        if( is_object( $component ) ) return TRUE;
-        if( class_exists( $component, FALSE ) ) return TRUE;
-        $base_name = $this->prefixCmd . $component . '.php';
-        foreach( $this->loadFolder as $folder )
-        {
-            $file_name = $folder. '/' . $base_name;
-            if( file_exists( $file_name ) ) {
-                require_once( $file_name );
-                if( isset( $this ) ) {
-                    return $this;
+        $option = array();
+        $name   = $this->makeComponentOptionName( $name );
+        if( isset( $this->options[ $name ] ) ) {
+            $option = $this->options[ $name ];
+        }
+        if( is_object( $component ) ) {
+            // good. it's an object.
+        }
+        else if( class_exists( $component ) ) {
+            // good. it's a static class.
+        }
+        else {
+            $base_name = $this->prefixCmd . $component . '.php';
+            foreach( $this->loadFolder as $folder )
+            {
+                $file_name = $folder. '/' . $base_name;
+                if( file_exists( $file_name ) ) {
+                    require_once( $file_name );
                 }
-                return TRUE;
+            }
+            if( !class_exists( $component ) ) {
+                throw new \RuntimeException( "Component: {$component} not found." );
             }
         }
-        return FALSE;
+        if( !empty( $option ) && method_exists( $component, '_init' ) ) {
+            call_user_func( array( $component, '_init' ), $option );
+        }
+        return TRUE;
     }
     // +-------------------------------------------------------------+
     /**
@@ -242,6 +259,60 @@ class Controller extends AmidaChain
      */
     function getPageObj() {
         return $this->pageObj;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * make name for component option.
+     * @param $name
+     * @return string
+     */
+    function makeComponentOptionName( $name ) {
+        return "_{$name}";
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * set option for each component.
+     * @param string $name        name of the component to set.
+     * @param string $key         key name of option.
+     * @param mixed $value       option value.
+     * @return Controller
+     */
+    function setComponentOption( $name, $key, $value ) {
+        $name   = $this->makeComponentOptionName( $name );
+        if( !isset( $this->options[ $name ] ) ) {
+            $this->options[ $name ] = array();
+        }
+        $this->options[ $name ][ $key ] = $value;
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * get option for component
+     * @param string $name
+     * @param string $key
+     * @return mixed
+     */
+    function getComponentOption( $name, $key ) {
+        $name   = $this->makeComponentOptionName( $name );
+        if( isset( $this->options[ $name ] ) &&
+            is_array( $this->options[ $name ] ) &&
+            isset( $this->options[ $name ][ $key ] ) ) {
+            return $this->options[ $name ][ $key ];
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    function get( $route, $file, $option=array() ) {
+        // default is router
+        $name = 'router';
+        $key  = 'routes';
+        $routeList = $this->getComponentOption( $name, $key );
+        if( !$routeList ) {
+            $routeList = array();
+        }
+        $routeList[ $route ] = array_merge( $option, array( 'file' => $file ) );
+        $this->setComponentOption( $name, $key, $routeList );
+        return $this;
     }
     // +-------------------------------------------------------------+
 }

@@ -17,6 +17,10 @@ class Router
         if( isset( $option[ 'routeClass' ] ) ) {
             static::$_route = $option[ 'routeClass' ];
         }
+        if( isset( $option[ 'routes' ] ) ) {
+            $route = static::$_route;
+            $route::set( $option[ 'routes' ] );
+        }
     }
     // +-------------------------------------------------------------+
     /**
