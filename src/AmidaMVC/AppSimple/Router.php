@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Router
+class Router implements \AmidaMVC\Framework\IComponent
 {
     /**
      * @var \AmidaMVC\Tools\Route   a static class name for match and scan.
@@ -29,9 +29,10 @@ class Router
      * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $option
      * @return array   $loadInfo for Loader.
      */
-    function actionDefault( $_ctrl, $_pageObj )
+    function actionDefault( $_ctrl, &$_pageObj, $option=array() )
     {
         $route = static::$_route;
         $path  = $_ctrl->getPathInfo();

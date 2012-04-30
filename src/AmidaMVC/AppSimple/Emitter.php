@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Emitter
+class Emitter implements \AmidaMVC\Framework\IComponent
 {
     /**
      * @var \AmidaMVC\Tools\Emit
@@ -24,9 +24,10 @@ class Emitter
      * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $option
      * @return bool
      */
-    function actionDefault( $_ctrl, $_pageObj )
+    function actionDefault( $_ctrl, &$_pageObj, $option=array() )
     {
         self::convert( $_pageObj );
         self::template( $_ctrl, $_pageObj );

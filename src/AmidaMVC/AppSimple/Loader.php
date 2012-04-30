@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Loader
+class Loader implements \AmidaMVC\Framework\IComponent
 {
     /**
      * @var \AmidaMVC\Tools\Load   static class for loading methods.
@@ -29,7 +29,7 @@ class Loader
      * @param array $loadInfo    info about file to load from Router.
      * @return bool
      */
-    function actionDefault( $_ctrl, &$_pageObj, $loadInfo )
+    function actionDefault( $_ctrl, &$_pageObj, $loadInfo=array() )
     {
         if( !isset( $loadInfo[ 'file' ] ) ) {
             return FALSE;

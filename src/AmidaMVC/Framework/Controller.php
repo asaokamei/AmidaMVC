@@ -172,7 +172,7 @@ class Controller extends AmidaChain
             $component = new $component();
 
         }
-        if( !empty( $option ) && method_exists( $component, '_init' ) ) {
+        if( !empty( $option ) && ( $component instanceof \AmidaMVC\Framework\IComponent ) ) {
             call_user_func( array( $component, '_init' ), $option );
         }
         return TRUE;
