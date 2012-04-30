@@ -1,7 +1,11 @@
 <?php
 require_once( '../src/AmidaMVC/bootstrap.php' );
 
-$app = \AmidaMVC\AppSimple\Application::getInstance();
+$app = \AmidaMVC\AppSimple\Application::getInstance(
+    array(
+        'site_title' => "Demo#1 - Simple Site",
+    )
+);
 $app->get( '/', function() {
     $content = "
 #Simple Demo
