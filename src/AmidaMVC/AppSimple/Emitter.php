@@ -56,7 +56,8 @@ class Emitter implements \AmidaMVC\Framework\IModule
             return array();
         }
         $_pageObj->title( 'Page Not Found' );
-        $contents  = "#Error 404\n\nrequested page not found...";
+        $contents  = "#Error 404\n\nrequested page not found...\n\n";
+        $contents .= "[back to top](" . $_ctrl->getBaseUrl() . ")";
         $_pageObj->setContent( $contents );
         $_pageObj->contentType( 'markdown' );
         $_ctrl->setMyAction( $_ctrl->defaultAct() );
