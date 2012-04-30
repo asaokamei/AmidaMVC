@@ -17,7 +17,11 @@ No external php code, css, javascript, or any other scripts
 except the settings written in _index.php file.
 
 [test.md](test.md)
-: example of external file using markdown textfile.
+: example of external file using markdown text file.
+
+[none for error 404](none.html)
+: this link points to non-existing file and causes
+error 404 error.
 ";
         return $content;
     }, array( 'type' => 'markdown' )
