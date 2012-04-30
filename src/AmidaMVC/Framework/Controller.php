@@ -66,7 +66,7 @@ class Controller extends AmidaChain
         $this->base_url = $class::getBaseUrl();
         
         // set ctrl root folder.
-        if( !$option[ 'ctrl_root' ] ) {
+        if( !isset( $option[ 'ctrl_root' ] ) ) {
             $option[ 'ctrl_root' ] = getcwd();
         }
         $this->ctrl_root    = $option[ 'ctrl_root' ];
