@@ -13,7 +13,7 @@ class Router
      * @static
      * @param array $option   options to initialize.
      */
-    static function _init( $option=array() ) {
+    function _init( $option=array() ) {
         if( isset( $option[ 'routeClass' ] ) ) {
             static::$_route = $option[ 'routeClass' ];
         }
@@ -31,7 +31,7 @@ class Router
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array   $loadInfo for Loader.
      */
-    static function actionDefault( $_ctrl, $_pageObj )
+    function actionDefault( $_ctrl, $_pageObj )
     {
         $route = static::$_route;
         $path  = $_ctrl->getPathInfo();

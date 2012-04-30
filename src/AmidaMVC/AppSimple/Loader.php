@@ -13,7 +13,7 @@ class Loader
      * @static
      * @param array $option    option to initialize.
      */
-    static function _init( $option=array() ) {
+    function _init( $option=array() ) {
         if( isset( $option[ 'loadClass' ] ) ) {
             static::$_load = $option[ 'loadClass' ];
         }
@@ -29,7 +29,7 @@ class Loader
      * @param array $loadInfo    info about file to load from Router.
      * @return bool
      */
-    static function actionDefault( $_ctrl, &$_pageObj, $loadInfo )
+    function actionDefault( $_ctrl, &$_pageObj, $loadInfo )
     {
         if( !isset( $loadInfo[ 'file' ] ) ) {
             return FALSE;
@@ -76,7 +76,7 @@ class Loader
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array
      */
-    static function action_PageNotFound( $_ctrl, $_pageObj )
+    function action_PageNotFound( $_ctrl, $_pageObj )
     {
         if( $_ctrl->getOption( 'pageNotFound_file' ) ) {
             $loadInfo = array(

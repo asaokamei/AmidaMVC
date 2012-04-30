@@ -13,7 +13,7 @@ class Emitter
      * @static
      * @param array $option     option to initialize.
      */
-    static function _init( $option=array() ) {
+    function _init( $option=array() ) {
         if( isset( $option[ 'emitClass' ] ) ) {
             static::$_emit = $option[ 'emitClass' ];
         }
@@ -26,7 +26,7 @@ class Emitter
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return bool
      */
-    static function actionDefault( $_ctrl, $_pageObj )
+    function actionDefault( $_ctrl, $_pageObj )
     {
         self::convert( $_pageObj );
         self::template( $_ctrl, $_pageObj );
@@ -43,7 +43,7 @@ class Emitter
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array
      */
-    static function action_PageNotFound( $_ctrl, $_pageObj )
+    function action_PageNotFound( $_ctrl, $_pageObj )
     {
         // show some excuses, or blame user for not finding a page.
         if( $_ctrl->getOption( 'pageNotFound_file' ) ) {
@@ -67,7 +67,7 @@ class Emitter
      * @static
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
-    static function convert( $_pageObj )
+    function convert( $_pageObj )
     {
         $content = $_pageObj->getContent();
         $type    = $_pageObj->contentType();
@@ -83,7 +83,7 @@ class Emitter
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
-    static function template( $_ctrl, $_pageObj )
+    function template( $_ctrl, $_pageObj )
     {
         if( $_pageObj->contentType() == 'html' ) {
             $emit     = static::$_emit;

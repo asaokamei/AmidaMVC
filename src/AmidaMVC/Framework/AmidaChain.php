@@ -346,7 +346,7 @@ class AmidaChain
      * @param string $name
      * @return AmidaChain
      */
-    function loadComponent( $component, $name ) {
+    function loadComponent( &$component, $name ) {
         return $this;
     }
     // +-------------------------------------------------------------+

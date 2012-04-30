@@ -145,7 +145,7 @@ class Controller extends AmidaChain
      * @throws \RuntimeException
      * @return Controller|bool
      */
-    function loadComponent( $component, $name )
+    function loadComponent( &$component, $name )
     {
         $option = array();
         $name   = $this->makeComponentOptionName( $name );
@@ -155,21 +155,22 @@ class Controller extends AmidaChain
         if( is_object( $component ) ) {
             // good. it's an object.
         }
-        else if( class_exists( $component ) ) {
-            // good. it's a static class.
-        }
         else {
-            $base_name = $this->prefixCmd . $component . '.php';
-            foreach( $this->loadFolder as $folder )
-            {
-                $file_name = $folder. '/' . $base_name;
-                if( file_exists( $file_name ) ) {
-                    require_once( $file_name );
+            if( !class_exists( $component ) ) {
+                $base_name = $this->prefixCmd . $component . '.php';
+                foreach( $this->loadFolder as $folder )
+                {
+                    $file_name = $folder. '/' . $base_name;
+                    if( file_exists( $file_name ) ) {
+                        require_once( $file_name );
+                    }
+                }
+                if( !class_exists( $component ) ) {
+                    throw new \RuntimeException( "Component: {$component} not found." );
                 }
             }
-            if( !class_exists( $component ) ) {
-                throw new \RuntimeException( "Component: {$component} not found." );
-            }
+            $component = new $component();
+
         }
         if( !empty( $option ) && method_exists( $component, '_init' ) ) {
             call_user_func( array( $component, '_init' ), $option );
