@@ -11,9 +11,6 @@
         margin:0;
         padding:0;
     }
-    p {
-        margin: 0; padding: 0;
-    }
     .mainbody {
         width: 700px;
         margin: auto;
@@ -29,7 +26,7 @@
         color: #FFF;
     }
     div#content {
-        line-height: 1.3em;
+        line-height: 1.4em;
     }
     footer {
         margin: 50px 0px;
