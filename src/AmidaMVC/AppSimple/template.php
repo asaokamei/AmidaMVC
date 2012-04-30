@@ -41,7 +41,11 @@
 </style>
 <div class="mainbody">
     <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a></header>
-    <div id="content" ><?php echo $_pageObj->getContent(); ?></div>
+    <div id="content" >
+        <!-- content starts -->
+        <?php echo $_pageObj->getContent(); ?>
+        <!-- content ends -->
+    </div>
     <footer>
         <p>AppSimple Suites by AmidaMVC.</p>
         <p>gitHub:https://github.com/asaokamei/AmidaMVC</p>
