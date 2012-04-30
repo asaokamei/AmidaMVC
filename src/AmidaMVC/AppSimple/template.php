@@ -44,8 +44,8 @@
         <!-- content ends -->
     </div>
     <footer>
-        <p>AppSimple Suites by AmidaMVC.</p>
-        <p>gitHub:https://github.com/asaokamei/AmidaMVC</p>
+        <p>AppSimple Suites by AmidaMVC.<br />
+        gitHub:https://github.com/asaokamei/AmidaMVC</p>
     </footer>
 </div>
 </html>
