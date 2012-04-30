@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Emitter implements \AmidaMVC\Framework\IComponent
+class Emitter implements \AmidaMVC\Framework\IModule
 {
     /**
      * @var \AmidaMVC\Tools\Emit

@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\Framework;
 
-interface IComponent
+interface IModule
 {
     /**
      * @abstract

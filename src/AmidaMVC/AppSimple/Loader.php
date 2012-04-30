@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Loader implements \AmidaMVC\Framework\IComponent
+class Loader implements \AmidaMVC\Framework\IModule
 {
     /**
      * @var \AmidaMVC\Tools\Load   static class for loading methods.

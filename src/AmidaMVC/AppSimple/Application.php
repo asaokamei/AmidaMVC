@@ -15,7 +15,7 @@ class Application extends \AmidaMVC\Framework\Controller
             'template_file' => __DIR__ . '/template.php',
             'pageNotFound_file' => FALSE,
             'appDefault' => FALSE,
-            'components' => array(
+            'modules' => array(
                 array( '\AmidaMVC\AppSimple\Router',  'router' ),
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
                 array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),

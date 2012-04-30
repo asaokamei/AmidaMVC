@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Router implements \AmidaMVC\Framework\IComponent
+class Router implements \AmidaMVC\Framework\IModule
 {
     /**
      * @var \AmidaMVC\Tools\Route   a static class name for match and scan.

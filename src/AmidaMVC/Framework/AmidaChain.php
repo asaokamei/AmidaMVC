@@ -8,9 +8,9 @@ namespace AmidaMVC\Framework;
 class AmidaChain
 {
     /**
-     * @var array   list of components. nextModel sets model to the next.
+     * @var array   list of modules. nextModel sets model to the next.
      */
-    var $_components  = array();
+    var $_modules  = array();
     /**
      * @var null    name of current action.
      */
@@ -20,9 +20,9 @@ class AmidaChain
      */
     var $_dispatchAct= NULL;
     /**
-     * @var bool   flag to advance the component in dispatch chain. 
+     * @var bool   flag to advance the module in dispatch chain.
      */
-    var $_useNextComponent = TRUE;
+    var $_useNextModule = TRUE;
     /**
      * @var string   default exec name if not matched.
      */
@@ -40,137 +40,137 @@ class AmidaChain
      * get current model.
      * @return string    current model.
      */
-    function getComponent() {
-        if( empty( $this->_components ) ) return FALSE;
-        if( !isset( $this->_components[0][0] ) ) return FALSE;
-        return $this->_components[0][0];
+    function getModule() {
+        if( empty( $this->_modules ) ) return FALSE;
+        if( !isset( $this->_modules[0][0] ) ) return FALSE;
+        return $this->_modules[0][0];
     }
     // +-------------------------------------------------------------+
     /**
      * get current model name.
      * @return string     returns current model name.
      */
-    function getComponentName() {
-        if( empty( $this->_components ) ) return FALSE;
-        if( !isset( $this->_components[0][1] ) ) return FALSE;
-        return $this->_components[0][1];
+    function getModuleName() {
+        if( empty( $this->_modules ) ) return FALSE;
+        if( !isset( $this->_modules[0][1] ) ) return FALSE;
+        return $this->_modules[0][1];
     }
     // +-------------------------------------------------------------+
     /**
-     * adds components to AmidaChain.
-     * @param mixed $component  class or object to plug-in as component.
-     * @param null $name       name of component.
+     * adds modules to AmidaChain.
+     * @param mixed $module  class or object to plug-in as module.
+     * @param null $name       name of module.
      * @return AmidaChain      returns this.
      */
-    function addComponent( $component, $name=NULL ) {
-        $this->appendComponent( $component, $name );
+    function addModule( $module, $name=NULL ) {
+        $this->appendModule( $module, $name );
         return $this;
     }
     // +-------------------------------------------------------------+
     /**
-     * wraps component input as array( array( comp, name ) ). 
-     * @param mixed $component
+     * wraps module input as array( array( comp, name ) ).
+     * @param mixed $module
      * @param null $name
      * @return array
      * @throws \RuntimeException
      */
-    function _prepareComponent( $component, $name=NULL ) {
-        if( is_array( $component ) ) {
-            if( isset( $component[0] ) && is_array( $component[0] ) ) {
-                $compInfo = $component;
+    function _prepareModule( $module, $name=NULL ) {
+        if( is_array( $module ) ) {
+            if( isset( $module[0] ) && is_array( $module[0] ) ) {
+                $compInfo = $module;
             }
             else {
-                $compInfo = array( $component );
+                $compInfo = array( $module );
             }
         }
         else if( $name !== NULL ) {
-            $compInfo = array( array( $component, $name ) );
+            $compInfo = array( array( $module, $name ) );
         }
         else {
-            throw new \RuntimeException( 'wrong arg in _prepareComponent: '. $component );
+            throw new \RuntimeException( 'wrong arg in _prepareModule: '. $module );
         }
         return $compInfo;
     }
     // +-------------------------------------------------------------+
     /**
-     * append a component to AmidaChain.
+     * append a module to AmidaChain.
      * @param array|string $compInfo   
      * @param null $name 
      * @return AmidaChain
      */
-    function appendComponent( $compInfo, $name=NULL ) {
-        $compInfo = $this->_prepareComponent( $compInfo, $name );
-        $this->_components = array_merge( $this->_components, $compInfo );
+    function appendModule( $compInfo, $name=NULL ) {
+        $compInfo = $this->_prepareModule( $compInfo, $name );
+        $this->_modules = array_merge( $this->_modules, $compInfo );
         return $this;
     }
     // +-------------------------------------------------------------+
     /**
-     * prepend a component to AmidaChain.
-     * @param array|string $compInfo    component and its name in array.
-     * @param null $name   name of component
+     * prepend a module to AmidaChain.
+     * @param array|string $compInfo    module and its name in array.
+     * @param null $name   name of module
      * @return AmidaChain    returns this.
      */
-    function prependComponent( $compInfo, $name=NULL ) {
-        $compInfo = $this->_prepareComponent( $compInfo, $name );
+    function prependModule( $compInfo, $name=NULL ) {
+        $compInfo = $this->_prepareModule( $compInfo, $name );
         if( isset( $this->_dispatchAct ) ) {
             // chain already started. 
-            // the first component is the current one. 
-            // so add the new component after the current component. 
-            $first_component  = $this->_components[0];
-            $this->_components = array_slice( $this->_components, 1 );
-            $this->_components = array_merge( 
-                array( $first_component ),
+            // the first module is the current one.
+            // so add the new module after the current module.
+            $first_module  = $this->_modules[0];
+            $this->_modules = array_slice( $this->_modules, 1 );
+            $this->_modules = array_merge(
+                array( $first_module ),
                 $compInfo, 
-                $this->_components 
+                $this->_modules
             );
         }
         else {
-            // add the component at the beginning of component chain. 
-            $this->_components = array_merge( $compInfo, $this->_components );
+            // add the module at the beginning of module chain.
+            $this->_modules = array_merge( $compInfo, $this->_modules );
         }
         return $this;
     }
     // +-------------------------------------------------------------+
     /**
-     * add a component after given component name (addAfterThisName). 
-     * @param string $addAfterThisName    add new component after this name. 
-     * @param string|object $compInfo     component class or object. 
-     * @param string $name                name of the new component. 
+     * add a module after given module name (addAfterThisName).
+     * @param string $addAfterThisName    add new module after this name.
+     * @param string|object $compInfo     module class or object.
+     * @param string $name                name of the new module.
      */
-    function addComponentAfter( $addAfterThisName, $compInfo, $name ) {
-        $new_components = array();
-        foreach( $this->_components as $comp ) {
-            $new_components[] = $comp;
+    function addModuleAfter( $addAfterThisName, $compInfo, $name ) {
+        $new_modules = array();
+        foreach( $this->_modules as $comp ) {
+            $new_modules[] = $comp;
             if( $addAfterThisName === $comp[1] ) {
-                $new_components[] = array( $compInfo, $name );
+                $new_modules[] = array( $compInfo, $name );
             }
         }
-        $this->_components = $new_components;
+        $this->_modules = $new_modules;
     }
     // +-------------------------------------------------------------+
     /**
-     * getter/setter for useNextComponent flag. 
+     * getter/setter for useNextModule flag.
      * @param null $next
      * @return bool
      */
-    function useNextComponent( $next=NULL ) {
+    function useNextModule( $next=NULL ) {
         if( $next === TRUE ) {
-            $this->_useNextComponent = $next;
+            $this->_useNextModule = $next;
         }
         elseif( $next === FALSE ) {
-            $this->_useNextComponent = $next;
+            $this->_useNextModule = $next;
         }
-        return $this->_useNextComponent;
+        return $this->_useNextModule;
     }
     // +-------------------------------------------------------------+
     /**
-     * use next component.
+     * use next module.
      * @return \AmidaMVC\Framework\AmidaChain
      */
-    function nextComponent() {
-        if( isset( $this->_components[0] ) ) {
+    function nextModule() {
+        if( isset( $this->_modules[0] ) ) {
             // replace model with the next model.
-            $this->_components = array_slice( $this->_components, 1 );
+            $this->_modules = array_slice( $this->_modules, 1 );
         }
         return $this;
     }
@@ -181,32 +181,32 @@ class AmidaChain
      * @return bool|string    returns model name set, or false if not found.
      */
     function skipToModel( $name ) {
-        // keep the current component at idx=0.
-        $current_component = $this->_components[0];
-        $this->_components = array_slice( $this->_components, 1 );
+        // keep the current module at idx=0.
+        $current_module = $this->_modules[0];
+        $this->_modules = array_slice( $this->_modules, 1 );
         
-        while( $this->_components ) {
-            if( $name === $this->_components[0][1] ) {
+        while( $this->_modules ) {
+            if( $name === $this->_modules[0][1] ) {
                 break;
             }
             else {
-                $this->_components = array_slice( $this->_components, 1 );
+                $this->_modules = array_slice( $this->_modules, 1 );
             }
         }
-        $this->_components = array_merge( $current_component, $this->_components );
+        $this->_modules = array_merge( $current_module, $this->_modules );
         // should throw an exception, maybe.
         return $this;
     }
     // +-------------------------------------------------------------+
     /**
-     * @return bool   TRUE if more components exists.
+     * @return bool   TRUE if more modules exists.
      */
     function moreModels() {
-        return !empty( $this->_components );
+        return !empty( $this->_modules );
     }
     // +-------------------------------------------------------------+
     /**
-     * use next model. for instance, the components can be: auth,
+     * use next model. for instance, the modules can be: auth,
      * cache, data model, and view.
         }
         throw new RuntimeException( 'no next model in AmidaChain. ' );
@@ -233,13 +233,13 @@ class AmidaChain
     }
     // +-------------------------------------------------------------+
     /**
-     * setter for action, but uses the same component. 
+     * setter for action, but uses the same module.
      * @param string $action      action name. 
      * @return string      returns the new action. 
      */
     function setMyAction( $action ) {
         $this->setAction( $action );
-        $this->useNextComponent( FALSE );
+        $this->useNextModule( FALSE );
         return $this->_action;
     }
     // +-------------------------------------------------------------+
@@ -275,12 +275,12 @@ class AmidaChain
             $this->fireDispatch();
             $action = $this->getAction();
             $return = $this->execAction( $action, $data, $return );
-            if( $this->useNextComponent() ) {
-                // go to next component. 
-                $this->nextComponent();
+            if( $this->useNextModule() ) {
+                // go to next module.
+                $this->nextModule();
             }
             else {
-                $this->useNextComponent( TRUE ); // reset to TRUE. 
+                $this->useNextModule( TRUE ); // reset to TRUE.
             }
         }
         // -----------------------------
@@ -326,15 +326,15 @@ class AmidaChain
      */
     function getExecFromAction( $action ) {
         $exec      = FALSE;
-        $component = $this->getComponent();
-        $name      = $this->getComponentName();
+        $module = $this->getModule();
+        $name      = $this->getModuleName();
         $method    = $this->_prefixAct . ucwords( $action );
         if( !$action ) return $exec;
-        if( !isset( $component ) ) return $exec;
+        if( !isset( $module ) ) return $exec;
 
-        $this->loadComponent( $component, $name );
-        if( is_callable( array( $component, $method ) ) ) {
-            $exec = array( $component, $method );
+        $this->loadModule( $module, $name );
+        if( is_callable( array( $module, $method ) ) ) {
+            $exec = array( $module, $method );
         }
         return $exec;
     }
@@ -342,11 +342,11 @@ class AmidaChain
     /**
      * loads model if not exist, but *not* implemented!!
      * overwrite this method for tailored auto-loading classes.
-     * @param mixed $component   class or object. maybe a function?
+     * @param mixed $module   class or object. maybe a function?
      * @param string $name
      * @return AmidaChain
      */
-    function loadComponent( &$component, $name ) {
+    function loadModule( &$module, $name ) {
         return $this;
     }
     // +-------------------------------------------------------------+

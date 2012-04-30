@@ -24,7 +24,7 @@ class Controller extends AmidaChain
      */
     var $prefixCmd = '_';
     /**
-     * @var array   list of folders to look for components. 
+     * @var array   list of folders to look for modules.
      */
     var $loadFolder = array();
     /**
@@ -77,8 +77,8 @@ class Controller extends AmidaChain
             $this->loadFolder[] = $option[ 'appDefault' ];
         }
 
-        if( isset( $option[ 'components' ] ) ) {
-            $this->addComponent( $option[ 'components' ] );
+        if( isset( $option[ 'modules' ] ) ) {
+            $this->addModule( $option[ 'modules' ] );
         }
         $this->options = $option;
     }
@@ -113,7 +113,7 @@ class Controller extends AmidaChain
     /**
      * starts the Amida-chain loop. 
      * @param \AmidaMVC\Framework\PageObj $pageObj     page info.
-     * @return bool|mixed|null  returned value from the last component.
+     * @return bool|mixed|null  returned value from the last module.
      */
     function start( $pageObj=NULL ) {
         if( !isset( $pageObj ) ) {
@@ -135,29 +135,29 @@ class Controller extends AmidaChain
     function fireDispatch() {
         Event::fire(
             'Controller::dispatch',
-            "model={$this->_components[0][0]} action={$this->_action}"
+            "model={$this->_modules[0][0]} action={$this->_action}"
         );
     }
     // +-------------------------------------------------------------+
     /**
-     * @param mixed $component
+     * @param mixed $module
      * @param string $name
      * @throws \RuntimeException
      * @return Controller|bool
      */
-    function loadComponent( &$component, $name )
+    function loadModule( &$module, $name )
     {
         $option = array();
-        $name   = $this->makeComponentOptionName( $name );
+        $name   = $this->makeModuleOptionName( $name );
         if( isset( $this->options[ $name ] ) ) {
             $option = $this->options[ $name ];
         }
-        if( is_object( $component ) ) {
+        if( is_object( $module ) ) {
             // good. it's an object.
         }
         else {
-            if( !class_exists( $component ) ) {
-                $base_name = $this->prefixCmd . $component . '.php';
+            if( !class_exists( $module ) ) {
+                $base_name = $this->prefixCmd . $module . '.php';
                 foreach( $this->loadFolder as $folder )
                 {
                     $file_name = $folder. '/' . $base_name;
@@ -165,15 +165,15 @@ class Controller extends AmidaChain
                         require_once( $file_name );
                     }
                 }
-                if( !class_exists( $component ) ) {
-                    throw new \RuntimeException( "Component: {$component} not found." );
+                if( !class_exists( $module ) ) {
+                    throw new \RuntimeException( "Module: {$module} not found." );
                 }
             }
-            $component = new $component();
+            $module = new $module();
 
         }
-        if( !empty( $option ) && ( $component instanceof \AmidaMVC\Framework\IComponent ) ) {
-            call_user_func( array( $component, '_init' ), $option );
+        if( !empty( $option ) && ( $module instanceof \AmidaMVC\Framework\IModule ) ) {
+            call_user_func( array( $module, '_init' ), $option );
         }
         return TRUE;
     }
@@ -263,23 +263,23 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     /**
-     * make name for component option.
+     * make name for module option.
      * @param $name
      * @return string
      */
-    function makeComponentOptionName( $name ) {
+    function makeModuleOptionName( $name ) {
         return "_{$name}";
     }
     // +-------------------------------------------------------------+
     /**
-     * set option for each component.
-     * @param string $name        name of the component to set.
+     * set option for each module.
+     * @param string $name        name of the module to set.
      * @param string $key         key name of option.
      * @param mixed $value       option value.
      * @return Controller
      */
-    function setComponentOption( $name, $key, $value ) {
-        $name   = $this->makeComponentOptionName( $name );
+    function setModuleOption( $name, $key, $value ) {
+        $name   = $this->makeModuleOptionName( $name );
         if( !isset( $this->options[ $name ] ) ) {
             $this->options[ $name ] = array();
         }
@@ -288,13 +288,13 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     /**
-     * get option for component
+     * get option for module
      * @param string $name
      * @param string $key
      * @return mixed
      */
-    function getComponentOption( $name, $key ) {
-        $name   = $this->makeComponentOptionName( $name );
+    function getModuleOption( $name, $key ) {
+        $name   = $this->makeModuleOptionName( $name );
         if( isset( $this->options[ $name ] ) &&
             is_array( $this->options[ $name ] ) &&
             isset( $this->options[ $name ][ $key ] ) ) {
@@ -307,12 +307,12 @@ class Controller extends AmidaChain
         // default is router
         $name = 'router';
         $key  = 'routes';
-        $routeList = $this->getComponentOption( $name, $key );
+        $routeList = $this->getModuleOption( $name, $key );
         if( !$routeList ) {
             $routeList = array();
         }
         $routeList[ $route ] = array_merge( $option, array( 'file' => $file ) );
-        $this->setComponentOption( $name, $key, $routeList );
+        $this->setModuleOption( $name, $key, $routeList );
         return $this;
     }
     // +-------------------------------------------------------------+
