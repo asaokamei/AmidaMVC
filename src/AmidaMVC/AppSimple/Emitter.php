@@ -7,6 +7,9 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
      * @var \AmidaMVC\Tools\Emit
      */
     var $_emitClass = '\AmidaMVC\Tools\Emit';
+    /**
+     * @var array    list of supported commands.
+     */
     var $commands = array( '_src', '_raw' );
     // +-------------------------------------------------------------+
     /**
@@ -80,7 +83,7 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
         // show some excuses, or blame user for not finding a page.
         if( $_ctrl->getOption( 'pageNotFound_file' ) ) {
             // pageNotFound file is set. should load this page.
-            $_ctrl->prependComponent( array(
+            $_ctrl->prependModule( array(
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
                 array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
             ) );
