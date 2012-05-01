@@ -76,4 +76,43 @@ class Response
         header( $header );
     }
     // +-------------------------------------------------------------+
+    /**
+     * find mime type from content_type/file extensions.
+     * @static
+     * @param $content_type
+     * @return string
+     */
+    static function findMimeType( $content_type ) {
+        switch( strtolower( $content_type ) ) {
+            case 'text':
+            case 'txt':
+                $mime = 'text/plain';
+                break;
+            case 'css':
+                $mime = 'text/css';
+                break;
+            case 'js':
+            case 'javascript':
+                $mime = 'text/javascript';
+                break;
+            case 'jpg':
+            case 'jpeg':
+                $mime = 'image/jpeg';
+                break;
+            case 'gif':
+                $mime = 'image/gif';
+                break;
+            case 'png':
+                $mime = 'image/png';
+                break;
+            case 'pdf':
+                $mime = 'application/pdf';
+                break;
+            default:
+                $mime = 'text/html';
+                break;
+        }
+        return $mime;
+    }
+    // +-------------------------------------------------------------+
 }
