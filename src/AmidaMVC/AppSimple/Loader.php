@@ -1,12 +1,13 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Loader implements \AmidaMVC\Framework\IModule
+class Loader extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\IModule
 {
     /**
      * @var \AmidaMVC\Tools\Load   static class for loading methods.
      */
     static $_load = '\AmidaMVC\Tools\Load';
+    var $commands = array( '_src' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -34,6 +35,7 @@ class Loader implements \AmidaMVC\Framework\IModule
         if( !isset( $loadInfo[ 'file' ] ) ) {
             return FALSE;
         }
+        $command = $this->findCommand( $_ctrl->cmds );
         $load = static::$_load;
         $file_name = $loadInfo[ 'file' ];
 
@@ -51,12 +53,16 @@ class Loader implements \AmidaMVC\Framework\IModule
             $loadInfo[ 'base_name' ] = basename( $file_name );
             $loadInfo[ 'file_ext'  ]  = pathinfo( $file_name, PATHINFO_EXTENSION );
             $loadInfo[ 'file_type' ] = $load::getFileType( $file_name );
-            if( $load::isView( $file_loc ) ) {
+            if( $load::isView( $file_loc ) && $command == '_src' ) {
+                $_pageObj->setContent( $load::getContentsByGet( $file_loc ) );
+                $loadInfo[ 'loadMode' ] = '_src';
+            }
+            else if( $load::isView( $file_loc ) ) {
                 $_pageObj->setContent( $load::getContentsByBuffer( $file_loc ) );
                 $loadInfo[ 'loadMode' ] = '_view';
             }
             else if( $load::isAsIs( $file_loc ) ) {
-                $_pageObj->getContent( $load::getContentsByGet( $file_loc ) );
+                $_pageObj->setContent( $load::getContentsByGet( $file_loc ) );
                 $loadInfo[ 'loadMode' ] = '_asIs';
             }
             $type = $load::getFileType( $file_name );

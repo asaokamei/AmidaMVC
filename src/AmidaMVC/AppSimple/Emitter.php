@@ -59,7 +59,7 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
      * @return bool
      */
     function action_src( $_ctrl, &$_pageObj, $option=array() ) {
-        $_pageObj->contentType( 'text' );
+        $_pageObj->contentType( 'php' );
         self::convert( $_pageObj );
         self::template( $_ctrl, $_pageObj );
         $_pageObj->emit();

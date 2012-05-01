@@ -50,6 +50,9 @@ class Emit
                 $content = '<pre>' . $content . '</pre>';
                 $type    = 'html';
                 break;
+            case 'php':
+                $content = highlight_string( $content, TRUE );
+                $type    = 'html';
             default:
                 break;
         }
