@@ -1,21 +1,24 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Loader implements \AmidaMVC\Framework\IModule
+class Loader extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\IModule
 {
     /**
      * @var \AmidaMVC\Tools\Load   static class for loading methods.
      */
-    static $_load = '\AmidaMVC\Tools\Load';
+    var $_loadClass = '\AmidaMVC\Tools\Load';
+    /**
+     * @var array   list of supported commands.
+     */
+    var $commands = array( '_src' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
-     * @static
      * @param array $option    option to initialize.
      */
     function _init( $option=array() ) {
         if( isset( $option[ 'loadClass' ] ) ) {
-            static::$_load = $option[ 'loadClass' ];
+            $this->_loadClass = $option[ 'loadClass' ];
         }
     }
     // +-------------------------------------------------------------+
@@ -23,7 +26,6 @@ class Loader implements \AmidaMVC\Framework\IModule
      * loads file based on $loadInfo, determined by Router.
      * specify absolute path of a file as $loadInfo[ 'file' ].
      * setMyAction for _src and _raw mode
-     * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo    info about file to load from Router.
@@ -34,7 +36,8 @@ class Loader implements \AmidaMVC\Framework\IModule
         if( !isset( $loadInfo[ 'file' ] ) ) {
             return FALSE;
         }
-        $load = static::$_load;
+        $command = $this->findCommand( $_ctrl->cmds );
+        $load = $this->_loadClass;
         $file_name = $loadInfo[ 'file' ];
 
         // load the file
@@ -51,12 +54,16 @@ class Loader implements \AmidaMVC\Framework\IModule
             $loadInfo[ 'base_name' ] = basename( $file_name );
             $loadInfo[ 'file_ext'  ]  = pathinfo( $file_name, PATHINFO_EXTENSION );
             $loadInfo[ 'file_type' ] = $load::getFileType( $file_name );
-            if( $load::isView( $file_loc ) ) {
+            if( $load::isView( $file_loc ) && $command == '_src' ) {
+                $_pageObj->setContent( $load::getContentsByGet( $file_loc ) );
+                $loadInfo[ 'loadMode' ] = '_src';
+            }
+            else if( $load::isView( $file_loc ) ) {
                 $_pageObj->setContent( $load::getContentsByBuffer( $file_loc ) );
                 $loadInfo[ 'loadMode' ] = '_view';
             }
             else if( $load::isAsIs( $file_loc ) ) {
-                $_pageObj->getContent( $load::getContentsByGet( $file_loc ) );
+                $_pageObj->setContent( $load::getContentsByGet( $file_loc ) );
                 $loadInfo[ 'loadMode' ] = '_asIs';
             }
             $type = $load::getFileType( $file_name );
@@ -71,7 +78,6 @@ class Loader implements \AmidaMVC\Framework\IModule
     // +-------------------------------------------------------------+
     /**
      * do nothing for pageNotFound. sorry page loaded by Emitter.
-     * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array

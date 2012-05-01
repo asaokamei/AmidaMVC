@@ -154,6 +154,8 @@ class PageObj
         foreach( $this->_headers as $name => $val ) {
             header( "{$name}: {$val}" );
         }
+        $content_type = $emit::findMimeType( $this->contentType() );
+        header( "Content-type: " . $content_type );
     }
     // +-------------------------------------------------------------+
     /**

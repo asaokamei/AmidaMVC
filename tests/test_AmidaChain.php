@@ -20,7 +20,7 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
     function test_prependInModel() {
         $chained = 'prep: ';
         $this->amida
-            ->addComponent( array(
+            ->addModule( array(
                 array( 'chainAuth',  'auth' ),
                 array( 'chainView',  'view' ),
             )
@@ -32,7 +32,7 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
     function test_chainSkip() {
         $chained = 'skip: ';
         $this->amida
-            ->addComponent( array(
+            ->addModule( array(
                 array( 'chainAuth',  'auth' ),
                 array( 'chainModel', 'model' ),
                 array( 'chainView',  'view' ),
@@ -45,7 +45,7 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
     function test_chainModel() {
         $chained = 'chain: ';
         $this->amida
-            ->addComponent( array(
+            ->addModule( array(
                 array( 'chainAuth',  'auth' ),
                 array( 'chainModel', 'model' ),
                 array( 'chainView',  'view' ),
@@ -57,10 +57,10 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
     // +----------------------------------------------------------------------+
     function test_SingleModel() {
         $model = 'oneModel';
-        $this->amida->addComponent( $model, 'oneModel' );
+        $this->amida->addModule( $model, 'oneModel' );
 
         // check if model is set.
-        $check = $this->amida->getComponent();
+        $check = $this->amida->getModule();
         $this->assertEquals( $model, $check );
 
         // dispatch simple function: test_func.
@@ -70,114 +70,107 @@ class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
     }
     // +----------------------------------------------------------------------+
     function test_prependComp() {
-        // get empty component. 
-        $no_comp = $this->amida->getComponent();
+        // get empty Module.
+        $no_comp = $this->amida->getModule();
         $this->assertFalse( $no_comp );
-        $no_name = $this->amida->getComponentName();
+        $no_name = $this->amida->getModuleName();
         $this->assertFalse( $no_name );
 
-        // add components in array/array.
+        // add Modules in array/array.
         $more = array(
             array( 'more1', 'more1' ),
             array( 'more2', 'more2' ),
         );
-        $this->amida->addComponent( $more );
-        $more_got = $this->amida->getComponent();
+        $this->amida->addModule( $more );
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'more1', $more_got );
         
-        // ### now prepend a component.
-        $this->amida->prependComponent( 'prep1', 'prep1' );
-        $prep_got = $this->amida->getComponent();
+        // ### now prepend a Module.
+        $this->amida->prependModule( 'prep1', 'prep1' );
+        $prep_got = $this->amida->getModule();
         $this->assertEquals( 'prep1', $prep_got );
         // next is more, right. 
-        $this->amida->nextComponent();
-        $more_got = $this->amida->getComponent();
+        $this->amida->nextModule();
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'more1', $more_got );
         
-        // ### prepend an array of component
-        $this->amida->prependComponent( array( 'prep2', 'prep2' ) );
-        $prep_got = $this->amida->getComponent();
+        // ### prepend an array of Module
+        $this->amida->prependModule( array( 'prep2', 'prep2' ) );
+        $prep_got = $this->amida->getModule();
         $this->assertEquals( 'prep2', $prep_got );
         // next is more, right. 
-        $this->amida->nextComponent();
-        $more_got = $this->amida->getComponent();
+        $this->amida->nextModule();
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'more1', $more_got );
 
-        // ### add components in array/array.
+        // ### add modules in array/array.
         $prep2 = array(
             array( 'prep1', 'prep1' ),
             array( 'prep2', 'prep2' ),
         );
-        $this->amida->prependComponent( $prep2 );
-        $more_got = $this->amida->getComponent();
+        $this->amida->prependModule( $prep2 );
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'prep1', $more_got );
 
-        $this->amida->nextComponent();
-        $more_got = $this->amida->getComponent();
+        $this->amida->nextModule();
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'prep2', $more_got );
 
-        $this->amida->nextComponent();
-        $more_got = $this->amida->getComponent();
+        $this->amida->nextModule();
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'more1', $more_got );
 
     }
     // +----------------------------------------------------------------------+
-    function test_addComponent() {
-        // get empty component. 
-        $no_comp = $this->amida->getComponent();
+    function test_addModule() {
+        // get empty module.
+        $no_comp = $this->amida->getModule();
         $this->assertFalse( $no_comp );
-        $no_name = $this->amida->getComponentName();
+        $no_name = $this->amida->getModuleName();
         $this->assertFalse( $no_name );
         
-        // add two components in a row.
+        // add two modules in a row.
         $test1 = 'test1';
         $test2 = 'test2';
-        $this->amida->addComponent( $test1, 'test1' );
-        $this->amida->addComponent( $test2, 'test2' );
+        $this->amida->addModule( $test1, 'test1' );
+        $this->amida->addModule( $test2, 'test2' );
         
-        // test if component is added AND get component correctly. 
-        $test1_got = $this->amida->getComponent();
+        // test if module is added AND get module correctly.
+        $test1_got = $this->amida->getModule();
         $this->assertEquals( $test1, $test1_got );
-        $test1_name = $this->amida->getComponentName();
+        $test1_name = $this->amida->getModuleName();
         $this->assertEquals( 'test1', $test1_name );
         
-        // test if next component.
-        $this->amida->nextComponent();
-        $test2_got = $this->amida->getComponent();
+        // test if next module.
+        $this->amida->nextModule();
+        $test2_got = $this->amida->getModule();
         $this->assertEquals( $test2, $test2_got );
         
-        // add a component in array.
+        // add a module in array.
         $more = array( 'more', 'more');
-        $this->amida->addComponent( $more );
-        $this->amida->nextComponent();
-        $more_got = $this->amida->getComponent();
+        $this->amida->addModule( $more );
+        $this->amida->nextModule();
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'more', $more_got );
         
-        // add components in array/array.
+        // add modules in array/array.
         $more2 = array(
             array( 'more1', 'more1' ),
             array( 'more2', 'more2' ),
         );
-        $this->amida->addComponent( $more2 );
-        $this->amida->nextComponent();
-        $more_got = $this->amida->getComponent();
+        $this->amida->addModule( $more2 );
+        $this->amida->nextModule();
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'more1', $more_got );
         
-        $this->amida->nextComponent();
-        $more_got = $this->amida->getComponent();
+        $this->amida->nextModule();
+        $more_got = $this->amida->getModule();
         $this->assertEquals( 'more2', $more_got );
 
-        $more2_name = $this->amida->getComponentName();
+        $more2_name = $this->amida->getModuleName();
         $this->assertEquals( 'more2', $more2_name );
     }
 
-    private function assertEquals($string1, $chained)
-    {
-    }
-
-    private function assertFalse($no_comp)
-    {
-    }
     // +----------------------------------------------------------------------+
 }
 
@@ -209,7 +202,7 @@ class chainAuth
     }
     function actionPrepend( AmidaMVC\Framework\AmidaChain $ctrl, &$data ) {
         $data .= 'prependAuth ';
-        $ctrl->prependComponent( 'chainModel', 'model' );
+        $ctrl->prependModule( 'chainModel', 'model' );
     }
 }
 

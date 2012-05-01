@@ -4,7 +4,7 @@
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
-<title><?php echo $_pageObj->_title; ?></title>
+<title><?php echo $_ctrl->getOption( 'site_title' ); ?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
     body {
@@ -29,7 +29,7 @@
         line-height: 1.4em;
     }
     footer {
-        margin: 50px 0px;
+        margin: 50px 0;
         font-size: 12px;
         background-color: #da4f49;
         padding: 10px 25px;

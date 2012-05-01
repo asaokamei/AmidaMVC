@@ -5,7 +5,7 @@ This file is written with markdown description.
 
 ## Lists
 
-*   this is unumbered list.
+*   this is unnumbered list.
 *   this is the second list.
 
 1.  the first numbered item.
@@ -16,3 +16,7 @@ This file is written with markdown description.
 how | about | tables|
 ----|-------|-------|
 looking| good  | ?     |
+
+##PHP Code
+
+<?php echo 'PHP Code works inside markdown file.'; ?>

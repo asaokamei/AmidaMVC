@@ -328,7 +328,7 @@ class AmidaChain
         $exec      = FALSE;
         $module = $this->getModule();
         $name      = $this->getModuleName();
-        $method    = $this->_prefixAct . ucwords( $action );
+        $method    = $this->makeActionMethod( $action );
         if( !$action ) return $exec;
         if( !isset( $module ) ) return $exec;
 
@@ -337,6 +337,15 @@ class AmidaChain
             $exec = array( $module, $method );
         }
         return $exec;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * returns method name from action string.
+     * @param string $action
+     * @return string
+     */
+    function makeActionMethod( $action ) {
+        return $this->_prefixAct . ucwords( $action );
     }
     // +-------------------------------------------------------------+
     /**
