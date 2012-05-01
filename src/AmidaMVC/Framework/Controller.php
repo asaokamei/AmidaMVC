@@ -32,6 +32,10 @@ class Controller extends AmidaChain
      */
     var $mode = '';
     /**
+     * @var array   command list, starts with prefixCmd.
+     */
+    var $cmds = array();
+    /**
      * @var array   options for this site. use it freely.
      */
     var $options = array();
@@ -303,6 +307,13 @@ class Controller extends AmidaChain
         return FALSE;
     }
     // +-------------------------------------------------------------+
+    /**
+     * set routes for Router.
+     * @param string $route
+     * @param string $file
+     * @param array $option
+     * @return Controller
+     */
     function get( $route, $file, $option=array() ) {
         // default is router
         $name = 'router';
@@ -313,6 +324,26 @@ class Controller extends AmidaChain
         }
         $routeList[ $route ] = array_merge( $option, array( 'file' => $file ) );
         $this->setModuleOption( $name, $key, $routeList );
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * separates commands in path_info to $this->cmd.
+     * @return Controller
+     */
+    function separateCommands() {
+        $paths = explode( '/', $this->path_info );
+        $path_info = '';
+        foreach( $paths as $path ) {
+            if( substr( $path, 0, 1 ) == $this->prefixCmd ) {
+                $this->cmds[] = $path;
+            }
+            else {
+                if( $path_info ) $path_info .= '/';
+                $path_info .= $path;
+            }
+        }
+        $this->path_info = $path_info;
         return $this;
     }
     // +-------------------------------------------------------------+
