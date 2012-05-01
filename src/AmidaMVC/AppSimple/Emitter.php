@@ -1,12 +1,13 @@
 <?php
 namespace AmidaMVC\AppSimple;
 
-class Emitter implements \AmidaMVC\Framework\IModule
+class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\IModule
 {
     /**
      * @var \AmidaMVC\Tools\Emit
      */
-    static $_emit = '\AmidaMVC\Tools\Emit';
+    var $_emitClass = '\AmidaMVC\Tools\Emit';
+    var $commands = array( '_src', '_raw' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -15,7 +16,7 @@ class Emitter implements \AmidaMVC\Framework\IModule
      */
     function _init( $option=array() ) {
         if( isset( $option[ 'emitClass' ] ) ) {
-            static::$_emit = $option[ 'emitClass' ];
+            $this->_emitClass = $option[ 'emitClass' ];
         }
     }
     // +-------------------------------------------------------------+
@@ -29,6 +30,36 @@ class Emitter implements \AmidaMVC\Framework\IModule
      */
     function actionDefault( $_ctrl, &$_pageObj, $option=array() )
     {
+        if( $command = $this->findCommand( $_ctrl->cmds ) ) {
+            $method = $_ctrl->makeActionMethod( $command );
+            return $this->$method( $_ctrl, $_pageObj, $option );
+        }
+        self::convert( $_pageObj );
+        self::template( $_ctrl, $_pageObj );
+        $_pageObj->emit();
+        return TRUE;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $option
+     * @return bool
+     */
+    function action_raw( $_ctrl, &$_pageObj, $option=array() ) {
+        $_pageObj->contentType( 'text' );
+        $_pageObj->emit();
+        return TRUE;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $option
+     * @return bool
+     */
+    function action_src( $_ctrl, &$_pageObj, $option=array() ) {
+        $_pageObj->contentType( 'text' );
         self::convert( $_pageObj );
         self::template( $_ctrl, $_pageObj );
         $_pageObj->emit();
@@ -72,7 +103,7 @@ class Emitter implements \AmidaMVC\Framework\IModule
     {
         $content = $_pageObj->getContent();
         $type    = $_pageObj->contentType();
-        $emit    = static::$_emit;
+        $emit    = $this->_emitClass;
         $emit::convertContentToHtml( $content, $type );
         $_pageObj->setContent( $content );
         $_pageObj->contentType( $type );
@@ -87,7 +118,7 @@ class Emitter implements \AmidaMVC\Framework\IModule
     function template( $_ctrl, $_pageObj )
     {
         if( $_pageObj->contentType() == 'html' ) {
-            $emit     = static::$_emit;
+            $emit     = $this->_emitClass;
             $template = $_ctrl->options[ 'template_file' ];
             $content_data = array( '_ctrl' => $_ctrl, '_pageObj' => $_pageObj );
             $content = $emit::inject( $template, $content_data );
