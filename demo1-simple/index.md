@@ -1,4 +1,4 @@
-#Simple Demo
+Simple Demo
 ===========
 
 This simple demo uses the AppSimple components with
