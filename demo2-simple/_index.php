@@ -3,7 +3,7 @@ require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php' );
 
 $app = \AmidaMVC\AppSimple\Application::getInstance(
     array(
-        'site_title' => "Demo#1 - Simple Site",
+        'site_title' => "Demo#2 - Simple Site with Template",
         'template_file' => 'template.php',
         'ctrl_root' => realpath( '../demo1-simple' ),
     )
