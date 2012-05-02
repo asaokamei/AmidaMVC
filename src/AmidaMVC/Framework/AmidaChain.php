@@ -308,9 +308,6 @@ class AmidaChain
      */
     function execAction( $action, &$data=NULL, $return=NULL ) {
         $exec = $this->getExecFromAction( $action );
-        if( !$exec ) {
-            $exec = $this->getExecFromAction( $this->_defaultAct );
-        }
         if( $exec ) {
             $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
             return $return;
@@ -326,7 +323,7 @@ class AmidaChain
      */
     function getExecFromAction( $action ) {
         $exec      = FALSE;
-        $module = $this->getModule();
+        $module    = $this->getModule();
         $name      = $this->getModuleName();
         $method    = $this->makeActionMethod( $action );
         if( !$action ) return $exec;
@@ -335,6 +332,12 @@ class AmidaChain
         $this->loadModule( $module, $name );
         if( is_callable( array( $module, $method ) ) ) {
             $exec = array( $module, $method );
+        }
+        else {
+            $method = $this->makeActionMethod( $this->defaultAct() );
+            if( is_callable( array( $module, $method ) ) ) {
+                $exec = array( $module, $method );
+            }
         }
         return $exec;
     }
