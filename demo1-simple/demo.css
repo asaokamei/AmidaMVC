@@ -8,8 +8,8 @@ body {
     font-size: 16px;
 }
 p,span,code {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 .mainbody {
     width: 700px;
@@ -25,7 +25,7 @@ header {
     font-weight: bold;
     text-align: center;
     padding: 15px 5px 15px 5px;
-    margin: 0px -5px 10px -5px;
+    margin: 0 -5px 10px -5px;
     border-left: 5px solid #d2691e;
     border-right: 5px solid #d2691e;
     box-shadow: 5px 5px 5px #cccccc;
@@ -42,7 +42,7 @@ h1 {
     font-size: 20px;
     line-height: 1.5em;
     padding: 5px 5px 5px 5px;
-    margin: 20px 0px 15px -2px;
+    margin: 20px 0 15px -2px;
     border-left: 2px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
 }
@@ -56,12 +56,12 @@ h2 {
 }
 p {
     font-size: 16px;
-    margin: 5px 0px 5px 0px;
+    margin: 5px 0 5px 0;
     line-height: 1.4em;
 }
 code {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     font-size: small;
 }
 code br {
@@ -98,7 +98,7 @@ footer {
     background: #F0F0F0;
     text-align: center;
     padding: 5px 5px 5px 5px;
-    margin: 20px 0px 0px -5px;
+    margin: 20px 0 0 -5px;
     border-left: 2px solid #d2691e;
     border-right: 2px solid #d2691e;
     box-shadow: 2px 2px 2px #cccccc;
