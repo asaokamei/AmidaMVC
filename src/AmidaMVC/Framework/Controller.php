@@ -111,7 +111,9 @@ class Controller extends AmidaChain
                 $path = DIRECTORY_SEPARATOR . $path;
             }
         }
-        return $this->ctrl_root . $path;
+        $class = $this->_requestClass;
+        $path = $class::truePath( $this->ctrl_root . $path );
+        return $path;
     }
     // +-------------------------------------------------------------+
     /**
@@ -202,7 +204,8 @@ class Controller extends AmidaChain
         if( isset( $path ) && substr( $path, 0, 1 ) === '/' ) {
             $path = substr( $path, 1 );
         }
-        $url = $this->getBaseUrl() . $path;
+        $class = $this->_requestClass;
+        $url = $class::truePath( $this->getBaseUrl() . $path );
         return $url;
     }
     // +-------------------------------------------------------------+
