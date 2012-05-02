@@ -1,5 +1,5 @@
 <?php
-require_once( '../src/AmidaMVC/bootstrap.php' );
+require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php' );
 
 $app = \AmidaMVC\AppSimple\Application::getInstance(
     array(

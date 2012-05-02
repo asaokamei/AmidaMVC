@@ -10,7 +10,7 @@ class Router implements \AmidaMVC\Framework\IModule
     /**
      * @var array   list of index files when accessing a directory.
      */
-    private static $_indecies = array( 'index.md', 'index.html', 'index.php' );
+    private static $_indexes = array( 'index.md', 'index.html', 'index.php' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -53,7 +53,7 @@ class Router implements \AmidaMVC\Framework\IModule
                 exit;
             }
             else if( $loadInfo[ 'is_dir' ] ) {
-                if( $loadInfo = $route::index( $root, $loadInfo[ 'file' ], static::$_indecies ) ) {
+                if( $loadInfo = $route::index( $root, $loadInfo[ 'file' ], static::$_indexes ) ) {
                     // found an index file in the directory.
                     $loadInfo[ 'foundBy' ] = 'index';
                 }

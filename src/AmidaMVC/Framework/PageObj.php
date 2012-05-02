@@ -189,6 +189,7 @@ class PageObj
         if( empty( $this->_css ) ) { return $html; }
         foreach( $this->_css as $css ) {
             $link = $_ctrl->getPath( $css );
+            /** @var $link string */
             $html .= "<link rel=\"stylesheet\" href=\"{$link}\" />\n";
         }
         return $html;
@@ -209,7 +210,8 @@ class PageObj
         if( empty( $this->_js ) ) { return $html; }
         foreach( $this->_js as $js ) {
             $link = $_ctrl->getPath( $js );
-            $html .= "<script src=\"{$link}\"></script>\n";
+            /** @var $link string */
+            $html .= "<script src=\"{$link}\" type=\"javascript\"></script>\n";
         }
         return $html;
     }

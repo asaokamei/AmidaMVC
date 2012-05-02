@@ -79,6 +79,7 @@ class Request
     {
         // whether $path is unix or not
         $unipath=strlen($path)==0 || $path{0}!='/';
+        /** @var $lastSlash string */
         $lastSlash = ( substr($path, -1, 1 ) === '/' ) ? '/' : '';
         // attempts to detect if path is relative in which case, add cwd
         if(strpos($path,':')===false && $unipath)
