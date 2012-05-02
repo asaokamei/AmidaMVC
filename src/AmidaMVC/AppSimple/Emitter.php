@@ -10,7 +10,7 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
     /**
      * @var array    list of supported commands.
      */
-    var $commands = array( '_src', '_raw' );
+    var $commands = array( '_view', '_src', '_raw' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -33,10 +33,21 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
      */
     function actionDefault( $_ctrl, &$_pageObj, $option=array() )
     {
-        if( $command = $this->findCommand( $_ctrl->cmds ) ) {
+        if( $command = $this->findCommand( $_ctrl->getCommands() ) ) {
             $method = $_ctrl->makeActionMethod( $command );
             return $this->$method( $_ctrl, $_pageObj, $option );
         }
+        // default is view method.
+        return $this->action_view( $_ctrl, $_pageObj, $option );
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $option
+     * @return bool
+     */
+    function action_view( $_ctrl, &$_pageObj, $option=array() ) {
         self::convert( $_pageObj );
         self::template( $_ctrl, $_pageObj );
         $_pageObj->emit();
@@ -123,7 +134,14 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
     {
         if( $_pageObj->contentType() == 'html' ) {
             $emit     = $this->_emitClass;
-            $template = $_ctrl->options[ 'template_file' ];
+            // if template_file is set, use it as relative to ctrl_root.
+            if( isset($_ctrl->options[ 'template_file' ] ) ) {
+                $template = $_ctrl->getLocation( $_ctrl->options[ 'template_file' ] );
+            }
+            else {
+                // or use the template in the AppSimple folder as default.
+                $template = __DIR__ . '/template.php';
+            }
             $content_data = array( '_ctrl' => $_ctrl, '_pageObj' => $_pageObj );
             $content = $emit::inject( $template, $content_data );
             $_pageObj->setContent( $content );

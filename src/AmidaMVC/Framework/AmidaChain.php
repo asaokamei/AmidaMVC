@@ -10,27 +10,27 @@ class AmidaChain
     /**
      * @var array   list of modules. nextModel sets model to the next.
      */
-    var $_modules  = array();
+    protected $_modules  = array();
     /**
      * @var null    name of current action.
      */
-    var $_action = NULL;
+    protected $_action = NULL;
     /**
      * @var null    name of original dispatched action. set *only* after dispatched. 
      */
-    var $_dispatchAct= NULL;
+    protected $_dispatchAct= NULL;
     /**
      * @var bool   flag to advance the module in dispatch chain.
      */
-    var $_useNextModule = TRUE;
+    protected $_useNextModule = TRUE;
     /**
      * @var string   default exec name if not matched.
      */
-    var $_defaultAct = 'default';
+    protected $_defaultAct = 'default';
     /**
      * @var string   prefixAct for action to func/method name.
      */
-    var $_prefixAct = 'action';
+    protected $_prefixAct = 'action';
     // +-------------------------------------------------------------+
     function __construct() {
         // nothing.
@@ -308,9 +308,6 @@ class AmidaChain
      */
     function execAction( $action, &$data=NULL, $return=NULL ) {
         $exec = $this->getExecFromAction( $action );
-        if( !$exec ) {
-            $exec = $this->getExecFromAction( $this->_defaultAct );
-        }
         if( $exec ) {
             $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
             return $return;
@@ -326,7 +323,7 @@ class AmidaChain
      */
     function getExecFromAction( $action ) {
         $exec      = FALSE;
-        $module = $this->getModule();
+        $module    = $this->getModule();
         $name      = $this->getModuleName();
         $method    = $this->makeActionMethod( $action );
         if( !$action ) return $exec;
@@ -335,6 +332,12 @@ class AmidaChain
         $this->loadModule( $module, $name );
         if( is_callable( array( $module, $method ) ) ) {
             $exec = array( $module, $method );
+        }
+        else {
+            $method = $this->makeActionMethod( $this->defaultAct() );
+            if( is_callable( array( $module, $method ) ) ) {
+                $exec = array( $module, $method );
+            }
         }
         return $exec;
     }

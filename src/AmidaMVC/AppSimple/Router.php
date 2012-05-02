@@ -7,6 +7,10 @@ class Router implements \AmidaMVC\Framework\IModule
      * @var \AmidaMVC\Tools\Route   a static class name for match and scan.
      */
     static $_route = '\AmidaMVC\Tools\Route';
+    /**
+     * @var array   list of index files when accessing a directory.
+     */
+    private static $_indexes = array( 'index.md', 'index.html', 'index.php' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -20,6 +24,14 @@ class Router implements \AmidaMVC\Framework\IModule
         if( isset( $option[ 'routes' ] ) ) {
             $route = static::$_route;
             $route::set( $option[ 'routes' ] );
+        }
+        if( isset( $option[ 'indexes' ] ) ) {
+            if( is_array( $option[ 'indexes' ] ) ) {
+                static::$_indexes = array_merge( $option[ 'indexes' ], static::$_indexes );
+            }
+            else {
+                static::$_indexes[] = $option[ 'indexes' ];
+            }
         }
     }
     // +-------------------------------------------------------------+
@@ -40,15 +52,28 @@ class Router implements \AmidaMVC\Framework\IModule
         if( $loadInfo = $route::match( $path ) ) {
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
-            return $loadInfo;
         }
-        if( $loadInfo = $route::scan( $root, $path ) ) {
-            $loadInfo[ 'foundBy' ] = 'scan';
-            $loadInfo[ 'action'  ] = $_ctrl->defaultAct();
-            return $loadInfo;
+        else if( $loadInfo = $route::scan( $root, $path ) ) {
+            // found (something) by scan.
+            if( $loadInfo[ 'reload' ] ) {
+                // reload if it is a directory without trailing slash.
+                $_ctrl->redirect( $loadInfo[ 'reload' ] );
+                exit;
+            }
+            else if( $loadInfo[ 'is_dir' ] ) {
+                if( $loadInfo = $route::index( $root, $loadInfo[ 'file' ], static::$_indexes ) ) {
+                    // found an index file in the directory.
+                    $loadInfo[ 'foundBy' ] = 'index';
+                }
+            }
+            else {
+                // normal file.
+                $loadInfo[ 'foundBy' ] = 'scan';
+            }
         }
-        $_ctrl->setAction( '_pageNotFound' );
-        $loadInfo = array();
+        if( empty( $loadInfo ) ) {
+            $_ctrl->setAction( '_pageNotFound' );
+        }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+

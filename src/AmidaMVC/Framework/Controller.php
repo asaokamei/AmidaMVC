@@ -10,31 +10,31 @@ class Controller extends AmidaChain
     /**
      * @var null    control root where MVC controls.
      */
-    var $ctrl_root = NULL;
+    protected $ctrl_root = NULL;
     /**
      * @var null  base url where AmidaMVC application starts.
      */
-    var $base_url = NULL;
+    protected $base_url = NULL;
     /**
      * @var null     path info without command (modified path for Route match).
      */
-    var $path_info = NULL;
+    protected $path_info = NULL;
     /**
      * @var string   prefixAct to specify command.
      */
-    var $prefixCmd = '_';
+    protected $prefixCmd = '_';
     /**
      * @var array   list of folders to look for modules.
      */
-    var $loadFolder = array();
+    protected $loadFolder = array();
     /**
      * @var string  admin/dev mode of AmidaMVC. 
      */
-    var $mode = '';
+    protected $mode = '';
     /**
      * @var array   command list, starts with prefixCmd.
      */
-    var $cmds = array();
+    protected $commands = array();
     /**
      * @var array   options for this site. use it freely.
      */
@@ -50,11 +50,11 @@ class Controller extends AmidaChain
     /**
      * @var \AmidaMVC\Tools\Request
      */
-    var $_requestClass = '\AmidaMVC\Tools\Request';
+    protected $_requestClass = '\AmidaMVC\Tools\Request';
     /**
      * @var \AmidaMVC\Framework\PageObj
      */
-    var $_pageObjClass = '\AmidaMVC\Framework\PageObj';
+    protected $_pageObjClass = '\AmidaMVC\Framework\PageObj';
     // +-------------------------------------------------------------+
     /**
      * @param array $option
@@ -111,7 +111,9 @@ class Controller extends AmidaChain
                 $path = DIRECTORY_SEPARATOR . $path;
             }
         }
-        return $this->ctrl_root . $path;
+        $class = $this->_requestClass;
+        $path = $class::truePath( $this->ctrl_root . $path );
+        return $path;
     }
     // +-------------------------------------------------------------+
     /**
@@ -125,21 +127,19 @@ class Controller extends AmidaChain
             $pageObj = new $class();
         }
         $this->pageObj = $pageObj;
-        $action = $this->_defaultAct;
+        $action = $this->defaultAct();
         return $this->dispatch( $action, $this->pageObj );
     }
     // +-------------------------------------------------------------+
     function fireStart() {
         Event::fire(
-            'Controller::start',
-            $this->path_info, 'path info'
+            'Controller::start', $this
         );
     }
     // +-------------------------------------------------------------+
     function fireDispatch() {
         Event::fire(
-            'Controller::dispatch',
-            "model={$this->_modules[0][0]} action={$this->_action}"
+            'Controller::dispatch', $this
         );
     }
     // +-------------------------------------------------------------+
@@ -204,7 +204,8 @@ class Controller extends AmidaChain
         if( isset( $path ) && substr( $path, 0, 1 ) === '/' ) {
             $path = substr( $path, 1 );
         }
-        $url = $this->getBaseUrl() . $path;
+        $class = $this->_requestClass;
+        $url = $class::truePath( $this->getBaseUrl() . $path );
         return $url;
     }
     // +-------------------------------------------------------------+
@@ -336,7 +337,7 @@ class Controller extends AmidaChain
         $path_info = '';
         foreach( $paths as $path ) {
             if( substr( $path, 0, 1 ) == $this->prefixCmd ) {
-                $this->cmds[] = $path;
+                $this->commands[] = $path;
             }
             else {
                 if( $path_info ) $path_info .= '/';
@@ -345,6 +346,10 @@ class Controller extends AmidaChain
         }
         $this->path_info = $path_info;
         return $this;
+    }
+    // +-------------------------------------------------------------+
+    function getCommands() {
+        return $this->commands;
     }
     // +-------------------------------------------------------------+
 }

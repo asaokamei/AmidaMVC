@@ -79,8 +79,14 @@ class Route
         // find a file to load. 
         // ex: file_name = /path/to/file_name.
         $file_name = $root . '/' . $path;
-        if( file_exists( $file_name ) && !is_dir( $file_name ) ) {
+        if( file_exists( $file_name ) ) {
             $loadInfo[ 'file' ] = $path;
+            if( is_dir( $file_name ) ) {
+                if( substr( $file_name, -1, 1 ) !== '/' ) {
+                    $loadInfo[ 'reload' ] = $path . '/';
+                }
+                $loadInfo[ 'is_dir' ] = TRUE;
+            }
             return $loadInfo;
         }
         // find an app to load.
@@ -106,6 +112,34 @@ class Route
         }
         if( $found ) {
             return $loadInfo;
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * search for an index file in the given folder.
+     * @static
+     * @param string $root     root of the folder.
+     * @param string $path     path to the directory.
+     * @param array $files     possible index file names.
+     * @return array|bool      found loadInfo.
+     */
+    static function index( $root, $path, $files ) {
+        $lists = '{' . implode( ',', $files ) . '}';
+        $pattern = $root . '/' . $path . $lists;
+        $found = glob( $pattern, GLOB_BRACE );
+        if( empty( $found ) ) return FALSE;
+        $found_names = array();
+        foreach( $found as $list ) {
+            $found_names[] = basename( $list );
+        }
+        foreach( $files as $index ) {
+            if( in_array( $index, $found_names ) ) {
+                return array(
+                    'file' => $path . $index,
+                    'action' => NULL,
+                );
+            }
         }
         return FALSE;
     }

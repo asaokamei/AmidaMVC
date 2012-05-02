@@ -1,4 +1,4 @@
-#imple Demo
+Simple Demo
 ===========
 
 This simple demo uses the AppSimple components with
@@ -18,3 +18,7 @@ except the settings written in _index.php file.
 [none for error 404](none.html)
 : this link points to non-existing file and causes
 error 404 error.
+
+[sub directory](subdir/index.md)
+: go to sub directory.
+: Does this work? [sub directory without file name](subdir)
