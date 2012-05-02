@@ -2,6 +2,7 @@
 /** @var $_pageObj \AmidaMVC\Framework\PageObj */
 /** @var $_ctrl \AmidaMVC\AppSimple\Application */
 $_pageObj->setCss( 'demo.css' );
+$_pageObj->setJs( 'jquery-1.7.1.js' );
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -19,5 +20,6 @@ $_pageObj->setCss( 'demo.css' );
         <p>AppSimple Suites by AmidaMVC.<br />
         gitHub:https://github.com/asaokamei/AmidaMVC</p>
     </footer>
+<?php echo $_pageObj->getJsLinks( $_ctrl ); ?>
 </div>
 </html>
