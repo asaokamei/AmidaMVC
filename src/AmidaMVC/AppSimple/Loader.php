@@ -36,7 +36,7 @@ class Loader extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\
         if( !isset( $loadInfo[ 'file' ] ) ) {
             return FALSE;
         }
-        $command = $this->findCommand( $_ctrl->cmds );
+        $command = $this->findCommand( $_ctrl->getCommands() );
         $load = $this->_loadClass;
         $file_name = $loadInfo[ 'file' ];
 

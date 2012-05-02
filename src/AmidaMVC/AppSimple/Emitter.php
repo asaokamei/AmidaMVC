@@ -33,7 +33,7 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
      */
     function actionDefault( $_ctrl, &$_pageObj, $option=array() )
     {
-        if( $command = $this->findCommand( $_ctrl->cmds ) ) {
+        if( $command = $this->findCommand( $_ctrl->getCommands() ) ) {
             $method = $_ctrl->makeActionMethod( $command );
             return $this->$method( $_ctrl, $_pageObj, $option );
         }

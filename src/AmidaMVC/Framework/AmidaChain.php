@@ -10,27 +10,27 @@ class AmidaChain
     /**
      * @var array   list of modules. nextModel sets model to the next.
      */
-    var $_modules  = array();
+    protected $_modules  = array();
     /**
      * @var null    name of current action.
      */
-    var $_action = NULL;
+    protected $_action = NULL;
     /**
      * @var null    name of original dispatched action. set *only* after dispatched. 
      */
-    var $_dispatchAct= NULL;
+    protected $_dispatchAct= NULL;
     /**
      * @var bool   flag to advance the module in dispatch chain.
      */
-    var $_useNextModule = TRUE;
+    protected $_useNextModule = TRUE;
     /**
      * @var string   default exec name if not matched.
      */
-    var $_defaultAct = 'default';
+    protected $_defaultAct = 'default';
     /**
      * @var string   prefixAct for action to func/method name.
      */
-    var $_prefixAct = 'action';
+    protected $_prefixAct = 'action';
     // +-------------------------------------------------------------+
     function __construct() {
         // nothing.
