@@ -44,27 +44,28 @@ class Router implements \AmidaMVC\Framework\IModule
         if( $loadInfo = $route::match( $path ) ) {
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
-            return $loadInfo;
         }
-        if( $loadInfo = $route::scan( $root, $path ) ) {
+        else if( $loadInfo = $route::scan( $root, $path ) ) {
+            // found (something) by scan.
             if( $loadInfo[ 'reload' ] ) {
+                // reload if it is a directory without trailing slash.
                 $_ctrl->redirect( $loadInfo[ 'reload' ] );
                 exit;
             }
             else if( $loadInfo[ 'is_dir' ] ) {
                 if( $loadInfo = $route::index( $root, $loadInfo[ 'file' ], static::$_indecies ) ) {
+                    // found an index file in the directory.
                     $loadInfo[ 'foundBy' ] = 'index';
-                    return $loadInfo;
                 }
             }
             else {
+                // normal file.
                 $loadInfo[ 'foundBy' ] = 'scan';
-                $loadInfo[ 'action'  ] = $_ctrl->defaultAct();
-                return $loadInfo;
             }
         }
-        $_ctrl->setAction( '_pageNotFound' );
-        $loadInfo = array();
+        if( empty( $loadInfo ) ) {
+            $_ctrl->setAction( '_pageNotFound' );
+        }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
