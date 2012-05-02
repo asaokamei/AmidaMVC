@@ -25,6 +25,14 @@ class Router implements \AmidaMVC\Framework\IModule
             $route = static::$_route;
             $route::set( $option[ 'routes' ] );
         }
+        if( isset( $option[ 'indexes' ] ) ) {
+            if( is_array( $option[ 'indexes' ] ) ) {
+                static::$_indexes = array_merge( $option[ 'indexes' ], static::$_indexes );
+            }
+            else {
+                static::$_indexes[] = $option[ 'indexes' ];
+            }
+        }
     }
     // +-------------------------------------------------------------+
     /**
