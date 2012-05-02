@@ -7,6 +7,10 @@ class Router implements \AmidaMVC\Framework\IModule
      * @var \AmidaMVC\Tools\Route   a static class name for match and scan.
      */
     static $_route = '\AmidaMVC\Tools\Route';
+    /**
+     * @var array   list of index files when accessing a directory.
+     */
+    private static $_indecies = array( 'index.md', 'index.html', 'index.php' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -43,9 +47,21 @@ class Router implements \AmidaMVC\Framework\IModule
             return $loadInfo;
         }
         if( $loadInfo = $route::scan( $root, $path ) ) {
-            $loadInfo[ 'foundBy' ] = 'scan';
-            $loadInfo[ 'action'  ] = $_ctrl->defaultAct();
-            return $loadInfo;
+            if( $loadInfo[ 'reload' ] ) {
+                $_ctrl->redirect( $loadInfo[ 'reload' ] );
+                exit;
+            }
+            else if( $loadInfo[ 'is_dir' ] ) {
+                if( $loadInfo = $route::index( $root, $loadInfo[ 'file' ], static::$_indecies ) ) {
+                    $loadInfo[ 'foundBy' ] = 'index';
+                    return $loadInfo;
+                }
+            }
+            else {
+                $loadInfo[ 'foundBy' ] = 'scan';
+                $loadInfo[ 'action'  ] = $_ctrl->defaultAct();
+                return $loadInfo;
+            }
         }
         $_ctrl->setAction( '_pageNotFound' );
         $loadInfo = array();
