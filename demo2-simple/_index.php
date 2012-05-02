@@ -21,6 +21,5 @@ in demo1-simple folder.
         return $content;
     }, array( 'type' => 'markdown' )
 );
-$app->get( '/', '/index.md' );
 $app->separateCommands();
 $app->start();
