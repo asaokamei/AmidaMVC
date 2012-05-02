@@ -10,7 +10,7 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
     /**
      * @var array    list of supported commands.
      */
-    var $commands = array( '_src', '_raw' );
+    var $commands = array( '_view', '_src', '_raw' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -37,6 +37,17 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
             $method = $_ctrl->makeActionMethod( $command );
             return $this->$method( $_ctrl, $_pageObj, $option );
         }
+        // default is view method. 
+        return $this->action_view( $_ctrl, $_pageObj, $option );
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $option
+     * @return bool
+     */
+    function action_view( $_ctrl, &$_pageObj, $option=array() ) {
         self::convert( $_pageObj );
         self::template( $_ctrl, $_pageObj );
         $_pageObj->emit();
