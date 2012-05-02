@@ -2,7 +2,7 @@
 /** @var $_pageObj \AmidaMVC\Framework\PageObj */
 /** @var $_ctrl \AmidaMVC\AppSimple\Application */
 $_pageObj->setCss( 'demo.css' );
-$_pageObj->setJs( 'jquery-1.7.1.js' );
+$_pageObj->setJs( '../bootstrap/js/jquery-1.7.1.js' );
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
