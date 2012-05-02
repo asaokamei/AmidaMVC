@@ -7,15 +7,9 @@ $app = \AmidaMVC\AppSimple\Application::getInstance(
     )
 );
 $app->get( '/func', function() {
-    $content = "
-#Closure Output
-
-AmidaMVC can handle closure function to generate a response;
-this text is an output from closure in MarkDown description.
-";
-        return $content;
+    return "#Closure Output\n" .
+           "This is a response from a closure function in markdown text.";
     }, array( 'type' => 'markdown' )
 );
-$app->get( '/', '/index.md' );
 $app->separateCommands();
 $app->start();
