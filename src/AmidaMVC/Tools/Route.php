@@ -117,11 +117,12 @@ class Route
     }
     // +-------------------------------------------------------------+
     /**
+     * search for an index file in the given folder.
      * @static
-     * @param string $root
-     * @param string $path
-     * @param array $files
-     * @return array|bool
+     * @param string $root     root of the folder.
+     * @param string $path     path to the directory.
+     * @param array $files     possible index file names.
+     * @return array|bool      found loadInfo.
      */
     static function index( $root, $path, $files ) {
         $lists = '{' . implode( ',', $files ) . '}';
