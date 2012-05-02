@@ -131,15 +131,13 @@ class Controller extends AmidaChain
     // +-------------------------------------------------------------+
     function fireStart() {
         Event::fire(
-            'Controller::start',
-            $this->path_info, 'path info'
+            'Controller::start', $this
         );
     }
     // +-------------------------------------------------------------+
     function fireDispatch() {
         Event::fire(
-            'Controller::dispatch',
-            "model={$this->_modules[0][0]} action={$this->_action}"
+            'Controller::dispatch', $this
         );
     }
     // +-------------------------------------------------------------+
