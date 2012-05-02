@@ -37,7 +37,7 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
             $method = $_ctrl->makeActionMethod( $command );
             return $this->$method( $_ctrl, $_pageObj, $option );
         }
-        // default is view method. 
+        // default is view method.
         return $this->action_view( $_ctrl, $_pageObj, $option );
     }
     // +-------------------------------------------------------------+
@@ -133,7 +133,14 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
     {
         if( $_pageObj->contentType() == 'html' ) {
             $emit     = $this->_emitClass;
-            $template = $_ctrl->options[ 'template_file' ];
+            // if template_file is set, use it as relative to ctrl_root.
+            if( isset($_ctrl->options[ 'template_file' ] ) ) {
+                $template = $_ctrl->getLocation( $_ctrl->options[ 'template_file' ] );
+            }
+            else {
+                // or use the template in the AppSimple folder as default.
+                $template = __DIR__ . '/template.php';
+            }
             $content_data = array( '_ctrl' => $_ctrl, '_pageObj' => $_pageObj );
             $content = $emit::inject( $template, $content_data );
             $_pageObj->setContent( $content );
