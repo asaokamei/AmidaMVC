@@ -58,7 +58,6 @@ class Router implements \AmidaMVC\Framework\IModule
             if( isset( $loadInfo[ 'reload' ] ) ) {
                 // reload if it is a directory without trailing slash.
                 $_ctrl->redirect( $loadInfo[ 'reload' ] );
-                exit;
             }
             else if( isset( $loadInfo[ 'is_dir' ] ) ) {
                 if( $loadInfo = $route::index( $root, $loadInfo[ 'file' ], static::$_indexes ) ) {
