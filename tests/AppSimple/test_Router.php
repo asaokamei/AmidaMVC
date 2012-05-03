@@ -5,10 +5,10 @@ require( __DIR__ . '/../../src/AmidaMVC/bootstrap.php' );
 class TestRouter extends \AmidaMVC\AppSimple\Router
 {
     function getRouterClass() {
-        return static::$_route;
+        return $this->_routeClass;
     }
     function getIndexes() {
-        return static::$_indexes;
+        return $this->_indexes;
     }
 }
 
