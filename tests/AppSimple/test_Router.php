@@ -14,11 +14,15 @@ class TestRouter extends \AmidaMVC\AppSimple\Router
 
 class testCtrl
 {
+    var $redirectPath = NULL;
     function getPathInfo() {
         return 'test';
     }
     function getLocation() {
         return 'loc';
+    }
+    function redirect( $path ) {
+        $this->redirectPath = $path;
     }
 }
 
@@ -34,6 +38,29 @@ class routeMatchOK {
 
 class routeScanFoundFile {
     static $scanResult = array( 'file' => 'OK', 'action' => 'test' );
+    static function match( $path ) {
+        return FALSE;
+    }
+    static function scan( $root, $path ) {
+        return static::$scanResult;
+    }
+}
+
+class routeScanFoundDir {
+    static $scanResult = array( 'file' => 'OK', 'action' => 'test', 'is_dir' => TRUE );
+    static function match( $path ) {
+        return FALSE;
+    }
+    static function scan( $root, $path ) {
+        return static::$scanResult;
+    }
+    static function index( $root, $path, $index ) {
+        return static::$scanResult;
+    }
+}
+
+class routeScanFoundDirWoSlash {
+    static $scanResult = array( 'file' => 'OK', 'action' => 'test', 'reload' => 'reload' );
     static function match( $path ) {
         return FALSE;
     }
@@ -109,6 +136,29 @@ class test_AppSimple_Router extends PHPUnit_Framework_TestCase
         $scanResult[ 'foundBy' ] = 'scan';
         $return = $this->router->actionDefault( $this->_ctrl, $this->_pageObj );
         $this->assertEquals( $scanResult, $return );
+    }
+    // +----------------------------------------------------------------------+
+    function test_default_scanIsDir() {
+        $option = array(
+            'routeClass' => 'routeScanFoundDir',
+        );
+        $this->router->_init( $option );
+        $scanResult = routeScanFoundDir::$scanResult;
+        $scanResult[ 'foundBy' ] = 'index';
+        $return = $this->router->actionDefault( $this->_ctrl, $this->_pageObj );
+        $this->assertEquals( $scanResult, $return );
+    }
+    // +----------------------------------------------------------------------+
+    function test_default_scanReload() {
+        $option = array(
+            'routeClass' => 'routeScanFoundDirWoSlash',
+        );
+        $this->router->_init( $option );
+        $scanResult = routeScanFoundDirWoSlash::$scanResult;
+        $redirect   = $scanResult[ 'reload' ];
+        $this->router->actionDefault( $this->_ctrl, $this->_pageObj );
+
+        $this->assertEquals( $redirect, $this->_ctrl->redirectPath );
     }
     // +----------------------------------------------------------------------+
 }
