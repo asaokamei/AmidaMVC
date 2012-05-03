@@ -10,7 +10,7 @@ class Router implements \AmidaMVC\Framework\IModule
     /**
      * @var array   list of index files when accessing a directory.
      */
-    private static $_indexes = array( 'index.md', 'index.html', 'index.php' );
+    static $_indexes = array( 'index.md', 'index.html', 'index.php' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
