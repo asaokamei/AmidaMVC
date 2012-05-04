@@ -1,4 +1,5 @@
 <?php
+namespace AmidaMVC\Tests\AppSimple\testRouter;
 error_reporting( E_ALL );
 require( __DIR__ . '/../../src/AmidaMVC/bootstrap.php' );
 
@@ -69,7 +70,7 @@ class routeScanFoundDirWoSlash {
     }
 }
 
-class test_AppSimple_Router extends PHPUnit_Framework_TestCase
+class test_AppSimple_Router extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \AmidaMVC\AppSimple\Router
@@ -118,7 +119,7 @@ class test_AppSimple_Router extends PHPUnit_Framework_TestCase
     // +----------------------------------------------------------------------+
     function test_default_route() {
         $option = array(
-            'routeClass' => 'routeMatchOK',
+            'routeClass' => '\AmidaMVC\Tests\AppSimple\testRouter\routeMatchOK',
         );
         $this->router->_init( $option );
         $matchResult = routeMatchOK::$matchResult;
@@ -129,7 +130,7 @@ class test_AppSimple_Router extends PHPUnit_Framework_TestCase
     // +----------------------------------------------------------------------+
     function test_default_scanNormal() {
         $option = array(
-            'routeClass' => 'routeScanFoundFile',
+            'routeClass' => '\AmidaMVC\Tests\AppSimple\testRouter\routeScanFoundFile',
         );
         $this->router->_init( $option );
         $scanResult = routeScanFoundFile::$scanResult;
@@ -140,7 +141,7 @@ class test_AppSimple_Router extends PHPUnit_Framework_TestCase
     // +----------------------------------------------------------------------+
     function test_default_scanIsDir() {
         $option = array(
-            'routeClass' => 'routeScanFoundDir',
+            'routeClass' => '\AmidaMVC\Tests\AppSimple\testRouter\routeScanFoundDir',
         );
         $this->router->_init( $option );
         $scanResult = routeScanFoundDir::$scanResult;
@@ -151,7 +152,7 @@ class test_AppSimple_Router extends PHPUnit_Framework_TestCase
     // +----------------------------------------------------------------------+
     function test_default_scanReload() {
         $option = array(
-            'routeClass' => 'routeScanFoundDirWoSlash',
+            'routeClass' => '\AmidaMVC\Tests\AppSimple\testRouter\routeScanFoundDirWoSlash',
         );
         $this->router->_init( $option );
         $scanResult = routeScanFoundDirWoSlash::$scanResult;
