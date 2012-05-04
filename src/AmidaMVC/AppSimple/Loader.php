@@ -40,13 +40,17 @@ class Loader extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\
         $load = $this->_loadClass;
         $file_name = $loadInfo[ 'file' ];
 
+        /** @var string $file_name  */
         // load the file
         if( is_callable( $file_name ) ) {
-            /** @var string $file_name  */
+            // loading output from a closure function.
+            // set type to as specified in loadInfo['type'].
+            // and set loadMode as 'closure'.
             $_pageObj->setContent( $file_name( $loadInfo ) );
             if( isset( $loadInfo[ 'type' ] ) ) {
                 $_pageObj->contentType( $loadInfo[ 'type' ] );
             }
+            $loadInfo[ 'loadMode' ] = '_closure';
         }
         else {
             // it's a file. load contents.

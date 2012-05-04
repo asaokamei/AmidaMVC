@@ -13,6 +13,7 @@ class TestLoader extends \AmidaMVC\AppSimple\Loader
 class testCtrl
 {
     var $redirectPath = NULL;
+    var $commands = array();
     function getPathInfo() {
         return 'test';
     }
@@ -22,9 +23,26 @@ class testCtrl
     function redirect( $path ) {
         $this->redirectPath = $path;
     }
+    function getCommands() {
+        return $this->commands;
+    }
 }
 
 class testPageObj {
+    var $content = '';
+    var $contentType = 'test';
+    function setContent( $content ) {
+        $this->content = $content;
+    }
+    function getContent() {
+        return $this->content;
+    }
+    function contentType( $type=NULL ) {
+        if( isset( $type ) ) {
+            $this->contentType = $type;
+        }
+        return $this->contentType;
+    }
 }
 
 
@@ -39,11 +57,11 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
      */
     var $tLoader;
     /**
-     * @var testCtrl
+     * @var \AmidaMVC\Framework\Controller
      */
     var $_ctrl;
     /**
-     * @var testPageObj
+     * @var \AmidaMVC\Framework\PageObj
      */
     var $_pageObj;
     // +----------------------------------------------------------------------+
@@ -56,8 +74,6 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
     }
     // +----------------------------------------------------------------------+
     function test_init() {
-        $this->assertTrue( TRUE );
-
         $orig_loaderClass = $this->tLoader->getLoadClass();
 
         $test_loaderClass = 'dummyClass';
@@ -67,6 +83,26 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
         $this->tLoader->_init( $option );
         $this->assertEquals(    $test_loaderClass, $this->tLoader->getLoadClass() );
         $this->assertNotEquals( $orig_loaderClass, $this->tLoader->getLoadClass() );
+    }
+    // +----------------------------------------------------------------------+
+    function test_defaultClosure() {
+        $loadInfo = array(
+            'file' => function() {return '#test closure'; },
+            'type' => 'markdown',
+        );
+        $return = $this->loader->actionDefault(
+            $this->_ctrl,
+            $this->_pageObj,
+            $loadInfo );
+        $this->assertTrue( $return );
+
+        $closure = $loadInfo['file'];
+        $orig_content = $closure();
+        $test_content = $this->_pageObj->getContent();
+        $this->assertEquals( $orig_content, $test_content );
+
+        $loadMode = $this->_ctrl->loadInfo[ 'loadMode' ];
+        $this->assertEquals( '_closure', $loadMode );
     }
     // +----------------------------------------------------------------------+
 }
