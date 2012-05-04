@@ -14,7 +14,6 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
     // +-------------------------------------------------------------+
     /**
      * initialize class.
-     * @static
      * @param array $option     option to initialize.
      */
     function _init( $option=array() ) {
@@ -25,7 +24,6 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
     // +-------------------------------------------------------------+
     /**
      * renders data (to html) and output data.
-     * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
@@ -48,8 +46,8 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
      * @return bool
      */
     function action_view( $_ctrl, &$_pageObj, $option=array() ) {
-        self::convert( $_pageObj );
-        self::template( $_ctrl, $_pageObj );
+        $this->convert( $_pageObj );
+        $this->template( $_ctrl, $_pageObj );
         $_pageObj->emit();
         return TRUE;
     }
@@ -74,8 +72,8 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
      */
     function action_src( $_ctrl, &$_pageObj, $option=array() ) {
         $_pageObj->contentType( 'php' );
-        self::convert( $_pageObj );
-        self::template( $_ctrl, $_pageObj );
+        $this->convert( $_pageObj );
+        $this->template( $_ctrl, $_pageObj );
         $_pageObj->emit();
         return TRUE;
     }
@@ -84,7 +82,6 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
      * action for page not found; this action is invoked only from
      * _App.php or some other models... reload pageNofFound file if
      * set in siteObj. if not, generate simple err404 contents.
-     * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array
@@ -111,7 +108,6 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
     // +-------------------------------------------------------------+
     /**
      * convert contents to HTML for md/text.
-     * @static
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
     function convert( $_pageObj )
@@ -126,7 +122,6 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
     // +-------------------------------------------------------------+
     /**
      * inject into template if contentType is html.
-     * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
