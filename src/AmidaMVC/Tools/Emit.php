@@ -53,6 +53,7 @@ class Emit
             case 'php':
                 $content = highlight_string( $content, TRUE );
                 $type    = 'html';
+                break;
             default:
                 break;
         }
