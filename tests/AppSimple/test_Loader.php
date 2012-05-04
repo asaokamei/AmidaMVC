@@ -16,6 +16,8 @@ class testCtrl
     var $redirectPath = NULL;
     var $commands = array();
     var $action = 'defaultAction';
+    var $myAction = NULL;
+    var $pageNotFoundFile = '';
     function getPathInfo() {
         return 'test';
     }
@@ -31,6 +33,18 @@ class testCtrl
     }
     function setAction( $action ) {
         $this->action = $action;
+    }
+    function getOption( $name ) {
+        if( $name == 'pageNotFound_file' ) {
+            return $this->pageNotFoundFile;
+        }
+        return FALSE;
+    }
+    function defaultAct() {
+        return 'default';
+    }
+    function setMyAction( $action ) {
+        $this->myAction = $action;
     }
 }
 
@@ -245,6 +259,37 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
         $this->assertEquals( '_view', $loadMode );
         $this->assertEquals( $loadInfo[ 'action' ], $this->_ctrl->action );
         $this->assertNotEquals( $orig_action, $this->_ctrl->action );
+    }
+    // +----------------------------------------------------------------------+
+    function test_pageNotFound() {
+        $this->_ctrl->pageNotFoundFile = 'pageNotFound.md';
+        $return = $this->loader->action_PageNotFound(
+            $this->_ctrl,
+            $this->_pageObj );
+        // when pageNotFound is called, should return loadInfo with
+        // pageNotFound file set (if ctrl has option).
+        $notFound = array(
+            'file' => 'pageNotFound.md',
+            'action' => 'default',
+        );
+        $this->assertEquals( $notFound, $return );
+        // and should call itself by calling setMyAction with default as action.
+        $this->assertEquals( 'default', $this->_ctrl->myAction );
+    }
+    // +----------------------------------------------------------------------+
+    function test_pageNotFoundWoFile() {
+        $return = $this->loader->action_PageNotFound(
+            $this->_ctrl,
+            $this->_pageObj );
+        // when pageNotFound is called, should return FALSE
+        // if pageNotFound file IS NOT set.
+        $notFound = array(
+            'file' => 'pageNotFound.md',
+            'action' => 'default',
+        );
+        $this->assertFalse( $return );
+        // make sure it just proceed to next module.
+        $this->assertNull( $this->_ctrl->myAction );
     }
     // +----------------------------------------------------------------------+
 }
