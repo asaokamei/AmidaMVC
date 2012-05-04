@@ -11,5 +11,4 @@ $app->get( '/func', function() {
            "This is a response from a closure function in markdown text.";
     }, array( 'type' => 'markdown' )
 );
-$app->separateCommands();
 $app->start();

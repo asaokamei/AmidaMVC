@@ -26,6 +26,7 @@ class Application extends \AmidaMVC\Framework\Controller
         );
         $option = array_merge( $default, $option );
         parent::__construct( $option );
+        $this->separateCommands();
     }
     // +-------------------------------------------------------------+
 }
