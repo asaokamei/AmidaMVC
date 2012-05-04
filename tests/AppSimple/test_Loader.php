@@ -1,8 +1,9 @@
 <?php
+namespace AmidaMVC\Tests\AppSimple\testLoader;
 error_reporting( E_ALL );
 require( __DIR__ . '/../../src/AmidaMVC/bootstrap.php' );
 
-class TestRouter extends \AmidaMVC\AppSimple\Loader
+class TestLoader extends \AmidaMVC\AppSimple\Loader
 {
     function getLoadClass() {
         return $this->_loadClass;
@@ -27,14 +28,14 @@ class testPageObj {
 }
 
 
-class test_AppSimple_Loader extends PHPUnit_Framework_TestCase
+class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \AmidaMVC\AppSimple\Router
+     * @var \AmidaMVC\AppSimple\Loader
      */
     var $loader;
     /**
-     * @var TestRouter
+     * @var TestLoader
      */
     var $tLoader;
     /**
@@ -49,7 +50,7 @@ class test_AppSimple_Loader extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->loader = new \AmidaMVC\AppSimple\Loader();
-        $this->tLoader = new TestRouter();
+        $this->tLoader = new TestLoader();
         $this->_ctrl = new testCtrl();
         $this->_pageObj = new testPageObj();
     }
