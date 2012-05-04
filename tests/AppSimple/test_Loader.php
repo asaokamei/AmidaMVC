@@ -89,6 +89,7 @@ class loadTestClass {
         return 'got contntes by get...';
     }
 }
+
 class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
 {
     /**
