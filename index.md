@@ -35,12 +35,19 @@ and deploy it anywhere under root document of Apache with PHP >= 5.3.0. Then, ac
 
 some other interesting demo: 
 
+*   [demo#1: simple site](demo1-simple/)
+*   [demo#2: simple with template](demo2-simple/)
+*   [demo#3: source code view](demo3-src/)
+
+Demos below are for AmidaMVC ver0.1 only.
+probably not going to work.
+
 *   [TO-Do file](TODO.txt)
 *   [sample HTML file](example.html)
 *   [AmidaMVC application (_index.php)](indexView/_src)
 *   [To-Do demo application](todo/list)
 *   Developer's Mode shows debug info: 
-    <?php echo ( $_siteObj->siteObj->mode == '_dev' ) ? '[Logout](_logout/)' : '[Login](_dev/)'; ?>  
+    <?php //echo ( $_siteObj->siteObj->mode == '_dev' ) ? '[Logout](_logout/)' : '[Login](_dev/)'; ?>
 
 Amida-Chain
 -----------
