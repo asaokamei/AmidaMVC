@@ -57,7 +57,8 @@ class loadTestClass {
      */
     static $_loadClass = '\AmidaMVC\Tools\Load';
     static function getFileType( $file ) {
-        return pathinfo( $file, PATHINFO_EXTENSION );
+        $class = self::$_loadClass;
+        return $class::getFileType( $file );
     }
     static function isView( $file ) {
         $class = self::$_loadClass;
@@ -89,7 +90,7 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
      */
     var $_ctrl;
     /**
-     * @var \AmidaMVC\Framework\PageObj
+     * @var testPageObj
      */
     var $_pageObj;
     // +----------------------------------------------------------------------+
@@ -167,6 +168,10 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
 
         $loadMode = $this->_ctrl->loadInfo[ 'loadMode' ];
         $this->assertEquals( '_view', $loadMode );
+
+        $fileType = $this->_pageObj->contentType;
+        $this->assertEquals( 'markdown', $fileType );
+        $this->assertEquals( loadTestClass::getFileType( $loadInfo['file']), $fileType );
     }
     // +----------------------------------------------------------------------+
     function test_defaultFileSrc() {
