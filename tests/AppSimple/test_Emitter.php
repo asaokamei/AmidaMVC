@@ -65,7 +65,7 @@ class testPageObj {
     }
 }
 
-class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
+class test_AppSimple_Emitter extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \AmidaMVC\AppSimple\Emitter
@@ -86,7 +86,7 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
     // +----------------------------------------------------------------------+
     public function setUp()
     {
-        $this->emitter = new \AmidaMVC\AppSimple\Loader();
+        $this->emitter = new \AmidaMVC\AppSimple\Emitter();
         $this->tEmitter = new TestEmitter();
         $this->_ctrl = new testCtrl();
         $this->_pageObj = new testPageObj();
@@ -102,6 +102,37 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
         $this->tEmitter->_init( $option );
         $this->assertEquals(    $test_loaderClass, $this->tEmitter->getEmitClass() );
         $this->assertNotEquals( $orig_loaderClass, $this->tEmitter->getEmitClass() );
+    }
+    // +----------------------------------------------------------------------+
+    function test_convertHtml() {
+        $orig_content = '<h1>test convert html</h1>';
+        $this->_pageObj->contentType( 'html' );
+        $this->_pageObj->setContent( $orig_content );
+        $this->emitter->convert( $this->_pageObj );
+        $test_content = $this->_pageObj->getContent();
+        $test_type    = $this->_pageObj->contentType();
+
+        $this->assertEquals( $orig_content, $test_content );
+        $this->assertEquals( 'html', $test_type );
+    }
+    // +----------------------------------------------------------------------+
+    function test_convertMarkdown() {
+        $orig_content = '#test convert html';
+        $orig_html_content = '<h1>test convert html</h1>';
+        $this->_pageObj->contentType( 'markdown' );
+        $this->_pageObj->setContent( $orig_content );
+        $this->emitter->convert( $this->_pageObj );
+        $test_content = $this->_pageObj->getContent();
+        $test_type    = $this->_pageObj->contentType();
+
+        // contents are in html, so is contentType.
+        $this->assertEquals( $orig_html_content, trim( $test_content ) );
+        $this->assertEquals( 'html', $test_type );
+
+        // the content has changed, and contentType is NOT md.
+        $this->assertNotEquals( $orig_content, $test_content );
+        $this->assertNotEquals( 'markdown', $test_type );
+        $this->assertNotEquals( 'md', $test_type );
     }
     // +----------------------------------------------------------------------+
 }
