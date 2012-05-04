@@ -39,6 +39,10 @@ class PageObj
      * @var \AmidaMVC\Tools\Response    class to use for emitting various responses.
      */
     var $_emitter = '\AmidaMVC\Tools\Response';
+    /**
+     * @var array   information about loaded file.
+     */
+    var $loadInfo = array();
     // +-------------------------------------------------------------+
     function __construct() {
 

@@ -159,7 +159,7 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
         $test_content = $this->_pageObj->getContent();
         $this->assertEquals( $orig_content, $test_content );
 
-        $loadMode = $this->_ctrl->loadInfo[ 'loadMode' ];
+        $loadMode = $this->_pageObj->loadInfo[ 'loadMode' ];
         $this->assertEquals( '_closure', $loadMode );
     }
     // +----------------------------------------------------------------------+
@@ -181,7 +181,7 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
         $test_content = $this->_pageObj->getContent();
         $this->assertEquals( $orig_content, $test_content );
 
-        $loadMode = $this->_ctrl->loadInfo[ 'loadMode' ];
+        $loadMode = $this->_pageObj->loadInfo[ 'loadMode' ];
         $this->assertEquals( '_view', $loadMode );
 
         $fileType = $this->_pageObj->contentType;
@@ -210,7 +210,7 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
         $test_content = $this->_pageObj->getContent();
         $this->assertEquals( $orig_content, $test_content );
 
-        $loadMode = $this->_ctrl->loadInfo[ 'loadMode' ];
+        $loadMode = $this->_pageObj->loadInfo[ 'loadMode' ];
         $this->assertEquals( '_src', $loadMode );
     }
     // +----------------------------------------------------------------------+
@@ -232,7 +232,7 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
         $test_content = $this->_pageObj->getContent();
         $this->assertEquals( $orig_content, $test_content );
 
-        $loadMode = $this->_ctrl->loadInfo[ 'loadMode' ];
+        $loadMode = $this->_pageObj->loadInfo[ 'loadMode' ];
         $this->assertEquals( '_asIs', $loadMode );
     }
     // +----------------------------------------------------------------------+
@@ -256,7 +256,7 @@ class test_AppSimple_Loader extends \PHPUnit_Framework_TestCase
         $test_content = $this->_pageObj->getContent();
         $this->assertEquals( $orig_content, $test_content );
 
-        $loadMode = $this->_ctrl->loadInfo[ 'loadMode' ];
+        $loadMode = $this->_pageObj->loadInfo[ 'loadMode' ];
         $this->assertEquals( '_view', $loadMode );
         $this->assertEquals( $loadInfo[ 'action' ], $this->_ctrl->action );
         $this->assertNotEquals( $orig_action, $this->_ctrl->action );

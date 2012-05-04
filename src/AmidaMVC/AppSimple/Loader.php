@@ -76,7 +76,7 @@ class Loader extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\
         if( isset( $loadInfo['action'] ) ) {
             $_ctrl->setAction( $loadInfo['action'] );
         }
-        $_ctrl->loadInfo = $loadInfo;
+        $_pageObj->loadInfo = $loadInfo;
         return TRUE;
     }
     // +-------------------------------------------------------------+
