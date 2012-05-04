@@ -27,7 +27,7 @@ class testPageObj {
 }
 
 
-class test_AppSimple_Router extends PHPUnit_Framework_TestCase
+class test_AppSimple_Loader extends PHPUnit_Framework_TestCase
 {
     /**
      * @var \AmidaMVC\AppSimple\Router
