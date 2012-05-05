@@ -13,6 +13,11 @@ class AuthNot
     static $act_name   = 'auth_act';
     static $act_value  = 'authNot';
     static $auth_info  = array();
+    static $option     = array();
+    // +-------------------------------------------------------------+
+    static function _init( $option=array() ) {
+        static::$option = $option;
+    }
     // +-------------------------------------------------------------+
     static function getAuth() {
         if( $auth_info = static::_verifySession() ) {
