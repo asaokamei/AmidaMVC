@@ -14,7 +14,6 @@ class Router implements \AmidaMVC\Framework\IModule
     // +-------------------------------------------------------------+
     /**
      * initialize class.
-     * @static
      * @param array $option   options to initialize.
      */
     function _init( $option=array() ) {
@@ -38,7 +37,6 @@ class Router implements \AmidaMVC\Framework\IModule
     /**
      * default is to use route map first, then scan the file system
      * to determine which file to load.
-     * @static
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
