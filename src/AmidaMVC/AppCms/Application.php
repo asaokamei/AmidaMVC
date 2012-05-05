@@ -18,7 +18,8 @@ class Application extends \AmidaMVC\Framework\Controller
             'modules' => array(
                 array( '\AmidaMVC\AppSimple\Config',  'config' ),
                 array( '\AmidaMVC\AppSimple\Auth',    'authAdmin' ),
-                array( '\AmidaMVC\AppSimple\Auth',    'authDev' ),
+                array( '\AmidaMVC\AppSimple\Auth',    'authDevLogin' ),
+                array( '\AmidaMVC\AppSimple\Auth',    'authDevMode' ),
                 array( '\AmidaMVC\AppSimple\Router',  'router' ),
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
                 array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
@@ -28,39 +29,38 @@ class Application extends \AmidaMVC\Framework\Controller
                 'password_file' => '_Config/admin.password',
                 'login_file' => '_Config/login_file.php',
                 'evaluateOn' => array(
-                    array(
-                        'onPathInfo' => array( '/admin', '/admin2' ),
-                        'onFail' => array(
-                            'setLoginForm' => 'login for admin pages',
-                        ),
-                        'onSuccess' => array(),
+                    'onPathInfo' => array( '/admin', '/admin2' ),
+                    'onFail' => array(
+                        'setLoginForm' => 'login for admin pages',
                     ),
+                    'onSuccess' => array(),
                 ),
             ),
-            '_authDev' => array(
+            '_authDevLogin' => array(
                 'authArea' => 'authDev',
                 'authClass' => '\AmidaMVC\Tools\AuthBasic',
                 'password_file' => '_Config/.dev.password',
                 'login_file' => '_Config/login_file.php',
                 'evaluateOn' => array(
-                    array(
-                        'onPathInfo' => array( '/dev_login' ),
-                        'onFail' => array(
-                            '_setLoginForm' => 'login for develop mode',
-                        ),
-                        'onSuccess' => array(
-                            'addModuleAfter' => array(
-                                'router', '\AmidaMVC\AppSimple\Filer', 'filer',
-                            ),
-                        ),
+                    'onPathInfo' => array( '/dev_login' ),
+                    'onFail' => array(
+                        '_setLoginForm' => 'login for develop mode',
                     ),
-                    array(
-                        'onPathInfo' => array( '/' ),
-                        'onFail' => array(),
-                        'onSuccess' => array(
-                            'addModuleAfter' => array(
-                                'router', '\AmidaMVC\AppSimple\Filer', 'filer',
-                            ),
+                    'onSuccess' => array(
+                        'reload' => '/',
+                    ),
+                ),
+            ),
+            '_authDevMode' => array(
+                'authArea' => 'authDev',
+                'authClass' => '\AmidaMVC\Tools\AuthBasic',
+                'password_file' => '_Config/.dev.password',
+                'evaluateOn' => array(
+                    'onPathInfo' => array( '/' ),
+                    'onFail' => array(),
+                    'onSuccess' => array(
+                        'addModuleAfter' => array(
+                            'router', '\AmidaMVC\AppSimple\Filer', 'filer',
                         ),
                     ),
                 ),

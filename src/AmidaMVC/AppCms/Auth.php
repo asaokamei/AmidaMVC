@@ -56,16 +56,14 @@ class Auth implements \AmidaMVC\Framework\IModule
             // authentication OK.
             $_ctrl->auth[ $this->option[ 'authArea' ] ] = $auth_info;
         }
-        foreach( $this->_evaluateOn as $evaluate ) {
-            if( $this->matchPathInfo( $_ctrl, $evaluate[ 'onPathInfo' ] ) ) {
-                if( $auth_info ) {
-                    $doList = $evaluate[ 'onSuccess' ];
-                }
-                else {
-                    $doList = $evaluate[ 'onFail' ];
-                }
-                $this->doList( $_ctrl, $_pageObj, $doList );
+        if( $this->matchPathInfo( $_ctrl, $this->_evaluateOn[ 'onPathInfo' ] ) ) {
+            if( $auth_info ) {
+                $doList = $this->_evaluateOn[ 'onSuccess' ];
             }
+            else {
+                $doList = $this->_evaluateOn[ 'onFail' ];
+            }
+            $this->doList( $_ctrl, $_pageObj, $doList );
         }
     }
     // +-------------------------------------------------------------+
