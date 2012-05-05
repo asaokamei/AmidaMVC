@@ -31,25 +31,26 @@ class Application extends \AmidaMVC\Framework\Controller
                     array(
                         'onPathInfo' => array( '/admin', '/admin2' ),
                         'onFail' => array(
-                            '_loginForm' => 'login for admin pages',
+                            'setLoginForm' => 'login for admin pages',
                         ),
                         'onSuccess' => array(),
                     ),
                 ),
             ),
             '_authDev' => array(
+                'authArea' => 'authDev',
                 'authClass' => '\AmidaMVC\Tools\AuthBasic',
-                'password_file' => '_Config/dev.password',
+                'password_file' => '_Config/.dev.password',
                 'login_file' => '_Config/login_file.php',
                 'evaluateOn' => array(
                     array(
                         'onPathInfo' => array( '/dev_login' ),
                         'onFail' => array(
-                            '_loginForm' => 'login for develop mode',
+                            '_setLoginForm' => 'login for develop mode',
                         ),
                         'onSuccess' => array(
-                            '_loadModules' => array(
-                                '\AmidaMVC\AppSimple\Filer' => 'fFiles',
+                            'addModuleAfter' => array(
+                                'router', '\AmidaMVC\AppSimple\Filer', 'filer',
                             ),
                         ),
                     ),
@@ -57,7 +58,7 @@ class Application extends \AmidaMVC\Framework\Controller
                         'onPathInfo' => array( '/' ),
                         'onFail' => array(),
                         'onSuccess' => array(
-                            '_addModuleAfter' => array(
+                            'addModuleAfter' => array(
                                 'router', '\AmidaMVC\AppSimple\Filer', 'filer',
                             ),
                         ),
