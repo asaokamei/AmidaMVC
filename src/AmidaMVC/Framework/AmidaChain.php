@@ -274,7 +274,8 @@ class AmidaChain
         {
             $this->fireDispatch();
             $action = $this->getAction();
-            $return = $this->execAction( $action, $data, $return );
+            $module = $this->getModule();
+            $return = $this->execAction( $module, $action, $data, $return );
             if( $this->useNextModule() ) {
                 // go to next module.
                 $this->nextModule();
@@ -301,13 +302,15 @@ class AmidaChain
     // +-------------------------------------------------------------+
     /**
      * execute action based on action name and default.
+     *
+     * @param object|mixed  $module
      * @param string $action      name of action to execute.
-     * @param null $data   data to pass if any.
-     * @param null $return data from the previous action.
+     * @param null   $data        data to pass if any.
+     * @param null   $return      data from the previous action.
      * @return bool|mixed  returned value from exec object.
      */
-    function execAction( $action, &$data=NULL, $return=NULL ) {
-        $exec = $this->getExecFromAction( $action );
+    function execAction( $module, $action, &$data=NULL, $return=NULL ) {
+        $exec = $this->getExecFromAction( $module, $action );
         if( $exec ) {
             $return = call_user_func_array( $exec, array( $this, &$data, $return ) );
             return $return;
@@ -318,12 +321,13 @@ class AmidaChain
     /**
      * get exec object from action name.
      * either it is a model/method or function.
+     *
+     * @param object|mixed       $module
      * @param string $action   name of action.
      * @return array|bool      found exec object.
      */
-    function getExecFromAction( $action ) {
+    function getExecFromAction( $module, $action ) {
         $exec      = FALSE;
-        $module    = $this->getModule();
         $name      = $this->getModuleName();
         $method    = $this->makeActionMethod( $action );
         if( !$action ) return $exec;
