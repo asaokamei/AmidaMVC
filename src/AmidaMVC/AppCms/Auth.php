@@ -1,5 +1,5 @@
 <?php
-namespace AmidaMVC\AppSimple;
+namespace AmidaMVC\AppCms;
 
 class Auth implements \AmidaMVC\Framework\IModule
 {
@@ -7,6 +7,10 @@ class Auth implements \AmidaMVC\Framework\IModule
      * @var \AmidaMVC\Tools\AuthNot   a static class name for authentication.
      */
     var $_authClass = '\AmidaMVC\Tools\AuthNot';
+    /**
+     * @var \AmidaMVC\Tools\AuthNot   an object.
+     */
+    var $_auth = NULL;
     var $_defaultOptions = array(
         'authArea' => 'Auth',
         'password_file' => 'password',
@@ -29,7 +33,8 @@ class Auth implements \AmidaMVC\Framework\IModule
         $this->option = array_merge( $this->_defaultOptions, $option );
         // set up auth class as well.
         $auth = $this->_authClass;
-        $auth->_init( $this->option );
+        $this->_auth = $auth::getInstance( $this->option[ 'authArea' ] );
+        $this->_auth->_init( $this->option );
     }
     // +-------------------------------------------------------------+
     /**
@@ -46,8 +51,7 @@ class Auth implements \AmidaMVC\Framework\IModule
             return TRUE;
         }
         // do the authentication
-        $auth = $this->_authClass;
-        $auth_success = $auth->getAuth();
+        $auth_success = $this->_auth->getAuth();
         if( $this->matchPathInfo( $_ctrl, $this->_evaluateOn[ 'onPathInfo' ] ) ) {
             if( $auth_success ) {
                 $doList = $this->_evaluateOn[ 'onSuccess' ];
@@ -74,15 +78,21 @@ class Auth implements \AmidaMVC\Framework\IModule
     // +-------------------------------------------------------------+
     /**
      * @param \AmidaMVC\AppSimple\Application $_ctrl
-     * @param $path
+     * @param array|string $path
      * @return bool
      */
     function matchPathInfo( $_ctrl, $path ) {
-        $pathInfo = $_ctrl->getPathInfo();
-        if( $path == substr( $pathInfo, 0, strlen( $path ) ) ) {
-            return TRUE;
+        $pathInfo = '/' . $_ctrl->getPathInfo();
+        if( !is_array( $path ) ) {
+            $path = array( $path );
+        }
+        foreach( $path as $p ) {
+            if( $p == substr( $pathInfo, 0, strlen( $p ) ) ) {
+                return TRUE;
+            }
         }
         return FALSE;
+
     }
     // +-------------------------------------------------------------+
     /**
