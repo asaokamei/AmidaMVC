@@ -12,6 +12,27 @@ $_pageObj->setJs( '../bootstrap/js/jquery-1.7.1.js' );
 <div class="mainbody">
     <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a></header>
     <div id="content" >
+        <!-- developer's nav starts here -->
+        <style>
+            .mainbody {
+                margin-top: 50px;
+            }
+            .devNavMemo {
+                float: right; color: gray; font-size: 12px;
+            }
+            .devNavMemoStrong {
+                color:pink;
+            }
+        </style>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="#">_dev</a>
+                    <div class="devNavMemo">loadAs: <span class="devNavMemoStrong"><?php echo $_pageObj->loadInfo['loadMode'];?></span></div>
+                </div>
+            </div>
+        </div>
+        <!-- developer's nav ends here -->
         <!-- content starts -->
         <?php echo $_pageObj->getContent(); ?>
         <!-- content ends -->
