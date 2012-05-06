@@ -14,13 +14,42 @@ class AuthNot
     var $act_value  = 'authNot';
     var $auth_info  = array();
     var $option     = array();
+    var $isLoggedIn = FALSE;
+    static $_self    = array();
+    static $_this    = NULL;
     // +-------------------------------------------------------------+
-    static function getInstance( $authArea ) {
-        static $self = array();
-        if( !isset( $self[ $authArea ] ) ) {
-            $self[ $authArea ] = new self();
+    function __construct() {
+        static::$_this = $this;
+    }
+    // +-------------------------------------------------------------+
+    static function getThisInstance() {
+        if( !isset( static::$_this ) ) {
+            new static();
         }
-        return $self[ $authArea ];
+        return static::$_this;
+    }
+    // +-------------------------------------------------------------+
+    static function getInstance( $authArea=NULL ) {
+        if( !isset( static::$_self[ $authArea ] ) ) {
+            static::$_self[ $authArea ] = new self();
+        }
+        return static::$_self[ $authArea ];
+    }
+    // +-------------------------------------------------------------+
+    static function isThisLoggedIn() {
+        if( isset( static::$_this ) ) {
+            $auth = static::$_this;
+            return $auth->isLoggedIn;
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    static function isLoggedIn( $authArea ) {
+        if( isset( static::$_self[ $authArea ] ) ) {
+            $auth = static::$_self[ $authArea ];
+            return $auth->isLoggedIn;
+        }
+        return FALSE;
     }
     // +-------------------------------------------------------------+
     function _init( $option=array() ) {
@@ -59,6 +88,7 @@ class AuthNot
             $this->login_pass => $_POST[ $this->login_pass ],
             $this->act_name   => $_POST[ $this->act_name ],
         );
+        $this->isLoggedIn = TRUE;
         return $auth_info;
     }
     // +-------------------------------------------------------------+
