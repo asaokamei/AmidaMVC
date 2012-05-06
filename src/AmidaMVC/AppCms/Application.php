@@ -12,7 +12,7 @@ class Application extends \AmidaMVC\Framework\Controller
     {
         $default = array(
             'site_title' => 'AppCMS Web Site',
-            'template_file' => NULL,
+            'template_file' => '_Config/template.php',
             'pageNotFound_file' => FALSE,
             'appDefault' => FALSE,
             'modules' => array(
