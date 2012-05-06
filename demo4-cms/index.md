@@ -13,3 +13,9 @@ Developer's Mode
 *   [log in for developer's mode](dev_login)
 <?php } ?>
 
+Using Framework Variables
+-------------------------
+get base URL
+: baseURL: '<?php echo $_ctrl->getBaseUrl(); ?>'.
+: ../bootstrap: '<?php echo $_ctrl->getBaseUrl( '../bootstrap' ); ?>'.
+
