@@ -211,18 +211,21 @@ class Controller extends AmidaChain
     // +-------------------------------------------------------------+
     /**
      * returns base url containing mode (_dev etc.).
+     *
+     * @param null|string $url
      * @return string   base url where your web site is at.
      */
-    function getBaseUrl() {
+    function getBaseUrl( $url=NULL ) {
         $base_url = $this->base_url;
         if( substr( $base_url, -1 ) !== '/' ) {
             $base_url .= '/';
         }
-        $mode = $this->mode;
-        if( $mode && substr( $mode, -1 ) !== '/' ) {
-            $mode .= '/';
+        if( $url && substr( $url, 0, 1 ) !== '/' ) {
+            $url = '/' . $url;
         }
-        $base = "{$base_url}{$mode}";
+        $class = $this->_requestClass;
+        $base = "{$base_url}{$url}";
+        $base = $class::truePath( $base );
         return $base;
     }
     // +-------------------------------------------------------------+
