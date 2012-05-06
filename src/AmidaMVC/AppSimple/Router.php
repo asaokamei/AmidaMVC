@@ -74,4 +74,23 @@ class Router implements \AmidaMVC\Framework\IModule
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $option
+     * @return array
+     */
+    function action_LoginForm( $_ctrl, &$_pageObj, $option=array() )
+    {
+        $loadInfo = array();
+        if( isset( $_ctrl->options[ 'loginForm_file' ] ) ) {
+            $loadInfo = array(
+                'file' => $_ctrl->options[ 'loginForm_file' ],
+                'action' => 'default',
+            );
+            $_ctrl->setAction( $_ctrl->defaultAct() );
+        }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
 }
