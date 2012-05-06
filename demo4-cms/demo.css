@@ -1,0 +1,111 @@
+* { 
+    -moz-box-sizing: border-box; 
+    -webkit-box-sizing: border-box; 
+    box-sizing: border-box; 
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+    font-size: 16px;
+}
+p,span,code {
+    margin: 0;
+    padding: 0;
+}
+.mainbody {
+    width: 700px;
+    margin: 20px auto 20px auto;
+    border:2px solid #E0E0E0;
+    padding: 10px 15px 10px 20px;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px #aaaaaa;
+}
+header {
+    background: #F0F0F0;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px 5px 15px 5px;
+    margin: 0 -5px 10px -5px;
+    border-left: 5px solid #d2691e;
+    border-right: 5px solid #d2691e;
+    box-shadow: 5px 5px 5px #cccccc;
+}
+header a {
+    text-decoration: none;
+    color: #d2691e;
+}
+header a:hover {
+    color: red;
+}
+h1 {
+    background: #F0F0F0;
+    font-size: 20px;
+    line-height: 1.5em;
+    padding: 5px 5px 5px 5px;
+    margin: 20px 0 15px -2px;
+    border-left: 2px solid #d2691e;
+    box-shadow: 3px 3px 3px #cccccc;
+}
+h2 {
+    background: #F0F0F0;
+    font-size: 16px;
+    line-height: 1.5em;
+    padding: 3px 5px 3px 5px;
+    margin: 15px 5px 15px -2px;
+    box-shadow: 3px 3px 3px #cccccc;
+}
+p {
+    font-size: 16px;
+    margin: 5px 0 5px 0;
+    line-height: 1.4em;
+}
+code {
+    margin: 0;
+    padding: 0;
+    font-size: small;
+}
+code br {
+    line-height: 12px;
+}
+table {
+    border: #CCCCCC solid 2px;
+    border-collapse:collapse;
+    box-shadow: 2px 2px 2px #cccccc;
+    font-size: 1.0em;
+}
+th {
+    background-color: #F0F0F0;
+    border: #E0E0E0 solid 1px;
+    padding:3px;
+}
+td {
+    border: #F0F0F0 solid 1px;
+    padding:2px;
+}
+
+dt {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 0.8em;
+    margin-left: 1em;
+}
+dd {
+    font-size: 16px;
+    margin-top: 0.3em;
+    margin-left: 3em;
+}
+footer {
+    background: #F0F0F0;
+    text-align: center;
+    padding: 5px 5px 5px 5px;
+    margin: 20px 0 0 -5px;
+    border-left: 2px solid #d2691e;
+    border-right: 2px solid #d2691e;
+    box-shadow: 2px 2px 2px #cccccc;
+}
+footer p {
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    line-height: 1em;
+}
