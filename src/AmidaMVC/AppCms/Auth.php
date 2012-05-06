@@ -29,7 +29,7 @@ class Auth implements \AmidaMVC\Framework\IModule
         $this->option = array_merge( $this->_defaultOptions, $option );
         // set up auth class as well.
         $auth = $this->_authClass;
-        $auth::_init( $this->option );
+        $auth->_init( $this->option );
     }
     // +-------------------------------------------------------------+
     /**
@@ -45,19 +45,11 @@ class Auth implements \AmidaMVC\Framework\IModule
         if( empty( $this->_evaluateOn ) ) {
             return TRUE;
         }
-        if( !isset( $_ctrl->auth ) || !is_array( $_ctrl->auth ) ) {
-            $_ctrl->auth = array();
-        }
-        $_ctrl->auth[ $this->option[ 'authArea' ] ] = FALSE;
         // do the authentication
         $auth = $this->_authClass;
-        $auth_info = $auth::getAuth();
-        if( $auth_info ) {
-            // authentication OK.
-            $_ctrl->auth[ $this->option[ 'authArea' ] ] = $auth_info;
-        }
+        $auth_success = $auth->getAuth();
         if( $this->matchPathInfo( $_ctrl, $this->_evaluateOn[ 'onPathInfo' ] ) ) {
-            if( $auth_info ) {
+            if( $auth_success ) {
                 $doList = $this->_evaluateOn[ 'onSuccess' ];
             }
             else {
@@ -65,6 +57,7 @@ class Auth implements \AmidaMVC\Framework\IModule
             }
             $this->doList( $_ctrl, $_pageObj, $doList );
         }
+        return TRUE;
     }
     // +-------------------------------------------------------------+
     /**
@@ -110,6 +103,17 @@ class Auth implements \AmidaMVC\Framework\IModule
             }
             call_user_func_array( array( $this, $method ), $args );
         }
+        return TRUE;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj     $_pageObj
+     * @param string                          $url
+     * @return bool
+     */
+    function redirect( $_ctrl, $_pageObj, $url ) {
+        $_ctrl->redirect( $url );
         return TRUE;
     }
     // +-------------------------------------------------------------+
