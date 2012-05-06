@@ -22,6 +22,7 @@ class Session
     static function start() {
         if( !static::$session_start ) {
             session_start();
+            static::$session_start = TRUE;
         }
         return TRUE;
     }
