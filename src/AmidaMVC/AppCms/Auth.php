@@ -31,10 +31,6 @@ class Auth implements \AmidaMVC\Framework\IModule
             $this->_evaluateOn = $option[ 'evaluateOn' ];
         }
         $this->option = array_merge( $this->_defaultOptions, $option );
-        // set up auth class as well.
-        $auth = $this->_authClass;
-        $this->_auth = $auth::getInstance( $this->option[ 'authArea' ] );
-        $this->_auth->_init( $this->option );
     }
     // +-------------------------------------------------------------+
     /**
@@ -51,8 +47,12 @@ class Auth implements \AmidaMVC\Framework\IModule
             return TRUE;
         }
         // do the authentication
-        $auth_success = $this->_auth->getAuth();
         if( $this->matchPathInfo( $_ctrl, $this->_evaluateOn[ 'onPathInfo' ] ) ) {
+            // set up auth class as well.
+            $auth = $this->_authClass;
+            $this->_auth = $auth::getInstance( $this->option[ 'authArea' ] );
+            $this->_auth->_init( $this->option );
+            $auth_success = $this->_auth->getAuth();
             if( $auth_success ) {
                 $doList = $this->_evaluateOn[ 'onSuccess' ];
             }
