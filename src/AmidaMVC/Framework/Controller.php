@@ -144,6 +144,16 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     /**
+     * find file_name from $this->loadFolder list and returns the
+     * full path. TODO: implement this and use it to load files.
+     * @param string $file_name
+     * @return string
+     */
+    function findFile( $file_name ) {
+        return $file_name;
+    }
+    // +-------------------------------------------------------------+
+    /**
      * @param mixed $module
      * @param string $name
      * @throws \RuntimeException
