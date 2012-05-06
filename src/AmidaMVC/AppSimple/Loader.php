@@ -63,7 +63,9 @@ class Loader extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\
                 $loadInfo[ 'loadMode' ] = '_src';
             }
             else if( $load::isView( $file_loc ) ) {
-                $_pageObj->setContent( $load::getContentsByBuffer( $file_loc ) );
+                $_pageObj->setContent( $load::getContentsByBuffer(
+                    $file_loc, array( '_ctrl'=>$_ctrl, '_pageObj'=>$_pageObj, '_loadInfo'=>$loadInfo ) )
+                );
                 $loadInfo[ 'loadMode' ] = '_view';
             }
             else if( $load::isAsIs( $file_loc ) ) {

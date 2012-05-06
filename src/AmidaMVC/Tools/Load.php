@@ -88,10 +88,15 @@ class Load
     /**
      * get file contents by executing file and ob_{start|get_clean}.
      * @static
-     * @param $file_name
+     * @param string $file_name      file name to include
+     * @param array  $option         extracted for included file.
      * @return string
      */
     static function getContentsByBuffer( $file_name ) {
+        if( func_num_args() > 1 && is_array( func_get_arg(1) ) ) {
+            $args = func_get_arg(1);
+            extract( func_get_arg(1) );
+        }
         ob_start();
         ob_implicit_flush(0);
         require( $file_name );
