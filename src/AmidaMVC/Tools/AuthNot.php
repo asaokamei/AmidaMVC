@@ -101,6 +101,7 @@ class AuthNot
         $auth_info = Session::get( $this->auth_id );
         if( $auth_info && 
             $auth_info[ $this->act_name ] == $this->act_value ) {
+            $this->isLoggedIn = TRUE;
             return $auth_info;
         }
         return FALSE;
