@@ -17,8 +17,9 @@ class Application extends \AmidaMVC\Framework\Controller
             'appDefault' => FALSE,
             'modules' => array(
 //                array( '\AmidaMVC\AppSimple\Config',  'config' ),
-                //array( '\AmidaMVC\AppCms\Auth',    'authAdmin' ),
+                array( '\AmidaMVC\AppCms\Auth',    'authAdmin' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevLogin' ),
+                array( '\AmidaMVC\AppCms\Auth',    'authDevLogout' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevMode' ),
                 array( '\AmidaMVC\AppSimple\Router',  'router' ),
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
@@ -48,6 +49,22 @@ class Application extends \AmidaMVC\Framework\Controller
                         'setLoginForm' => 'login for develop mode',
                     ),
                     'onSuccess' => array(
+                        'redirect' => '/',
+                    ),
+                ),
+            ),
+            '_authDevLogout' => array(
+                'authArea' => 'authDev',
+                'authClass' => '\AmidaMVC\Tools\AuthNot',
+                'password_file' => '_Config/.dev.password',
+                'login_file' => '_Config/login_file.md',
+                'evaluateOn' => array(
+                    'onPathInfo' => array( '/dev_logout' ),
+                    'onFail' => array(
+                        'redirect' => '/',
+                    ),
+                    'onSuccess' => array(
+                        'logout' => '',
                         'redirect' => '/',
                     ),
                 ),

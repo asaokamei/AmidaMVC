@@ -8,6 +8,6 @@ Developer's Mode
 ----------------
 
 *   [log in for developer's mode](dev_login)
-
+*   [logout from developer's mode](dev_logout)
 
 

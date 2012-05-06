@@ -154,4 +154,13 @@ class Auth implements \AmidaMVC\Framework\IModule
         return TRUE;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param $message
+     */
+    function logout( $_ctrl, $_pageObj, $message ) {
+        $this->_auth->logout();
+    }
+    // +-------------------------------------------------------------+
 }
