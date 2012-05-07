@@ -143,6 +143,14 @@ class Controller extends AmidaChain
         );
     }
     // +-------------------------------------------------------------+
+    function setFileLocation( $folder ) {
+        if( substr( $folder, 0, 1 ) !== '/' ) {
+            $folder = $this->getLocation( $folder );
+        }
+        $this->loadFolder = array( $folder ) + $this->loadFolder;
+        return $this;
+    }
+    // +-------------------------------------------------------------+
     /**
      * find file_name from $this->loadFolder list and returns the
      * full path. TODO: implement this and use it to load files.
@@ -150,7 +158,16 @@ class Controller extends AmidaChain
      * @return string
      */
     function findFile( $file_name ) {
-        return $file_name;
+        $found = FALSE;
+        if( empty( $this->loadFolder ) ) return $found;
+        foreach( $this->loadFolder as $folder ) {
+            $check_file = $folder. '/' . $file_name;
+            if( file_exists( $check_file ) ) {
+                $found = $check_file;
+                break;
+            }
+        }
+        return $found;
     }
     // +-------------------------------------------------------------+
     /**
@@ -171,13 +188,9 @@ class Controller extends AmidaChain
         }
         else {
             if( !class_exists( $module ) ) {
-                $base_name = $this->prefixCmd . $module . '.php';
-                foreach( $this->loadFolder as $folder )
-                {
-                    $file_name = $folder. '/' . $base_name;
-                    if( file_exists( $file_name ) ) {
-                        require_once( $file_name );
-                    }
+                $base_name = substr( $module, strrpos( $module, '\\' ) ) . '.php';
+                if( $found = $this->findFile( $base_name ) ) {
+                    require_once( $found );
                 }
                 if( !class_exists( $module ) ) {
                     throw new \RuntimeException( "Module: {$module} not found." );

@@ -8,4 +8,5 @@ $app = \AmidaMVC\AppCms\Application::getInstance(
         'site_title' => "Demo#4 - like a CMS",
     )
 );
+$app->setFileLocation( '_Config' );
 $app->start();
