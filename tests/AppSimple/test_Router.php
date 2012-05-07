@@ -19,8 +19,8 @@ class testCtrl
     function getPathInfo() {
         return 'test';
     }
-    function getLocation() {
-        return 'loc';
+    function getLocation( $loc=NULL ) {
+        return implode( '/', array( 'loc', $loc ) );
     }
     function redirect( $path ) {
         $this->redirectPath = $path;
@@ -125,6 +125,9 @@ class test_AppSimple_Router extends \PHPUnit_Framework_TestCase
         $matchResult = routeMatchOK::$matchResult;
         $matchResult[ 'foundBy' ] = 'route';
         $return = $this->router->actionDefault( $this->_ctrl, $this->_pageObj );
+        $this->assertNotEquals( $matchResult, $return );
+        // the Router returns absolute path created by using getLocation.
+        $matchResult[ 'file' ] = $this->_ctrl->getLocation( $matchResult[ 'file' ] );
         $this->assertEquals( $matchResult, $return );
     }
     // +----------------------------------------------------------------------+
@@ -136,6 +139,9 @@ class test_AppSimple_Router extends \PHPUnit_Framework_TestCase
         $scanResult = routeScanFoundFile::$scanResult;
         $scanResult[ 'foundBy' ] = 'scan';
         $return = $this->router->actionDefault( $this->_ctrl, $this->_pageObj );
+        $this->assertNotEquals( $scanResult, $return );
+        // the Router returns absolute path created by using getLocation.
+        $scanResult[ 'file' ] = $this->_ctrl->getLocation( $scanResult[ 'file' ] );
         $this->assertEquals( $scanResult, $return );
     }
     // +----------------------------------------------------------------------+
@@ -147,6 +153,9 @@ class test_AppSimple_Router extends \PHPUnit_Framework_TestCase
         $scanResult = routeScanFoundDir::$scanResult;
         $scanResult[ 'foundBy' ] = 'index';
         $return = $this->router->actionDefault( $this->_ctrl, $this->_pageObj );
+        $this->assertNotEquals( $scanResult, $return );
+        // the Router returns absolute path created by using getLocation.
+        $scanResult[ 'file' ] = $this->_ctrl->getLocation( $scanResult[ 'file' ] );
         $this->assertEquals( $scanResult, $return );
     }
     // +----------------------------------------------------------------------+

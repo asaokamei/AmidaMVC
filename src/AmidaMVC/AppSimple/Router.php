@@ -71,6 +71,9 @@ class Router implements \AmidaMVC\Framework\IModule
         if( empty( $loadInfo ) ) {
             $_ctrl->setAction( '_pageNotFound' );
         }
+        if( !is_callable( $loadInfo[ 'file' ] ) ) {
+            $loadInfo[ 'file' ] = $_ctrl->getLocation( $loadInfo[ 'file' ] );
+        }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
