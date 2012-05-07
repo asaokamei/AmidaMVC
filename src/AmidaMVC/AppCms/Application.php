@@ -12,11 +12,12 @@ class Application extends \AmidaMVC\Framework\Controller
     {
         $default = array(
             'site_title' => 'AppCMS Web Site',
-            'template_file' => '_Config/template.php',
+            'template_file' => 'template.php',
             'pageNotFound_file' => FALSE,
             'appDefault' => FALSE,
             'modules' => array(
 //                array( '\AmidaMVC\AppSimple\Config',  'config' ),
+                array( 'Config',  'config' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authAdmin' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevLogin' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevLogout' ),
@@ -28,8 +29,8 @@ class Application extends \AmidaMVC\Framework\Controller
             '_authAdmin' => array(
                 'authArea' => 'authAdmin',
                 'authClass' => '\AmidaMVC\Tools\AuthNot',
-                'password_file' => '_Config/admin.password',
-                'login_file' => '_Config/login_file.md',
+                'password_file' => 'admin.password',
+                'loginForm_file' => 'login_file.md',
                 'evaluateOn' => array(
                     'onPathInfo' => array( '/admin', '/admin2' ),
                     'onFail' => array(
@@ -41,8 +42,8 @@ class Application extends \AmidaMVC\Framework\Controller
             '_authDevLogin' => array(
                 'authArea' => 'authDev',
                 'authClass' => '\AmidaMVC\Tools\AuthNot',
-                'password_file' => '_Config/.dev.password',
-                'login_file' => '_Config/login_file.md',
+                'password_file' => '.dev.password',
+                'loginForm_file' => 'login_file.md',
                 'evaluateOn' => array(
                     'onPathInfo' => array( '/dev_login' ),
                     'onFail' => array(
@@ -56,8 +57,8 @@ class Application extends \AmidaMVC\Framework\Controller
             '_authDevLogout' => array(
                 'authArea' => 'authDev',
                 'authClass' => '\AmidaMVC\Tools\AuthNot',
-                'password_file' => '_Config/.dev.password',
-                'login_file' => '_Config/login_file.md',
+                'password_file' => '.dev.password',
+                'loginForm_file' => 'login_file.md',
                 'evaluateOn' => array(
                     'onPathInfo' => array( '/dev_logout' ),
                     'onFail' => array(
@@ -72,7 +73,7 @@ class Application extends \AmidaMVC\Framework\Controller
             '_authDevMode' => array(
                 'authArea' => 'authDev',
                 'authClass' => '\AmidaMVC\Tools\AuthNot',
-                'password_file' => '_Config/.dev.password',
+                'password_file' => '.dev.password',
                 'evaluateOn' => array(
                     'onPathInfo' => array( '/' ),
                     'onFail' => array(),

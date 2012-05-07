@@ -137,7 +137,7 @@ class Auth implements \AmidaMVC\Framework\IModule
         // read login form template.
         // how can I pass a parameter/message to the loader???
         $_ctrl->setAction( '_loginForm' );
-        $_ctrl->options[ 'loginForm_file' ] = $this->option[ 'login_file' ];
+        $_ctrl->options[ 'loginForm_file' ] = $this->option[ 'loginForm_file' ];
         return TRUE;
     }
     // +-------------------------------------------------------------+

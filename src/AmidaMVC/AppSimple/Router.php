@@ -85,7 +85,7 @@ class Router implements \AmidaMVC\Framework\IModule
         $loadInfo = array();
         if( isset( $_ctrl->options[ 'loginForm_file' ] ) ) {
             $loadInfo = array(
-                'file' => $_ctrl->options[ 'loginForm_file' ],
+                'file' => $_ctrl->findFile( $_ctrl->options[ 'loginForm_file' ] ),
                 'action' => 'default',
             );
             $_ctrl->setAction( $_ctrl->defaultAct() );
