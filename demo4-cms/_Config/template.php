@@ -29,6 +29,11 @@ $_pageObj->setJs( '../bootstrap/js/jquery-1.7.1.js' );
         <p>AppSimple Suites by AmidaMVC.<br />
         gitHub:https://github.com/asaokamei/AmidaMVC</p>
     </footer>
-<?php echo $_pageObj->getJsLinks( $_ctrl ); ?>
+    <?php echo $_pageObj->getJsLinks( $_ctrl ); ?>
+    <script type="text/javascript">
+        $(document).ready( function() {
+            $( "table" ).addClass( "table" );
+        });
+    </script>
 </div>
 </html>
