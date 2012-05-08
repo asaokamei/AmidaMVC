@@ -219,7 +219,7 @@ class PageObj
         foreach( $this->_js as $js ) {
             $link = $_ctrl->getPath( $js );
             /** @var $link string */
-            $html .= "<script src=\"{$link}\" type=\"javascript\"></script>\n";
+            $html .= "<script src=\"{$link}\" type=\"text/javascript\"></script>\n";
         }
         return $html;
     }
