@@ -3,6 +3,8 @@ CMS Demo
 
 This CMS like demo provides a pukiWiki like CMS using AmidaMVC Framework.
 
+[link to test.md for testing](test.md)
+
 Developer's Mode
 ----------------
 
