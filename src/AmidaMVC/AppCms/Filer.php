@@ -9,6 +9,15 @@ class Filer implements \AmidaMVC\Framework\IModule
     var $filerInfo = array();
     var $devTemplateDefault = 'template._dev.php';
     var $devTemplate = FALSE;
+    var $commandList = array(
+        '_fEdit', '_fPut', '_fPub', '_fDel', '_fPurge', '_fDiff',
+        '_bkView', '_bkDiff',
+        '_fFolder', '_fFile'
+    );
+    /**
+     * @var \AmidaMVC\Tools\Load   static class for loading methods.
+     */
+    var $_loadClass = '\AmidaMVC\Tools\Load';
     // +-------------------------------------------------------------+
     /**
      * @param array $option
@@ -21,6 +30,8 @@ class Filer implements \AmidaMVC\Framework\IModule
             'file_src' => '',
             'curr_folder' => '',
             'file_list ' => array(),
+            'error' => FALSE,
+            'message' => '',
         );
         $this->filerInfo = $filerObj;
 
@@ -73,9 +84,9 @@ class Filer implements \AmidaMVC\Framework\IModule
         $this->filerInfo[ 'file_list' ] = $file_list;
 
         // set up menu
-        $file_to_edit = $this->getFileToEdit( $loadInfo[ 'file' ] );
+        $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
         if( file_exists( $file_to_edit ) ) {
-            //$loadInfo[ 'file' ] = $file_to_edit;
+            $loadInfo[ 'file' ] = $file_to_edit;
             $this->filerInfo[ 'file_src' ]   = basename( $file_to_edit );
             $this->filerInfo[ 'file_cmd' ][] = '_fEdit';
             $this->filerInfo[ 'file_cmd' ][] = '_fPub';
@@ -98,7 +109,68 @@ class Filer implements \AmidaMVC\Framework\IModule
     function actionDefault( $_ctrl, &$_pageObj, $loadInfo=array() )
     {
         $this->_setup( $_ctrl, $_pageObj, $loadInfo );
-        $this->template( $_ctrl, $_pageObj );
+        $command = $this->_findFilerCommand( $_ctrl );
+        if( $command ) {
+            $method = 'action' . $command;
+            $loadInfo = $this->$method( $_ctrl, $_pageObj, $loadInfo );
+        }
+        $this->_template( $_ctrl, $_pageObj );
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    function action_fPut( $_ctrl, $_pageObj, $loadInfo ) {
+        $file_to_edit = $this->_getFileToEdit( $loadInfo['file'] );
+        if( isset( $_POST[ '_putContent' ] ) ) {
+            $content = $_POST[ '_putContent' ];
+            $content = str_replace( "\r\n", "\n", $content );
+            $content = str_replace( "\r", "\n", $content );
+            $success = @file_put_contents( $file_to_edit, $content );
+            if( $success !== FALSE ) {
+                $loadInfo[ 'file' ] = $file_to_edit;
+                //$reload = $_ctrl->getPathInfo();
+                //$_ctrl->redirect( $reload );
+            }
+            else {
+                $this->_error(
+                    'file put error',
+                    "Could not save contents to file ({$file_to_edit}). <br />" .
+                    "maybe file permission problem?"
+                );
+                $loadInfo = $this->action_fEdit( $_ctrl, $_pageObj, $loadInfo );
+            }
+        }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
+    function action_fEdit( $_ctrl, $_pageObj, $loadInfo ) {
+        $load = $this->_loadClass;
+        $contents = '';
+        if( file_exists( $this->_getFileToEdit( $loadInfo['file'] ) ) ) {
+            $file_name = $this->_getFileToEdit( $loadInfo['file'] );
+            $contents = $load::getContentsByGet( $file_name );
+        }
+        else if( file_exists( $loadInfo['file'] ) ) {
+            $file_name = $loadInfo['file'];
+            $contents = $load::getContentsByGet( $file_name );
+        }
+        $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
+        $contents = htmlspecialchars( $contents );
+        $contents =<<<END_OF_HTML
+
+    <form method="post" name="_editFile" action="{$self}/_fPut">
+        <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;">{$contents}</textarea>
+        <input type="submit" class="btn-primary" name="submit" value="Save File"/>
+        <input type="button" class="btn" name="cancel" value="cancel" onclick="location.href='{$self}'"/>
+    </form>
+END_OF_HTML;
+        $_pageObj->setContent( $contents );
+        $_ctrl->skipToModel( 'emitter' );
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
@@ -106,7 +178,7 @@ class Filer implements \AmidaMVC\Framework\IModule
      * @param \AmidaMVC\AppSimple\Application $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
-    function template( $_ctrl, $_pageObj ) {
+    function _template( $_ctrl, $_pageObj ) {
         $_filerInfo = $this->filerInfo;
         $_filerObj  = (object) $_filerInfo;
         ob_start();
@@ -122,12 +194,48 @@ class Filer implements \AmidaMVC\Framework\IModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param string $filename
+     * @param string $file_name
      * @return string
      */
-     function getFileToEdit( $filename ) {
-        return $filename;
+     function _getFileToEdit( $file_name ) {
+         $folder    = dirname( $file_name );
+         $baseName  = basename( $file_name );
+         $curr_mode = $this->mode;
+         if( substr( $baseName, 0, strlen( $curr_mode ) ) == $curr_mode ) {
+             $file_to_edit  = $baseName;
+         }
+         else {
+             $file_to_edit  = "{$folder}/{$curr_mode}-{$baseName}";
+         }
+         return $file_to_edit;
      }
+    // +-------------------------------------------------------------+
+    /**
+     * find commands for Filer. commands are in static::$file_list.
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @return string
+     */
+    function _findFilerCommand( $_ctrl )
+    {
+        $gotCommandList = $_ctrl->getCommands();
+        $commandList    = array();
+        foreach( $gotCommandList as $command ) {
+            $cmd = explode( ':', $command );
+            $commandList[]  = $cmd[0];
+        }
+        foreach( $this->commandList as $cmd ) {
+            if( in_array( $cmd, $commandList ) ) {
+                // found command.
+                return $cmd;
+            }
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    function _error( $error, $message ) {
+        $this->filerInfo[ 'error' ] = $error;
+        $this->filerInfo[ 'message' ] = $message;
+    }
     // +-------------------------------------------------------------+
 }
 
