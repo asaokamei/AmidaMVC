@@ -193,7 +193,7 @@ class AmidaChain
                 $this->_modules = array_slice( $this->_modules, 1 );
             }
         }
-        $this->_modules = array_merge( $current_module, $this->_modules );
+        $this->_modules = array_merge( array( $current_module ), $this->_modules );
         // should throw an exception, maybe.
         return $this;
     }
