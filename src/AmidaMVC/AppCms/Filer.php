@@ -83,7 +83,7 @@ class Filer implements \AmidaMVC\Framework\IModule
             $this->filerInfo[ 'file_cmd' ][] = '_fDiff';
         }
         else {
-            $this->filerInfo[ 'file_src' ]   = basename( $file_target );
+            $this->filerInfo[ 'file_src' ]   = basename( $loadInfo[ 'file' ] );
             $this->filerInfo[ 'file_cmd' ][] = '_fEdit';
             $this->filerInfo[ 'file_cmd' ][] = '_fPurge';
         }
