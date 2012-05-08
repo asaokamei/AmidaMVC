@@ -71,10 +71,11 @@ $simpleMenuList = array(
     </div>
     <!-- adding new file; show empty edit page -->
     <div id="filerNewForm">
+        creates new file at: /<?php echo $_filerObj->curr_folder; ?>
         <form method="post" name="_showNewForm" action="<?php echo $self?>/_fFile" class="well form-inline">
             <label>
                 add file:<input type="text" name="_newFileName" width="50"
-                       placeholder="creates new file at '/<?php echo $_filerObj->curr_folder; ?>'">
+                       placeholder="enter new file name">
             </label>
             <input class="btn-small btn-primary" type="submit" name="submit" value="add new file"/>
         </form>
