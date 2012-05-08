@@ -43,6 +43,10 @@ class PageObj
      * @var array   information about loaded file.
      */
     var $loadInfo = array();
+    /**
+     * @var string|bool    developer's menu
+     */
+    var $devInfo = FALSE;
     // +-------------------------------------------------------------+
     function __construct() {
 
