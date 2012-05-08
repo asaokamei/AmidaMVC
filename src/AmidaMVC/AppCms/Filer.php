@@ -118,8 +118,61 @@ class Filer implements \AmidaMVC\Framework\IModule
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
+    function action_fFile( $_ctrl, $_pageObj, $loadInfo ) {
+        $new_file = $_POST[ '_newFileName' ];
+        $file_to_edit = $this->_getFileToEdit( $new_file );
+        $file_to_edit = $_ctrl->getLocation( $file_to_edit );
+        if( file_exists( $file_to_edit ) ) {
+            $this->_error(
+                'new file error',
+                "file already exists ({$file_to_edit}). <br />" .
+                "cannot overwrite existing file."
+            );
+        }
+        else
+        if( is_dir( $file_to_edit ) ) {
+            $this->_error(
+                'new file error',
+                "directory already exists ({$file_to_edit}). <br />" .
+                "cannot write to a directory."
+            );
+        }
+        else {
+            $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
+            if( $loadInfo[ 'foundBy' ] === 'index' ) {
+                $self = $self . '/' . $new_file;
+            }
+            else {
+                $self = dirname( $self ) . '/' . $new_file;
+            }
+            $contents = $this->_makeEditForm( $self, '' );
+            $_pageObj->setContent( $contents );
+            $_ctrl->skipToModel( 'emitter' );
+        }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
     function action_fPut( $_ctrl, $_pageObj, $loadInfo ) {
-        $file_to_edit = $this->_getFileToEdit( $loadInfo['file'] );
+        if( $loadInfo ) {
+            $file_to_edit = $this->_getFileToEdit( $loadInfo['file'] );
+        }
+        else {
+            // it's a new file to add.
+            $file_to_edit = basename( $_ctrl->getPathInfo() );
+            $file_to_edit = $_ctrl->getLocation( $file_to_edit );
+        }
         if( isset( $_POST[ '_putContent' ] ) ) {
             $content = $_POST[ '_putContent' ];
             $content = str_replace( "\r\n", "\n", $content );
@@ -127,8 +180,9 @@ class Filer implements \AmidaMVC\Framework\IModule
             $success = @file_put_contents( $file_to_edit, $content );
             if( $success !== FALSE ) {
                 $loadInfo[ 'file' ] = $file_to_edit;
-                //$reload = $_ctrl->getPathInfo();
-                //$_ctrl->redirect( $reload );
+                // when adding a new file, the action is set to pageNotFound.
+                // so set to normal just in case.
+                $_ctrl->setAction( $_ctrl->defaultAct() );
             }
             else {
                 $this->_error(
@@ -160,18 +214,23 @@ class Filer implements \AmidaMVC\Framework\IModule
             $contents = $load::getContentsByGet( $file_name );
         }
         $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
+        $contents = $this->_makeEditForm( $self, $contents );
+        $_pageObj->setContent( $contents );
+        $_ctrl->skipToModel( 'emitter' );
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    function _makeEditForm( $self, $contents, $cmd='_fPut' ) {
         $contents = htmlspecialchars( $contents );
         $contents =<<<END_OF_HTML
 
-    <form method="post" name="_editFile" action="{$self}/_fPut">
+    <form method="post" name="_editFile" action="{$self}/{$cmd}">
         <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;">{$contents}</textarea>
         <input type="submit" class="btn-primary" name="submit" value="Save File"/>
         <input type="button" class="btn" name="cancel" value="cancel" onclick="location.href='{$self}'"/>
     </form>
 END_OF_HTML;
-        $_pageObj->setContent( $contents );
-        $_ctrl->skipToModel( 'emitter' );
-        return $loadInfo;
+        return $contents;
     }
     // +-------------------------------------------------------------+
     /**
@@ -199,13 +258,19 @@ END_OF_HTML;
      */
      function _getFileToEdit( $file_name ) {
          $folder    = dirname( $file_name );
+         if( $folder == '.' ) {
+             $folder = '';
+         }
+         else {
+             $folder .= '/';
+         }
          $baseName  = basename( $file_name );
          $curr_mode = $this->mode;
          if( substr( $baseName, 0, strlen( $curr_mode ) ) == $curr_mode ) {
              $file_to_edit  = $baseName;
          }
          else {
-             $file_to_edit  = "{$folder}/{$curr_mode}-{$baseName}";
+             $file_to_edit  = "{$folder}{$curr_mode}-{$baseName}";
          }
          return $file_to_edit;
      }
