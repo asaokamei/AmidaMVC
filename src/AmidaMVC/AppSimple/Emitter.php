@@ -130,8 +130,8 @@ class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework
         if( $_pageObj->contentType() == 'html' ) {
             $emit     = $this->_emitClass;
             // if template_file is set, use it as relative to ctrl_root.
-            if( isset($_ctrl->options[ 'template_file' ] ) ) {
-                $template = $_ctrl->findFile( $_ctrl->options[ 'template_file' ] );
+            if( $_ctrl->getOption( 'template_file' ) ) {
+                $template = $_ctrl->findFile( $_ctrl->getOption( 'template_file' ) );
             }
             else {
                 // or use the template in the AppSimple folder as default.
