@@ -50,7 +50,7 @@ class Filer implements \AmidaMVC\Framework\IModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      */
@@ -84,6 +84,7 @@ class Filer implements \AmidaMVC\Framework\IModule
         $this->filerInfo[ 'file_list' ] = $file_list;
 
         // set up menu
+        // TODO: bad idea to replace loadInfo's file. fix this. 
         $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
         if( file_exists( $file_to_edit ) ) {
             $loadInfo[ 'file' ] = $file_to_edit;
@@ -101,7 +102,7 @@ class Filer implements \AmidaMVC\Framework\IModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
@@ -119,7 +120,7 @@ class Filer implements \AmidaMVC\Framework\IModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
@@ -144,7 +145,7 @@ class Filer implements \AmidaMVC\Framework\IModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
@@ -184,7 +185,7 @@ class Filer implements \AmidaMVC\Framework\IModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
@@ -219,7 +220,7 @@ class Filer implements \AmidaMVC\Framework\IModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
@@ -256,7 +257,7 @@ END_OF_HTML;
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
     function _template( $_ctrl, $_pageObj ) {
@@ -299,7 +300,7 @@ END_OF_HTML;
     // +-------------------------------------------------------------+
     /**
      * find commands for Filer. commands are in static::$file_list.
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @return string
      */
     function _findFilerCommand( $_ctrl )
