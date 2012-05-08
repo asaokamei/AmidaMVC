@@ -124,6 +124,31 @@ class Filer implements \AmidaMVC\Framework\IModule
      * @param array $loadInfo
      * @return array
      */
+    function action_fPub( $_ctrl, $_pageObj, $loadInfo ) {
+        $file_to_publish = $this->_getFileToEdit( $loadInfo['file'] );
+        if( file_exists( $file_to_publish ) ) {
+            $file_to_replaced = $_ctrl->getLocation( $_ctrl->getPathInfo() );
+            $this->_backup( $file_to_replaced );
+            if( rename( $file_to_publish, $file_to_replaced ) ) {
+                // success
+                $_ctrl->redirect( $_ctrl->getPathInfo() );
+            }
+            else {
+                $this->_error(
+                    'publish error',
+                    "could not rename file from {$file_to_publish} to {$file_to_replaced}. <br />"
+                );
+            }
+        }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
     function action_fFile( $_ctrl, $_pageObj, $loadInfo ) {
         $new_file = $_POST[ '_newFileName' ];
         $file_to_edit = $this->_getFileToEdit( $new_file );
@@ -179,10 +204,7 @@ class Filer implements \AmidaMVC\Framework\IModule
             $content = str_replace( "\r", "\n", $content );
             $success = @file_put_contents( $file_to_edit, $content );
             if( $success !== FALSE ) {
-                $loadInfo[ 'file' ] = $file_to_edit;
-                // when adding a new file, the action is set to pageNotFound.
-                // so set to normal just in case.
-                $_ctrl->setAction( $_ctrl->defaultAct() );
+                $_ctrl->redirect( $_ctrl->getPathInfo() );
             }
             else {
                 $this->_error(
@@ -267,7 +289,7 @@ END_OF_HTML;
          $baseName  = basename( $file_name );
          $curr_mode = $this->mode;
          if( substr( $baseName, 0, strlen( $curr_mode ) ) == $curr_mode ) {
-             $file_to_edit  = $baseName;
+             $file_to_edit  = "{$folder}{$baseName}";
          }
          else {
              $file_to_edit  = "{$folder}{$curr_mode}-{$baseName}";
@@ -300,6 +322,9 @@ END_OF_HTML;
     function _error( $error, $message ) {
         $this->filerInfo[ 'error' ] = $error;
         $this->filerInfo[ 'message' ] = $message;
+    }
+    // +-------------------------------------------------------------+
+    function _backup( $file_name ) {
     }
     // +-------------------------------------------------------------+
 }
