@@ -1,8 +1,17 @@
 ToDo List
 
+* refactor AmidaMVC
+[O] rewrite everything but Framework.
+    [O] AppCms for Config/Auth/Filer.
+        [ ] devInfo in pageObj, and show it in template.
+    [X] AppSimple for Router/Loader/Emitter.
+    [X] use module not component.
+[ ] use doc_root as well as ctrl_root.
+[ ] i18n/language support.
+
 * Demo in AmidaMVC
 
-[ ] Router to setup path. 
+[ ] Router to setup path.
 [ ] upload files (images etc.)
 [ ] edit template/css files in _Config folder.
 [ ] diff between any file (file, _dev, and _backup). 
