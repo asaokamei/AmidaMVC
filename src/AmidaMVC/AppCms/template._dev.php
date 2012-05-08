@@ -71,7 +71,7 @@ $simpleMenuList = array(
     </div>
     <!-- adding new file; show empty edit page -->
     <div id="filerNewForm">
-        <form method="post" name="_showNewForm" action="<?php echo $self?>/_fileNew" class="well form-inline">
+        <form method="post" name="_showNewForm" action="<?php echo $self?>/_fFile" class="well form-inline">
             <label>
                 add file:<input type="text" name="_newFileName" width="50"
                        placeholder="creates new file at '/<?php echo $_filerObj->curr_folder; ?>'">
@@ -81,7 +81,7 @@ $simpleMenuList = array(
     </div>
     <!-- adding new folder -->
     <div id="filerAddFolder">
-        <form method="post" name="_addFolder" action="<?php echo $self?>/_fileFolder" class="well form-inline">
+        <form method="post" name="_addFolder" action="<?php echo $self?>/_fFolder" class="well form-inline">
             <label>
                 new folder:<input type="text" name="_folderName" width="50"
                                   placeholder="new folder at '/<?php echo $_filerObj->curr_folder; ?>'">
@@ -90,11 +90,11 @@ $simpleMenuList = array(
         </form>
     </div>
     <!-- show error message from _dev components -->
-    <?php if (isset($_filerObj->error)) { ?>
+    <?php if( $_filerObj->message ) { ?>
     <div id="filerError" class="alert alert-error">
         <dl>
             <dt>Error: <?php echo $_filerObj->error; ?></dt>
-            <dd><?php echo $_filerObj->err_msg; ?></dd>
+            <dd><?php echo $_filerObj->message; ?></dd>
         </dl>
     </div>
     <?php } ?>
@@ -239,5 +239,8 @@ $simpleMenuList = array(
         function toggle( id ) {
             $( "#" + id ).toggle("fast");
         }
+        $( '#filerError' ).click( function(){
+            $( '#filerError' ).toggle( 'fast' );
+        });
     });
 </script>
