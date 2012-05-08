@@ -86,6 +86,14 @@ class Application extends \AmidaMVC\Framework\Controller
             ),
             '_filer' => array(
                 'template_file' => NULL,
+                'listJs' => array(
+                    '../bootstrap/js/jquery-1.7.1.js',
+                    '../bootstrap/js/bootstrap.js',
+                    '../bootstrap/js/bootstrap-modal.js',
+                ),
+                'listCss' => array(
+                    '../bootstrap/css/bootstrap.css',
+                ),
             ),
             '_router'  => array(),
             '_loader'  => array(),
