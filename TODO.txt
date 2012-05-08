@@ -6,6 +6,17 @@ ToDo List
         [ ] devInfo in pageObj, and show it in template.
     [X] AppSimple for Router/Loader/Emitter.
     [X] use module not component.
+[O] refactor Filer module
+    [ ] action_fDel
+    [ ] action_fPurge
+    [ ] action_fDiff
+    [ ] action_fBakView
+    [ ] action_fBakDiff
+    [ ] action_fFolder
+    [X] action_fPub
+    [X] action_fFile
+    [X] action_fPut
+    [X] action_fEdit
 [ ] use doc_root as well as ctrl_root.
 [ ] i18n/language support.
 
