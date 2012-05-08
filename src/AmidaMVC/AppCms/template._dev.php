@@ -1,11 +1,17 @@
 <?php
 
 // filer's mode; _edit, _put, _pub, _del,...
-$file_mode = (isset($_filerObj->file_mode)) ? $_filerObj->file_mode : FALSE;
-;
-// myself.
+/** @var $_filerObj object  */
+/** @var $_ctrl \AmidaMVC\Framework\Controller  */
 $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
 $base = $_ctrl->getBaseUrl();
+
+$simpleMenuList = array(
+    '_fEdit' => 'edit',
+    '_fPub' => 'publish',
+    '_fDel' => 'delete',
+    '_fDiff' => 'diff',
+);
 
 // ------------------------------------------------------
 // Developer's Header Menu
@@ -23,20 +29,21 @@ $base = $_ctrl->getBaseUrl();
             <div style="float: right; color: gray;">source: <span style="color:pink;"><?php echo $_filerObj->file_src;?></span></div>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <?php if( in_array( '_edit', $_filerObj->file_cmd ) ) { ?>
-                    <li><a href="<?php echo "$self/_edit";?>">edit</a></li>
-                    <?php } ?>
-                    <?php if( in_array( '_purge', $_filerObj->file_cmd ) ) { ?>
-                    <li><a data-toggle="modal" href="#filerPurgeModal">purge file</a></li>
-                    <?php } ?>
-                    <?php foreach( $_filerObj->file_cmd as $cmd ) {
-                    if( in_array( $cmd, array('_edit','_purge') ) ) { continue; } ?>
-                    <li><a href="<?php echo "$self/$cmd";?>"><?php echo $cmd;?></a></li>
-                    <?php } ?>
-                    <li><a href="javascript:toggle('filerNewForm')">add file▼</a></li>
-                    <li><a href="javascript:toggle('filerAddFolder')">new folder▼</a></li>
+                    <?php
+                    // do the simple menu staff
+                    foreach( $simpleMenuList as $simCmd => $simMenu ) {
+                        if( in_array( $simCmd, $_filerObj->file_cmd ) ) {
+                            echo "<li><a href=\"{$self}/{$simCmd}\">{$simMenu}</a></li>\n";
+                        }
+                    }
+                    if( in_array( '_fPurge', $_filerObj->file_cmd ) ) {
+                        echo '<li><a data-toggle="modal" href="#filerPurgeModal">Purge-File</a></li>';
+                    }
+                    ?>
+                    <li><a href="javascript:$('#filerNewForm').toggle('fast');">add file▼</a></li>
+                    <li><a href="javascript:$('#filerAddFolder').toggle('fast');">new folder▼</a></li>
                     <?php if( !empty( $_filerObj->file_list) ) { ?>
-                    <li><a href="javascript:toggle('filerDirList');">file list▼</a></li>
+                    <li><a href="javascript:$('#filerDirList').toggle('fast');">file list▼</a></li>
                     <?php } ?>
                     <?php if( !empty( $_filerObj->backup_list) ) {
                     echo '<li><a href="javascript:toggle(\'filerBackUpList\');">backups▼</a></li>';  } ?>
@@ -46,7 +53,6 @@ $base = $_ctrl->getBaseUrl();
             </div><!--/.nav-collapse -->
         </div>
     </div>
-</div>
 <div class="container filerBoxes">
     <!-- modal for purge -->
     <div class="modal hide fade" id="filerPurgeModal">
@@ -59,7 +65,7 @@ $base = $_ctrl->getBaseUrl();
             <p>File: at folder:</p>
         </div>
         <div class="modal-footer">
-            <a href="<?php echo "{$self}/_purge" ?>" class="btn btn-primary">Purge File</a>
+            <a href="<?php echo "{$self}/_fPurge" ?>" class="btn btn-primary">Purge File</a>
             <a href="javascript:$('#filerPurgeModal').modal('hide')" class="btn">Cancel</a>
         </div>
     </div>
@@ -95,17 +101,17 @@ $base = $_ctrl->getBaseUrl();
     <!-- show file in the folder -->
     <?php if( !empty( $_filerObj->file_list ) ) { ?>
     <div id="filerDirList">
-        File/Folder Lists at <?php echo $curr_folder = $_filerObj->curr_folder; if( $curr_folder) $curr_folder.='/'; ?>:
+        File/Folder Lists at <?php echo $base; ?>:
         <?php foreach( $_filerObj->file_list as $file ) {  ?>
-        <li>
+        <p>
             <?php echo $file;?>:
-            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}{$file}";?>">view</a>&nbsp;
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$file}";?>">view</a>&nbsp;
             <?php if( substr( $file, -1 ) !== '/' ) { ?>
-            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}{$file}/_src";?>">source</a>&nbsp;
-            <a class="btn-mini btn-info" href="<?php echo "{$base}{$curr_folder}{$file}/_raw";?>">raw</a>&nbsp;
-            <a class="btn-mini btn-danger" href="<?php echo "{$base}{$curr_folder}{$file}/_edit";?>">edit</a>
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$file}/_src";?>">source</a>&nbsp;
+            <a class="btn-mini btn-info" href="<?php echo "{$base}{$file}/_raw";?>">raw</a>&nbsp;
+            <a class="btn-mini btn-danger" href="<?php echo "{$base}{$file}/_edit";?>">edit</a>
             <?php } ?>
-        </li>
+        </p>
         <?php } ?>
     </div>
     <?php } ?>
@@ -128,6 +134,7 @@ $base = $_ctrl->getBaseUrl();
     <?php if (!empty($debug)) { ?>
     <div id='debugInfo'><?php echo $debug;?></div>
     <?php } ?>
+</div>
 </div>
 
 <!-- other stuff -->
@@ -199,13 +206,13 @@ $base = $_ctrl->getBaseUrl();
     }
 
     div#debugInfo h3 {
-        margin: 0px;
+        margin: 0;
         padding: 2px;
     }
 
     div#debugInfo .debugTraceInfo {
         float: left;
-        margin: 0px 0px 0px -20px;
+        margin: 0 0 0 -20px;
     }
 
     div#debugInfo table {
@@ -228,8 +235,9 @@ $base = $_ctrl->getBaseUrl();
 <!-- Placed at the end of the document so the pages load faster -->
 
 <script type="text/javascript">
-    $( "table" ).addClass( "table" );
-    function toggle( id ) {
-        $( "#" + id ).toggle("fast");
-    }
+    $(document).ready( function() {
+        function toggle( id ) {
+            $( "#" + id ).toggle("fast");
+        }
+    });
 </script>
