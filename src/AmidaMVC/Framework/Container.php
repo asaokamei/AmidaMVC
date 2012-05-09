@@ -203,17 +203,14 @@ class Container
         $object = $this->_lastModule;
         $injected = $this->getClean( $moduleName, $loadType, $idName );
         $args = array();
-        if( method_exists( $object, $injectName ) ) {
-            $exec = array( $object, $injectName );
-            $args = array( $object );
+        $method = 'inject' . ucwords( $injectName );
+        if( method_exists( $object, $method ) ) {
+            $exec = array( $object, $method );
+            $args = array( $injected );
         }
         elseif( method_exists( $object, 'inject' ) ) {
             $exec = array( $object, 'inject' );
-            $args = array( $injectName, $object );
-        }
-        elseif( method_exists( $object, 'inject'.$injectName ) ) {
-            $exec = array( $object, 'inject'.$injectName );
-            $args = array( $object );
+            $args = array( $injectName, $injected );
         }
         if( isset( $exec ) ) {
             return call_user_func_array( $exec, $args );
