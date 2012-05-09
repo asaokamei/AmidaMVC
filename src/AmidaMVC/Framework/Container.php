@@ -4,7 +4,7 @@ namespace AmidaMVC\Framework;
 class Container
 {
     /**
-     * @var array     array(  name => class, ...  )
+     * @var array     array(  moduleName => [ className, loadType ], ...  )
      */
     protected $_modules = array();
     /**
@@ -23,10 +23,45 @@ class Container
      * @var object|null   keep the last instantiated object.
      */
     protected $_lastModule = NULL;
+    /**
+     * @var Container
+     */
+    static $self;
     // +-------------------------------------------------------------+
     function __construct() {}
     // +-------------------------------------------------------------+
-    function _init( $option=array() ) {}
+    /**
+     * @static
+     * @return Container
+     */
+    static function getInstance() {
+        if( !static::$self ) {
+            static::$self = new static();
+        }
+        return static::$self;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param array $option
+     * @return Container
+     */
+    function _init( $option=array() ) {
+        if( !is_array( $option ) ) return $this;
+        if( isset( $option[ 'modules' ] ) && is_array( $option[ 'modules' ] ) ) {
+            foreach( $option[ 'modules' ] as $moduleInfo ) {
+                $loadType = ( $moduleInfo[2] ) ?: 'get';
+                $this->_modules[ $moduleInfo[1] ] = array(
+                    $moduleInfo[0], $loadType,
+                );
+            }
+        }
+        foreach( $option as $opName => $opVal ) {
+            if( substr( $opName, 0, 1 ) === '_' ) {
+                $this->_options[ substr( $opName, 1 ) ] = $opVal;
+            }
+        }
+        return $this;
+    }
     // +-------------------------------------------------------------+
     /**
      * @param string|array $folder
@@ -59,6 +94,10 @@ class Container
         return $found;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @param string $module
+     * @return string
+     */
     function findModule( $module ) {
         $base_name = substr( $module, strrpos( $module, '\\' ) ) . '.php';
         $found = $this->findFile( $base_name );
@@ -66,71 +105,120 @@ class Container
     }
     // +-------------------------------------------------------------+
     /**
-     * @param string $name
+     * @param string $moduleName
      * @throws \RuntimeException
      * @return object|string
      */
-    function loadModule( $name )
+    function loadModule( $moduleName )
     {
         // get basic information about the modules to load.
-        if( isset( $this->_modules[ $name ] ) ) {
-            $moduleInfo = $this->_modules[ $name ];
-            $moduleClass = $moduleInfo[0];
+        if( isset( $this->_modules[ $moduleName ] ) ) {
+            $className = $this->_modules[ $moduleName ][0];
         }
         else { // it is not preset. use $name as class name.
-            $moduleClass = $name;
+            $className = $moduleName;
         }
         // include the class if not already included.
-        if( !class_exists( $moduleClass ) ) {
-            if( $found = $this->findModule( $moduleClass ) ) {
+        if( !class_exists( $className ) ) {
+            if( $found = $this->findModule( $className ) ) {
                 require_once( $found );
             }
             else  {
-                throw new \RuntimeException( "Module Class: {$moduleClass} for {$name} not found." );
+                throw new \RuntimeException( "Module Class: {$className} for {$moduleName} not found." );
             }
         }
-        return $moduleClass;
+        return $className;
     }
     // +-------------------------------------------------------------+
-    function forgeNewModule( $moduleName, $moduleClass ) {
-        $module = new $moduleClass();
+    /**
+     * @param string $moduleName
+     * @return string
+     */
+    function loadType( $moduleName ) {
+        $loadType = ( $this->_modules[ $moduleName ][1] ) ?: 'get';
+        return $loadType;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param string $moduleName
+     * @param string $className
+     * @return object
+     */
+    function forgeNewModule( $moduleName, $className ) {
+        $module = new $className();
         if( isset( $this->_options[ $moduleName ] )
-            && $moduleClass instanceof \AmidaMVC\Framework\IModule ) {
+            && $className instanceof \AmidaMVC\Framework\IModule ) {
             $option = $this->_options[ $moduleName ];
-            call_user_func( array( $moduleClass, '_init' ), $option );
+            call_user_func( array( $className, '_init' ), $option );
         }
         return $module;
     }
     // +-------------------------------------------------------------+
-    function get( $moduleName, $loadType='get', $idName='' ) {
-        $moduleClass = $this->loadModule( $moduleName );
+    /**
+     * @param string$moduleName
+     * @param string|null $loadType
+     * @param string $idName
+     * @return mixed|object|string
+     */
+    function getClean( $moduleName, $loadType=NULL, $idName='' ) {
+        $className = $this->loadModule( $moduleName );
         // instantiate an object based on loadType
+        $loadType = ( $loadType ) ?: $this->loadType( $moduleName );
         if( $loadType == 'static' ) {
-            $module = $moduleClass;
+            $module = $className;
         }
         elseif( $loadType == 'get' ) {
             if( !isset( $this->_objects[ $moduleName ][ $idName ] ) ) {
-                $this->_objects[ $moduleName ][ $idName ] = $this->forgeNewModule( $moduleName, $moduleClass );
+                $this->_objects[ $moduleName ][ $idName ] = $this->forgeNewModule( $moduleName, $className );
             }
             $module = $this->_objects[ $moduleName ][ $idName ];
         }
         else {
-            $module = $this->forgeNewModule( $moduleName, $moduleClass );;
+            $module = $this->forgeNewModule( $moduleName, $className );;
         }
+        return $module;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param string $moduleName
+     * @param string|null $loadType
+     * @param string $idName
+     * @return mixed|object|string
+     */
+    function get( $moduleName, $loadType=NULL, $idName='' ) {
+        $module = $this->getClean( $moduleName, $loadType, $idName);
         $this->_lastModule = $module;
         return $module;
     }
     // +-------------------------------------------------------------+
-    function magic( $moduleName, $method ) {
-        $argc = func_num_args();
-        $return = FALSE;
-        if( $argc > 1 ) {
-            $args = func_get_args();
-            $args = array_slice( $args, 2 );
-            $module = $this->get( $moduleName );
-            $return = call_user_func_array( array( $module, $method ), $args );
+    /**
+     * @param string $injectName
+     * @param string $moduleName
+     * @param string|null $loadType
+     * @param string $idName
+     * @throws \RuntimeException
+     * @return mixed
+     */
+    function inject( $injectName, $moduleName, $loadType=NULL, $idName='' ) {
+        $object = $this->_lastModule;
+        $injected = $this->getClean( $moduleName, $loadType, $idName );
+        $args = array();
+        if( method_exists( $object, $injectName ) ) {
+            $exec = array( $object, $injectName );
+            $args = array( $object );
         }
-        return $return;
+        elseif( method_exists( $object, 'inject' ) ) {
+            $exec = array( $object, 'inject' );
+            $args = array( $injectName, $object );
+        }
+        elseif( method_exists( $object, 'inject'.$injectName ) ) {
+            $exec = array( $object, 'inject'.$injectName );
+            $args = array( $object );
+        }
+        if( isset( $exec ) ) {
+            return call_user_func_array( $exec, $args );
+        }
+        throw new \RuntimeException( "Cannot inject $moduleName via $injectName." );
     }
     // +-------------------------------------------------------------+
 }
