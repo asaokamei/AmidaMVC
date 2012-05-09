@@ -153,7 +153,7 @@ class Controller extends AmidaChain
     // +-------------------------------------------------------------+
     /**
      * find file_name from $this->loadFolder list and returns the
-     * full path. TODO: implement this and use it to load files.
+     * full path.
      * @param string $file_name
      * @return string
      */
