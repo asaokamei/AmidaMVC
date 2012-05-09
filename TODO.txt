@@ -1,9 +1,13 @@
 ToDo List
 
 * refactor AmidaMVC
-[O] rewrite everything but Framework.
-    [O] AppCms for Config/Auth/Filer.
-        [ ] devInfo in pageObj, and show it in template.
+[ ] use DIContainer???
+[ ] use Request module; remove request related method from Controller.
+[ ] use Config module; remove option stuff from Controller.
+[X] rewrite everything but Framework.
+    [X] still a lot to refactor, but kind of working now.
+    [X] AppCms for Config/Auth/Filer.
+        [X] devInfo in pageObj, and show it in template.
     [X] AppSimple for Router/Loader/Emitter.
     [X] use module not component.
 [O] refactor Filer module
