@@ -18,7 +18,7 @@ class Application extends \AmidaMVC\Framework\Controller
             'modules' => array(
 //                array( '\AmidaMVC\AppSimple\Config',  'config' ),
                 array( 'Config',  'config' ),
-                array( '\AmidaMVC\AppCms\Auth',    'authAdmin' ),
+//                array( '\AmidaMVC\AppCms\Auth',    'authAdmin' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevLogin' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevLogout' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevMode' ),
@@ -27,16 +27,19 @@ class Application extends \AmidaMVC\Framework\Controller
                 array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
             ),
             '_authAdmin' => array(
-                'authArea' => 'authAdmin',
-                'authClass' => '\AmidaMVC\Tools\AuthNot',
-                'password_file' => 'admin.password',
-                'loginForm_file' => 'login_file.md',
-                'evaluateOn' => array(
-                    'onPathInfo' => array( '/admin', '/admin2' ),
-                    'onFail' => array(
-                        'setLoginForm' => 'login for admin pages',
+                'config' => array(
+                    'password_file' => 'admin.password',
+                    'loginForm_file' => 'login_file.md',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/admin', '/admin2' ),
+                        'onFail' => array(
+                            'setLoginForm' => 'login for admin pages',
+                        ),
+                        'onSuccess' => array(),
                     ),
-                    'onSuccess' => array(),
+                ),
+                'inject' => array(
+                    'authClass', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin'
                 ),
             ),
             '_authDevLogin' => array(
