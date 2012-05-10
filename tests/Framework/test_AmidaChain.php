@@ -1,6 +1,6 @@
 <?php
 error_reporting( E_ALL );
-require( '../src/AmidaMVC/bootstrap.php' );
+require( __DIR__ . '/../../src/AmidaMVC/bootstrap.php' );
 
 
 class test_FrameworkAmidaChain extends PHPUnit_Framework_TestCase
