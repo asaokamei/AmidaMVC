@@ -199,8 +199,10 @@ class Container
                 call_user_func_array( array( $this, 'injectModule' ), $args );
             }
         }
-        $option = ( isset( $moduleInfo[ 'option' ] ) ) ? $moduleInfo[ 'option' ]: array();
-        call_user_func( array( $module, '_init' ), $option );
+        if( isset( $moduleInfo[ 'option' ] ) ) {
+            $option = ( $moduleInfo[ 'option' ] ) ?: array();
+            call_user_func( array( $module, '_init' ), $option );
+        }
     }
     // +-------------------------------------------------------------+
     /**
