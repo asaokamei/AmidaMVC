@@ -1,6 +1,12 @@
 <?php
 namespace AmidaMVC\Framework;
 
+/*
+ * about class's methods in calling order
+ * __construct( $config=array() )
+ * inject( 'name', $object ) or injectName( $object )
+ * _init( $option )
+ */
 class Container
 {
     /**
@@ -49,10 +55,10 @@ class Container
         if( !is_array( $option ) ) return $this;
         if( isset( $option[ 'modules' ] ) && is_array( $option[ 'modules' ] ) ) {
             foreach( $option[ 'modules' ] as $moduleInfo ) {
-                $loadType = ( $moduleInfo[2] ) ?: 'get';
-                $this->_modules[ $moduleInfo[1] ] = array(
-                    $moduleInfo[0], $loadType,
-                );
+                $className = $moduleInfo[0];
+                $moduleInfo[0] = $moduleInfo[1];
+                $moduleInfo[1] = $className;
+                call_user_func_array( $this->setModule, $moduleInfo );
             }
         }
         foreach( $option as $opName => $opVal ) {
@@ -61,6 +67,42 @@ class Container
             }
         }
         return $this;
+    }
+    // +-------------------------------------------------------------+
+    function setModule( $moduleName, $className, $loadType='get', $config=array(), $option=array() ) {
+        $this->_modules[ $moduleName ] = array(
+            $className, $loadType, $config, $option
+        );
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    function setModuleConfig( $moduleName, $options ) {
+        $this->_options[ $moduleName ][ 'config' ] = $options;
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    function setModuleInjections( $moduleName, $options ) {
+        $this->_options[ $moduleName ][ 'inject' ] = $options;
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    function setModuleInit( $moduleName, $options ) {
+        $this->_options[ $moduleName ][ 'init' ] = $options;
+        return $this;
+    }
+    // +-------------------------------------------------------------+
+    function getModuleOptions( $moduleName ) {
+        if( isset( $this->_options[ $moduleName ] ) ) {
+            return $this->_options[ $moduleName ];
+        }
+        return FALSE;
+    }
+    // +-------------------------------------------------------------+
+    function getModuleInfo( $moduleName ) {
+        if( isset( $this->_modules[ $moduleName ] ) ) {
+            return $this->_modules[ $moduleName ];
+        }
+        return FALSE;
     }
     // +-------------------------------------------------------------+
     /**
@@ -98,7 +140,7 @@ class Container
      * @param string $module
      * @return string
      */
-    function findModule( $module ) {
+    function findModuleFile( $module ) {
         $base_name = substr( $module, strrpos( $module, '\\' ) ) . '.php';
         $found = $this->findFile( $base_name );
         return $found;
@@ -120,7 +162,7 @@ class Container
         }
         // include the class if not already included.
         if( !class_exists( $className ) ) {
-            if( $found = $this->findModule( $className ) ) {
+            if( $found = $this->findModuleFile( $className ) ) {
                 require_once( $found );
             }
             else  {
@@ -134,18 +176,33 @@ class Container
      * @param string $moduleName
      * @return string
      */
-    function loadType( $moduleName ) {
-        $loadType = ( $this->_modules[ $moduleName ][1] ) ?: 'get';
+    function getLoadType( $moduleName ) {
+        $loadType = 'get';
+        if( isset( $this->_modules[ $moduleName ] ) &&
+            is_array( $this->_modules[ $moduleName ] ) &&
+            isset( $this->_modules[ $moduleName ][1]) ) {
+            $loadType = $this->_modules[ $moduleName ][1];
+        }
         return $loadType;
     }
     // +-------------------------------------------------------------+
     /**
      * @param string $moduleName
      * @param string $className
+     * @param $config
      * @return object
      */
-    function forgeNewModule( $moduleName, $className ) {
-        $module = new $className();
+    function forgeNewModule( $moduleName, $className, $config ) {
+        if( isset( $config ) && is_array( $config ) ) {
+            // use the given config
+        }
+        elseif( isset( $moduleOption[ 'config' ] ) ) {
+            $config = $moduleOption[ 'config' ];
+        }
+        else {
+            $config = array();
+        }
+        $module = new $className( $config );
         if( isset( $this->_options[ $moduleName ] )
             && $className instanceof \AmidaMVC\Framework\IModule ) {
             $option = $this->_options[ $moduleName ];
@@ -154,41 +211,74 @@ class Container
         return $module;
     }
     // +-------------------------------------------------------------+
+    function forgeInjectAndInit( $module, $moduleInfo ) {
+        if( isset( $moduleInfo[ 'option' ] ) ) {
+            call_user_func( array( $module, '_init' ), $moduleInfo[ 'option' ] );
+        }
+        if( isset( $moduleInfo[ 'inject' ] ) && is_array( $moduleInfo[ 'inject' ] ) ) {
+            foreach( $moduleInfo[ 'inject' ] as $injectInfo ) {
+
+            }
+        }
+    }
+    // +-------------------------------------------------------------+
     /**
      * @param string$moduleName
      * @param string|null $loadType
      * @param string $idName
+     * @param array|null $config
      * @return mixed|object|string
      */
-    function getClean( $moduleName, $loadType=NULL, $idName='' ) {
+    function getClean( $moduleName, $loadType=NULL, $idName='', $config=null ) {
+        $moduleOption = $this->getModuleOptions( $moduleName );
         $className = $this->loadModule( $moduleName );
         // instantiate an object based on loadType
-        $loadType = ( $loadType ) ?: $this->loadType( $moduleName );
+        $loadType = ( $loadType ) ?: $moduleOption[2];
         if( $loadType == 'static' ) {
             $module = $className;
         }
         elseif( $loadType == 'get' ) {
             if( !isset( $this->_objects[ $moduleName ][ $idName ] ) ) {
-                $this->_objects[ $moduleName ][ $idName ] = $this->forgeNewModule( $moduleName, $className );
+                $this->_objects[ $moduleName ][ $idName ] = $this->forgeNewModule( $moduleName, $className, $config );
             }
             $module = $this->_objects[ $moduleName ][ $idName ];
         }
         else {
-            $module = $this->forgeNewModule( $moduleName, $className );;
+            $module = $this->forgeNewModule( $moduleName, $className, $config );;
         }
         return $module;
     }
     // +-------------------------------------------------------------+
     /**
      * @param string $moduleName
-     * @param string|null $loadType
-     * @param string $idName
+     * @param array|null $config
      * @return mixed|object|string
      */
-    function get( $moduleName, $loadType=NULL, $idName='' ) {
-        $module = $this->getClean( $moduleName, $loadType, $idName);
+    function get( $moduleName, $config=NULL ) {
+        $module = $this->getClean( $moduleName, 'get', '', $config );
         $this->_lastModule = $module;
         return $module;
+    }
+    // +-------------------------------------------------------------+
+    function injectModule( $module, $injectName, $moduleName, $loadType=NULL, $idName='' ) {
+        $injected = $this->getClean( $moduleName, $loadType, $idName );
+        $args = array();
+        if( substr( $injectName, 6 ) == 'inject' && method_exists( $module, $injectName ) ) {
+            $exec = array( $module, $injectName );
+            $args = array( $injected );
+        }
+        elseif( method_exists( $module, 'inject' ) ) {
+            $exec = array( $module, 'inject' );
+            $args = array( $injectName, $injected );
+        }
+        elseif( method_exists( $module, 'inject'.$injectName ) ) {
+            $exec = array( $module, 'inject'.$injectName );
+            $args = array( $injected );
+        }
+        if( isset( $exec ) ) {
+            return call_user_func_array( $exec, $args );
+        }
+        throw new \RuntimeException( "Cannot inject $moduleName via $injectName." );
     }
     // +-------------------------------------------------------------+
     /**
