@@ -10,7 +10,14 @@ namespace AmidaMVC\Framework;
 class Container
 {
     /**
-     * @var array     array(  moduleName => [ className=>'', loadType=>'', idName=>'', config=>[], inject=>[], init=>[] ], ...  )
+     * @var array     module info about how to build an object
+     *
+     * looks like this.
+     * array(
+     *   moduleName => [
+     *     className=>'', loadType=>'', idName=>'', config=>[], inject=>[], option=>[]
+     *   ],
+     *   ...  )
      */
     protected $_modules = array();
     /**
@@ -28,7 +35,7 @@ class Container
     /**
      * @var Container
      */
-    static $self;
+    static $self = FALSE;
     // +-------------------------------------------------------------+
     function __construct() {}
     // +-------------------------------------------------------------+
@@ -41,6 +48,20 @@ class Container
             static::$self = new static();
         }
         return static::$self;
+    }
+    // +-------------------------------------------------------------+
+    static function start() {
+        $self = static::getInstance();
+        $self->_objects[ 'new' ] = array();
+        return $self;
+    }
+    // +-------------------------------------------------------------+
+    static function resume() {
+        return static::getInstance();
+    }
+    // +-------------------------------------------------------------+
+    static function clean() {
+        static::$self = FALSE;
     }
     // +-------------------------------------------------------------+
     /**
@@ -86,8 +107,8 @@ class Container
         return $this;
     }
     // +-------------------------------------------------------------+
-    function setModuleInit( $moduleName, $options ) {
-        $this->_modules[ $moduleName ][ 'init' ] = $options;
+    function setModuleOption( $moduleName, $options ) {
+        $this->_modules[ $moduleName ][ 'Option' ] = $options;
         return $this;
     }
     // +-------------------------------------------------------------+
@@ -102,7 +123,7 @@ class Container
                 'idName' => '',
                 'config' => array(),
                 'inject' => array(),
-                'init' => array(),
+                'option' => array(),
                 'undefined' => TRUE,
             );
         }
@@ -204,14 +225,12 @@ class Container
         if( $loadType == 'static' ) {
             $module = $className;
         }
-        elseif( $loadType == 'get' ) {
-            if( !isset( $this->_objects[ $moduleName ][ $idName ] ) ) {
-                $this->_objects[ $moduleName ][ $idName ] = new $className( $moduleInfo[ 'config' ] );
+        else { // $loadType is 'new' or 'get'.
+            if( !isset( $this->_objects[ $loadType ][ $moduleName ][ $idName ] ) ) {
+                $this->_objects[ $loadType ][ $moduleName ][ $idName ] =
+                    new $className( $moduleInfo[ 'config' ] );
             }
-            $module = $this->_objects[ $moduleName ][ $idName ];
-        }
-        else {
-            $module = new $className( $moduleInfo[ 'config' ] );
+            $module = $this->_objects[ $loadType ][ $moduleName ][ $idName ];
         }
         $this->injectAndInit( $module, $moduleInfo );
         return $module;
