@@ -282,6 +282,15 @@ class Container
         return $module;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @param string $module
+     * @param string $injectName
+     * @param string $moduleName
+     * @param null|string $loadType
+     * @param string $idName
+     * @return Container
+     * @throws \RuntimeException
+     */
     function injectModule( $module, $injectName, $moduleName, $loadType=NULL, $idName='' ) {
         $injected = $this->getClean( $moduleName, $loadType, $idName );
         $args = array();
@@ -295,7 +304,8 @@ class Container
             $args = array( $injectName, $injected );
         }
         if( isset( $exec ) ) {
-            return call_user_func_array( $exec, $args );
+            call_user_func_array( $exec, $args );
+            return $this;
         }
         throw new \RuntimeException( "Cannot inject $moduleName via $injectName." );
     }
