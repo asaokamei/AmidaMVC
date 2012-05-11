@@ -210,15 +210,28 @@ class Container
                 $moduleInfo[ 'config' ] = $config;
             }
         }
-        if( $loadType == 'static' ) {
+        if( is_object( $className ) ) {
+            $module = $className;
+        }
+        else if( $className instanceof \Closure ) {
+            /** @var $className Closure */
+            $module = $className( $this );
+        }
+        else if( $loadType == 'static' ) {
             $module = $className;
         }
         else { // $loadType is 'new' or 'get'.
-            if( !isset( $this->_objects[ $loadType ][ $moduleName ][ $idName ] ) ) {
-                $this->_objects[ $loadType ][ $moduleName ][ $idName ] =
-                    new $className( $moduleInfo[ 'config' ] );
+            if( $loadType == 'new' && empty( $idName ) ) {
+                // new without id always return brand-new object.
+                $module = new $className( $moduleInfo[ 'config' ] );
             }
-            $module = $this->_objects[ $loadType ][ $moduleName ][ $idName ];
+            else if( isset( $this->_objects[ $loadType ][ $moduleName ][ $idName ] ) ) {
+                $module = $this->_objects[ $loadType ][ $moduleName ][ $idName ];
+            }
+            else {
+                $this->_objects[ $loadType ][ $moduleName ][ $idName ] =
+                    $module = new $className( $moduleInfo[ 'config' ] );
+            }
         }
         $this->injectAndInit( $module, $moduleInfo );
         return $module;
