@@ -7,44 +7,63 @@ namespace AmidaMVC\Tools;
  */
 class Request
 {
+    /**
+     * @var array   holds server info.
+     */
+    protected $_server = array();
     // +-------------------------------------------------------------+
+    /**
+     * @param array $config    alternative to $_SERVER info. 
+     */
+    function __construct( $config=array() ) {
+        if( !empty( $config ) ) {
+            $this->_server = $config;
+        }
+        else {
+            $this->_server = & $_SERVER;
+        }
+    }
     /**
      * check if request method is POST.
      * @static
      * @return bool
      */
-    static function isPost() {
-        return ( $_SERVER[ 'REQUEST_METHOD' ] === 'POST' ) ? TRUE: FALSE;
+    function isPost() {
+        return ( $this->_server[ 'REQUEST_METHOD' ] === 'POST' ) ? TRUE: FALSE;
     }
-    // +-------------------------------------------------------------+
     /**
      * get host name of server.
      * @static
      * @return bool
      */
-    static function getHost() {
-        if( !empty( $_SERVER[ 'HTTP_HOST' ] ) ) {
-            return $_SERVER[ 'HTTP_HOST' ];
+    function getHost() {
+        if( !empty( $this->_server[ 'HTTP_HOST' ] ) ) {
+            return $this->_server[ 'HTTP_HOST' ];
         }
-        return $_SERVER[ 'SERVER_NAME' ];
+        return $this->_server[ 'SERVER_NAME' ];
     }
-    // +-------------------------------------------------------------+
-    static function getRequestUri() {
-        return urldecode( $_SERVER[ 'REQUEST_URI' ] );
+    /**
+     * @static
+     * @return string
+     */
+    function getRequestUri() {
+        return urldecode( $this->_server[ 'REQUEST_URI' ] );
     }
-    // +-------------------------------------------------------------+
-    static function getScriptName() {
-        return urldecode( $_SERVER[ 'SCRIPT_NAME' ] );
+    /**
+     * @static
+     * @return string
+     */
+    function getScriptName() {
+        return urldecode( $this->_server[ 'SCRIPT_NAME' ] );
     }
-    // +-------------------------------------------------------------+
     /**
      * get base url of this application.
      * @static
      * @return string
      */
-    static function getBaseUrl() {
-        $script_name = self::getScriptName();
-        $request_uri = self::getRequestUri();
+    function getBaseUrl() {
+        $script_name = $this->getScriptName();
+        $request_uri = $this->getRequestUri();
         if( strpos( $request_uri, $script_name ) === 0 ) {
             return $script_name;
         }
@@ -59,9 +78,9 @@ class Request
      * @static
      * @return string
      */
-    static function getPathInfo() {
-        $base_url    = self::getBaseUrl();
-        $request_uri = self::getRequestUri();
+    function getPathInfo() {
+        $base_url    = $this->getBaseUrl();
+        $request_uri = $this->getRequestUri();
         if( ( $pos = strpos( $request_uri, '?' ) ) !== FALSE ) {
             $request_uri = substr( $request_uri, 0, $pos );
         }
@@ -75,7 +94,7 @@ class Request
      * @param string $path   The original path, can be relative etc.
      * @return string        The resolved path, it might not exist.
      */
-    static function truePath($path)
+    function truePath($path)
     {
         // whether $path is unix or not
         $unipath=strlen($path)==0 || $path{0}!='/';
