@@ -36,8 +36,16 @@ class Container
      * @var Container
      */
     static $self = FALSE;
+    protected $_loadObj;
     // +-------------------------------------------------------------+
     function __construct() {}
+    // +-------------------------------------------------------------+
+    /**
+     * @param object $load    used to load a file for a class.
+     */
+    function injectLoad( $load ) {
+        $this->_loadObj = $load;
+    }
     // +-------------------------------------------------------------+
     /**
      * @static
@@ -117,44 +125,14 @@ class Container
     }
     // +-------------------------------------------------------------+
     /**
-     * @param string|array $folder
-     * @return Container
-     */
-    function setFileLocation( $folder ) {
-        if( is_array( $folder ) ) {
-            $folder = array( $folder );
-        }
-        $this->_rootDir = $folder + $this->_rootDir;
-        return $this;
-    }
-    // +-------------------------------------------------------------+
-    /**
-     * find file_name from $this->loadFolder list and returns the
-     * full path.
-     * @param string $file_name
+     * @param string $className
      * @return string
      */
-    function findFile( $file_name ) {
-        $found = FALSE;
-        if( empty( $this->_rootDir ) ) return $found;
-        foreach( $this->_rootDir as $folder ) {
-            $check_file = $folder. '/' . $file_name;
-            if( file_exists( $check_file ) ) {
-                $found = $check_file;
-                break;
-            }
+    function loadClassFile( $className ) {
+        if( $this->_loadObj && method_exists( $this->_loadObj, 'loadClassFile' ) ) {
+            return $this->_loadObj->loadClassFile( $className );
         }
-        return $found;
-    }
-    // +-------------------------------------------------------------+
-    /**
-     * @param string $module
-     * @return string
-     */
-    function findModuleFile( $module ) {
-        $base_name = substr( $module, strrpos( $module, '\\' ) ) . '.php';
-        $found = $this->findFile( $base_name );
-        return $found;
+        return FALSE;
     }
     // +-------------------------------------------------------------+
     /**
@@ -168,11 +146,9 @@ class Container
         $className = $moduleInfo[ 'className' ];
         // include the class if not already included.
         if( !class_exists( $className ) ) {
-            if( $found = $this->findModuleFile( $className ) ) {
-                require_once( $found );
-            }
-            else  {
-                throw new \RuntimeException( "Module Class: {$className} for {$moduleName} not found." );
+            $this->loadClassFile( $className );
+            if( !class_exists( $className ) ) {
+                throw new \RuntimeException( "Class: {$className} for {$moduleName} not found." );
             }
         }
         return $className;
