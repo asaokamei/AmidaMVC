@@ -15,6 +15,10 @@ class Request
      * @var string|bool   path info
      */
     protected $path_info = NULL;
+    /**
+     * @var string\null   base URL
+     */
+    protected $base_url = NULL;
     // +-------------------------------------------------------------+
     /**
      * @param array $config    alternative to $_SERVER info.
@@ -54,18 +58,32 @@ class Request
         return urldecode( $this->_server[ 'REQUEST_URI' ] );
     }
     /**
-     * @static
      * @return string
      */
     function getScriptName() {
         return urldecode( $this->_server[ 'SCRIPT_NAME' ] );
     }
+    // +-------------------------------------------------------------+
     /**
-     * get base url of this application.
-     * @static
      * @return string
      */
     function getBaseUrl() {
+        if( !isset( $this->base_url ) ) {
+            $this->base_url = $this->calBaseUrl();
+        }
+        return $this->base_url;
+    }
+    /**
+     * @param string $url
+     */
+    function setBaseUrl( $url ) {
+        $this->base_url = $url;
+    }
+    /**
+     * get base url of this application.
+     * @return string
+     */
+    function calBaseUrl() {
         $script_name = $this->getScriptName();
         $request_uri = $this->getRequestUri();
         if( strpos( $request_uri, $script_name ) === 0 ) {

@@ -12,10 +12,6 @@ class Controller extends AmidaChain
      */
     protected $ctrl_root = NULL;
     /**
-     * @var null  base url where AmidaMVC application starts.
-     */
-    protected $base_url = NULL;
-    /**
      * @var string   prefixAct to specify command.
      */
     protected $prefixCmd = '_';
@@ -87,10 +83,6 @@ class Controller extends AmidaChain
         }
         // get request object.
         $this->_requestClass = $this->_diContainer->get( '\AmidaMVC\Tools\Request' );
-
-        // set path_info and base_url.
-        //$this->path_info = call_user_func( array( $this->_requestClass, 'getPathInfo' ) );
-        $this->base_url = call_user_func( array( $this->_requestClass, 'getBaseUrl' ) );
 
         // set ctrl root folder.
         if( !isset( $option[ 'ctrl_root' ] ) ) {
@@ -255,7 +247,7 @@ class Controller extends AmidaChain
      * @return string   base url where your web site is at.
      */
     function getBaseUrl( $url=NULL ) {
-        $base_url = $this->base_url;
+        $base_url = $this->_requestClass->getBaseUrl();
         if( substr( $base_url, -1 ) !== '/' ) {
             $base_url .= '/';
         }
@@ -372,6 +364,7 @@ class Controller extends AmidaChain
     // +-------------------------------------------------------------+
     /**
      * separates commands in path_info to $this->cmd.
+     * TODO: move this method to Tools\Load class.
      * @return Controller
      */
     function separateCommands() {
