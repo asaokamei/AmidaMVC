@@ -94,9 +94,6 @@ class Controller extends AmidaChain
 
         // set path_info and base_url.
         $this->path_info = call_user_func( array( $this->_requestClass, 'getPathInfo' ) );
-        if( substr( $this->path_info, 0, 1 ) === '/' ) {
-            $this->path_info = substr( $this->path_info, 1 );
-        }
         $this->base_url = call_user_func( array( $this->_requestClass, 'getBaseUrl' ) );
 
         // set ctrl root folder.
@@ -251,7 +248,7 @@ class Controller extends AmidaChain
             $path = substr( $path, 1 );
         }
         $class = $this->_requestClass;
-        $url = $class::truePath( $this->getBaseUrl() . $path );
+        $url = call_user_func( array( $class, 'truePath' ), $this->getBaseUrl() . $path );
         return $url;
     }
     // +-------------------------------------------------------------+
@@ -271,7 +268,7 @@ class Controller extends AmidaChain
         }
         $class = $this->_requestClass;
         $base = "{$base_url}{$url}";
-        $base = $class::truePath( $base );
+        $base = call_user_func( array( $class, 'truePath' ), $base );
         return $base;
     }
     // +-------------------------------------------------------------+

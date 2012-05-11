@@ -11,6 +11,10 @@ class Request
      * @var array   holds server info.
      */
     protected $_server = array();
+    /**
+     * @var string|bool   path info
+     */
+    protected $path_info = FALSE;
     // +-------------------------------------------------------------+
     /**
      * @param array $config    alternative to $_SERVER info.
@@ -74,17 +78,36 @@ class Request
     }
     // +-------------------------------------------------------------+
     /**
-     * get path info, url from the base url to the end.
-     * @static
-     * @return string
+     * @return bool|string
      */
     function getPathInfo() {
+        if( !$this->path_info ) {
+            $this->path_info = $this->calPathInfo();
+        }
+        return $this->path_info;
+    }
+    /**
+     * @param $path
+     * @return mixed
+     */
+    function setPathInfo( $path ) {
+        $this->path_info = $path;
+        return $path;
+    }
+    /**
+     * get path info, url from the base url to the end.
+     * @return string
+     */
+    function calPathInfo() {
         $base_url    = $this->getBaseUrl();
         $request_uri = $this->getRequestUri();
         if( ( $pos = strpos( $request_uri, '?' ) ) !== FALSE ) {
             $request_uri = substr( $request_uri, 0, $pos );
         }
         $path_info = (string) substr( $request_uri, strlen( $base_url ) );
+        if( substr( $path_info, 0, 1 ) === '/' ) {
+            $path_info = substr( $path_info, 1 );
+        }
         return $path_info;
     }
     // +-------------------------------------------------------------+
