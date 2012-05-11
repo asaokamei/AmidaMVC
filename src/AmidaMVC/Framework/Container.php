@@ -36,6 +36,9 @@ class Container
      * @var Container
      */
     static $self = FALSE;
+    /**
+     * @var \AmidaMVC\Tools\Load
+     */
     protected $_loadObj;
     // +-------------------------------------------------------------+
     function __construct() {}
@@ -70,30 +73,6 @@ class Container
     // +-------------------------------------------------------------+
     static function clean() {
         static::$self = FALSE;
-    }
-    // +-------------------------------------------------------------+
-    /**
-     * @param array $option
-     * @return Container
-     */
-    function _init( $option=array() ) {
-        if( !is_array( $option ) ) return $this;
-        if( isset( $option[ 'modules' ] ) && is_array( $option[ 'modules' ] ) ) {
-            foreach( $option[ 'modules' ] as $moduleInfo ) {
-                $className = $moduleInfo[0];
-                $moduleInfo[0] = $moduleInfo[1];
-                $moduleInfo[1] = $className;
-                call_user_func_array( array( $this, 'setModule' ), $moduleInfo );
-            }
-        }
-        foreach( $option as $opName => $opVal ) {
-            if( substr( $opName, 0, 1 ) === '_' ) {
-                $this->_modules[ substr( $opName, 1 ) ] = array(
-                    'option' => $opVal,
-                );
-            }
-        }
-        return $this;
     }
     // +-------------------------------------------------------------+
     function setModule( $moduleName, $className ) {
