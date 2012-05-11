@@ -64,6 +64,7 @@ class Controller extends AmidaChain
             unset( $option[ '_DIContainerClass' ] );
         }
         else {
+            /** @var $class \AmidaMVC\Framework\Container */
             $class = $this->_diContainer;
             $this->_diContainer = $class::start();
         }
@@ -72,13 +73,6 @@ class Controller extends AmidaChain
             $this->addModule( $option[ 'modules' ] );
             foreach( $option[ 'modules' ] as $info ) {
                 $this->_diContainer->setModule( $info[1], $info[0] );
-            }
-        }
-        // set up moduleInfo for DI Container.
-        $this->options = $option;
-        foreach( $option as $opName => $opVal ) {
-            if( substr( $opName, 0, 1 ) === '_' ) {
-                $this->_diContainer->setModule( substr( $opName, 1 ), $opVal );
             }
         }
         // get request object.
