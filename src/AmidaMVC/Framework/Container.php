@@ -88,27 +88,13 @@ class Container
         return $this;
     }
     // +-------------------------------------------------------------+
-    function setModule( $moduleName, $className, $loadType='get', $idName='' ) {
-        $this->_modules[ $moduleName ] = array(
-            'className' => $className,
-            'loadType' => $loadType,
-            'idName' => $idName,
-        );
-        return $this;
-    }
-    // +-------------------------------------------------------------+
-    function setModuleConfig( $moduleName, $options ) {
-        $this->_modules[ $moduleName ][ 'config' ] = $options;
-        return $this;
-    }
-    // +-------------------------------------------------------------+
-    function setModuleInjections( $moduleName, $options ) {
-        $this->_modules[ $moduleName ][ 'inject' ] = $options;
-        return $this;
-    }
-    // +-------------------------------------------------------------+
-    function setModuleOption( $moduleName, $options ) {
-        $this->_modules[ $moduleName ][ 'Option' ] = $options;
+    function setModule( $moduleName, $className ) {
+        $args = func_get_args();
+        list( $loadType, $idName, $config ) = $this->parseInput( $args, 2 );
+        $config[ 'className' ] = $className;
+        $config[ 'loadType' ] = $loadType;
+        $config[ 'idName' ] = $idName;
+        $this->_modules[ $moduleName ] = $config;
         return $this;
     }
     // +-------------------------------------------------------------+
@@ -238,17 +224,15 @@ class Container
         return $module;
     }
     // +-------------------------------------------------------------+
-    /**
-     * @param string $moduleName
-     * @internal param array|null $config
-     * @return mixed|object|string
-     */
-    function get( $moduleName ) {
+    function parseInput( $input=array(), $offset=0 ) {
+        if( $offset > 0 ) {
+            $input = array_slice( $input, $offset );
+        }
         $loadType = 'get';
         $idName = '';
         $config = array();
-        if( func_num_args() == 2 ) {
-            $arg = func_get_arg(1);
+        if( count( $input ) == 1 ) {
+            $arg = $input[0];
             if( is_array( $arg ) ) {
                 $config = $arg;
             }
@@ -259,12 +243,12 @@ class Container
                 $idName = $arg;
             }
         }
-        if( func_num_args() == 3 ) {
-            $arg = func_get_arg(1);
+        if( count( $input ) == 2 ) {
+            $arg = $input[0];
             if( in_array( $arg, array( 'get', 'new', 'static' ) ) ) {
                 $loadType = $arg;
             }
-            $arg = func_get_arg(2);
+            $arg = $input[1];
             if( is_array( $arg ) ) {
                 $config = $arg;
             }
@@ -272,11 +256,22 @@ class Container
                 $idName = $arg;
             }
         }
-        if( func_num_args() >= 4 ) {
-            $loadType = func_get_arg(1);
-            $idName = func_get_arg(2);
-            $config = func_get_arg(3);
+        if( count( $input ) >= 3 ) {
+            $loadType = $input[0];
+            $idName = $input[1];
+            $config = $input[2];
         }
+        return array( $loadType, $idName, $config );
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param string $moduleName
+     * @internal param array|null $config
+     * @return mixed|object|string
+     */
+    function get( $moduleName ) {
+        $args = func_get_args();
+        list( $loadType, $idName, $config ) = $this->parseInput( $args, 1 );
         $module = $this->getClean( $moduleName, $loadType, $idName, $config );
         $this->_lastModule = $module;
         return $module;
@@ -286,13 +281,16 @@ class Container
      * @param string $module
      * @param string $injectName
      * @param string $moduleName
-     * @param null|string $loadType
-     * @param string $idName
-     * @return Container
      * @throws \RuntimeException
+     * @internal param null|string $loadType
+     * @internal param string $idName
+     * @return Container
      */
-    function injectModule( $module, $injectName, $moduleName, $loadType=NULL, $idName='' ) {
-        $injected = $this->getClean( $moduleName, $loadType, $idName );
+    function injectModule( $module, $injectName, $moduleName ) {
+        $args = func_get_args();
+        $args = array_slice( $args, 3 );
+        list( $loadType, $idName, $config ) = $this->parseInput( $args );
+        $injected = $this->getClean( $moduleName, $loadType, $idName, $config );
         $args = array();
         $method = 'inject' . ucwords( $injectName );
         if( method_exists( $module, $method ) ) {
@@ -313,14 +311,15 @@ class Container
     /**
      * @param string $injectName
      * @param string $moduleName
-     * @param string|null $loadType
-     * @param string $idName
-     * @throws \RuntimeException
+     * @internal param null|string $loadType
+     * @internal param string $idName
      * @return mixed
      */
-    function inject( $injectName, $moduleName, $loadType=NULL, $idName='' ) {
+    function inject( $injectName, $moduleName ) {
+        $args = func_get_args();
+        list( $loadType, $idName, $config ) = $this->parseInput( $args, 2 );
         $object = $this->_lastModule;
-        return $this->injectModule( $object, $injectName, $moduleName, $loadType, $idName );
+        return $this->injectModule( $object, $injectName, $moduleName, $loadType, $idName, $config );
     }
     // +-------------------------------------------------------------+
 }
