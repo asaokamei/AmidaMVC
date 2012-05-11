@@ -3,7 +3,7 @@
 // filer's mode; _edit, _put, _pub, _del,...
 /** @var $_filerObj object  */
 /** @var $_ctrl \AmidaMVC\Framework\Controller  */
-$self = $_ctrl->getPath( $_ctrl->getPathInfo() );
+$self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
 $base = $_ctrl->getBaseUrl();
 
 $simpleMenuList = array(

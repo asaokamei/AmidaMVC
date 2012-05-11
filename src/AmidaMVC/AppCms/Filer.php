@@ -170,7 +170,7 @@ class Filer implements \AmidaMVC\Framework\IModule
             );
         }
         else {
-            $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
+            $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
             if( $loadInfo[ 'foundBy' ] === 'index' ) {
                 $self = $self . '/' . $new_file;
             }
@@ -236,7 +236,7 @@ class Filer implements \AmidaMVC\Framework\IModule
             $file_name = $loadInfo['file'];
             $contents = $load::getContentsByGet( $file_name );
         }
-        $self = $_ctrl->getPath( $_ctrl->getPathInfo() );
+        $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
         $contents = $this->_makeEditForm( $self, $contents );
         $_pageObj->setContent( $contents );
         $_ctrl->skipToModel( 'emitter' );
