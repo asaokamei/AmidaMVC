@@ -20,10 +20,6 @@ class Controller extends AmidaChain
      */
     protected $loadFolder = array();
     /**
-     * @var string  admin/dev mode of AmidaMVC. 
-     */
-    protected $mode = '';
-    /**
      * @var array   command list, starts with prefixCmd.
      */
     protected $commands = array();
@@ -75,6 +71,9 @@ class Controller extends AmidaChain
                 $this->_diContainer->setModule( $info[1], $info[0] );
             }
         }
+        // set up moduleInfo for DI Container.
+        // TODO: not to setup config in DI at this point; routes maybe added later on.
+        $this->options = $option;
         // get request object.
         $this->_requestClass = $this->_diContainer->get( '\AmidaMVC\Tools\Request' );
 

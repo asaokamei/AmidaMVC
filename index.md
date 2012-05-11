@@ -48,7 +48,6 @@ probably not going to work.
 *   [AmidaMVC application (_index.php)](indexView/_src)
 *   [To-Do demo application](todo/list)
 *   Developer's Mode shows debug info: 
-    <?php //echo ( $_siteObj->siteObj->mode == '_dev' ) ? '[Logout](_logout/)' : '[Login](_dev/)'; ?>
 
 Amida-Chain
 -----------
