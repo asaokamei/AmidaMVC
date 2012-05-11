@@ -13,7 +13,7 @@ class Request
     protected $_server = array();
     // +-------------------------------------------------------------+
     /**
-     * @param array $config    alternative to $_SERVER info. 
+     * @param array $config    alternative to $_SERVER info.
      */
     function __construct( $config=array() ) {
         if( !empty( $config ) ) {
