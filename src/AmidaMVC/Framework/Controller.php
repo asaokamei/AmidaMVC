@@ -16,10 +16,6 @@ class Controller extends AmidaChain
      */
     protected $base_url = NULL;
     /**
-     * @var null     path info without command (modified path for Route match).
-     */
-    protected $path_info = NULL;
-    /**
      * @var string   prefixAct to specify command.
      */
     protected $prefixCmd = '_';
@@ -93,7 +89,7 @@ class Controller extends AmidaChain
         $this->_requestClass = $this->_diContainer->get( '\AmidaMVC\Tools\Request' );
 
         // set path_info and base_url.
-        $this->path_info = call_user_func( array( $this->_requestClass, 'getPathInfo' ) );
+        //$this->path_info = call_user_func( array( $this->_requestClass, 'getPathInfo' ) );
         $this->base_url = call_user_func( array( $this->_requestClass, 'getBaseUrl' ) );
 
         // set ctrl root folder.
@@ -277,7 +273,7 @@ class Controller extends AmidaChain
      * @return null|string
      */
     function getPathInfo() {
-        return $this->path_info;
+        return $this->_requestClass->getPathInfo();
     }
     // +-------------------------------------------------------------+
     /**
@@ -379,7 +375,7 @@ class Controller extends AmidaChain
      * @return Controller
      */
     function separateCommands() {
-        $paths = explode( '/', $this->path_info );
+        $paths = explode( '/', $this->_requestClass->getPathInfo() );
         $path_info = '';
         foreach( $paths as $path ) {
             if( substr( $path, 0, 1 ) == $this->prefixCmd ) {
@@ -390,7 +386,7 @@ class Controller extends AmidaChain
                 $path_info .= $path;
             }
         }
-        $this->path_info = $path_info;
+        $this->_requestClass->setPathInfo( $path_info );
         return $this;
     }
     // +-------------------------------------------------------------+
