@@ -55,36 +55,60 @@ class Controller extends AmidaChain
      * @var \AmidaMVC\Framework\PageObj
      */
     protected $_pageObjClass = '\AmidaMVC\Framework\PageObj';
+    /**
+     * @var \AmidaMVC\Framework\Container
+     */
+    protected $_diContainer = '\AmidaMVC\Framework\Container';
     // +-------------------------------------------------------------+
     /**
      * @param array $option
      */
     function __construct( $option=array() ) 
     {
-        // set path_info and base_url. 
-        $class   = $this->_requestClass;
-        $this->path_info = $class::getPathInfo();
+        // set up DI Container.
+        if( isset( $option[ '_DIContainerClass' ] ) ) {
+            $class = $option[ '_DIContainerClass' ];
+            $this->_diContainer = new $class();
+            unset( $option[ '_DIContainerClass' ] );
+        }
+        else {
+            $class = $this->_diContainer;
+            $this->_diContainer = $class::start();
+        }
+        // set up modules for AmidaChain, and DI Container.
+        if( isset( $option[ 'modules' ] ) ) {
+            $this->addModule( $option[ 'modules' ] );
+            foreach( $option[ 'modules' ] as $info ) {
+                $this->_diContainer->setModule( $info[1], $info[0] );
+            }
+        }
+        // set up moduleInfo for DI Container.
+        $this->options = $option;
+        foreach( $option as $opName => $opVal ) {
+            if( substr( $opName, 0, 1 ) === '_' ) {
+                $this->_diContainer->setModule( substr( $opName, 1 ), $opVal );
+            }
+        }
+        // get request object.
+        $this->_requestClass = $this->_diContainer->get( '\AmidaMVC\Tools\Request' );
+
+        // set path_info and base_url.
+        $this->path_info = call_user_func( array( $this->_requestClass, 'getPathInfo' ) );
         if( substr( $this->path_info, 0, 1 ) === '/' ) {
             $this->path_info = substr( $this->path_info, 1 );
         }
-        $this->base_url = $class::getBaseUrl();
-        
+        $this->base_url = call_user_func( array( $this->_requestClass, 'getBaseUrl' ) );
+
         // set ctrl root folder.
         if( !isset( $option[ 'ctrl_root' ] ) ) {
             $option[ 'ctrl_root' ] = getcwd();
         }
         $this->ctrl_root    = $option[ 'ctrl_root' ];
-        
         // set loadFolder as ctrl_root and appDefault.
         $this->loadFolder[] = $this->ctrl_root;
         if( isset( $option[ 'appDefault' ] ) ) {
             $this->loadFolder[] = $option[ 'appDefault' ];
         }
-
-        if( isset( $option[ 'modules' ] ) ) {
-            $this->addModule( $option[ 'modules' ] );
-        }
-        $this->options = $option;
     }
     // +-------------------------------------------------------------+
     /**
@@ -111,8 +135,7 @@ class Controller extends AmidaChain
                 $path = DIRECTORY_SEPARATOR . $path;
             }
         }
-        $class = $this->_requestClass;
-        $path = $class::truePath( $this->ctrl_root . $path );
+        $path = call_user_func( array( $this->_requestClass, 'truePath' ), $this->ctrl_root . $path );
         return $path;
     }
     // +-------------------------------------------------------------+
