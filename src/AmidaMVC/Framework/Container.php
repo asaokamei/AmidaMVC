@@ -21,10 +21,6 @@ class Container
      */
     protected $_modules = array();
     /**
-     * @var array    list of folders to look for.
-     */
-    protected $_rootDir = array();
-    /**
      * @var array    list of generated objects for singleton
      */
     protected $_objects = array();
