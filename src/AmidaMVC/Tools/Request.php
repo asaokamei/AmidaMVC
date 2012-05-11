@@ -14,7 +14,7 @@ class Request
     /**
      * @var string|bool   path info
      */
-    protected $path_info = FALSE;
+    protected $path_info = NULL;
     // +-------------------------------------------------------------+
     /**
      * @param array $config    alternative to $_SERVER info.
@@ -81,7 +81,7 @@ class Request
      * @return bool|string
      */
     function getPathInfo() {
-        if( !$this->path_info ) {
+        if( !isset( $this->path_info ) ) {
             $this->path_info = $this->calPathInfo();
         }
         return $this->path_info;
