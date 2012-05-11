@@ -102,5 +102,12 @@ class Load
         $content = ob_get_clean();
         return $content;
     }
+    /**
+     * @param $className
+     * @return bool
+     */
+    function loadClassFile( $className ) {
+        return FALSE;
+    }
     // +-------------------------------------------------------------+
 }
