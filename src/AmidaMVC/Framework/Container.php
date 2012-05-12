@@ -92,7 +92,7 @@ class Container
                 'idName' => '',
                 'config' => array(),
                 'inject' => array(),
-                'option' => array(),
+                'option' => NULL,
                 'undefined' => TRUE,
             );
         }
