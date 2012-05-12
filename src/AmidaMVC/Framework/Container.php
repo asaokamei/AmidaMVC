@@ -225,6 +225,9 @@ class Container
             $idName = $input[1];
             $config = $input[2];
         }
+        if( !isset( $config[ 'config' ] ) && !isset( $config[ 'inject' ] ) && !isset( $config[ 'option' ] ) ) {
+            $config = array( 'config' => $config );
+        }
         return array( $loadType, $idName, $config );
     }
     // +-------------------------------------------------------------+
