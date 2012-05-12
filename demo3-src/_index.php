@@ -10,5 +10,5 @@ $app = \AmidaMVC\AppSimple\Application::getInstance(
         ),
     )
 );
-$app->separateCommands();
+//$app->separateCommands();
 $app->start();
