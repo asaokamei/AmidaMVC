@@ -226,17 +226,8 @@ class Controller extends AmidaChain
      * @return string   base url where your web site is at.
      */
     function getBaseUrl( $url=NULL ) {
-        $base_url = $this->_requestClass->getBaseUrl();
-        if( substr( $base_url, -1 ) !== '/' ) {
-            $base_url .= '/';
-        }
-        if( $url && substr( $url, 0, 1 ) !== '/' ) {
-            $url = '/' . $url;
-        }
-        $class = $this->_requestClass;
-        $base = "{$base_url}{$url}";
-        $base = call_user_func( array( $class, 'truePath' ), $base );
-        return $base;
+        $base_url = $this->_requestClass->getBaseUrl( $url );
+        return $base_url;
     }
     // +-------------------------------------------------------------+
     /**

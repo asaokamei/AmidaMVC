@@ -65,13 +65,19 @@ class Request
     }
     // +-------------------------------------------------------------+
     /**
+     * @param null|string $url
      * @return string
      */
-    function getBaseUrl() {
+    function getBaseUrl( $url=NULL ) {
         if( !isset( $this->base_url ) ) {
             $this->base_url = $this->calBaseUrl();
         }
-        return $this->base_url;
+        if( $url && substr( $url, 0, 1 ) !== '/' ) {
+            $url = '/' . $url;
+        }
+        $base = "{$this->base_url}{$url}";
+        $base = $this->truePath( $base );
+        return $base;
     }
     /**
      * @param string $url
@@ -86,13 +92,17 @@ class Request
     function calBaseUrl() {
         $script_name = $this->getScriptName();
         $request_uri = $this->getRequestUri();
+        $baseUrl = '';
         if( strpos( $request_uri, $script_name ) === 0 ) {
-            return $script_name;
+            $baseUrl = $script_name;
         }
         else if( strpos( $request_uri, dirname( $script_name ) ) === 0 ) {
-            return rtrim( dirname( $script_name ), '/' );
+            $baseUrl = rtrim( dirname( $script_name ), '/' );
         }
-        return '';
+        if( substr( $baseUrl, -1 ) !== '/' ) {
+            $baseUrl .= '/';
+        }
+        return $baseUrl;
     }
     // +-------------------------------------------------------------+
     /**
@@ -142,7 +152,7 @@ class Request
         /** @var $lastSlash string */
         $lastSlash = ( substr($path, -1, 1 ) === '/' ) ? '/' : '';
         // attempts to detect if path is relative in which case, add cwd
-        if(strpos($path,':')===false && $unipath)
+        if(strpos($path,':')===FALSE && $unipath)
             $path=getcwd().DIRECTORY_SEPARATOR.$path;
         // resolve path parts (single dot, double dot and double delimiters)
         $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
