@@ -334,22 +334,10 @@ class Controller extends AmidaChain
     // +-------------------------------------------------------------+
     /**
      * separates commands in path_info to $this->cmd.
-     * TODO: move this method to Tools\Load class.
      * @return Controller
      */
     function separateCommands() {
-        $paths = explode( '/', $this->_requestClass->getPathInfo() );
-        $path_info = '';
-        foreach( $paths as $path ) {
-            if( substr( $path, 0, 1 ) == $this->prefixCmd ) {
-                $this->commands[] = $path;
-            }
-            else {
-                if( $path_info ) $path_info .= '/';
-                $path_info .= $path;
-            }
-        }
-        $this->_requestClass->setPathInfo( $path_info );
+        $this->commands = $this->_requestClass->separateCommands( $this->prefixCmd );
         return $this;
     }
     // +-------------------------------------------------------------+

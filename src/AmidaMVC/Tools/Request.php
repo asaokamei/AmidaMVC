@@ -124,6 +124,7 @@ class Request
     }
     /**
      * get path info, url from the base url to the end.
+     * path info does NOT starts with '/'.
      * @return string
      */
     function calPathInfo() {
@@ -137,6 +138,28 @@ class Request
             $path_info = substr( $path_info, 1 );
         }
         return $path_info;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * separates commands in path_info to $this->cmd.
+     * @param string $prefixCmd
+     * @return array
+     */
+    function separateCommands( $prefixCmd='_' ) {
+        $paths = explode( '/', $this->getPathInfo() );
+        $path_info = '';
+        $commands = array();
+        foreach( $paths as $path ) {
+            if( substr( $path, 0, 1 ) == $prefixCmd ) {
+                $commands[] = $path;
+            }
+            else {
+                if( $path_info ) $path_info .= '/';
+                $path_info .= $path;
+            }
+        }
+        $this->setPathInfo( $path_info );
+        return $commands;
     }
     // +-------------------------------------------------------------+
     /**
