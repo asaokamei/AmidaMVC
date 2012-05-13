@@ -156,7 +156,7 @@ class Filer implements \AmidaMVC\Framework\IModule
      * @param array $loadInfo
      * @return array
      */
-    function action_xXxfFile( $_ctrl, $_pageObj, $loadInfo ) {
+    function action_fFile( $_ctrl, $_pageObj, $loadInfo ) {
         $new_file = $_POST[ '_newFileName' ];
         $file_to_edit = $loadInfo[ 'file_edited' ];
         if( file_exists( $file_to_edit ) ) {
