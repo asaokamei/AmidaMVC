@@ -54,7 +54,7 @@ class Filer implements \AmidaMVC\Framework\IModule
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      */
-    function _setup( $_ctrl, &$_pageObj, &$loadInfo ) {
+    function _setMenu( $_ctrl, &$_pageObj, &$loadInfo ) {
         // set JavaScript and CSS files for developer's menu...
         if( !empty( $this->listJs ) ) {
             foreach( $this->listJs as $js ) {
@@ -111,7 +111,7 @@ class Filer implements \AmidaMVC\Framework\IModule
      */
     function actionDefault( $_ctrl, &$_pageObj, $loadInfo=array() )
     {
-        $this->_setup( $_ctrl, $_pageObj, $loadInfo );
+        $this->_setMenu( $_ctrl, $_pageObj, $loadInfo );
         $command = $this->_findFilerCommand( $_ctrl );
         if( $command ) {
             $method = 'action' . $command;
