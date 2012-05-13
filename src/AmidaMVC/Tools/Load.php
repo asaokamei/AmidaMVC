@@ -26,6 +26,10 @@ class Load
         'css'   => 'css',
         'js'    => 'javascript'
     );
+    /**
+     * @var array   folders to look files for.
+     */
+    static $_loadFolder = array();
     // +-------------------------------------------------------------+
     static function isWhat( $what, $file ) {
         return static::$what( $file );
@@ -102,12 +106,50 @@ class Load
         $content = ob_get_clean();
         return $content;
     }
+    // +-------------------------------------------------------------+
+    /**
+     * @param string $folder
+     * @return Load
+     */
+    function setFileLocation( $folder ) {
+        if( !is_array( $folder ) ) {
+            $folder = array( $folder );
+        }
+        static::$_loadFolder = $folder + static::$_loadFolder;
+        return static::$_loadFolder;
+    }
+    /**
+     * find file_name from $this->loadFolder list and returns the
+     * full path.
+     * @param string $file_name
+     * @return string
+     */
+    function findFile( $file_name ) {
+        $found = FALSE;
+        if( empty( static::$_loadFolder ) ) return $found;
+        foreach( static::$_loadFolder as $folder ) {
+            $check_file = $folder. '/' . $file_name;
+            if( file_exists( $check_file ) ) {
+                $found = $check_file;
+                break;
+            }
+        }
+        return $found;
+    }
     /**
      * @param $className
      * @return bool
      */
     function loadClassFile( $className ) {
-        return FALSE;
+        if( !class_exists( $className ) ) {
+            $base_name = substr( $className, strrpos( $className, '\\' ) ) . '.php';
+            if( $found = static::findFile( $base_name ) ) {
+                require_once( $found );
+                return TRUE;
+            }
+            return FALSE;
+        }
+        return TRUE;
     }
     // +-------------------------------------------------------------+
 }

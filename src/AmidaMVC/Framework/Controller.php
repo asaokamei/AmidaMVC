@@ -47,6 +47,10 @@ class Controller extends AmidaChain
      * @var \AmidaMVC\Framework\Container
      */
     protected $_diContainer = '\AmidaMVC\Framework\Container';
+    /**
+     * @var \AmidaMVC\Tools\Load
+     */
+    protected $_loadClass = '\AmidaMVC\Tools\Load';
     // +-------------------------------------------------------------+
     /**
      * @param array $option
@@ -76,6 +80,7 @@ class Controller extends AmidaChain
         $this->options = $option;
         // get request object.
         $this->_requestClass = $this->_diContainer->get( '\AmidaMVC\Tools\Request' );
+        $this->_loadClass = $this->_diContainer->get( '\AmidaMVC\Tools\Load', 'static' );
 
         // set ctrl root folder.
         if( !isset( $option[ 'ctrl_root' ] ) ) {
@@ -83,9 +88,9 @@ class Controller extends AmidaChain
         }
         $this->ctrl_root    = $option[ 'ctrl_root' ];
         // set loadFolder as ctrl_root and appDefault.
-        $this->loadFolder[] = $this->ctrl_root;
+        $this->setFileLocation( $this->ctrl_root );
         if( isset( $option[ 'appDefault' ] ) ) {
-            $this->loadFolder[] = $option[ 'appDefault' ];
+            $this->setFileLocation( $option[ 'appDefault' ] );
         }
     }
     // +-------------------------------------------------------------+
@@ -148,8 +153,8 @@ class Controller extends AmidaChain
         if( substr( $folder, 0, 1 ) !== '/' ) {
             $folder = $this->getLocation( $folder );
         }
-        $this->loadFolder = array( $folder ) + $this->loadFolder;
-        return $this;
+        $exec = array( $this->_loadClass, 'setFileLocation' );
+        return call_user_func( $exec, $folder );
     }
     // +-------------------------------------------------------------+
     /**
@@ -159,16 +164,8 @@ class Controller extends AmidaChain
      * @return string
      */
     function findFile( $file_name ) {
-        $found = FALSE;
-        if( empty( $this->loadFolder ) ) return $found;
-        foreach( $this->loadFolder as $folder ) {
-            $check_file = $folder. '/' . $file_name;
-            if( file_exists( $check_file ) ) {
-                $found = $check_file;
-                break;
-            }
-        }
-        return $found;
+        $exec = array( $this->_loadClass, 'findFile' );
+        return call_user_func( $exec, $file_name );
     }
     // +-------------------------------------------------------------+
     /**
@@ -189,11 +186,8 @@ class Controller extends AmidaChain
         }
         else {
             if( !class_exists( $module ) ) {
-                $base_name = substr( $module, strrpos( $module, '\\' ) ) . '.php';
-                if( $found = $this->findFile( $base_name ) ) {
-                    require_once( $found );
-                }
-                if( !class_exists( $module ) ) {
+                $exec = array( $this->_loadClass, 'loadClassFile' );
+                if( !call_user_func( $exec, $module ) ) {
                     throw new \RuntimeException( "Module: {$module} not found." );
                 }
             }
