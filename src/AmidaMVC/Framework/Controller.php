@@ -130,7 +130,7 @@ class Controller extends AmidaChain
     function start( $pageObj=NULL ) {
         if( !isset( $pageObj ) ) {
             $class   = $this->_pageObjClass;
-            $pageObj = new $class();
+            $pageObj = $this->_diContainer->get( $class );
         }
         $this->pageObj = $pageObj;
         $action = $this->defaultAct();
