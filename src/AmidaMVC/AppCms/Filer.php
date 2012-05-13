@@ -158,20 +158,18 @@ class Filer implements \AmidaMVC\Framework\IModule
      */
     function action_fFile( $_ctrl, $_pageObj, $loadInfo ) {
         $new_file = $_POST[ '_newFileName' ];
-        $file_to_edit = $loadInfo[ 'file_edited' ];
-        if( file_exists( $file_to_edit ) ) {
-            $this->_error(
-                'new file error',
-                "file already exists ({$file_to_edit}). <br />" .
-                "cannot overwrite existing file."
-            );
+        if( isset( $loadInfo[ 'file' ] ) ) {
+            $file_to_edit = dirname( $loadInfo[ 'file' ] );
         }
-        else
-        if( is_dir( $file_to_edit ) ) {
+        else {
+            $file_to_edit = $_ctrl->getLocation( $_ctrl->getBaseUrl() );
+        }
+        $file_to_edit = $file_to_edit . '/' . $new_file;
+        if( file_exists( $file_to_edit ) || is_dir( $file_to_edit ) ) {
             $this->_error(
-                'new file error',
-                "directory already exists ({$file_to_edit}). <br />" .
-                "cannot write to a directory."
+                'add new file error',
+                "file/directory already exists ({$file_to_edit}). <br />" .
+                "cannot overwrite existing file or directory."
             );
         }
         else {
