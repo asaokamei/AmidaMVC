@@ -6,7 +6,7 @@ class Load
     /**
      * @var array   file extensions to load as is.
      */
-    static $ext_asis = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
+    static $ext_asIs = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
     /**
      * @var array   file extensions to load.
      */
@@ -61,7 +61,7 @@ class Load
      */
     static function isAsIs( $file ) {
         $ext  = pathinfo( $file, PATHINFO_EXTENSION );
-        return in_array( $ext, self::$ext_asis );
+        return in_array( $ext, self::$ext_asIs );
     }
     // +-------------------------------------------------------------+
     static function getFileType( $file ) {
