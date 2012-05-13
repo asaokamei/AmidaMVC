@@ -180,7 +180,6 @@ class Controller extends AmidaChain
                 }
             }
             $module = new $module();
-
         }
         if( $option && ( $module instanceof \AmidaMVC\Framework\IModule ) ) {
             call_user_func( array( $module, '_init' ), $option );
