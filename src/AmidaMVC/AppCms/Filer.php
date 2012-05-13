@@ -186,7 +186,7 @@ class Filer implements \AmidaMVC\Framework\IModule
             else {
                 $self = dirname( $self ) . '/' . $new_file;
             }
-            $contents = $this->_makeEditForm( $self, '' );
+            $contents = $this->_makeEditForm( 'Add File '.$new_file, $self, '' );
             $_pageObj->setContent( $contents );
             $_ctrl->skipToModel( 'emitter' );
         }
@@ -239,15 +239,16 @@ class Filer implements \AmidaMVC\Framework\IModule
         $file_name = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
         $contents = $load::getContentsByGet( $file_name );
         $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
-        $contents = $this->_makeEditForm( $self, $contents );
+        $contents = $this->_makeEditForm( 'Editing '. basename( $file_name ), $self, $contents );
         $_pageObj->setContent( $contents );
         $_ctrl->skipToModel( 'emitter' );
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
-    function _makeEditForm( $self, $contents, $cmd='_fPut' ) {
+    function _makeEditForm( $title, $self, $contents, $cmd='_fPut' ) {
         $contents = htmlspecialchars( $contents );
         $contents =<<<END_OF_HTML
+<h1>{$title}</h1>
 
     <form method="post" name="_editFile" action="{$self}/{$cmd}">
         <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;">{$contents}</textarea>
