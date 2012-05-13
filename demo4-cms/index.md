@@ -3,7 +3,9 @@ CMS Demo
 
 This CMS like demo provides a pukiWiki like CMS using AmidaMVC Framework.
 
-[link to test.md for testing](test.md)
+*   [link to test.md for testing](test.md)
+*   [link to subdir](subdir/)  
+    try link w/o trailing slash: [link to subdir](subdir)
 
 Developer's Mode
 ----------------
@@ -29,3 +31,4 @@ get base URL
 : baseURL: '<?php echo $_ctrl->getBaseUrl(); ?>'.
 : ../bootstrap: '<?php echo $_ctrl->getBaseUrl( '../bootstrap' ); ?>'.
 
+[back to Top](../)
