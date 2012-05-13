@@ -81,7 +81,7 @@ class Container
         return $this;
     }
     // +-------------------------------------------------------------+
-    function getModuleInfo( $moduleName ) {
+    function getModuleInfo( $moduleName, $name=NULL ) {
         if( isset( $this->_modules[ $moduleName ] ) ) {
             $moduleInfo = $this->_modules[ $moduleName ];
         }
@@ -96,8 +96,12 @@ class Container
                 'undefined' => TRUE,
             );
         }
+        if( isset( $name ) && isset( $moduleInfo[ $name ] ) ) {
+            $moduleInfo = $moduleInfo[ $name ];
+        }
         return $moduleInfo;
     }
+    // +-------------------------------------------------------------+
     // +-------------------------------------------------------------+
     /**
      * @param string $className
