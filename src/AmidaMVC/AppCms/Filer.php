@@ -151,6 +151,11 @@ class Filer implements \AmidaMVC\Framework\IModule
     }
     // +-------------------------------------------------------------+
     /**
+     * create a form to add a new file. check if the given file name
+     * is really new (no existing file or directory). This function
+     * needs to know where is the working directory because _newFileName
+     * contains only the file name (no folder info).
+     *
      * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
@@ -162,7 +167,8 @@ class Filer implements \AmidaMVC\Framework\IModule
             $file_to_edit = dirname( $loadInfo[ 'file' ] );
         }
         else {
-            $file_to_edit = $_ctrl->getLocation( $_ctrl->getBaseUrl() );
+            // in case pageNotFound, find location from pathInfo.
+            $file_to_edit = $_ctrl->getLocation( dirname( $_ctrl->getPathInfo() ) );
         }
         $file_to_edit = $file_to_edit . '/' . $new_file;
         if( file_exists( $file_to_edit ) || is_dir( $file_to_edit ) ) {
