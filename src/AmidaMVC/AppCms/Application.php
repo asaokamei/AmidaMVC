@@ -26,81 +26,83 @@ class Application extends \AmidaMVC\Framework\Controller
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
                 array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
             ),
-            '_authAdmin' => array(
-                'config' => array(
-                    'password_file' => 'admin.password',
+            '_init' => array(
+                'authAdmin' => array(
+                    'config' => array(
+                        'password_file' => 'admin.password',
+                        'loginForm_file' => 'login_file.md',
+                        'evaluateOn' => array(
+                            'onPathInfo' => array( '/admin', '/admin2' ),
+                            'onFail' => array(
+                                'setLoginForm' => 'login for admin pages',
+                            ),
+                            'onSuccess' => array(),
+                        ),
+                    ),
+                    'inject' => array(
+                        'authClass', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin'
+                    ),
+                ),
+                'authDevLogin' => array(
+                    'authArea' => 'authDev',
+                    'authClass' => '\AmidaMVC\Tools\AuthNot',
+                    'password_file' => '.dev.password',
                     'loginForm_file' => 'login_file.md',
                     'evaluateOn' => array(
-                        'onPathInfo' => array( '/admin', '/admin2' ),
+                        'onPathInfo' => array( '/dev_login' ),
                         'onFail' => array(
-                            'setLoginForm' => 'login for admin pages',
+                            'setLoginForm' => 'login for develop mode',
                         ),
-                        'onSuccess' => array(),
-                    ),
-                ),
-                'inject' => array(
-                    'authClass', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin'
-                ),
-            ),
-            '_authDevLogin' => array(
-                'authArea' => 'authDev',
-                'authClass' => '\AmidaMVC\Tools\AuthNot',
-                'password_file' => '.dev.password',
-                'loginForm_file' => 'login_file.md',
-                'evaluateOn' => array(
-                    'onPathInfo' => array( '/dev_login' ),
-                    'onFail' => array(
-                        'setLoginForm' => 'login for develop mode',
-                    ),
-                    'onSuccess' => array(
-                        'redirect' => '/',
-                    ),
-                ),
-            ),
-            '_authDevLogout' => array(
-                'authArea' => 'authDev',
-                'authClass' => '\AmidaMVC\Tools\AuthNot',
-                'password_file' => '.dev.password',
-                'loginForm_file' => 'login_file.md',
-                'evaluateOn' => array(
-                    'onPathInfo' => array( '/dev_logout' ),
-                    'onFail' => array(
-                        'redirect' => '/',
-                    ),
-                    'onSuccess' => array(
-                        'logout' => '',
-                        'redirect' => '/',
-                    ),
-                ),
-            ),
-            '_authDevMode' => array(
-                'authArea' => 'authDev',
-                'authClass' => '\AmidaMVC\Tools\AuthNot',
-                'password_file' => '.dev.password',
-                'evaluateOn' => array(
-                    'onPathInfo' => array( '/' ),
-                    'onFail' => array(),
-                    'onSuccess' => array(
-                        'addModuleAfter' => array(
-                            'router', '\AmidaMVC\AppCms\Filer', 'filer',
+                        'onSuccess' => array(
+                            'redirect' => '/',
                         ),
                     ),
                 ),
-            ),
-            '_filer' => array(
-                'template_file' => NULL,
-                'listJs' => array(
-                    '../bootstrap/js/jquery-1.7.1.js',
-                    '../bootstrap/js/bootstrap.js',
-                    '../bootstrap/js/bootstrap-modal.js',
+                'authDevLogout' => array(
+                    'authArea' => 'authDev',
+                    'authClass' => '\AmidaMVC\Tools\AuthNot',
+                    'password_file' => '.dev.password',
+                    'loginForm_file' => 'login_file.md',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/dev_logout' ),
+                        'onFail' => array(
+                            'redirect' => '/',
+                        ),
+                        'onSuccess' => array(
+                            'logout' => '',
+                            'redirect' => '/',
+                        ),
+                    ),
                 ),
-                'listCss' => array(
-                    '../bootstrap/css/bootstrap.css',
+                'authDevMode' => array(
+                    'authArea' => 'authDev',
+                    'authClass' => '\AmidaMVC\Tools\AuthNot',
+                    'password_file' => '.dev.password',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/' ),
+                        'onFail' => array(),
+                        'onSuccess' => array(
+                            'addModuleAfter' => array(
+                                'router', '\AmidaMVC\AppCms\Filer', 'filer',
+                            ),
+                        ),
+                    ),
                 ),
+                'filer' => array(
+                    'template_file' => NULL,
+                    'listJs' => array(
+                        '../bootstrap/js/jquery-1.7.1.js',
+                        '../bootstrap/js/bootstrap.js',
+                        '../bootstrap/js/bootstrap-modal.js',
+                    ),
+                    'listCss' => array(
+                        '../bootstrap/css/bootstrap.css',
+                    ),
+                ),
+                'router'  => array(),
+                'loader'  => array(),
+                'emitter' => array(),
             ),
-            '_router'  => array(),
-            '_loader'  => array(),
-            '_emitter' => array(),
         );
         $option = array_merge( $default, $option );
         parent::__construct( $option );

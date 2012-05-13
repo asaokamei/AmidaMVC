@@ -16,6 +16,10 @@ class Controller extends AmidaChain
      */
     protected $prefixCmd = '_';
     /**
+     * @var array   command list, starts with prefixCmd.
+     */
+    protected $commands = array();
+    /**
      * @var array   options for this site. use it freely.
      */
     var $options = array();
@@ -164,11 +168,7 @@ class Controller extends AmidaChain
      */
     function loadModule( &$module, $name )
     {
-        $option = array();
-        $name   = $this->makeModuleOptionName( $name );
-        if( isset( $this->options[ $name ] ) ) {
-            $option = $this->options[ $name ];
-        }
+        $option = $this->getModuleOption( $name );
         if( is_object( $module ) ) {
             // good. it's an object.
         }
@@ -182,7 +182,7 @@ class Controller extends AmidaChain
             $module = new $module();
 
         }
-        if( !empty( $option ) && ( $module instanceof \AmidaMVC\Framework\IModule ) ) {
+        if( $option && ( $module instanceof \AmidaMVC\Framework\IModule ) ) {
             call_user_func( array( $module, '_init' ), $option );
         }
         return TRUE;
@@ -254,15 +254,6 @@ class Controller extends AmidaChain
     }
     // +-------------------------------------------------------------+
     /**
-     * make name for module option.
-     * @param $name
-     * @return string
-     */
-    function makeModuleOptionName( $name ) {
-        return "_{$name}";
-    }
-    // +-------------------------------------------------------------+
-    /**
      * set option for each module.
      * @param string $name        name of the module to set.
      * @param string $key         key name of option.
@@ -270,11 +261,10 @@ class Controller extends AmidaChain
      * @return Controller
      */
     function setModuleOption( $name, $key, $value ) {
-        $name   = $this->makeModuleOptionName( $name );
-        if( !isset( $this->options[ $name ] ) ) {
-            $this->options[ $name ] = array();
+        if( !isset( $this->options[ '_init' ][ $name ] ) ) {
+            $this->options[ '_init' ][ $name ] = array();
         }
-        $this->options[ $name ][ $key ] = $value;
+        $this->options[ '_init' ][ $name ][ $key ] = $value;
         return $this;
     }
     // +-------------------------------------------------------------+
@@ -284,12 +274,15 @@ class Controller extends AmidaChain
      * @param string $key
      * @return mixed
      */
-    function getModuleOption( $name, $key ) {
-        $name   = $this->makeModuleOptionName( $name );
-        if( isset( $this->options[ $name ] ) &&
-            is_array( $this->options[ $name ] ) &&
-            isset( $this->options[ $name ][ $key ] ) ) {
-            return $this->options[ $name ][ $key ];
+    function getModuleOption( $name, $key=NULL ) {
+        if( isset( $this->options[ '_init' ][ $name ] ) &&
+            is_array( $this->options[ '_init' ][ $name ] ) ) {
+            if( !isset( $key ) ) {
+                return $this->options[ '_init' ][ $name ];
+            }
+            elseif( isset( $this->options[ '_init' ][ $name ][ $key ] ) ) {
+                return $this->options[ '_init' ][ $name ][ $key ];
+            }
         }
         return FALSE;
     }

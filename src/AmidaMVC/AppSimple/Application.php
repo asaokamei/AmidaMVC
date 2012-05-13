@@ -20,9 +20,11 @@ class Application extends \AmidaMVC\Framework\Controller
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
                 array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
             ),
-            '_router'  => array(),
-            '_loader'  => array(),
-            '_emitter' => array(),
+            '_init' => array(
+                '_router'  => array(),
+                '_loader'  => array(),
+                '_emitter' => array(),
+            ),
         );
         $option = array_merge( $default, $option );
         parent::__construct( $option );
