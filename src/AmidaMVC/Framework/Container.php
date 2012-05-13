@@ -101,7 +101,35 @@ class Container
         }
         return $moduleInfo;
     }
-    // +-------------------------------------------------------------+
+    /**
+     * @param string $moduleName
+     * @param mixed $name
+     * @param mixed $option
+     * @return Container
+     */
+    function setModuleInfo( $moduleName ) {
+        if( isset( $this->_modules[ $moduleName ] ) ) {
+            if( func_num_args() == 2 ) {
+                $option = func_get_arg(1);
+                if( is_array( $option ) ) {
+                    $this->_modules[ $moduleName ] = $option;
+                }
+            }
+            else {
+                $name = func_get_arg(1);
+                $option = func_get_arg(2);
+                $this->_modules[ $moduleName ][ $name ] = $option;
+            }
+        }
+        return $this;
+    }
+    /**
+     * @param $moduleName
+     * @return bool
+     */
+    function isModuleSet( $moduleName ) {
+        return isset( $this->_modules[ $moduleName ] );
+    }
     // +-------------------------------------------------------------+
     /**
      * @param string $className
@@ -153,7 +181,7 @@ class Container
      * @param array|null $config
      * @return mixed|object|string
      */
-    function getClean( $moduleName, $loadType=NULL, $idName='', $config=null ) {
+    function getClean( $moduleName, $loadType=NULL, $idName='', $config=NULL ) {
         $moduleInfo = $this->getModuleInfo( $moduleName );
         $className = $moduleInfo[ 'className' ];
         $loadType = ( $loadType ) ?: $moduleInfo['loadType'];
