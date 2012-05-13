@@ -198,7 +198,7 @@ class PageObj
         foreach( $this->_css as $css ) {
             $link = $_ctrl->getBaseUrl( $css );
             /** @var $link string */
-            $html .= "<link rel=\"stylesheet\" href=\"{$link}\" />\n";
+            $html .= "<link rel=\"stylesheet\" href=\"" . $link . "\" />\n";
         }
         return $html;
     }
@@ -219,7 +219,7 @@ class PageObj
         foreach( $this->_js as $js ) {
             $link = $_ctrl->getBaseUrl( $js );
             /** @var $link string */
-            $html .= "<script src=\"{$link}\" type=\"text/javascript\"></script>\n";
+            $html .= "<script src=\"" . $link . "\" type=\"text/javascript\"></script>\n";
         }
         return $html;
     }
