@@ -1,8 +1,12 @@
 ToDo List
 
 * refactor AmidaMVC
-[ ] use DIContainer???
-[ ] use Request module; remove request related method from Controller.
+[O] use DIContainer???
+    [ ] new default options for Controller.
+    [ ] use DiC to load modules in Controller.
+    [X] 5/13 DiC is working fine.
+[ ] new structure: Module, Application.
+[ ] PHPUnit using demo#4.
 [ ] use Config module; remove option stuff from Controller.
 [X] rewrite everything but Framework.
     [X] still a lot to refactor, but kind of working now.
@@ -23,6 +27,7 @@ ToDo List
     [X] action_fEdit
 [ ] use doc_root as well as ctrl_root.
 [ ] i18n/language support.
+[X] 5/13 use Request module; remove request related method from Controller.
 
 * Demo in AmidaMVC
 
