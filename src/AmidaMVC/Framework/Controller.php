@@ -16,21 +16,9 @@ class Controller extends AmidaChain
      */
     protected $prefixCmd = '_';
     /**
-     * @var array   list of folders to look for modules.
-     */
-    protected $loadFolder = array();
-    /**
-     * @var array   command list, starts with prefixCmd.
-     */
-    protected $commands = array();
-    /**
      * @var array   options for this site. use it freely.
      */
     var $options = array();
-    /**
-     * @var array   loaded file's information.
-     */
-    var $loadInfo = array();
     /**
      * @var \AmidaMVC\Framework\PageObj
      */
