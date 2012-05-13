@@ -10,6 +10,66 @@ class Application extends \AmidaMVC\Framework\Controller
      */
     function __construct( $option=array() )
     {
+        $moduleDefault = array(
+            //array( 'authAdminOnly',    'authAdminOnly' ),
+            array( 'authDevLogin',   'authDevLogin' ),
+            array( 'authDevLogout',  'authDevLogout' ),
+            array( 'authDevMode',    'authDevMode' ),
+            array( 'router',         'router' ),
+            array( 'loader',         'loader' ),
+            array( 'emitter',        'emitter' ),
+        );
+        $diDefault = array(
+            array( 'router',    '\AmidaMVC\AppSimple\Router', 'new',
+                array( 'routes' => array() )
+            ),
+            array( 'loader',    '\AmidaMVC\AppSimple\Loader', 'new', array() ),
+            array( 'emitter',   '\AmidaMVC\AppSimple\Emitter', 'new', array() ),
+            array( 'authAdmin', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin',
+                array(
+                    'password_file' => 'admin.password',
+                    'authArea'      => 'authAdmin'
+                )
+            ),
+            array( 'authDev', '\AmidaMVC\Tools\AuthNot', 'get', 'authDev',
+                array(
+                    'password_file' => 'dev.password',
+                    'authArea'      => 'authDev'
+                )
+            ),
+            array( 'authAdminOnly', '\AmidaMVC\AppCms\Auth', 'new',
+                array(
+                    'loginForm_file' => 'login_file.md',
+                    'authClass'      => 'authAdmin',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/admin', '/admin2' ),
+                        'onFail' => array(
+                            'setLoginForm' => 'login for admin pages',
+                        ),
+                        'onSuccess' => array(),
+                    ),
+                )
+            ),
+            array( 'filer', '\AmidaMVC\AppSimple\Router', 'new',
+                array(
+                    'template_file' => NULL,
+                    'listJs' => array(
+                        '../bootstrap/js/jquery-1.7.1.js',
+                        '../bootstrap/js/bootstrap.js',
+                        '../bootstrap/js/bootstrap-modal.js',
+                    ),
+                    'listCss' => array(
+                        '../bootstrap/css/bootstrap.css',
+                    ),
+                )
+            ),
+        );
+        $ctlDefault = array(
+            'site_title' => 'AppCMS Web Site',
+            'template_file' => 'template.php',
+            'pageNotFound_file' => FALSE,
+            'appDefault' => NULL,
+        );
         $default = array(
             'site_title' => 'AppCMS Web Site',
             'template_file' => 'template.php',
@@ -27,31 +87,6 @@ class Application extends \AmidaMVC\Framework\Controller
                 array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
             ),
             '_diContainer' => array(
-                array( 'authAdmin', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin',
-                    array(
-                        'password_file' => 'admin.password',
-                        'authArea' => 'authAdmin'
-                    )
-                ),
-                array( 'authDev', '\AmidaMVC\Tools\AuthNot', 'get', 'authDev',
-                    array(
-                        'password_file' => 'dev.password',
-                        'authArea' => 'authDev'
-                    )
-                ),
-                array( 'authAdminOnly', '\AmidaMVC\AppCms\Auth', 'new',
-                    array(
-                        'loginForm_file' => 'login_file.md',
-                        'authClass' => 'authAdmin',
-                        'evaluateOn' => array(
-                            'onPathInfo' => array( '/admin', '/admin2' ),
-                            'onFail' => array(
-                                'setLoginForm' => 'login for admin pages',
-                            ),
-                            'onSuccess' => array(),
-                        ),
-                    )
-                ),
             ),
             '_init' => array(
                 'authAdminOnly' => array(),
