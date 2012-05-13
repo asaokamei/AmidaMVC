@@ -14,11 +14,11 @@ class Application extends \AmidaMVC\Framework\Controller
             'site_title' => 'AppCMS Web Site',
             'template_file' => 'template.php',
             'pageNotFound_file' => FALSE,
-            'appDefault' => FALSE,
+            'appDefault' => NULL,
             'modules' => array(
 //                array( '\AmidaMVC\AppSimple\Config',  'config' ),
                 array( 'Config',  'config' ),
-//                array( '\AmidaMVC\AppCms\Auth',    'authAdmin' ),
+//                array( '\AmidaMVC\AppCms\Auth',    'authAdminOnly' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevLogin' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevLogout' ),
                 array( '\AmidaMVC\AppCms\Auth',    'authDevMode' ),
@@ -26,11 +26,23 @@ class Application extends \AmidaMVC\Framework\Controller
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
                 array( '\AmidaMVC\AppSimple\Emitter', 'emitter' ),
             ),
-            '_init' => array(
-                'authAdmin' => array(
-                    'config' => array(
+            '_diContainer' => array(
+                array( 'authAdmin', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin',
+                    array(
                         'password_file' => 'admin.password',
+                        'authArea' => 'authAdmin'
+                    )
+                ),
+                array( 'authDev', '\AmidaMVC\Tools\AuthNot', 'get', 'authDev',
+                    array(
+                        'password_file' => 'dev.password',
+                        'authArea' => 'authDev'
+                    )
+                ),
+                array( 'authAdminOnly', '\AmidaMVC\AppCms\Auth', 'new',
+                    array(
                         'loginForm_file' => 'login_file.md',
+                        'authClass' => 'authAdmin',
                         'evaluateOn' => array(
                             'onPathInfo' => array( '/admin', '/admin2' ),
                             'onFail' => array(
@@ -38,11 +50,11 @@ class Application extends \AmidaMVC\Framework\Controller
                             ),
                             'onSuccess' => array(),
                         ),
-                    ),
-                    'inject' => array(
-                        'authClass', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin'
-                    ),
+                    )
                 ),
+            ),
+            '_init' => array(
+                'authAdminOnly' => array(),
                 'authDevLogin' => array(
                     'authArea' => 'authDev',
                     'authClass' => '\AmidaMVC\Tools\AuthNot',

@@ -14,7 +14,7 @@ class Application extends \AmidaMVC\Framework\Controller
             'site_title' => 'AppSimple Web Site',
             'template_file' => NULL,
             'pageNotFound_file' => FALSE,
-            'appDefault' => FALSE,
+            'appDefault' => NULL,
             'modules' => array(
                 array( '\AmidaMVC\AppSimple\Router',  'router' ),
                 array( '\AmidaMVC\AppSimple\Loader',  'loader' ),
