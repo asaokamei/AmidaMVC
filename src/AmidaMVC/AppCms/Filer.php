@@ -86,7 +86,6 @@ class Filer implements \AmidaMVC\Framework\IModule
         $this->filerInfo[ 'file_list' ] = $file_list;
 
         // set up menu
-        // TODO: bad idea to replace loadInfo's file. fix this. 
         $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
         if( file_exists( $file_to_edit ) ) {
             $loadInfo[ 'file_edited' ] = $file_to_edit;
