@@ -66,7 +66,9 @@ class Filer implements \AmidaMVC\Framework\IModule
                 $_pageObj->setCss( $css );
             }
         }
-
+        if( !isset( $loadInfo[ 'file' ] ) ) {
+            return;
+        }
         // set file lists under the folder.
         if( is_dir( $loadInfo[ 'file'] ) ) {
             $filer_folder = $loadInfo[ 'file' ];
@@ -87,7 +89,7 @@ class Filer implements \AmidaMVC\Framework\IModule
         // TODO: bad idea to replace loadInfo's file. fix this. 
         $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
         if( file_exists( $file_to_edit ) ) {
-            $loadInfo[ 'file' ] = $file_to_edit;
+            $loadInfo[ 'file_edited' ] = $file_to_edit;
             $this->filerInfo[ 'file_src' ]   = basename( $file_to_edit );
             $this->filerInfo[ 'file_cmd' ][] = '_fEdit';
             $this->filerInfo[ 'file_cmd' ][] = '_fPub';
@@ -95,6 +97,7 @@ class Filer implements \AmidaMVC\Framework\IModule
             $this->filerInfo[ 'file_cmd' ][] = '_fDiff';
         }
         else {
+            $loadInfo[ 'file_edited' ] = FALSE;
             $this->filerInfo[ 'file_src' ]   = basename( $loadInfo[ 'file' ] );
             $this->filerInfo[ 'file_cmd' ][] = '_fEdit';
             $this->filerInfo[ 'file_cmd' ][] = '_fPurge';
@@ -115,6 +118,9 @@ class Filer implements \AmidaMVC\Framework\IModule
             $method = 'action' . $command;
             $loadInfo = $this->$method( $_ctrl, $_pageObj, $loadInfo );
         }
+        else {
+            $loadInfo[ 'file' ] = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
+        }
         $this->_template( $_ctrl, $_pageObj );
         return $loadInfo;
     }
@@ -126,9 +132,9 @@ class Filer implements \AmidaMVC\Framework\IModule
      * @return array
      */
     function action_fPub( $_ctrl, $_pageObj, $loadInfo ) {
-        $file_to_publish = $this->_getFileToEdit( $loadInfo['file'] );
+        $file_to_publish = $loadInfo[ 'file_edited' ];
         if( file_exists( $file_to_publish ) ) {
-            $file_to_replaced = $_ctrl->getLocation( $_ctrl->getPathInfo() );
+            $file_to_replaced = $loadInfo[ 'file' ];
             $this->_backup( $file_to_replaced );
             if( rename( $file_to_publish, $file_to_replaced ) ) {
                 // success
@@ -150,10 +156,9 @@ class Filer implements \AmidaMVC\Framework\IModule
      * @param array $loadInfo
      * @return array
      */
-    function action_fFile( $_ctrl, $_pageObj, $loadInfo ) {
+    function action_xXxfFile( $_ctrl, $_pageObj, $loadInfo ) {
         $new_file = $_POST[ '_newFileName' ];
-        $file_to_edit = $this->_getFileToEdit( $new_file );
-        $file_to_edit = $_ctrl->getLocation( $file_to_edit );
+        $file_to_edit = $loadInfo[ 'file_edited' ];
         if( file_exists( $file_to_edit ) ) {
             $this->_error(
                 'new file error',
@@ -191,8 +196,8 @@ class Filer implements \AmidaMVC\Framework\IModule
      * @return array
      */
     function action_fPut( $_ctrl, $_pageObj, $loadInfo ) {
-        if( $loadInfo ) {
-            $file_to_edit = $this->_getFileToEdit( $loadInfo['file'] );
+        if( $loadInfo[ 'file' ] ) {
+            $file_to_edit = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
         }
         else {
             // it's a new file to add.
@@ -227,15 +232,8 @@ class Filer implements \AmidaMVC\Framework\IModule
      */
     function action_fEdit( $_ctrl, $_pageObj, $loadInfo ) {
         $load = $this->_loadClass;
-        $contents = '';
-        if( file_exists( $this->_getFileToEdit( $loadInfo['file'] ) ) ) {
-            $file_name = $this->_getFileToEdit( $loadInfo['file'] );
-            $contents = $load::getContentsByGet( $file_name );
-        }
-        else if( file_exists( $loadInfo['file'] ) ) {
-            $file_name = $loadInfo['file'];
-            $contents = $load::getContentsByGet( $file_name );
-        }
+        $file_name = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
+        $contents = $load::getContentsByGet( $file_name );
         $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
         $contents = $this->_makeEditForm( $self, $contents );
         $_pageObj->setContent( $contents );
