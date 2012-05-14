@@ -30,15 +30,15 @@ class Controller extends AmidaChain
     /**
      * @var \AmidaMVC\Tools\Request
      */
-    protected $_requestClass = '\AmidaMVC\Tools\Request';
+    var $_requestClass = '\AmidaMVC\Tools\Request';
     /**
      * @var \AmidaMVC\Framework\Container
      */
-    protected $_diContainer = '\AmidaMVC\Framework\Container';
+    var $_diContainer = '\AmidaMVC\Framework\Container';
     /**
      * @var \AmidaMVC\Tools\Load
      */
-    protected $_loadClass = '\AmidaMVC\Tools\Load';
+    var $_loadClass = '\AmidaMVC\Tools\Load';
     // +-------------------------------------------------------------+
     /**
      * @param array $option

@@ -11,6 +11,115 @@ class Application extends \AmidaMVC\Framework\Controller
      * @param array $option
      * @return \AmidaMVC\Framework\Controller
      */
+    static function cms( $option=array() )
+    {
+        // various default options
+        $ctlDefault = array(
+            'site_title' => 'AppCMS Web Site',
+            'template_file' => 'template.php',
+            'pageNotFound_file' => FALSE,
+        );
+        $moduleDefault = array(
+            //'authAdminOnly',
+            'authDevLogin', 'authDevLogout', 'authDevFiler',
+            'router',       'loader',        'emitter',
+        );
+        $diDefault = array(
+            array( 'router',    '\AmidaMVC\AppSimple\Router',  'new', array() ),
+            array( 'loader',    '\AmidaMVC\AppSimple\Loader',  'new', array() ),
+            array( 'emitter',   '\AmidaMVC\AppSimple\Emitter', 'new', array() ),
+            array( 'authAdmin', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin',
+                array(
+                    'password_file' => 'admin.password',
+                    'authArea'      => 'authAdmin'
+                )
+            ),
+            array( 'authDev', '\AmidaMVC\Tools\AuthNot', 'get', 'authDev',
+                array(
+                    'password_file' => 'dev.password',
+                    'authArea'      => 'authDev'
+                )
+            ),
+            array( 'authAdminOnly', '\AmidaMVC\AppCms\Auth', 'get',
+                array(
+                    'authClass'      => 'authAdmin',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/admin', '/admin2' ),
+                        'onFail' => array(
+                            'setLoginForm' => 'login for admin pages',
+                        ),
+                        'onSuccess' => array(),
+                    ),
+                )
+            ),
+            array( 'authDevLogin', '\AmidaMVC\AppCms\Auth', 'get',
+                array(
+                    'authArea' => 'authDev',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/dev_login' ),
+                        'onFail' => array(
+                            'setLoginForm' => 'login_file.md',
+                        ),
+                        'onSuccess' => array(
+                            'redirect' => '/',
+                        ),
+                    ),
+                ),
+            ),
+            array( 'authDevLogout', '\AmidaMVC\AppCms\Auth', 'get',
+                array(
+                    'authArea' => 'authDev',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/dev_logout' ),
+                        'onFail' => array(
+                            'redirect' => '/',
+                        ),
+                        'onSuccess' => array(
+                            'logout' => '',
+                            'redirect' => '/',
+                        ),
+                    ),
+                ),
+            ),
+            array( 'authDevFiler', '\AmidaMVC\AppCms\Auth', 'get',
+                array(
+                    'authArea' => 'authDev',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/' ),
+                        'onFail' => array(),
+                        'onSuccess' => array(
+                            'addModuleAfter' => array( 'router', 'filer', 'filer', ),
+                        ),
+                    ),
+                )
+            ),
+            array( 'filer', '\AmidaMVC\AppCms\Filer', 'new',
+                array(
+                    'template_file' => NULL,
+                    'listJs' => array(
+                        '../bootstrap/js/jquery-1.7.1.js',
+                        '../bootstrap/js/bootstrap.js',
+                        '../bootstrap/js/bootstrap-modal.js',
+                    ),
+                    'listCss' => array(
+                        '../bootstrap/css/bootstrap.css',
+                    ),
+                )
+            ),
+        );
+        // create Dependency Injection Container.
+        $diContainer = self::setupDiContainer( $option, $diDefault  );
+        // create AmidaMVC Controller.
+        $controller = self::setupController( $diContainer, $option, $ctlDefault, $moduleDefault  );
+
+        return $controller;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @static
+     * @param array $option
+     * @return \AmidaMVC\Framework\Controller
+     */
     static function simple( $option=array() )
     {
         // various default options

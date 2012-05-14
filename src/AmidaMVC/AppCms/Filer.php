@@ -6,7 +6,16 @@ class Filer implements \AmidaMVC\Framework\IModule
     var $mode = '_dev';
     var $listJs = array();
     var $listCss = array();
-    var $filerInfo = array();
+    var $filerInfo = array(
+        'file_mode' => '_filer',
+        'file_cmd'  => array(),
+        'backup_list' => array(),
+        'file_src' => '',
+        'curr_folder' => '',
+        'file_list ' => array(),
+        'error' => FALSE,
+        'message' => '',
+    );
     var $devTemplateDefault = 'template._dev.php';
     var $devTemplate = FALSE;
     var $commandList = array(
@@ -22,19 +31,13 @@ class Filer implements \AmidaMVC\Framework\IModule
     /**
      * @param array $option
      */
+    function __construct( $option=array() ) {
+        $this->setup( $option );
+    }
     function _init( $option=array() ) {
-        $filerObj = array(
-            'file_mode' => '_filer',
-            'file_cmd'  => array(),
-            'backup_list' => array(),
-            'file_src' => '',
-            'curr_folder' => '',
-            'file_list ' => array(),
-            'error' => FALSE,
-            'message' => '',
-        );
-        $this->filerInfo = $filerObj;
-
+        $this->setup( $option );
+    }
+    function setup( $option=array() ) {
         if( isset( $option[ 'listJs' ] ) ) {
             $this->listJs = $option[ 'listJs' ];
         }
