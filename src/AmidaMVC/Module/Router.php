@@ -1,5 +1,5 @@
 <?php
-namespace AmidaMVC\AppSimple;
+namespace AmidaMVC\Module;
 
 class Router implements \AmidaMVC\Framework\IModule
 {
