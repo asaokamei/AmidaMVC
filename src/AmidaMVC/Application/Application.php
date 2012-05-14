@@ -25,9 +25,9 @@ class Application extends \AmidaMVC\Framework\Controller
             'router',       'loader',        'emitter',
         );
         $diDefault = array(
-            array( 'router',    '\AmidaMVC\AppSimple\Router',  'new', array() ),
-            array( 'loader',    '\AmidaMVC\AppSimple\Loader',  'new', array() ),
-            array( 'emitter',   '\AmidaMVC\AppSimple\Emitter', 'new', array() ),
+            array( 'router',    '\AmidaMVC\Module\Router',  'new', array() ),
+            array( 'loader',    '\AmidaMVC\Module\Loader',  'new', array() ),
+            array( 'emitter',   '\AmidaMVC\Module\Emitter', 'new', array() ),
             array( 'authAdmin', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin',
                 array(
                     'password_file' => 'admin.password',
@@ -40,7 +40,7 @@ class Application extends \AmidaMVC\Framework\Controller
                     'authArea'      => 'authDev'
                 )
             ),
-            array( 'authAdminOnly', '\AmidaMVC\AppCms\Auth', 'get',
+            array( 'authAdminOnly', '\AmidaMVC\Module\Auth', 'get',
                 array(
                     'authClass'      => 'authAdmin',
                     'evaluateOn' => array(
@@ -52,7 +52,7 @@ class Application extends \AmidaMVC\Framework\Controller
                     ),
                 )
             ),
-            array( 'authDevLogin', '\AmidaMVC\AppCms\Auth', 'get',
+            array( 'authDevLogin', '\AmidaMVC\Module\Auth', 'get',
                 array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
@@ -66,7 +66,7 @@ class Application extends \AmidaMVC\Framework\Controller
                     ),
                 ),
             ),
-            array( 'authDevLogout', '\AmidaMVC\AppCms\Auth', 'get',
+            array( 'authDevLogout', '\AmidaMVC\Module\Auth', 'get',
                 array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
@@ -81,7 +81,7 @@ class Application extends \AmidaMVC\Framework\Controller
                     ),
                 ),
             ),
-            array( 'authDevFiler', '\AmidaMVC\AppCms\Auth', 'get',
+            array( 'authDevFiler', '\AmidaMVC\Module\Auth', 'get',
                 array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
@@ -93,7 +93,7 @@ class Application extends \AmidaMVC\Framework\Controller
                     ),
                 )
             ),
-            array( 'filer', '\AmidaMVC\AppCms\Filer', 'new',
+            array( 'filer', '\AmidaMVC\Module\Filer', 'new',
                 array(
                     'template_file' => NULL,
                     'listJs' => array(
@@ -133,9 +133,9 @@ class Application extends \AmidaMVC\Framework\Controller
             'router', 'loader', 'emitter',
         );
         $diDefault = array(
-            array( 'router',  '\AmidaMVC\AppSimple\Router',  'new', array() ),
-            array( 'loader',  '\AmidaMVC\AppSimple\Loader',  'new', array() ),
-            array( 'emitter', '\AmidaMVC\AppSimple\Emitter', 'new', array() ),
+            array( 'router',  '\AmidaMVC\Module\Router',  'new', array() ),
+            array( 'loader',  '\AmidaMVC\Module\Loader',  'new', array() ),
+            array( 'emitter', '\AmidaMVC\Module\Emitter', 'new', array() ),
         );
         // create Dependency Injection Container.
         $diContainer = self::setupDiContainer( $option, $diDefault  );

@@ -1,5 +1,5 @@
 <?php
-namespace AmidaMVC\AppSimple;
+namespace AmidaMVC\Module;
 
 class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\IModule
 {

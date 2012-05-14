@@ -1,5 +1,5 @@
 <?php
-namespace AmidaMVC\AppCms;
+namespace AmidaMVC\Module;
 
 class Filer implements \AmidaMVC\Framework\IModule
 {

@@ -1,5 +1,5 @@
 <?php
-namespace AmidaMVC\AppCms;
+namespace AmidaMVC\Module;
 
 class Auth implements \AmidaMVC\Framework\IModule
 {
