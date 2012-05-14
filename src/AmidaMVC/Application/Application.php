@@ -4,7 +4,7 @@ namespace AmidaMVC\Application;
 class Application extends \AmidaMVC\Framework\Controller
 {
     static $diContainerStart = array( '\AmidaMVC\Framework\Container', 'start' );
-    static $controllerStart = array( '\AmidaMVC\Framework\Controller', 'getInstance' );
+    static $controllerStart  = array( '\AmidaMVC\Framework\Controller', 'getInstance' );
     // +-------------------------------------------------------------+
     /**
      * @static
@@ -31,15 +31,7 @@ class Application extends \AmidaMVC\Framework\Controller
         // create Dependency Injection Container.
         $diContainer = self::setupDiContainer( $option, $diDefault  );
         // create AmidaMVC Controller.
-        $controller = self::setupController( $option, $ctlDefault, $moduleDefault  );
-        // inject dependencies.
-        $controller->injectDiContainer( $diContainer );
-        $controller->injectRequest( $diContainer->get( '\AmidaMVC\Tools\Request' ) );
-        $controller->injectLoad( $diContainer->get( '\AmidaMVC\Tools\Load', 'static' ) );
-        // setup container and controller.
-
-
-        $controller->separateCommands();
+        $controller = self::setupController( $diContainer, $option, $ctlDefault, $moduleDefault  );
 
         return $controller;
     }
@@ -47,16 +39,16 @@ class Application extends \AmidaMVC\Framework\Controller
     /**
      * @static
      * @param array $option
-     * @param array $di
+     * @param array $diOption
      * @return \AmidaMVC\Framework\Container
      */
-    static function setupDiContainer( &$option, $di ) {
+    static function setupDiContainer( &$option, $diOption ) {
         $diContainer = call_user_func( self::$diContainerStart );
         if( isset( $option[ 'diContainer' ] ) && is_array( $option[ 'diContainer' ] ) ) {
-            $di = array_merge( $di, $option[ 'diContainer' ] );
+            $diOption = array_merge( $diOption, $option[ 'diContainer' ] );
             unset( $option[ 'diContainer' ] );
         }
-        foreach( $di as $moduleInfo ) {
+        foreach( $diOption as $moduleInfo ) {
             call_user_func_array( array( $diContainer, 'setModule' ), $moduleInfo );
         }
         return $diContainer;
@@ -64,19 +56,27 @@ class Application extends \AmidaMVC\Framework\Controller
 
     /**
      * @static
+     * @param \AmidaMVC\Framework\Container $diContainer
      * @param array $option
-     * @param array $ctl
-     * @param array $mod
+     * @param array $ctlOption
+     * @param array $modOption
      * @return \AmidaMVC\Framework\Controller
      */
-    static function setupController( &$option, &$ctl, &$mod ) {
+    static function setupController( $diContainer, &$option, &$ctlOption, &$modOption ) {
         if( isset( $option[ 'modules' ] ) && is_array( $option[ 'modules' ] ) ) {
-            $mod = array_merge( $mod, $option[ 'modules' ] );
+            $modOption = array_merge( $modOption, $option[ 'modules' ] );
             unset( $option[ 'modules' ] );
         }
-        $ctl = array_merge( $ctl, $option );
-        $controller = call_user_func( self::$controllerStart, $ctl );
-        $controller->setModules( $mod );
+        $ctlOption = array_merge( $ctlOption, $option );
+        /** @var $controller \AmidaMVC\Framework\Controller */
+        $controller = call_user_func( self::$controllerStart, $ctlOption );
+        $controller->setModules( $modOption );
+        // inject dependencies.
+        $controller->injectDiContainer( $diContainer );
+        $controller->injectRequest( $diContainer->get( '\AmidaMVC\Tools\Request' ) );
+        $controller->injectLoad( $diContainer->get( '\AmidaMVC\Tools\Load', 'static' ) );
+        // some more actions to do.
+        $controller->separateCommands();
         return $controller;
     }
     // +-------------------------------------------------------------+
