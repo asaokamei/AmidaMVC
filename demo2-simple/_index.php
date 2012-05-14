@@ -1,7 +1,7 @@
 <?php
 require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php' );
 
-$app = \AmidaMVC\AppSimple\Application::getInstance(
+$app = \AmidaMVC\Application\Application::simple(
     array(
         'site_title' => "Demo#2 - Simple Site with Template",
         'template_file' => 'template.php',

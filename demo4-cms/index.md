@@ -13,7 +13,7 @@ Developer's Mode
 Developer's mode let you edit the content files that are written in
 PHP code, html, markdown, and text.
 
-<?php if( \AmidaMVC\Tools\AuthNot::isLoggedIn( 'authDev' ) ) { ?>
+<?php $authDev = $_ctrl->_diContainer->get( 'authDev' ); if( $authDev->isLoggedIn() ) { ?>
 *   [logout from developer's mode](dev_logout)
 <?php } else { ?>
 *   [log in for developer's mode](dev_login)

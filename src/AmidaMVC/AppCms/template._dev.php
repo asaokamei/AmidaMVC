@@ -110,7 +110,7 @@ $simpleMenuList = array(
             <?php if( substr( $file, -1 ) !== '/' ) { ?>
             <a class="btn-mini btn-info" href="<?php echo "{$base}{$file}/_src";?>">source</a>&nbsp;
             <a class="btn-mini btn-info" href="<?php echo "{$base}{$file}/_raw";?>">raw</a>&nbsp;
-            <a class="btn-mini btn-danger" href="<?php echo "{$base}{$file}/_edit";?>">edit</a>
+            <a class="btn-mini btn-danger" href="<?php echo "{$base}{$file}/_fEdit";?>">edit</a>
             <?php } ?>
         </p>
         <?php } ?>

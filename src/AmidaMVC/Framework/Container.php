@@ -77,7 +77,18 @@ class Container
         $config[ 'className' ] = $className;
         $config[ 'loadType' ] = $loadType;
         $config[ 'idName' ] = $idName;
+        if( !array_key_exists( 'inject', $config ) ) { $config[ 'inject' ] = array(); }
+        if( !array_key_exists( 'option', $config ) ) { $config[ 'option' ] = NULL; }
         $this->_modules[ $moduleName ] = $config;
+        return $this;
+    }
+    function modModuleInfo( $moduleName, $name, $value ) {
+        if( isset( $this->_modules[ $moduleName ] ) ) {
+            $moduleInfo = &$this->_modules[ $moduleName ];
+            if( array_key_exists( $name, $moduleInfo ) ) {
+                $moduleInfo[ $name ] = $value;
+            }
+        }
         return $this;
     }
     // +-------------------------------------------------------------+
@@ -185,7 +196,7 @@ class Container
         $moduleInfo = $this->getModuleInfo( $moduleName );
         $className = $moduleInfo[ 'className' ];
         $loadType = ( $loadType ) ?: $moduleInfo['loadType'];
-        if( isset( $config ) && is_array( $config ) ) {
+        if( isset( $config ) && is_array( $config ) && !empty( $config ) ) {
             if( isset( $config[ 'config' ] ) ) {
                 $moduleInfo = $config;
             }
@@ -257,8 +268,10 @@ class Container
             $idName = $input[1];
             $config = $input[2];
         }
-        if( !isset( $config[ 'config' ] ) && !isset( $config[ 'inject' ] ) && !isset( $config[ 'option' ] ) ) {
-            $config = array( 'config' => $config );
+        if( !empty( $config ) ) {
+            if( !isset( $config[ 'config' ] ) && !isset( $config[ 'inject' ] ) && !isset( $config[ 'option' ] ) ) {
+                $config = array( 'config' => $config );
+            }
         }
         return array( $loadType, $idName, $config );
     }

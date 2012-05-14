@@ -15,45 +15,21 @@ class AuthNot
     var $auth_info  = array();
     var $option     = array();
     var $isLoggedIn = FALSE;
-    static $_self    = array();
-    static $_this    = NULL;
     // +-------------------------------------------------------------+
-    function __construct() {
-        static::$_this = $this;
+    function __construct( $option=array() ) {
+        $this->setup( $option );
     }
-    // +-------------------------------------------------------------+
-    static function getThisInstance() {
-        if( !isset( static::$_this ) ) {
-            new static();
+    function setup( $option=array() ) {
+        if( isset( $option[ 'authArea' ] ) ) {
+            $this->auth_id = $option[ 'authArea' ];
         }
-        return static::$_this;
     }
-    // +-------------------------------------------------------------+
-    static function getInstance( $authArea=NULL ) {
-        if( !isset( static::$_self[ $authArea ] ) ) {
-            static::$_self[ $authArea ] = new self();
-        }
-        return static::$_self[ $authArea ];
-    }
-    // +-------------------------------------------------------------+
-    static function isThisLoggedIn() {
-        if( isset( static::$_this ) ) {
-            $auth = static::$_this;
-            return $auth->isLoggedIn;
-        }
-        return FALSE;
-    }
-    // +-------------------------------------------------------------+
-    static function isLoggedIn( $authArea ) {
-        if( isset( static::$_self[ $authArea ] ) ) {
-            $auth = static::$_self[ $authArea ];
-            return $auth->isLoggedIn;
-        }
-        return FALSE;
-    }
-    // +-------------------------------------------------------------+
     function _init( $option=array() ) {
-        $this->option = $option;
+        $this->setup( $option );
+    }
+    // +-------------------------------------------------------------+
+    function isLoggedIn() {
+        return $this->isLoggedIn;
     }
     // +-------------------------------------------------------------+
     function getAuth() {

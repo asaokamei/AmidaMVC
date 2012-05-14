@@ -6,7 +6,7 @@ class Auth implements \AmidaMVC\Framework\IModule
     /**
      * @var \AmidaMVC\Tools\AuthNot   a static class name for authentication.
      */
-    var $_authClass = '\AmidaMVC\Tools\AuthNot';
+    var $authArea = 'AuthNot';
     /**
      * @var \AmidaMVC\Tools\AuthNot   an object.
      */
@@ -23,9 +23,15 @@ class Auth implements \AmidaMVC\Framework\IModule
      * initialize class.
      * @param array $option   options to initialize.
      */
+    function __construct( $option=array() ) {
+        $this->setup( $option );
+    }
     function _init( $option=array() ) {
-        if( isset( $option[ 'authClass' ] ) ) {
-            $this->_authClass = $option[ 'authClass' ];
+        $this->setup( $option );
+    }
+    function setup( $option=array() ) {
+        if( isset( $option[ 'authArea' ] ) ) {
+            $this->authArea = $option[ 'authArea' ];
         }
         if( isset( $option[ 'evaluateOn' ] ) ) {
             $this->_evaluateOn = $option[ 'evaluateOn' ];
@@ -49,9 +55,7 @@ class Auth implements \AmidaMVC\Framework\IModule
         // do the authentication
         if( $this->matchPathInfo( $_ctrl, $this->_evaluateOn[ 'onPathInfo' ] ) ) {
             // set up auth class as well.
-            $auth = $this->_authClass;
-            $this->_auth = $auth::getInstance( $this->option[ 'authArea' ] );
-            $this->_auth->_init( $this->option );
+            $this->_auth = $_ctrl->_diContainer->get( $this->authArea );
             $auth_success = $this->_auth->getAuth();
             if( $auth_success ) {
                 $doList = $this->_evaluateOn[ 'onSuccess' ];
@@ -133,11 +137,11 @@ class Auth implements \AmidaMVC\Framework\IModule
      * @param string $message
      * @return bool
      */
-    function setLoginForm( $_ctrl, $_pageObj, $message ) {
+    function setLoginForm( $_ctrl, $_pageObj, $login_file ) {
         // read login form template.
         // how can I pass a parameter/message to the loader???
         $_ctrl->setAction( '_loginForm' );
-        $_ctrl->options[ 'loginForm_file' ] = $this->option[ 'loginForm_file' ];
+        $_ctrl->options[ 'loginForm_file' ] = $login_file;
         return TRUE;
     }
     // +-------------------------------------------------------------+
