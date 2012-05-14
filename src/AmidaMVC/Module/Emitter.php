@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\Module;
 
-class Emitter extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\IModule
+class Emitter extends AModule implements IfModule
 {
     /**
      * @var \AmidaMVC\Tools\Emit

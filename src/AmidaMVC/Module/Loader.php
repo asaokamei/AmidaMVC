@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\Module;
 
-class Loader extends \AmidaMVC\Framework\AModule implements \AmidaMVC\Framework\IModule
+class Loader extends AModule implements IfModule
 {
     /**
      * @var \AmidaMVC\Tools\Load   static class for loading methods.

@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\Module;
 
-class Filer implements \AmidaMVC\Framework\IModule
+class Filer implements IfModule
 {
     var $mode = '_dev';
     var $listJs = array();

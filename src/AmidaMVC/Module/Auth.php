@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\Module;
 
-class Auth implements \AmidaMVC\Framework\IModule
+class Auth implements IfModule
 {
     /**
      * @var \AmidaMVC\Tools\AuthNot   a static class name for authentication.

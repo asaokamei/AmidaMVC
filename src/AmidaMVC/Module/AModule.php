@@ -1,5 +1,5 @@
 <?php
-namespace AmidaMVC\Framework;
+namespace AmidaMVC\Module;
 
 abstract class AModule
 {

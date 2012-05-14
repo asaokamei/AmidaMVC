@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\Module;
 
-class Router implements \AmidaMVC\Framework\IModule
+class Router implements IfModule
 {
     /**
      * @var \AmidaMVC\Tools\Route   a static class name for match and scan.
