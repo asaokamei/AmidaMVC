@@ -13,11 +13,17 @@ file
 folders
 -------
 
-*   [Framework](Framework/README.md):  
-    core of AmidaMVC. Contains only 3 files!
+[Framework](Framework/README.md):
+:    core of AmidaMVC.
 
-*   [Component](Component/README.md):  
-    component classes that are plugged into the framework.
+[Module](Module/README.md):
+:    module classes that are plugged into the framework.
 
-*   [Tools](Tools/README.md):  
-    various utilities and tools required by the Framework and the Component.
+[Tools](Tools/README.md):
+:    various utilities and tools required by the Framework and the Component.
+
+[Application](Application/README.md):
+:    use this class to start AmidaMVC.
+
+[Component](Component/README.md):
+:    old and not used anymore.
