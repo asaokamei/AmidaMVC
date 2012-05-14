@@ -26,15 +26,11 @@ class Controller extends AmidaChain
     /**
      * @var \AmidaMVC\Framework\PageObj
      */
-    var $pageObj;
+    var $pageObj = '\AmidaMVC\Framework\PageObj';
     /**
      * @var \AmidaMVC\Tools\Request
      */
     protected $_requestClass = '\AmidaMVC\Tools\Request';
-    /**
-     * @var \AmidaMVC\Framework\PageObj
-     */
-    protected $_pageObjClass = '\AmidaMVC\Framework\PageObj';
     /**
      * @var \AmidaMVC\Framework\Container
      */
@@ -121,9 +117,7 @@ class Controller extends AmidaChain
      * @return bool|mixed|null  returned value from the last module.
      */
     function start( $pageObj=NULL ) {
-        if( !isset( $pageObj ) ) {
-            $this->pageObj = $this->_diContainer->get( $this->_pageObjClass );
-        }
+        $this->pageObj = ( isset( $pageObj ) ) ? $pageObj : $this->_diContainer->get( $this->pageObj );
         $action = $this->defaultAct();
         return $this->dispatch( $action, $this->pageObj );
     }
