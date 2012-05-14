@@ -203,7 +203,8 @@ class Filer implements \AmidaMVC\Framework\IModule
      */
     function action_fPut( $_ctrl, $_pageObj, $loadInfo ) {
         if( $loadInfo[ 'file' ] ) {
-            $file_to_edit = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
+            // always put contents onto edited_file.
+            $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
         }
         else {
             // it's a new file to add.
@@ -224,7 +225,11 @@ class Filer implements \AmidaMVC\Framework\IModule
                     "Could not save contents to file ({$file_to_edit}). <br />" .
                     "maybe file permission problem?"
                 );
+                $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
+                $content = $this->_makeEditForm( 'Re-editing ' . basename( $file_to_edit ), $self, $content );
                 $loadInfo = $this->action_fEdit( $_ctrl, $_pageObj, $loadInfo );
+                $_pageObj->setContent( $content );
+                $_ctrl->skipToModel( 'emitter' );
             }
         }
         return $loadInfo;
