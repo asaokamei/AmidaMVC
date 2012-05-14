@@ -49,30 +49,7 @@ class Controller extends AmidaChain
      */
     function __construct( $option=array() ) 
     {
-        // set up DI Container.
-        if( isset( $option[ '_DIContainerClass' ] ) ) {
-            $class = $option[ '_DIContainerClass' ];
-            $this->_diContainer = new $class();
-            unset( $option[ '_DIContainerClass' ] );
-        }
-        else {
-            /** @var $class \AmidaMVC\Framework\Container */
-            $class = $this->_diContainer;
-            $this->_diContainer = $class::start();
-        }
-        // set up modules for AmidaChain, and DI Container.
-        if( isset( $option[ 'modules' ] ) ) {
-            $this->addModule( $option[ 'modules' ] );
-            foreach( $option[ 'modules' ] as $info ) {
-                $this->_diContainer->setModule( $info[1], $info[0] );
-            }
-        }
-        // set up moduleInfo for DI Container.
-        // TODO: not to setup config in DI at this point; routes maybe added later on.
         $this->options = $option;
-        // get request object.
-        $this->_requestClass = $this->_diContainer->get( '\AmidaMVC\Tools\Request' );
-        $this->_loadClass = $this->_diContainer->get( '\AmidaMVC\Tools\Load', 'static' );
 
         // set ctrl root folder.
         if( !isset( $option[ 'ctrl_root' ] ) ) {
@@ -84,6 +61,30 @@ class Controller extends AmidaChain
         if( isset( $option[ 'appDefault' ] ) ) {
             $this->setFileLocation( $option[ 'appDefault' ] );
         }
+    }
+    /**
+     * @param $modules
+     */
+    function setModules( $modules ) {
+        if( is_array( $modules ) ) {
+            foreach( $modules as $mod ) {
+                $this->_modules[] = ( is_array( $mod ) ) ?
+                    $this->_modules[] = array( $mod[0], $mod[1] ) :
+                    array( $mod, $mod );
+            }
+        }
+    }
+    /**
+     * @param $diContainer
+     */
+    function injectDiContainer( $diContainer ) {
+        $this->_diContainer = $diContainer;
+    }
+    function injectRequest( $request ) {
+        $this->_requestClass = $request;
+    }
+    function injectLoad( $load ) {
+        $this->_loadClass = $load;
     }
     // +-------------------------------------------------------------+
     /**
@@ -121,10 +122,8 @@ class Controller extends AmidaChain
      */
     function start( $pageObj=NULL ) {
         if( !isset( $pageObj ) ) {
-            $class   = $this->_pageObjClass;
-            $pageObj = $this->_diContainer->get( $class );
+            $this->pageObj = $this->_diContainer->get( $this->_pageObjClass );
         }
-        $this->pageObj = $pageObj;
         $action = $this->defaultAct();
         return $this->dispatch( $action, $this->pageObj );
     }
@@ -166,23 +165,9 @@ class Controller extends AmidaChain
      * @throws \RuntimeException
      * @return Controller|bool
      */
-    function loadModule( &$module, $name )
-    {
-        $option = $this->getModuleOption( $name );
-        if( is_object( $module ) ) {
-            // good. it's an object.
-        }
-        else {
-            if( !class_exists( $module ) ) {
-                $exec = array( $this->_loadClass, 'loadClassFile' );
-                if( !call_user_func( $exec, $module ) ) {
-                    throw new \RuntimeException( "Module: {$module} not found." );
-                }
-            }
-            $module = new $module();
-        }
-        if( $option && ( $module instanceof \AmidaMVC\Framework\IModule ) ) {
-            call_user_func( array( $module, '_init' ), $option );
+    function loadModule( &$module, $name ) {
+        if( !is_object( $module ) ) {
+            $module = $this->_diContainer->get( $module );
         }
         return TRUE;
     }
@@ -255,35 +240,22 @@ class Controller extends AmidaChain
     /**
      * set option for each module.
      * @param string $name        name of the module to set.
-     * @param string $key         key name of option.
      * @param mixed $value       option value.
      * @return Controller
      */
-    function setModuleOption( $name, $key, $value ) {
-        if( !isset( $this->options[ '_init' ][ $name ] ) ) {
-            $this->options[ '_init' ][ $name ] = array();
-        }
-        $this->options[ '_init' ][ $name ][ $key ] = $value;
+    function setModuleOption( $name, $value ) {
+        $this->_diContainer->modModuleInfo( $name, 'option', $value );
         return $this;
     }
     // +-------------------------------------------------------------+
     /**
      * get option for module
      * @param string $name
-     * @param string $key
      * @return mixed
      */
-    function getModuleOption( $name, $key=NULL ) {
-        if( isset( $this->options[ '_init' ][ $name ] ) &&
-            is_array( $this->options[ '_init' ][ $name ] ) ) {
-            if( !isset( $key ) ) {
-                return $this->options[ '_init' ][ $name ];
-            }
-            elseif( isset( $this->options[ '_init' ][ $name ][ $key ] ) ) {
-                return $this->options[ '_init' ][ $name ][ $key ];
-            }
-        }
-        return FALSE;
+    function getModuleOption( $name ) {
+        $diModuleInfo = $this->_diContainer->getModuleInfo( $name );
+        return $diModuleInfo[ 'option' ];
     }
     // +-------------------------------------------------------------+
     /**
@@ -297,12 +269,14 @@ class Controller extends AmidaChain
         // default is router
         $name = 'router';
         $key  = 'routes';
-        $routeList = $this->getModuleOption( $name, $key );
+        $moduleOption = $this->getModuleOption( $name );
+        $routeList = $moduleOption[ $key ];
         if( !$routeList ) {
             $routeList = array();
         }
         $routeList[ $route ] = array_merge( $option, array( 'file' => $file ) );
-        $this->setModuleOption( $name, $key, $routeList );
+        $moduleOption[ $key ] = $routeList;
+        $this->setModuleOption( $name, $moduleOption );
         return $this;
     }
     // +-------------------------------------------------------------+
