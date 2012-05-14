@@ -23,16 +23,18 @@ header {
     background: #d2691e;
     font-size: 18px;
     font-weight: bold;
-    padding: 15px 5px 15px 5px;
+    padding: 15px 5px 15px 15px;
     margin: 0 -5px 10px -5px;
     box-shadow: 5px 5px 5px #cccccc;
+    border-radius: 5px;
 }
 header a {
     text-decoration: none;
     color: #FFFFFF;
 }
 header a:hover {
-    color: red;
+    text-decoration: none;
+    color: pink;
 }
 h1 {
     background: #F0F0F0;
@@ -96,9 +98,9 @@ footer {
     text-align: center;
     padding: 5px 5px 5px 5px;
     margin: 20px 0 0 -5px;
-    border-left: 2px solid #d2691e;
-    border-right: 2px solid #d2691e;
-    box-shadow: 2px 2px 2px #cccccc;
+    border-left: 10px solid #d2691e;
+    border-right: 10px solid #d2691e;
+    box-shadow: 5px 5px 5px #cccccc;
 }
 footer p {
     font-size: 12px;
