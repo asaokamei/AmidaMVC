@@ -1,7 +1,7 @@
 <?php
 require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php' );
 
-$app = \AmidaMVC\AppSimple\Application::getInstance(
+$app = \AmidaMVC\Application\Application::simple(
     array(
         'site_title' => "Demo#3 - Source Code View",
         'ctrl_root' => realpath( '../src' ),
@@ -12,5 +12,5 @@ $app = \AmidaMVC\AppSimple\Application::getInstance(
         ),
     )
 );
-//$app->separateCommands();
+$app->setModuleOption( 'router', array( 'indexes' => 'README.md', ) );
 $app->start();
