@@ -3,10 +3,10 @@ namespace AmidaMVC\Module;
 
 class Filer implements IfModule
 {
-    var $mode = '_dev';
-    var $listJs = array();
-    var $listCss = array();
-    var $filerInfo = array(
+    protected $mode = '_dev';
+    protected $listJs = array();
+    protected $listCss = array();
+    protected $filerInfo = array(
         'file_mode' => '_filer',
         'file_cmd'  => array(),
         'backup_list' => array(),
@@ -16,9 +16,9 @@ class Filer implements IfModule
         'error' => FALSE,
         'message' => '',
     );
-    var $devTemplateDefault = 'template._dev.php';
-    var $devTemplate = FALSE;
-    var $commandList = array(
+    protected $devTemplateDefault = 'template._dev.php';
+    protected $devTemplate = FALSE;
+    protected $commandList = array(
         '_fEdit', '_fPut', '_fPub', '_fDel', '_fPurge', '_fDiff',
         '_bkView', '_bkDiff',
         '_fFolder', '_fFile'
@@ -26,7 +26,8 @@ class Filer implements IfModule
     /**
      * @var \AmidaMVC\Tools\Load   static class for loading methods.
      */
-    var $_loadClass = '\AmidaMVC\Tools\Load';
+    protected $_loadClass = '\AmidaMVC\Tools\Load';
+    protected $backup    = '_Backup';
     // +-------------------------------------------------------------+
     /**
      * @param array $option
