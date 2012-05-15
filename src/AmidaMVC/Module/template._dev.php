@@ -82,7 +82,7 @@ $simpleMenuList = array(
     </div>
     <!-- adding new folder -->
     <div id="filerAddFolder">
-        <form method="post" name="_addFolder" action="<?php echo $self?>/_fFolder" class="well form-inline">
+        <form method="post" name="_addFolder" action="<?php echo $self?>/_fDir" class="well form-inline">
             <label>
                 new folder:<input type="text" name="_folderName" width="50"
                                   placeholder="new folder at '/<?php echo $_filerObj->curr_folder; ?>'">

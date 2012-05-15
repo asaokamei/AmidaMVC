@@ -21,7 +21,7 @@ class Filer implements IfModule
     protected $commandList = array(
         '_fEdit', '_fPut', '_fPub', '_fDel', '_fPurge', '_fDiff',
         '_bkView', '_bkDiff',
-        '_fFolder', '_fFile'
+        '_fDir', '_fFile'
     );
     /**
      * @var \AmidaMVC\Tools\Load   static class for loading methods.
@@ -133,6 +133,37 @@ class Filer implements IfModule
             $loadInfo[ 'file' ] = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
         }
         $this->_template( $_ctrl, $_pageObj );
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
+    function action_fDir( $_ctrl, &$_pageObj, $loadInfo=array() )
+    {
+        if( !isset( $_POST['_folderName'] ) || empty( $_POST['_folderName'] ) ) {
+            $this->_error( 'add new folder error:',
+                'enter folder name to add.' );
+        }
+        else {
+            $folder = dirname( $loadInfo['file'] ) . '/' . $_POST['_folderName'];
+            if( file_exists( $folder ) ) {
+                $this->_error( 'add new folder error:',
+                    'folder already exists: ' . $_POST['_filderName'] );
+            }
+            elseif( call_user_func( array( $this->_loadClass, 'mkdir' ), $folder, 0777 ) ) {
+                $_ctrl->redirect( $_ctrl->getPathInfo() );
+            }
+            else {
+                $this->_error( 'add new folder error:',
+                    'failed to create folder: ' . $_POST['_filderName'] .
+                        'maybe folder\'s permission problem?'
+                );
+            }
+        }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
