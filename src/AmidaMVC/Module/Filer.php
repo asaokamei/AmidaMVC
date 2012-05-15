@@ -142,6 +142,39 @@ class Filer implements IfModule
      * @param array $loadInfo
      * @return array
      */
+    function action_fDiff( $_ctrl, &$_pageObj, $loadInfo=array() ) {
+        if( !isset( $loadInfo[ 'file_edited' ] ) ) {
+            $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
+            $this->_error(
+                'diff error',
+                "there are no edit file to diff: {$file_to_edit}. \n"
+            );
+        }
+        else {
+            $lines1   = htmlspecialchars(
+                call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $loadInfo[ 'file' ] ) );
+            $lines2   = htmlspecialchars(
+                call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $loadInfo[ 'file_edited' ] ) );
+            $html = $this->_doDiff( $lines1, $lines2 );
+            $html = "<h1>Diff for: " . basename( $loadInfo['file'] ) . "</h1>\n<pre>$html</pre>";
+            $_pageObj->setContent( $html );
+            $_ctrl->skipToModel( 'emitter' );
+        }
+        return $loadInfo;
+    }
+    function _doDiff( $lines1, $lines2 ) {
+        $diff_path = realpath( __DIR__ . '/../../../vendor/SimpleDiff/simplediff.php' );
+        require_once( $diff_path );
+        $diff = htmlDiff( $lines1, $lines2 );
+        return $diff;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
     function action_fPub( $_ctrl, $_pageObj, $loadInfo ) {
         $file_to_publish = $loadInfo[ 'file_edited' ];
         if( call_user_func( array( $this->_loadClass, 'exists' ),  $file_to_publish ) ) {
