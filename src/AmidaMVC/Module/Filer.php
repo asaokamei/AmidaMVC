@@ -90,7 +90,7 @@ class Filer implements IfModule
 
         // set up menu
         $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
-        if( file_exists( $file_to_edit ) ) {
+        if( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) ) {
             $loadInfo[ 'file_edited' ] = $file_to_edit;
             $this->filerInfo[ 'file_src' ]   = basename( $file_to_edit );
             $this->filerInfo[ 'file_cmd' ][] = '_fEdit';
@@ -135,7 +135,7 @@ class Filer implements IfModule
      */
     function action_fPub( $_ctrl, $_pageObj, $loadInfo ) {
         $file_to_publish = $loadInfo[ 'file_edited' ];
-        if( file_exists( $file_to_publish ) ) {
+        if( call_user_func( array( $this->_loadClass, 'exists' ),  $file_to_publish ) ) {
             $file_to_replaced = $loadInfo[ 'file' ];
             $this->_backup( $file_to_replaced );
             if( rename( $file_to_publish, $file_to_replaced ) ) {
@@ -145,7 +145,7 @@ class Filer implements IfModule
             else {
                 $this->_error(
                     'publish error',
-                    "could not rename file from {$file_to_publish} to {$file_to_replaced}. <br />"
+                    "could not rename file from {$file_to_publish} to {$file_to_replaced}. \n"
                 );
             }
         }
@@ -173,10 +173,10 @@ class Filer implements IfModule
             $file_to_edit = $_ctrl->getLocation( dirname( $_ctrl->getPathInfo() ) );
         }
         $file_to_edit = $file_to_edit . '/' . $new_file;
-        if( file_exists( $file_to_edit ) || is_dir( $file_to_edit ) ) {
+        if( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) || is_dir( $file_to_edit ) ) {
             $this->_error(
                 'add new file error',
-                "file/directory already exists ({$file_to_edit}). <br />" .
+                "file/directory already exists ({$file_to_edit}).\n" .
                 "cannot overwrite existing file or directory."
             );
         }
@@ -215,7 +215,7 @@ class Filer implements IfModule
             $content = $_POST[ '_putContent' ];
             $content = str_replace( "\r\n", "\n", $content );
             $content = str_replace( "\r", "\n", $content );
-            $success = @file_put_contents( $file_to_edit, $content );
+            $success = call_user_func( array( $this->_loadClass, 'putContents' ), $file_to_edit, $content );
             if( $success !== FALSE ) {
                 $_ctrl->redirect( $_ctrl->getPathInfo() );
             }
@@ -271,8 +271,7 @@ END_OF_HTML;
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
     function _template( $_ctrl, $_pageObj ) {
-        $_filerInfo = $this->filerInfo;
-        $_filerObj  = (object) $_filerInfo;
+        $_filerObj  = (object) $this->filerInfo;
         ob_start();
         ob_implicit_flush(0);
         if( $this->devTemplate ) {

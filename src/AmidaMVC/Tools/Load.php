@@ -151,5 +151,20 @@ class Load
         }
         return TRUE;
     }
+    /**
+     * @param string $filename
+     * @param string $content
+     * @return int
+     */
+    function putContents( $filename, $content ) {
+        return @file_put_contents( $filename, $content );
+    }
+    /**
+     * @param string $filename
+     * @return bool
+     */
+    function exists( $filename ) {
+        return file_exists( $filename );
+    }
     // +-------------------------------------------------------------+
 }
