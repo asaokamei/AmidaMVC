@@ -102,6 +102,7 @@ class Emitter extends AModule implements IfModule
         $contents .= "[back to top](" . $_ctrl->getBaseUrl() . ")";
         $_pageObj->setContent( $contents );
         $_pageObj->contentType( 'markdown' );
+        $_pageObj->status( '404' );
         $_ctrl->setMyAction( $_ctrl->defaultAct() );
         return array();
     }

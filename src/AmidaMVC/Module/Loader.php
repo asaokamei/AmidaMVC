@@ -95,6 +95,7 @@ class Loader extends AModule implements IfModule
                 'action' => $_ctrl->defaultAct(),
             );
             $_ctrl->setMyAction( $_ctrl->defaultAct() );
+            $_pageObj->status( '404' );
             return $loadInfo;
         }
         return FALSE;
