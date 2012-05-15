@@ -6,9 +6,7 @@ ToDo List
 [ ] PHPUnit using demo#4.
 [ ] use Config module; remove option stuff from Controller.
 [O] refactor Filer module
-    [ ] action_fDel
     [ ] action_fPurge
-    [ ] action_fDiff
     [ ] action_fBakView
     [ ] action_fBakDiff
     [ ] action_fFolder
@@ -16,6 +14,12 @@ ToDo List
     [X] action_fFile
     [X] action_fPut
     [X] action_fEdit
+    [X] action_fDel
+    [X] action_fDiff
+    [X] _backup
+[ ] Security!!!
+    [ ] get POST data from Request and make it safe.
+    [ ] check for invalid path info input (/../, null byte).
 [ ] use doc_root as well as ctrl_root.
 [ ] i18n/language support.
 [ ] not to use _cmd in path info. use get argument?
