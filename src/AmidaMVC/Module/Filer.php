@@ -142,6 +142,26 @@ class Filer implements IfModule
      * @param array $loadInfo
      * @return array
      */
+    function action_fDel( $_ctrl, &$_pageObj, $loadInfo=array() )
+    {
+        if( isset( $loadInfo[ 'file_edited' ] ) ) {
+            if( call_user_func( array( $this->_loadClass, 'unlink' ), $loadInfo[ 'file_edited' ] ) ) {
+                $_ctrl->redirect( $_ctrl->getPathInfo() );
+            }
+            $this->_error(
+                'delete error',
+                "failed to delete edited file: " . $loadInfo[ 'file_edited' ]
+            );
+        }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
     function action_fDiff( $_ctrl, &$_pageObj, $loadInfo=array() ) {
         if( !isset( $loadInfo[ 'file_edited' ] ) ) {
             $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
@@ -392,8 +412,8 @@ END_OF_HTML;
     function _backupFileName( $file_name, $now ) {
         $file_body = pathinfo( $file_name, PATHINFO_FILENAME );
         $file_ext = pathinfo( $file_name, PATHINFO_EXTENSION );
-        $file_dir = pathinfo( $file_name, PATHINFO_DIRNAME );
-        $backup_file = "{$file_dir}/_{$file_body}-{$now}.{$file_ext}";
+        $backup_dir  = $this->_backupFolder( $file_name );
+        $backup_file = "{$backup_dir}/_{$file_body}-{$now}.{$file_ext}";
         return $backup_file;
     }
 

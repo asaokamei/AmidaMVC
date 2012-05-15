@@ -198,5 +198,12 @@ class Load
         if( !isset( $flag ) ) $flag = GLOB_MARK|GLOB_BRACE;
         return glob( $pattern, $flag );
     }
+    /**
+     * @param string $filename
+     * @return bool
+     */
+    function unlink( $filename ) {
+        return unlink( $filename );
+    }
     // +-------------------------------------------------------------+
 }
