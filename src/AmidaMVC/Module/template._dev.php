@@ -46,7 +46,7 @@ $simpleMenuList = array(
                     <li><a href="javascript:$('#filerDirList').toggle('fast');">file list▼</a></li>
                     <?php } ?>
                     <?php if( !empty( $_filerObj->backup_list) ) {
-                    echo '<li><a href="javascript:toggle(\'filerBackUpList\');">backups▼</a></li>';  } ?>
+                    echo '<li><a href="javascript:$(\'#filerBackUpList\').toggle(\'fast\');">backups▼</a></li>';  } ?>
                     <?php if( !empty( $debug ) ) {
                     echo '<li><a href="javascript:toggle(\'debugInfo\');">debug info▼</a></li>';  } ?>
                 </ul>

@@ -89,6 +89,14 @@ class Filer implements IfModule
         }
         $this->filerInfo[ 'file_list' ] = $file_list;
 
+        // list backup files
+        $backup_glob   = $this->_backupFileName( $loadInfo[ 'file' ], '*' );
+        $backup_list   = call_user_func( array( $this->_loadClass, 'glob' ), $backup_glob );
+        if( !empty( $backup_list ) ) {
+            foreach( $backup_list as &$backup ) {
+                $this->filerInfo[ 'backup_list' ][] = basename( $backup );
+            }
+        }
         // set up menu
         $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
         if( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) ) {
@@ -335,7 +343,40 @@ END_OF_HTML;
         $this->filerInfo[ 'message' ] = $message;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @param string $file_name
+     * @return string
+     */
+    function _backupFolder( $file_name ) {
+        $backup_folder = pathinfo( $file_name, PATHINFO_DIRNAME ) . '/' . $this->backup;
+        return $backup_folder;
+    }
+    /**
+     * @param string $file_name
+     * @param string $now
+     * @return string
+     */
+    function _backupFileName( $file_name, $now ) {
+        $file_body = pathinfo( $file_name, PATHINFO_FILENAME );
+        $file_ext = pathinfo( $file_name, PATHINFO_EXTENSION );
+        $file_dir = pathinfo( $file_name, PATHINFO_DIRNAME );
+        $backup_file = "{$file_dir}/_{$file_body}-{$now}.{$file_ext}";
+        return $backup_file;
+    }
+
+    /**
+     * @param string $file_name
+     */
     function _backup( $file_name ) {
+        $backup_folder = $this->_backupFolder( $file_name );
+        if( !call_user_func( array( $this->_loadClass, 'exists' ), $backup_folder ) ) {
+            call_user_func( array( $this->_loadClass, 'mkDir' ), $backup_folder, 0777 );
+        }
+        if( call_user_func( array( $this->_loadClass, 'isDir' ), $backup_folder ) ) {
+            $now       = date( 'YmdHis' );
+            $backup_file = $this->_backupFileName( $file_name, $now );
+            call_user_func( array( $this->_loadClass, 'rename' ),  $file_name, $backup_file );
+        }
     }
     // +-------------------------------------------------------------+
 }

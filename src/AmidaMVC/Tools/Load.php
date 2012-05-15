@@ -166,5 +166,37 @@ class Load
     function exists( $filename ) {
         return file_exists( $filename );
     }
+    /**
+     * @param string $dir
+     * @param string $permission
+     * @return bool
+     */
+    function mkDir( $dir, $permission ) {
+        return mkdir( $dir, $permission );
+    }
+    /**
+     * @param string $file1
+     * @param string $file2
+     * @return bool
+     */
+    function rename( $file1, $file2 ) {
+        return rename( $file1, $file2 );
+    }
+    /**
+     * @param string $dir
+     * @return bool
+     */
+    function isDir( $dir ) {
+        return is_dir( $dir );
+    }
+    /**
+     * @param string $pattern
+     * @param null|int $flag      default is GLOB_MARK|GLOB_BRACE
+     * @return array
+     */
+    function glob( $pattern, $flag=NULL ) {
+        if( !isset( $flag ) ) $flag = GLOB_MARK|GLOB_BRACE;
+        return glob( $pattern, $flag );
+    }
     // +-------------------------------------------------------------+
 }
