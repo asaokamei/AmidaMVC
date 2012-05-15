@@ -24,7 +24,7 @@ class Emitter extends AModule implements IfModule
     // +-------------------------------------------------------------+
     /**
      * renders data (to html) and output data.
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
      * @return bool
@@ -40,7 +40,7 @@ class Emitter extends AModule implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
      * @return bool
@@ -53,7 +53,7 @@ class Emitter extends AModule implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
      * @return bool
@@ -65,7 +65,7 @@ class Emitter extends AModule implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
      * @return bool
@@ -82,7 +82,7 @@ class Emitter extends AModule implements IfModule
      * action for page not found; this action is invoked only from
      * _App.php or some other models... reload pageNofFound file if
      * set in siteObj. if not, generate simple err404 contents.
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array
      */
@@ -123,7 +123,7 @@ class Emitter extends AModule implements IfModule
     // +-------------------------------------------------------------+
     /**
      * inject into template if contentType is html.
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
     function template( $_ctrl, $_pageObj )

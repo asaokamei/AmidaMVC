@@ -37,7 +37,7 @@ class Router implements IfModule
     /**
      * default is to use route map first, then scan the file system
      * to determine which file to load.
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
      * @return array   $loadInfo for Loader.
@@ -79,7 +79,7 @@ class Router implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
      * @return array

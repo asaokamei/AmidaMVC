@@ -1,6 +1,6 @@
 <?php
 /** @var $_pageObj \AmidaMVC\Framework\PageObj */
-/** @var $_ctrl \AmidaMVC\AppSimple\Application */
+/** @var $_ctrl \AmidaMVC\Framework\Controller */
 ?>
 <!DOCTYPE HTML>
 <html lang="en">

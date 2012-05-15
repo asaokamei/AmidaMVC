@@ -26,7 +26,7 @@ class Loader extends AModule implements IfModule
      * loads file based on $loadInfo, determined by Router.
      * specify absolute path of a file as $loadInfo[ 'file' ].
      * setMyAction for _src and _raw mode
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo    info about file to load from Router.
      * @return bool
@@ -83,7 +83,7 @@ class Loader extends AModule implements IfModule
     // +-------------------------------------------------------------+
     /**
      * do nothing for pageNotFound. sorry page loaded by Emitter.
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @return array
      */

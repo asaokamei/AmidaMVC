@@ -42,7 +42,7 @@ class Auth implements IfModule
     /**
      * default is to use route map first, then scan the file system
      * to determine which file to load.
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
      * @return array   $loadInfo for Loader.
@@ -69,7 +69,7 @@ class Auth implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
      * @return bool
@@ -81,7 +81,7 @@ class Auth implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param array|string $path
      * @return bool
      */
@@ -100,7 +100,7 @@ class Auth implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $doList
      * @return bool
@@ -121,7 +121,7 @@ class Auth implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj     $_pageObj
      * @param string                          $url
      * @return bool
@@ -132,7 +132,7 @@ class Auth implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param string $message
      * @return bool
@@ -146,7 +146,7 @@ class Auth implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param $after
      * @param $module
@@ -159,7 +159,7 @@ class Auth implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\AppSimple\Application $_ctrl
+     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param $message
      */
