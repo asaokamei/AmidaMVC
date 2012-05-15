@@ -36,10 +36,10 @@ $simpleMenuList = array(
                         }
                     }
                     if( in_array( '_fDel', $_filerObj->file_cmd ) ) {
-                        echo '<li><a data-toggle="modal" href="#filerDelModal">Delete△</a></li>';
+                        echo '<li><a href="javascript:$(\'#filerDelModal\').toggle(\'fast\');">Delete▲</a></li>';
                     }
                     if( in_array( '_fPurge', $_filerObj->file_cmd ) ) {
-                        echo '<li><a data-toggle="modal" href="#filerPurgeModal">Purge-File</a></li>';
+                        echo '<li><a href="javascript:$(\'#filerPurgeModal\').toggle(\'fast\');">Purge-File▲</a></li>';
                     }
                     ?>
                     <li><a href="javascript:$('#filerNewForm').toggle('fast');">add file▼</a></li>
@@ -56,10 +56,10 @@ $simpleMenuList = array(
         </div>
     </div>
 <div class="container filerBoxes">
-    <!-- modal for purge -->
-    <div class="modal hide fade" id="filerDelModal">
+    <!-- modal for delete -->
+    <div class="modal" id="filerDelModal" style="display: none;">
         <div class="modal-header">
-            <a class="close" data-dismiss="modal">×</a>
+            <a class="close"  href="javascript:$('#filerDelModal').toggle('fast');">×</a>
             <h3>Delete Edited File</h3>
         </div>
         <div class="modal-body">
@@ -67,14 +67,14 @@ $simpleMenuList = array(
             <p>File: at folder:</p>
         </div>
         <div class="modal-footer">
-            <a href="#" data-dismiss="modal" class="btn">Cancel</a>
             <a href="<?php echo "{$self}/_fDel" ?>" class="btn btn-primary">Delete File</a>
+            <a href="javascript:$('#filerDelModal').toggle('fast');" class="btn">Cancel</a>
         </div>
     </div>
     <!-- modal for purge -->
-    <div class="modal hide fade" id="filerPurgeModal">
+    <div class="modal" id="filerPurgeModal" style="display: none;">
         <div class="modal-header">
-            <a class="close" data-dismiss="modal">×</a>
+            <a class="close" href="javascript:$('#filerPurgeModal').toggle('fast');">×</a>
             <h3>Purge This File</h3>
         </div>
         <div class="modal-body">
@@ -83,7 +83,7 @@ $simpleMenuList = array(
         </div>
         <div class="modal-footer">
             <a href="<?php echo "{$self}/_fPurge" ?>" class="btn btn-primary">Purge File</a>
-            <a href="javascript:$('#filerPurgeModal').modal('hide')" class="btn">Cancel</a>
+            <a href="javascript:$('#filerPurgeModal').toggle('fast')" class="btn">Cancel</a>
         </div>
     </div>
     <!-- adding new file; show empty edit page -->
