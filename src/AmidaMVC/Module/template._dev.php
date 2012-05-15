@@ -9,7 +9,6 @@ $base = $_ctrl->getBaseUrl();
 $simpleMenuList = array(
     '_fEdit' => 'edit',
     '_fPub' => 'publish',
-    '_fDel' => 'delete',
     '_fDiff' => 'diff',
 );
 
@@ -36,6 +35,9 @@ $simpleMenuList = array(
                             echo "<li><a href=\"{$self}/{$simCmd}\">{$simMenu}</a></li>\n";
                         }
                     }
+                    if( in_array( '_fDel', $_filerObj->file_cmd ) ) {
+                        echo '<li><a data-toggle="modal" href="#filerDelModal">Delete△</a></li>';
+                    }
                     if( in_array( '_fPurge', $_filerObj->file_cmd ) ) {
                         echo '<li><a data-toggle="modal" href="#filerPurgeModal">Purge-File</a></li>';
                     }
@@ -55,6 +57,21 @@ $simpleMenuList = array(
     </div>
 <div class="container filerBoxes">
     <!-- modal for purge -->
+    <div class="modal hide fade" id="filerDelModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>Delete Edited File</h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure to deleted the edited file?</p>
+            <p>File: at folder:</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" data-dismiss="modal" class="btn">Cancel</a>
+            <a href="<?php echo "{$self}/_fDel" ?>" class="btn btn-primary">Delete File</a>
+        </div>
+    </div>
+    <!-- modal for purge -->
     <div class="modal hide fade" id="filerPurgeModal">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">×</a>
@@ -71,10 +88,11 @@ $simpleMenuList = array(
     </div>
     <!-- adding new file; show empty edit page -->
     <div id="filerNewForm">
+        <a href="javascript:$('#filerNewForm').toggle('fast');" class="close">×</a>
         creates new file at: /<?php echo $_filerObj->curr_folder; ?>
         <form method="post" name="_showNewForm" action="<?php echo $self?>/_fFile" class="well form-inline">
             <label>
-                add file:<input type="text" name="_newFileName" width="50"
+                <input type="text" name="_newFileName" width="50"
                        placeholder="enter new file name">
             </label>
             <input class="btn-small btn-primary" type="submit" name="submit" value="add new file"/>
@@ -82,9 +100,11 @@ $simpleMenuList = array(
     </div>
     <!-- adding new folder -->
     <div id="filerAddFolder">
+        <a href="javascript:$('#filerAddFolder').toggle('fast');" class="close">×</a>
+        add new folder:
         <form method="post" name="_addFolder" action="<?php echo $self?>/_fDir" class="well form-inline">
             <label>
-                new folder:<input type="text" name="_folderName" width="50"
+                <input type="text" name="_folderName" width="50"
                                   placeholder="new folder at '/<?php echo $_filerObj->curr_folder; ?>'">
             </label>
             <input class="btn-small btn-primary" type="submit" name="submit" value="add new folder"/>
@@ -93,6 +113,7 @@ $simpleMenuList = array(
     <!-- show error message from _dev components -->
     <?php if( $_filerObj->message ) { ?>
     <div id="filerError" class="alert alert-error">
+        <a href="javascript:$('#filerError').toggle('fast');" class="close">×</a>
         <dl>
             <dt>Error: <?php echo $_filerObj->error; ?></dt>
             <dd><?php echo $_filerObj->message; ?></dd>
@@ -102,6 +123,7 @@ $simpleMenuList = array(
     <!-- show file in the folder -->
     <?php if( !empty( $_filerObj->file_list ) ) { ?>
     <div id="filerDirList">
+        <a href="javascript:$('#filerDirList').toggle('fast');" class="close">×</a>
         File/Folder Lists at <?php echo $base; ?>:
         <?php foreach( $_filerObj->file_list as $file ) {  ?>
         <p>
@@ -119,6 +141,7 @@ $simpleMenuList = array(
     <!-- show backup file list -->
     <?php if (!empty($_filerObj->backup_list)) { ?>
     <div id="filerBackUpList">
+        <a href="javascript:$('#filerBackUpList').toggle('fast');" class="close">×</a>
         Back Up File List:
         <ul>
             <?php foreach ($_filerObj->backup_list as $backup) { ?>
