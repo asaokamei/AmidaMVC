@@ -2,7 +2,7 @@
 namespace AmidaMVC\Tools;
 
 
-class testLoad extends Load
+class LoadArray extends Load
 {
 // still static!!!
     static $fileSys = array();
