@@ -37,6 +37,7 @@ some other interesting demo:
 
 *   [demo#1: simple site](demo1-simple/)
 *   [demo#2: simple with template](demo2-simple/)
+*   [demo#2: simple but from array set (no file access)](demo2-array/)
 *   [demo#3: source code view](demo3-src/)
 *   [demo#4: like a CMS](demo4-cms/)
 

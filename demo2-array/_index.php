@@ -1,22 +1,27 @@
 <?php
 require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php' );
 
+$di = \AmidaMVC\Framework\Container::start();
+$di->setModule( '\AmidaMVC\Tools\Load', '\AmidaMVC\Tools\LoadArray', 'static' );
+
+/** @var $load \AmidaMVC\Tools\LoadArray */
+$load = $di->get( '\AmidaMVC\Tools\Load' );
+$load::setFiles( array(
+    '/path/to/index.md' => '#Top of Array Data\n hi!',
+    '' => '',
+) );
+
 $app = \AmidaMVC\Application\Application::simple(
     array(
-        'site_title' => "Demo#2 - Simple Site with Template",
-        'template_file' => 'template.php',
-        'ctrl_root' => realpath( '../demo1-simple' ),
+        'site_title' => "Demo#2 - Simple from Array Data",
+        'template_file' => NULL,
+        'ctrl_root' => '/path/to/',
     )
 );
 $app->get( '/func', function() {
     $content = "
 #Closure Output
-
-AmidaMVC can handle closure function to generate a response;
-this text is an output from closure in MarkDown description.
-
-Just in case you may notice, this page uses template with demo.css
-in demo1-simple folder.
+from closure.
 ";
         return $content;
     }, array( 'type' => 'markdown' )
