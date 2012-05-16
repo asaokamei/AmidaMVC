@@ -1,7 +1,7 @@
 <?php
 namespace AmidaMVC\Application;
 
-class Application extends \AmidaMVC\Framework\Controller
+class Application
 {
     static $diContainerStart = array( '\AmidaMVC\Framework\Container', 'start' );
     static $controllerStart  = array( '\AmidaMVC\Framework\Controller', 'getInstance' );
