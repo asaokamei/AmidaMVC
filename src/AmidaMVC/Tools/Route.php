@@ -12,6 +12,7 @@ class Route
      * @var array   contains pattern to parameter array.
      */
     private static $_routes = array();
+    private static $_loadClass;
     // +-------------------------------------------------------------+
     /**
      * sets route patterns to match.
@@ -73,15 +74,18 @@ class Route
      */
     static function scan( $root, $path )
     {
+        $di = \AmidaMVC\Framework\Container::start();
+        /** @var $loadClass \AmidaMVC\Tools\Load */
+        $loadClass = $di->get( '\AmidaMVC\Tools\Load' );
         $loadInfo = array(
             'file' => FALSE,
         );
         // find a file to load. 
         // ex: file_name = /path/to/file_name.
         $file_name = $root . '/' . $path;
-        if( file_exists( $file_name ) ) {
+        if( $loadClass->exists( $file_name ) ) {
             $loadInfo[ 'file' ] = $path;
-            if( is_dir( $file_name ) ) {
+            if( $loadClass->isDir( $file_name ) ) {
                 if( substr( $file_name, -1, 1 ) !== '/' ) {
                     $loadInfo[ 'reload' ] = $path . '/';
                 }
@@ -105,7 +109,7 @@ class Route
             }
             $folder .= $loc . '/';
             $file_name = $root . '/' . $folder . '_App.php';
-            if( file_exists( $file_name ) ) {
+            if( $loadClass->exists( $file_name ) ) {
                 $loadInfo[ 'file' ] = $folder . '_App.php';
                 $found = TRUE;
             }
@@ -124,10 +128,14 @@ class Route
      * @param array $files     possible index file names.
      * @return array|bool      found loadInfo.
      */
-    static function index( $root, $path, $files ) {
+    static function index( $root, $path, $files )
+    {
+        $di = \AmidaMVC\Framework\Container::start();
+        /** @var $loadClass \AmidaMVC\Tools\Load */
+        $loadClass = $di->get( '\AmidaMVC\Tools\Load' );
         $lists = '{' . implode( ',', $files ) . '}';
         $pattern = $root . '/' . $path . $lists;
-        $found = glob( $pattern, GLOB_BRACE );
+        $found = $loadClass->glob( $pattern, GLOB_BRACE );
         if( empty( $found ) ) return FALSE;
         $found_names = array();
         foreach( $found as $list ) {

@@ -82,6 +82,9 @@ class Controller extends AmidaChain
     function injectLoad( $load ) {
         $this->_loadClass = $load;
     }
+    function getDi() {
+        return $this->_diContainer;
+    }
     // +-------------------------------------------------------------+
     /**
      * @static

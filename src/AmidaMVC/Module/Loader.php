@@ -37,7 +37,8 @@ class Loader extends AModule implements IfModule
             return FALSE;
         }
         $command = $this->findCommand( $_ctrl->getCommands() );
-        $load = $this->_loadClass;
+        /** @var $load \AmidaMVC\Tools\Load */
+        $load = $_ctrl->getDi()->get( $this->_loadClass );
         $file_name = $loadInfo[ 'file' ];
 
         /** @var string $file_name  */
