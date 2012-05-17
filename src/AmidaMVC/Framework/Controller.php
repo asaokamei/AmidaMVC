@@ -51,6 +51,10 @@ class Controller extends AmidaChain
         if( !isset( $option[ 'ctrl_root' ] ) ) {
             $option[ 'ctrl_root' ] = getcwd();
         }
+        if( substr( $option[ 'ctrl_root' ], -1 ) === '/' ) {
+            // no trailing slash.
+            $option[ 'ctrl_root' ] = substr( $option[ 'ctrl_root' ], 0, -1 );
+        }
         $this->ctrl_root    = $option[ 'ctrl_root' ];
         // set loadFolder as ctrl_root and appDefault.
         $this->setFileLocation( $this->ctrl_root );
