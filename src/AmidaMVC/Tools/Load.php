@@ -189,6 +189,14 @@ class Load
     function isDir( $dir ) {
         return is_dir( $dir );
     }
+    function search( $folder, $pattern, $flag=NULL ) {
+        if( !isset( $flag ) ) $flag = GLOB_MARK|GLOB_BRACE;
+        if( is_array( $pattern ) ) {
+            $pattern = '{' .implode( ',', $pattern ) . '}';
+        }
+        $pattern = $folder . $pattern;
+        return glob( $pattern, $flag );
+    }
     /**
      * @param string $pattern
      * @param null|int $flag      default is GLOB_MARK|GLOB_BRACE

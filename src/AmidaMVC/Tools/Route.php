@@ -133,9 +133,7 @@ class Route
         $di = \AmidaMVC\Framework\Container::start();
         /** @var $loadClass \AmidaMVC\Tools\Load */
         $loadClass = $di->get( '\AmidaMVC\Tools\Load' );
-        $lists = '{' . implode( ',', $files ) . '}';
-        $pattern = $root . '/' . $path . $lists;
-        $found = $loadClass->glob( $pattern, GLOB_BRACE );
+        $found = $loadClass->search( $root . '/' . $path, $files );
         if( empty( $found ) ) return FALSE;
         $found_names = array();
         foreach( $found as $list ) {

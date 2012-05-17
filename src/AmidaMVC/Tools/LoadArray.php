@@ -48,7 +48,7 @@ class LoadArray extends Load
 
     function exists( $filename )
     {
-        return isset( static::$fileSys[ $filename ] );
+        return array_key_exists(  $filename, static::$fileSys );
     }
 
     function mkDir( $dir, $permission )
@@ -70,6 +70,20 @@ class LoadArray extends Load
             return TRUE;
         }
         return FALSE;
+    }
+
+    function search( $folder, $pattern, $flag=NULL ) {
+        if( is_array( $pattern ) ) {
+            $pattern = '[' .implode( '|', $pattern ) . ']';
+        }
+        $found = array();
+        $pattern = preg_quote( $folder, '/' ) . $pattern;
+        foreach ( static::$fileSys as $file => $content ) {
+            if ( preg_match( "/{$pattern}/", $file ) ) {
+                $found[] = $file;
+            }
+        }
+        return $found;
     }
 
     function glob( $pattern, $flag = NULL )
