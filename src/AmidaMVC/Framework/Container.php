@@ -204,6 +204,9 @@ class Container
                 $moduleInfo[ 'config' ] = $config;
             }
         }
+        else if( !isset( $moduleInfo[ 'config' ] ) ) {
+            $moduleInfo[ 'config' ] = NULL;
+        }
         if( is_object( $className ) ) {
             $module = $className;
         }
