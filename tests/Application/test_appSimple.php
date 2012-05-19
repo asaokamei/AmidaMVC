@@ -5,6 +5,10 @@ require( __DIR__ . '/../../src/AmidaMVC/bootstrap.php' );
 
 use \AmidaMVC\Application\Application as TestApp;
 
+class pageObj extends \AmidaMVC\Framework\PageObj {
+    function emit() {}
+}
+
 class test_ITest_AppSimple extends \PHPUnit_Framework_TestCase
 {
     /** @var \AmidaMVC\Framework\Controller */
@@ -33,17 +37,18 @@ class test_ITest_AppSimple extends \PHPUnit_Framework_TestCase
             'template_file' => NULL,
             'ctrl_root' => '/path/to/',
         );
-        $this->di = \AmidaMVC\Framework\Container::getInstance();
+        $this->di = \AmidaMVC\Framework\Container::start();
+        $this->di->setModule( '\AmidaMVC\Framework\PageObj', '\AmidaMVC\Tests\Application\AppSimple\PageObj' );
         $this->di->setModule( '\AmidaMVC\Tools\Load', '\AmidaMVC\Tools\LoadArray', 'static' );
-        $this->di->setModule( '\AmidaMVC\Tools\Request', '\AmidaMVC\Tools\Request', 'get', $this->req  );
         /** @var $load \AmidaMVC\Tools\LoadArray */
         $load = $this->di->get( '\AmidaMVC\Tools\LoadArray' );
         $load::setFiles( $this->files );
-        $this->app = \AmidaMVC\Application\Application::simple( $this->appConfig );
     }
     function test_1st() {
-        TestApp::simple( $this->appConfig )->start();
-        //$this->app->start();
-        $this->assertTrue( FALSE );
+        $this->di->setModule( '\AmidaMVC\Tools\Request', '\AmidaMVC\Tools\Request', 'get', $this->req  );
+        $this->app = \AmidaMVC\Application\Application::simple( $this->appConfig );
+        $this->app->start();
+        $this->assertTrue( TRUE );
+        echo $this->app->pageObj->getContent();
     }
 }
