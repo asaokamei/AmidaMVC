@@ -8,13 +8,17 @@ $di->setModule( '\AmidaMVC\Tools\Load', '\AmidaMVC\Tools\LoadArray', 'static' );
 $load = $di->get( '\AmidaMVC\Tools\Load' );
 $load::setFiles( array(
     '/path/to/' => NULL,
-    '/path/to/index.md' => "#Top of Array Data\n hello from Array!",
+    '/path/to/index.md' => "
+#Top of Array
+hello from Array!
+
+*   [output from a closure](func)",
     '' => '',
 ) );
 
 $app = \AmidaMVC\Application\Application::simple(
     array(
-        'site_title' => "Demo#2 - Simple from Array Data",
+        'site_title' => "Demo#2 - Simple Demo Using Array Data",
         'template_file' => NULL,
         'ctrl_root' => '/path/to/',
     )
