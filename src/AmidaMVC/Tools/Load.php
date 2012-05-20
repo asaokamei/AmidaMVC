@@ -6,11 +6,11 @@ class Load
     /**
      * @var array   file extensions to load as is.
      */
-    static $ext_asIs = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
+    var $ext_asIs = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
     /**
      * @var array   file extensions to load.
      */
-    static $ext_view = array(
+    var $ext_view = array(
         'php'      => 'html',
         'html'     => 'html',
         'htm'      => 'html',
@@ -22,17 +22,17 @@ class Load
     /**
      * @var array   file extensions to edit as file.
      */
-    static $ext_text = array(
+    var $ext_text = array(
         'css'   => 'css',
         'js'    => 'javascript'
     );
     /**
      * @var array   folders to look files for.
      */
-    static $_loadFolder = array();
+    var $_loadFolder = array();
     // +-------------------------------------------------------------+
-    static function isWhat( $what, $file ) {
-        return static::$what( $file );
+    function isWhat( $what, $file ) {
+        return $this->$what( $file );
     }
     // +-------------------------------------------------------------+
     /**
@@ -41,9 +41,9 @@ class Load
      * @param string $file   filename to check
      * @return bool
      */
-    static function isView( $file ) {
+    function isView( $file ) {
         $ext  = pathinfo( $file, PATHINFO_EXTENSION );
-        return isset( self::$ext_view[ $ext ] );
+        return isset( $this->ext_view[ $ext ] );
     }
     // +-------------------------------------------------------------+
     /**
@@ -52,9 +52,9 @@ class Load
      * @param string $file   filename to check
      * @return bool
      */
-    static function isText( $file ) {
+    function isText( $file ) {
         $ext  = pathinfo( $file, PATHINFO_EXTENSION );
-        return isset( self::$ext_view[ $ext ] ) || isset( self::$ext_text[ $ext ]  );
+        return isset( $this->ext_view[ $ext ] ) || isset( $this->ext_text[ $ext ]  );
     }
     // +-------------------------------------------------------------+
     /**
@@ -63,18 +63,18 @@ class Load
      * @param string $file   filename to check
      * @return bool
      */
-    static function isAsIs( $file ) {
+    function isAsIs( $file ) {
         $ext  = pathinfo( $file, PATHINFO_EXTENSION );
-        return in_array( $ext, self::$ext_asIs );
+        return in_array( $ext, $this->ext_asIs );
     }
     // +-------------------------------------------------------------+
-    static function getFileType( $file ) {
+    function getFileType( $file ) {
         $ext  = pathinfo( $file, PATHINFO_EXTENSION );
-        if( isset( self::$ext_view[ $ext ] ) ) {
-            return self::$ext_view[ $ext ];
+        if( isset( $this->ext_view[ $ext ] ) ) {
+            return $this->ext_view[ $ext ];
         }
-        if( isset( self::$ext_text[ $ext ] ) ) {
-            return self::$ext_text[ $ext ];
+        if( isset( $this->ext_text[ $ext ] ) ) {
+            return $this->ext_text[ $ext ];
         }
         return $ext;
     }
@@ -85,7 +85,7 @@ class Load
      * @param $file_name
      * @return null|string
      */
-    static function getContentsByGet( $file_name ) {
+    function getContentsByGet( $file_name ) {
         return file_get_contents( $file_name );
     }
     // +-------------------------------------------------------------+
@@ -96,7 +96,7 @@ class Load
      * @internal param array $option extracted for included file.
      * @return string
      */
-    static function getContentsByBuffer( $file_name ) {
+    function getContentsByBuffer( $file_name ) {
         if( func_num_args() > 1 && is_array( func_get_arg(1) ) ) {
             extract( func_get_arg(1) );
         }
@@ -115,8 +115,8 @@ class Load
         if( !is_array( $folder ) ) {
             $folder = array( $folder );
         }
-        static::$_loadFolder = $folder + static::$_loadFolder;
-        return static::$_loadFolder;
+        $this->_loadFolder = array_merge( $folder, $this->_loadFolder );
+        return $this->_loadFolder;
     }
     /**
      * find file_name from $this->loadFolder list and returns the
@@ -126,8 +126,8 @@ class Load
      */
     function findFile( $file_name ) {
         $found = FALSE;
-        if( empty( static::$_loadFolder ) ) return $found;
-        foreach( static::$_loadFolder as $folder ) {
+        if( empty( $this->_loadFolder ) ) return $found;
+        foreach( $this->_loadFolder as $folder ) {
             $check_file = $folder. '/' . $file_name;
             if( file_exists( $check_file ) ) {
                 $found = $check_file;

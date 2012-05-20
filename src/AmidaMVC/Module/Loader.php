@@ -57,22 +57,22 @@ class Loader extends AModule implements IfModule
             // it's a file. load contents.
             $loadInfo[ 'base_name' ] = basename( $file_name );
             $loadInfo[ 'file_ext'  ]  = pathinfo( $file_name, PATHINFO_EXTENSION );
-            $loadInfo[ 'file_type' ] = $load::getFileType( $file_name );
-            if( $load::isView( $file_name ) && $command == '_src' ) {
-                $_pageObj->setContent( $load::getContentsByGet( $file_name ) );
+            $loadInfo[ 'file_type' ] = $load->getFileType( $file_name );
+            if( $load->isView( $file_name ) && $command == '_src' ) {
+                $_pageObj->setContent( $load->getContentsByGet( $file_name ) );
                 $loadInfo[ 'loadMode' ] = '_src';
             }
-            else if( $load::isView( $file_name ) ) {
-                $_pageObj->setContent( $load::getContentsByBuffer(
+            else if( $load->isView( $file_name ) ) {
+                $_pageObj->setContent( $load->getContentsByBuffer(
                     $file_name, array( '_ctrl'=>$_ctrl, '_pageObj'=>$_pageObj, '_loadInfo'=>$loadInfo ) )
                 );
                 $loadInfo[ 'loadMode' ] = '_view';
             }
-            else if( $load::isAsIs( $file_name ) ) {
-                $_pageObj->setContent( $load::getContentsByGet( $file_name ) );
+            else if( $load->isAsIs( $file_name ) ) {
+                $_pageObj->setContent( $load->getContentsByGet( $file_name ) );
                 $loadInfo[ 'loadMode' ] = '_asIs';
             }
-            $type = $load::getFileType( $file_name );
+            $type = $load->getFileType( $file_name );
             $_pageObj->contentType( $type );
         }
         if( isset( $loadInfo['action'] ) ) {

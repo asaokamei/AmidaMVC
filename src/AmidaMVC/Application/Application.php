@@ -183,7 +183,7 @@ class Application
         // inject dependencies.
         $controller->injectDiContainer( $diContainer );
         $controller->injectRequest( $diContainer->get( '\AmidaMVC\Tools\Request' ) );
-        $controller->injectLoad( $diContainer->get( '\AmidaMVC\Tools\Load', 'static' ) );
+        $controller->injectLoad( $diContainer->get( '\AmidaMVC\Tools\Load' ) );
         // some more actions to do.
         $controller->separateCommands();
         return $controller;
