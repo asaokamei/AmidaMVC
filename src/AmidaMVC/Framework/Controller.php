@@ -39,6 +39,7 @@ class Controller extends AmidaChain
      * @var \AmidaMVC\Tools\Load
      */
     var $_loadClass = '\AmidaMVC\Tools\Load';
+    static $_self = NULL;
     // +-------------------------------------------------------------+
     /**
      * @param array $option
@@ -96,11 +97,13 @@ class Controller extends AmidaChain
      * @return \AmidaMVC\Framework\Controller
      */
     static function getInstance( $option=array() ) {
-        static $self = NULL;
-        if( !isset( $self ) ) {
-            $self = new static( $option );
+        if( !isset( static::$_self ) ) {
+            static::$_self = new static( $option );
         }
-        return $self;
+        return static::$_self;
+    }
+    static function clean() {
+        static::$_self = NULL;
     }
     // +-------------------------------------------------------------+
     /**
