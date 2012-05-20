@@ -54,14 +54,14 @@ class Router implements IfModule
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
         }
-        else if( $loadInfo = $route::scan( $root, $path ) ) {
+        else if( $loadInfo = $route->scan( $root, $path ) ) {
             // found (something) by scan.
             if( isset( $loadInfo[ 'reload' ] ) ) {
                 // reload if it is a directory without trailing slash.
                 $_ctrl->redirect( $loadInfo[ 'reload' ] );
             }
             else if( isset( $loadInfo[ 'is_dir' ] ) ) {
-                if( $loadInfo = $route::index( $root, $loadInfo[ 'file' ], $this->_indexes ) ) {
+                if( $loadInfo = $route->index( $root, $loadInfo[ 'file' ], $this->_indexes ) ) {
                     // found an index file in the directory.
                     $loadInfo[ 'foundBy' ] = 'index';
                 }
