@@ -22,7 +22,7 @@ p,span,code {
 header {
     background: #d2691e;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: normal;
     padding: 15px 5px 15px 15px;
     margin: 0 -5px 10px -5px;
     box-shadow: 5px 5px 5px #cccccc;
