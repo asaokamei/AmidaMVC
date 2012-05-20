@@ -6,7 +6,7 @@ class Router implements IfModule
     /**
      * @var \AmidaMVC\Tools\Route   a static class name for match and scan.
      */
-    var $_routeClass = '\AmidaMVC\Tools\Route';
+    var $_routeClass = NULL;
     /**
      * @var array   list of index files when accessing a directory.
      */
@@ -17,12 +17,12 @@ class Router implements IfModule
      * @param array $option   options to initialize.
      */
     function _init( $option=array() ) {
-        if( isset( $option[ 'routeClass' ] ) ) {
-            $this->_routeClass = $option[ 'routeClass' ];
+        if( !isset( $this->_routeClass ) ) {
+            $di = \AmidaMVC\Framework\Container::start();
+            $this->_routeClass = $di->get( '\AmidaMVC\Tools\Route', 'static' );
         }
         if( isset( $option[ 'routes' ] ) ) {
-            $route = $this->_routeClass;
-            $route::set( $option[ 'routes' ] );
+            call_user_func( array( $this->_routeClass, 'set' ), $option[ 'routes' ] );
         }
         if( isset( $option[ 'indexes' ] ) ) {
             if( is_array( $option[ 'indexes' ] ) ) {
@@ -32,6 +32,9 @@ class Router implements IfModule
                 $this->_indexes[] = $option[ 'indexes' ];
             }
         }
+    }
+    function injectRoute( $route ) {
+        $this->_routeClass = $route;
     }
     // +-------------------------------------------------------------+
     /**
@@ -47,7 +50,7 @@ class Router implements IfModule
         $route = $this->_routeClass;
         $path  = $_ctrl->getPathInfo();
         $root  = $_ctrl->getLocation();
-        if( $loadInfo = $route::match( $path ) ) {
+        if( $loadInfo = call_user_func( array( $this->_routeClass, 'match' ), $path ) ) {
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
         }
