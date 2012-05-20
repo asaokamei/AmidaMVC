@@ -25,28 +25,28 @@ class Application
             'router',       'loader',        'emitter',
         );
         $diDefault = array(
-            array( 'load',      '\AmidaMVC\Tools\Load',     'get' ),
-            array( 'route',     '\AmidaMVC\Tools\Route',    'get', array(
-                'inject' => array(
-                    array( 'load', 'load' ),
-                )
+            array(  'load',      '\AmidaMVC\Tools\Load',     'get' ),
+            array(  'route',     '\AmidaMVC\Tools\Route',    'get', array(
+                    'inject' => array(
+                        array( 'load', 'load' ),
+                    )
             ) ),
-            array( 'router',    '\AmidaMVC\Module\Router',  'new', array(
-                'inject' => array(
-                        array( 'route', 'route' ),
-                 )
+            array(  'router',    '\AmidaMVC\Module\Router',  'new', array(
+                    'inject' => array(
+                            array( 'route', 'route' ),
+                     )
             ) ),
-            array( 'loader',    '\AmidaMVC\Module\Loader',  'new', array() ),
-            array( 'emitter',   '\AmidaMVC\Module\Emitter', 'new', array() ),
-            array( 'authAdmin', '\AmidaMVC\Tools\AuthNot',  'new', 'authAdmin', array(
+            array(  'loader',    '\AmidaMVC\Module\Loader',  'new', array() ),
+            array(  'emitter',   '\AmidaMVC\Module\Emitter', 'new', array() ),
+            array(  'authAdmin', '\AmidaMVC\Tools\AuthNot',  'new', 'authAdmin', array(
                     'password_file' => 'admin.password',
                     'authArea'      => 'authAdmin'
             ) ),
-            array( 'authDev', '\AmidaMVC\Tools\AuthNot',    'new', 'authDev', array(
+            array(  'authDev', '\AmidaMVC\Tools\AuthNot',    'new', 'authDev', array(
                     'password_file' => 'dev.password',
                     'authArea'      => 'authDev'
             ) ),
-            array( 'authAdminOnly', '\AmidaMVC\Module\Auth', 'new', array(
+            array(  'authAdminOnly', '\AmidaMVC\Module\Auth', 'new', array(
                     'authClass'      => 'authAdmin',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/admin', '/admin2' ),
@@ -56,7 +56,7 @@ class Application
                         'onSuccess' => array(),
                     ),
             ) ),
-            array( 'authDevLogin', '\AmidaMVC\Module\Auth', 'new', array(
+            array(  'authDevLogin', '\AmidaMVC\Module\Auth', 'new', array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/dev_login' ),
@@ -68,7 +68,7 @@ class Application
                         ),
                     ),
             ) ),
-            array( 'authDevLogout', '\AmidaMVC\Module\Auth', 'new', array(
+            array(  'authDevLogout', '\AmidaMVC\Module\Auth', 'new', array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/dev_logout' ),
@@ -81,7 +81,7 @@ class Application
                         ),
                     ),
             ) ),
-            array( 'authDevFiler', '\AmidaMVC\Module\Auth', 'new', array(
+            array(  'authDevFiler', '\AmidaMVC\Module\Auth', 'new', array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/' ),
@@ -91,7 +91,7 @@ class Application
                         ),
                     ),
             ) ),
-            array( 'filer', '\AmidaMVC\Module\Filer', 'new', array(
+            array(  'filer', '\AmidaMVC\Module\Filer', 'new', array(
                     'template_file' => NULL,
                     'listJs' => array(
                         '../bootstrap/js/jquery-1.7.1.js',
