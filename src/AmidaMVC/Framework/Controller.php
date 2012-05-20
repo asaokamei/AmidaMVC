@@ -26,19 +26,22 @@ class Controller extends AmidaChain
     /**
      * @var \AmidaMVC\Framework\PageObj
      */
-    var $pageObj = '\AmidaMVC\Framework\PageObj';
+    var $pageObj = NULL;
     /**
      * @var \AmidaMVC\Tools\Request
      */
-    var $_requestClass = '\AmidaMVC\Tools\Request';
+    var $_requestClass = NULL;
     /**
      * @var \AmidaMVC\Framework\Container
      */
-    var $_diContainer = '\AmidaMVC\Framework\Container';
+    var $_diContainer = NULL;
     /**
      * @var \AmidaMVC\Tools\Load
      */
-    var $_loadClass = '\AmidaMVC\Tools\Load';
+    var $_loadClass = NULL;
+    /**
+     * @var null|\AmidaMVC\Framework\Container
+     */
     static $_self = NULL;
     // +-------------------------------------------------------------+
     /**
@@ -57,11 +60,6 @@ class Controller extends AmidaChain
             $option[ 'ctrl_root' ] = substr( $option[ 'ctrl_root' ], 0, -1 );
         }
         $this->ctrl_root    = $option[ 'ctrl_root' ];
-        // set loadFolder as ctrl_root and appDefault.
-        $this->setFileLocation( $this->ctrl_root );
-        if( isset( $option[ 'appDefault' ] ) ) {
-            $this->setFileLocation( $option[ 'appDefault' ] );
-        }
     }
     /**
      * @param $modules
@@ -127,7 +125,22 @@ class Controller extends AmidaChain
      * @return bool|mixed|null  returned value from the last module.
      */
     function start( $pageObj=NULL ) {
-        $this->pageObj = ( isset( $pageObj ) ) ? $pageObj : $this->_diContainer->get( $this->pageObj );
+        $this->_diContainer =
+            ( $this->_diContainer ) ?: \AmidaMVC\Framework\Container::start();
+        $this->pageObj =
+            ( $pageObj ) ?: ( $this->pageObj ) ?:
+            $this->_diContainer->get( '\AmidaMVC\Framework\PageObj' );
+        $this->_requestClass =
+            ( $this->_requestClass ) ?:
+            $this->_diContainer->get( '\AmidaMVC\Tools\Request' );
+        $this->_loadClass =
+            ( $this->_loadClass ) ?:
+            $this->_diContainer->get( '\AmidaMVC\Tools\Load' );
+        // set loadFolder as ctrl_root and appDefault.
+        $this->setFileLocation( $this->ctrl_root );
+        if( isset( $option[ 'appDefault' ] ) ) {
+            $this->setFileLocation( $option[ 'appDefault' ] );
+        }
         $action = $this->defaultAct();
         return $this->dispatch( $action, $this->pageObj );
     }
