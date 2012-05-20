@@ -25,7 +25,12 @@ class Application
             'router',       'loader',        'emitter',
         );
         $diDefault = array(
-            array( 'route',     '\AmidaMVC\Tools\Route', 'static'),
+            array( 'load', '\AmidaMVC\Tools\Load', 'get' ),
+            array( 'route',     '\AmidaMVC\Tools\Route', 'get', array(
+                'inject' => array(
+                    array( 'load', 'load' ),
+                ) )
+            ),
             array( 'router',    '\AmidaMVC\Module\Router',  'new', array(
                 'inject' => array(
                         array( 'route', 'route' ),
@@ -138,7 +143,12 @@ class Application
             'router', 'loader', 'emitter',
         );
         $diDefault = array(
-            array( 'route',     '\AmidaMVC\Tools\Route', 'static'),
+            array( 'request',   '\AmidaMVC\Tools\Request', 'get' ),
+            array( 'load',      '\AmidaMVC\Tools\Load', 'get' ),
+            array( 'route',     '\AmidaMVC\Tools\Route', 'get', array(
+                'inject' => array(
+                    array( 'load', 'load' ),
+                ) ) ),
             array( 'router',    '\AmidaMVC\Module\Router',  'new', array(
                 'inject' => array(
                     array( 'route', 'route' ),
