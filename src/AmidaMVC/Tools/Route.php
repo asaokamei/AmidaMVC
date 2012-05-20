@@ -11,16 +11,29 @@ class Route
     /**
      * @var array   contains pattern to parameter array.
      */
-    private static $_routes = array();
-    private static $_loadClass;
+    private $_routes = array();
+    private $_loadClass = NULL;
+    // +-------------------------------------------------------------+
+    function __construct() {
+
+    }
+    function injectLoad( $load ) {
+        $this->_loadClass = $load;
+    }
+    function _init( $option=NULL ) {
+        if( !isset( $this->_loadClass ) ) {
+            $di = \AmidaMVC\Framework\Container::start();
+            $this->_routeClass = $di->get( '\AmidaMVC\Tools\Load' );
+        }
+    }
     // +-------------------------------------------------------------+
     /**
      * sets route patterns to match.
      * @static
      * @param $routes
      */
-    static function set( $routes ) {
-        self::$_routes = self::compile( $routes );
+    function set( $routes ) {
+        $this->_routes = self::compile( $routes );
     }
     // +-------------------------------------------------------------+
     /**
@@ -29,7 +42,7 @@ class Route
      * @param $routes
      * @return array
      */
-    static function compile( $routes ) {
+    function compile( $routes ) {
         $_routes = array();
         foreach( $routes as $url => $match ) {
             $tokens = explode( '/', ltrim( $url, '/' ) );
@@ -52,11 +65,11 @@ class Route
      * @param string $path    path to match.
      * @return array|bool     returns matched result, or FALSE if not found.
      */
-    static function match( $path ) {
+    function match( $path ) {
         if( substr( $path, 0, 1 ) !== '/' ) {
             $path = '/' . $path;
         }
-        foreach( self::$_routes as $pattern => $match ) {
+        foreach( $this->_routes as $pattern => $match ) {
             if( preg_match( "#^{$pattern}$#", $path, $matches ) ) {
                 $match = array_merge( $match, $matches );
                 return $match;
@@ -72,7 +85,7 @@ class Route
      * @param string $path   path of url
      * @return array|bool    return $loadInfo or FALSE if not found
      */
-    static function scan( $root, $path )
+    function scan( $root, $path )
     {
         $di = \AmidaMVC\Framework\Container::start();
         /** @var $loadClass \AmidaMVC\Tools\Load */
@@ -128,7 +141,7 @@ class Route
      * @param array $files     possible index file names.
      * @return array|bool      found loadInfo.
      */
-    static function index( $root, $path, $files )
+    function index( $root, $path, $files )
     {
         $di = \AmidaMVC\Framework\Container::start();
         /** @var $loadClass \AmidaMVC\Tools\Load */
