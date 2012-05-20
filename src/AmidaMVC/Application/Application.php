@@ -25,7 +25,12 @@ class Application
             'router',       'loader',        'emitter',
         );
         $diDefault = array(
-            array( 'router',    '\AmidaMVC\Module\Router',  'new', array() ),
+            array( 'route',     '\AmidaMVC\Tools\Route', 'static'),
+            array( 'router',    '\AmidaMVC\Module\Router',  'new', array(
+                'inject' => array(
+                        array( 'route', 'route' ),
+                 ) )
+            ),
             array( 'loader',    '\AmidaMVC\Module\Loader',  'new', array() ),
             array( 'emitter',   '\AmidaMVC\Module\Emitter', 'new', array() ),
             array( 'authAdmin', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin',
@@ -133,7 +138,12 @@ class Application
             'router', 'loader', 'emitter',
         );
         $diDefault = array(
-            array( 'router',  '\AmidaMVC\Module\Router',  'new', array() ),
+            array( 'route',     '\AmidaMVC\Tools\Route', 'static'),
+            array( 'router',    '\AmidaMVC\Module\Router',  'new', array(
+                'inject' => array(
+                    array( 'route', 'route' ),
+                ) )
+            ),
             array( 'loader',  '\AmidaMVC\Module\Loader',  'new', array() ),
             array( 'emitter', '\AmidaMVC\Module\Emitter', 'new', array() ),
         );
