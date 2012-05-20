@@ -37,6 +37,8 @@ class test_ITest_AppSimple extends \PHPUnit_Framework_TestCase
             'template_file' => NULL,
             'ctrl_root' => '/path/to/',
         );
+        \AmidaMVC\Framework\Container::clean();
+        \AmidaMVC\Framework\Controller::clean();
         $this->di = \AmidaMVC\Framework\Container::start();
         $this->di->setModule( '\AmidaMVC\Framework\PageObj', '\AmidaMVC\Tests\Application\AppSimple\PageObj' );
         $this->di->setModule( '\AmidaMVC\Tools\Load', '\AmidaMVC\Tools\LoadArray', 'static' );
@@ -45,10 +47,29 @@ class test_ITest_AppSimple extends \PHPUnit_Framework_TestCase
         $load::setFiles( $this->files );
     }
     function test_1st() {
+    }
+    function test_top_index_returns_html() {
         $this->di->setModule( '\AmidaMVC\Tools\Request', '\AmidaMVC\Tools\Request', 'get', $this->req  );
         $this->app = \AmidaMVC\Application\Application::simple( $this->appConfig );
         $this->app->start();
-        $this->assertTrue( TRUE );
-        echo $this->app->pageObj->getContent();
+
+        $content = $this->app->pageObj->getContent();
+        $orig_content = $this->files[ '/path/to/index.md' ];
+        $type = 'md';
+        \AmidaMVC\Tools\Emit::convertContentToHtml( $orig_content, $type );
+        $this->assertContains( $orig_content, $content );
+    }
+    function test_top_index_wo_slash_returns_html() {
+        $request = $this->req;
+        $request[ 'REQUEST_URI' ] = '';
+        $this->di->setModule( '\AmidaMVC\Tools\Request', '\AmidaMVC\Tools\Request', 'get', $request  );
+        $this->app = \AmidaMVC\Application\Application::simple( $this->appConfig );
+        $this->app->start();
+
+        $content = $this->app->pageObj->getContent();
+        $orig_content = $this->files[ '/path/to/index.md' ];
+        $type = 'md';
+        \AmidaMVC\Tools\Emit::convertContentToHtml( $orig_content, $type );
+        $this->assertContains( $orig_content, $content );
     }
 }
