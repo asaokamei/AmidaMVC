@@ -15,8 +15,8 @@ class Application
     {
         // various default options
         $ctlDefault = array(
-            'site_title' => 'AppCMS Web Site',
-            'template_file' => 'template.php',
+            'site_title'        => 'AppCMS Web Site',
+            'template_file'     => 'template.php',
             'pageNotFound_file' => FALSE,
         );
         $moduleDefault = array(
@@ -25,33 +25,28 @@ class Application
             'router',       'loader',        'emitter',
         );
         $diDefault = array(
-            array( 'load', '\AmidaMVC\Tools\Load', 'get' ),
-            array( 'route',     '\AmidaMVC\Tools\Route', 'get', array(
+            array( 'load',      '\AmidaMVC\Tools\Load',     'get' ),
+            array( 'route',     '\AmidaMVC\Tools\Route',    'get', array(
                 'inject' => array(
                     array( 'load', 'load' ),
-                ) )
-            ),
+                )
+            ) ),
             array( 'router',    '\AmidaMVC\Module\Router',  'new', array(
                 'inject' => array(
                         array( 'route', 'route' ),
-                 ) )
-            ),
+                 )
+            ) ),
             array( 'loader',    '\AmidaMVC\Module\Loader',  'new', array() ),
             array( 'emitter',   '\AmidaMVC\Module\Emitter', 'new', array() ),
-            array( 'authAdmin', '\AmidaMVC\Tools\AuthNot', 'get', 'authAdmin',
-                array(
+            array( 'authAdmin', '\AmidaMVC\Tools\AuthNot',  'new', 'authAdmin', array(
                     'password_file' => 'admin.password',
                     'authArea'      => 'authAdmin'
-                )
-            ),
-            array( 'authDev', '\AmidaMVC\Tools\AuthNot', 'get', 'authDev',
-                array(
+            ) ),
+            array( 'authDev', '\AmidaMVC\Tools\AuthNot',    'new', 'authDev', array(
                     'password_file' => 'dev.password',
                     'authArea'      => 'authDev'
-                )
-            ),
-            array( 'authAdminOnly', '\AmidaMVC\Module\Auth', 'get',
-                array(
+            ) ),
+            array( 'authAdminOnly', '\AmidaMVC\Module\Auth', 'new', array(
                     'authClass'      => 'authAdmin',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/admin', '/admin2' ),
@@ -60,10 +55,8 @@ class Application
                         ),
                         'onSuccess' => array(),
                     ),
-                )
-            ),
-            array( 'authDevLogin', '\AmidaMVC\Module\Auth', 'get',
-                array(
+            ) ),
+            array( 'authDevLogin', '\AmidaMVC\Module\Auth', 'new', array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/dev_login' ),
@@ -74,10 +67,8 @@ class Application
                             'redirect' => '/',
                         ),
                     ),
-                ),
-            ),
-            array( 'authDevLogout', '\AmidaMVC\Module\Auth', 'get',
-                array(
+            ) ),
+            array( 'authDevLogout', '\AmidaMVC\Module\Auth', 'new', array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/dev_logout' ),
@@ -89,10 +80,8 @@ class Application
                             'redirect' => '/',
                         ),
                     ),
-                ),
-            ),
-            array( 'authDevFiler', '\AmidaMVC\Module\Auth', 'get',
-                array(
+            ) ),
+            array( 'authDevFiler', '\AmidaMVC\Module\Auth', 'new', array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/' ),
@@ -101,10 +90,8 @@ class Application
                             'addModuleAfter' => array( 'router', 'filer', 'filer', ),
                         ),
                     ),
-                )
-            ),
-            array( 'filer', '\AmidaMVC\Module\Filer', 'new',
-                array(
+            ) ),
+            array( 'filer', '\AmidaMVC\Module\Filer', 'new', array(
                     'template_file' => NULL,
                     'listJs' => array(
                         '../bootstrap/js/jquery-1.7.1.js',
@@ -115,8 +102,7 @@ class Application
                         '../bootstrap/css/bootstrap.css',
                     ),
                 )
-            ),
-        );
+        ) );
         // create Dependency Injection Container.
         $diContainer = self::setupDiContainer( $option, $diDefault  );
         // create AmidaMVC Controller.
@@ -134,26 +120,27 @@ class Application
     {
         // various default options
         $ctlDefault = array(
-            'site_title' => 'AppSimple Web Site',
-            'template_file' => NULL,
+            'site_title'        => 'AppSimple Web Site',
+            'template_file'     => NULL,
             'pageNotFound_file' => FALSE,
-            'appDefault' => NULL,
+            'appDefault'        => NULL,
         );
         $moduleDefault = array(
             'router', 'loader', 'emitter',
         );
         $diDefault = array(
             array( 'request',   '\AmidaMVC\Tools\Request', 'get' ),
-            array( 'load',      '\AmidaMVC\Tools\Load', 'get' ),
-            array( 'route',     '\AmidaMVC\Tools\Route', 'get', array(
+            array( 'load',      '\AmidaMVC\Tools\Load',    'get' ),
+            array( 'route',     '\AmidaMVC\Tools\Route',   'get', array(
                 'inject' => array(
                     array( 'load', 'load' ),
-                ) ) ),
+                )
+            ) ),
             array( 'router',    '\AmidaMVC\Module\Router',  'new', array(
                 'inject' => array(
                     array( 'route', 'route' ),
-                ) )
-            ),
+                )
+            ) ),
             array( 'loader',  '\AmidaMVC\Module\Loader',  'new', array() ),
             array( 'emitter', '\AmidaMVC\Module\Emitter', 'new', array() ),
         );
