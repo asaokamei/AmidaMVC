@@ -41,10 +41,10 @@ class test_ITest_AppSimple extends \PHPUnit_Framework_TestCase
         \AmidaMVC\Framework\Controller::clean();
         $this->di = \AmidaMVC\Framework\Container::start();
         $this->di->setModule( '\AmidaMVC\Framework\PageObj', '\AmidaMVC\Tests\Application\AppSimple\PageObj' );
-        $this->di->setModule( '\AmidaMVC\Tools\Load', '\AmidaMVC\Tools\LoadArray', 'static' );
+        $this->di->setModule( '\AmidaMVC\Tools\Load', '\AmidaMVC\Tools\LoadArray', 'get' );
         /** @var $load \AmidaMVC\Tools\LoadArray */
-        $load = $this->di->get( '\AmidaMVC\Tools\LoadArray' );
-        $load::setFiles( $this->files );
+        $load = $this->di->get( '\AmidaMVC\Tools\Load' );
+        $load->setFiles( $this->files );
     }
     function test_1st() {
     }

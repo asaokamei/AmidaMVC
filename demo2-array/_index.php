@@ -2,11 +2,11 @@
 require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php' );
 
 $di = \AmidaMVC\Framework\Container::start();
-$di->setModule( '\AmidaMVC\Tools\Load', '\AmidaMVC\Tools\LoadArray', 'static' );
+$di->setModule( '\AmidaMVC\Tools\Load', '\AmidaMVC\Tools\LoadArray' );
 
 /** @var $load \AmidaMVC\Tools\LoadArray */
 $load = $di->get( '\AmidaMVC\Tools\Load' );
-$load::setFiles( array(
+$load->setFiles( array(
     '/path/to/' => NULL,
     '/path/to/index.md' => "
 #Top of Array
