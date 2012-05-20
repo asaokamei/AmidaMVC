@@ -179,7 +179,7 @@ class Container
                 call_user_func_array( array( $this, 'injectModule' ), $args );
             }
         }
-        if( isset( $moduleInfo[ 'option' ] ) ) {
+        if( method_exists( $module, '_init' ) ) {
             $option = ( $moduleInfo[ 'option' ] ) ?: array();
             call_user_func( array( $module, '_init' ), $option );
         }
