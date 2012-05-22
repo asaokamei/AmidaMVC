@@ -173,6 +173,34 @@ class Filer implements IfModule
      * @param array $loadInfo
      * @return array
      */
+    function action_fPurge( $_ctrl, &$_pageObj, $loadInfo=array() )
+    {
+        if( $loadInfo[ 'file_edited' ] ) {
+            $this->_error(
+                'purge error',
+                "cannot purge an edit file: " . $loadInfo[ 'file_edited' ]
+            );
+        }
+        elseif( !call_user_func( array( $this->_loadClass, 'exists' ), $loadInfo[ 'file' ] ) ) {
+            $this->_error(
+                'purge error',
+                "file does not exists: " . $loadInfo[ 'file' ]
+            );
+        }
+        else {
+            if( call_user_func( array( $this->_loadClass, 'unlink' ), $loadInfo[ 'file' ] ) ) {
+                $_ctrl->redirect( $_ctrl->getPathInfo() );
+            }
+        }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
     function action_fDel( $_ctrl, &$_pageObj, $loadInfo=array() )
     {
         if( isset( $loadInfo[ 'file_edited' ] ) ) {
