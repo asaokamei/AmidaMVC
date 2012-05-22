@@ -319,14 +319,14 @@ class Filer implements IfModule
      */
     function action_fFile( $_ctrl, $_pageObj, $loadInfo ) {
         $new_file = $_POST[ '_newFileName' ];
-        if( isset( $loadInfo[ 'file' ] ) ) {
-            $file_to_edit = dirname( $loadInfo[ 'file' ] );
+        $path_info = $_ctrl->getPathInfo();
+        if( substr( $path_info, -1 ) === '/' ) {
+            $path_info = $path_info . $new_file;
         }
         else {
-            // in case pageNotFound, find location from pathInfo.
-            $file_to_edit = $_ctrl->getLocation( dirname( $_ctrl->getPathInfo() ) );
+            $path_info = dirname( $path_info ) . '/' . $new_file;
         }
-        $file_to_edit = $file_to_edit . '/' . $new_file;
+        $file_to_edit = $_ctrl->getLocation( $path_info );
         if( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) || is_dir( $file_to_edit ) ) {
             $this->_error(
                 'add new file error',
@@ -335,16 +335,11 @@ class Filer implements IfModule
             );
         }
         else {
-            $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
-            if( $loadInfo[ 'foundBy' ] === 'index' ) {
-                $self = $self . '/' . $new_file;
-            }
-            else {
-                $self = dirname( $self ) . '/' . $new_file;
-            }
+            $self = $_ctrl->getBaseUrl( $path_info );
             $contents = $this->_makeEditForm( 'Add File '.$new_file, $self, '' );
             $_pageObj->setContent( $contents );
             $_ctrl->skipToModel( 'emitter' );
+            $_ctrl->setAction( $_ctrl->defaultAct() );
         }
         return $loadInfo;
     }
@@ -362,8 +357,7 @@ class Filer implements IfModule
         }
         else {
             // it's a new file to add.
-            $file_to_edit = basename( $_ctrl->getPathInfo() );
-            $file_to_edit = $_ctrl->getLocation( $file_to_edit );
+            $file_to_edit = $_ctrl->getLocation( $_ctrl->getPathInfo() );
         }
         if( isset( $_POST[ '_putContent' ] ) ) {
             $content = $_POST[ '_putContent' ];
