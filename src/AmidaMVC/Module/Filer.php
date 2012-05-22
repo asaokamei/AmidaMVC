@@ -337,7 +337,7 @@ class Filer implements IfModule
     function action_fEdit( $_ctrl, $_pageObj, $loadInfo ) {
         $load = $this->_loadClass;
         $file_name = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
-        $contents = $load::getContentsByGet( $file_name );
+        $contents = call_user_func( array( $load, 'getContentsByGet' ), $file_name );
         $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
         $contents = $this->_makeEditForm( 'Editing '. basename( $file_name ), $self, $contents );
         $_pageObj->setContent( $contents );
