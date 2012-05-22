@@ -50,6 +50,15 @@ class Emit
                 $content = '<pre>' . $content . '</pre>';
                 $type    = 'html';
                 break;
+            case 'diff':
+                $diff_path = realpath( __DIR__ . '/../../../vendor/SimpleDiff/simplediff.php' );
+                require_once( $diff_path );
+                $lines1 = $content[ 'lines1' ];
+                $lines2 = $content[ 'lines2' ];
+                $diff = htmlDiff( $lines1, $lines2 );
+                $content = "<pre>{$diff}</pre>";
+                $type = 'html';
+                break;
             case 'php':
                 $content = highlight_string( $content, TRUE );
                 $type    = 'html';

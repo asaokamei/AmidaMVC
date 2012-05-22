@@ -206,18 +206,11 @@ class Filer implements IfModule
                 call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $loadInfo[ 'file' ] ) );
             $lines2   = htmlspecialchars(
                 call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $loadInfo[ 'file_edited' ] ) );
-            $html = $this->_doDiff( $lines1, $lines2 );
-            $html = "<h1>Diff for: " . basename( $loadInfo['file'] ) . "</h1>\n<pre>$html</pre>";
-            $_pageObj->setContent( $html );
+            $_pageObj->setContent( array( 'lines1' => $lines1, 'lines2' => $lines2 ) );
+            $_pageObj->contentType( 'diff' );
             $_ctrl->skipToModel( 'emitter' );
         }
         return $loadInfo;
-    }
-    function _doDiff( $lines1, $lines2 ) {
-        $diff_path = realpath( __DIR__ . '/../../../vendor/SimpleDiff/simplediff.php' );
-        require_once( $diff_path );
-        $diff = htmlDiff( $lines1, $lines2 );
-        return $diff;
     }
     // +-------------------------------------------------------------+
     /**
