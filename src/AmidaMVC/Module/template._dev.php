@@ -147,8 +147,8 @@ $simpleMenuList = array(
             <?php foreach ($_filerObj->backup_list as $backup) { ?>
             <li>
                 <?php echo $backup;?>:
-                <a class="btn-mini btn-info" href="<?php echo "{$self}/_bkView:{$backup}";?>">view</a>&nbsp;
-                <a class="btn-mini" href="<?php echo "{$self}/_bkDiff:{$backup}";?>">diff</a>
+                <a class="btn-mini btn-info" href="<?php echo "{$self}/_bkView?bf={$backup}";?>">view</a>&nbsp;
+                <a class="btn-mini btn-info" href="<?php echo "{$self}/_bkDiff?bf={$backup}";?>">diff</a>
             </li>
             <?php } ?>
         </ul>

@@ -142,6 +142,46 @@ class Filer implements IfModule
      * @param array $loadInfo
      * @return array
      */
+    function action_bkView( $_ctrl, &$_pageObj, $loadInfo=array() )
+    {
+        $bk_file = $_GET[ 'bf' ];
+        $backup_folder = $this->_backupFolder( $loadInfo[ 'file' ] );
+        $backup_file = $backup_folder . '/' . $bk_file;
+        if( call_user_func( array( $this->_loadClass, 'exists' ), $backup_file ) ) {
+            $loadInfo[ 'file' ] = $backup_file;
+        }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
+    function action_bkDiff( $_ctrl, &$_pageObj, $loadInfo=array() )
+    {
+        $bk_file = $_GET[ 'bf' ];
+        $backup_folder = $this->_backupFolder( $loadInfo[ 'file' ] );
+        $backup_file = $backup_folder . '/' . $bk_file;
+        if( call_user_func( array( $this->_loadClass, 'exists' ), $backup_file ) ) {
+            $lines1   = htmlspecialchars(
+                call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $loadInfo[ 'file' ] ) );
+            $lines2   = htmlspecialchars(
+                call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $backup_file ) );
+            $_pageObj->setContent( array( 'lines1' => $lines1, 'lines2' => $lines2 ) );
+            $_pageObj->contentType( 'diff' );
+            $_ctrl->skipToModel( 'emitter' );
+        }
+        return $loadInfo;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $loadInfo
+     * @return array
+     */
     function action_fDir( $_ctrl, &$_pageObj, $loadInfo=array() )
     {
         if( !isset( $_POST['_folderName'] ) || empty( $_POST['_folderName'] ) ) {
