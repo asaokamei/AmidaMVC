@@ -1,8 +1,11 @@
 <?php
 /** @var $_pageObj \AmidaMVC\Framework\PageObj */
 /** @var $_ctrl \AmidaMVC\AppSimple\Application */
+$_pageObj->setCss( '../bootstrap/css/bootstrap.css' );
+$_pageObj->setCss( '../bootstrap/css/bootstrap-responsive.css' );
 $_pageObj->setCss( 'demo.css' );
 $_pageObj->setJs( '../bootstrap/js/jquery-1.7.1.js' );
+$_pageObj->setJs( '../bootstrap/js/bootstrap.js' );
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -10,16 +13,16 @@ $_pageObj->setJs( '../bootstrap/js/jquery-1.7.1.js' );
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php echo $_pageObj->getCssLinks( $_ctrl ); ?>
 <?php echo $_pageObj->getJsLinks( $_ctrl ); ?>
+<?php
+if( isset( $_pageObj->devInfo ) ) {
+    echo '<!-- developer\'s nav starts here -->', "\n";
+    echo $_pageObj->devInfo;
+    echo '<!-- developer\'s nav ends here -->', "\n";
+}
+?>
+
 <div class="mainbody">
     <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a></header>
-
-    <?php
-    if( isset( $_pageObj->devInfo ) ) {
-        echo '<!-- developer\'s nav starts here -->', "\n";
-        echo $_pageObj->devInfo;
-        echo '<!-- developer\'s nav ends here -->', "\n";
-    }
-    ?>
 
     <div id="content" >
         <!-- content starts -->
