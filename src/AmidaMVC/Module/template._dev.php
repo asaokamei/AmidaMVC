@@ -273,6 +273,6 @@ $simpleMenuList = array(
         $( '#filerError' ).click( function(){
             $( '#filerError' ).toggle( 'fast' );
         });
-        $('.dropdown-toggle').dropdown()
+        $('.dropdown-toggle').dropdown();
     });
 </script>
