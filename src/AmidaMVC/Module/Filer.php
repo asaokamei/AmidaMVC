@@ -70,18 +70,22 @@ class Filer implements IfModule
                 $_pageObj->setCss( $css );
             }
         }
-        if( !isset( $loadInfo[ 'file' ] ) ) {
-            return;
-        }
         // set file lists under the folder.
-        if( is_dir( $loadInfo[ 'file'] ) ) {
-            $filer_folder = $loadInfo[ 'file' ];
+        /** @var $filer_folder string    folder where filer is looking at. */
+        /** @var $path_folder string     path folder where filer is looking at */
+        $path_folder = $_ctrl->getPathInfo();
+        $path_folder = ( substr( $path_folder, -1 ) == '/' ) ? substr( $path_folder, 0, -1 ) : dirname( $path_folder );
+        if( isset( $loadInfo[ 'file' ] ) ) {
+            $filer_folder = ( is_dir( $loadInfo[ 'file' ] ) ) ?
+                $loadInfo[ 'file' ] : dirname( $loadInfo[ 'file'] );
         }
         else {
-            $filer_folder = dirname( $loadInfo[ 'file'] );
+            $filer_folder = $_ctrl->getLocation( $path_folder );
         }
         $this->filerInfo[ 'curr_folder' ] = $filer_folder;
-        $file_list = glob( "{$filer_folder}/*", GLOB_MARK );
+        $this->filerInfo[ 'path_folder' ] = $path_folder;
+        // gets list of files under the filer_folder.
+        $file_list = call_user_func( array( $this->_loadClass, 'search' ), $filer_folder.'/', "*" );
         sort( $file_list );
         $len_folder = strlen( $filer_folder ) + 1;
         foreach( $file_list as &$file ) {
@@ -99,9 +103,12 @@ class Filer implements IfModule
         }
         // set up menu
         $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
-        if( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) ) {
+        if( !isset( $loadInfo[ 'file' ] ) ) {
+        }
+        elseif( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) ) {
             $loadInfo[ 'file_edited' ] = $file_to_edit;
             $this->filerInfo[ 'file_src' ]   = basename( $file_to_edit );
+            $this->filerInfo[ 'file_cmd' ][] = '_view';
             $this->filerInfo[ 'file_cmd' ][] = '_fEdit';
             $this->filerInfo[ 'file_cmd' ][] = '_fPub';
             $this->filerInfo[ 'file_cmd' ][] = '_fDel';
@@ -110,6 +117,7 @@ class Filer implements IfModule
         else {
             $loadInfo[ 'file_edited' ] = FALSE;
             $this->filerInfo[ 'file_src' ]   = basename( $loadInfo[ 'file' ] );
+            $this->filerInfo[ 'file_cmd' ][] = '_view';
             $this->filerInfo[ 'file_cmd' ][] = '_fEdit';
             $this->filerInfo[ 'file_cmd' ][] = '_fPurge';
         }
@@ -437,6 +445,7 @@ END_OF_HTML;
      * @return string
      */
      function _getFileToEdit( $file_name ) {
+         if( !$file_name ) { return ''; }
          $folder    = dirname( $file_name );
          if( $folder == '.' ) {
              $folder = '';

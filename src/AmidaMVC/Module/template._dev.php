@@ -4,9 +4,10 @@
 /** @var $_filerObj object  */
 /** @var $_ctrl \AmidaMVC\Framework\Controller  */
 $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
-$base = $_ctrl->getBaseUrl();
+$base = $_ctrl->getBaseUrl( $_filerObj->path_folder ) . '/';
 
 $simpleMenuList = array(
+    '_view' => 'view',
     '_fEdit' => 'edit',
     '_fPub' => 'publish',
     '_fDiff' => 'diff',
