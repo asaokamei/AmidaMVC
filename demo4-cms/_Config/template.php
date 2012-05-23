@@ -6,6 +6,7 @@ $_pageObj->setCss( '../bootstrap/css/bootstrap-responsive.css' );
 $_pageObj->setCss( 'demo.css' );
 $_pageObj->setJs( '../bootstrap/js/jquery-1.7.1.js' );
 $_pageObj->setJs( '../bootstrap/js/bootstrap.js' );
+$_pageObj->setJs( '../bootstrap/js/bootstrap-dropdown.js' );
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
