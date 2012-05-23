@@ -37,21 +37,27 @@ $simpleMenuList = array(
                         }
                     }
                     if( in_array( '_fDel', $_filerObj->file_cmd ) ) {
-                        echo '<li><a href="javascript:$(\'#filerDelModal\').toggle(\'fast\');">Delete▲</a></li>';
+                        echo '<li><a href="javascript:$(\'#filerDelModal\').toggle(\'fast\');">delete▲</a></li>';
                     }
                     if( in_array( '_fPurge', $_filerObj->file_cmd ) ) {
-                        echo '<li><a href="javascript:$(\'#filerPurgeModal\').toggle(\'fast\');">Purge-File▲</a></li>';
+                        echo '<li><a href="javascript:$(\'#filerPurgeModal\').toggle(\'fast\');">purge-file▲</a></li>';
                     }
+                    echo "\n";
                     ?>
-                    <li><a href="javascript:$('#filerNewForm').toggle('fast');">add file▼</a></li>
-                    <li><a href="javascript:$('#filerAddFolder').toggle('fast');">new folder▼</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">new<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:$('#filerNewForm').toggle('fast');">add file...</a></li>
+                            <li><a href="javascript:$('#filerAddFolder').toggle('fast');">new folder...</a></li>
+                        </ul>
+                    </li>
                     <?php if( !empty( $_filerObj->file_list) ) { ?>
-                    <li><a href="javascript:$('#filerDirList').toggle('fast');">file list▼</a></li>
+                    <li><a href="javascript:$('#filerDirList').toggle('fast');">file list...</a></li>
                     <?php } ?>
                     <?php if( !empty( $_filerObj->backup_list) ) {
-                    echo '<li><a href="javascript:$(\'#filerBackUpList\').toggle(\'fast\');">backups▼</a></li>';  } ?>
+                    echo '<li><a href="javascript:$(\'#filerBackUpList\').toggle(\'fast\');">backups...</a></li>';  } ?>
                     <?php if( !empty( $debug ) ) {
-                    echo '<li><a href="javascript:toggle(\'debugInfo\');">debug info▼</a></li>';  } ?>
+                    echo '<li><a href="javascript:toggle(\'debugInfo\');">debug info...</a></li>';  } ?>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -267,5 +273,6 @@ $simpleMenuList = array(
         $( '#filerError' ).click( function(){
             $( '#filerError' ).toggle( 'fast' );
         });
+        $('.dropdown-toggle').dropdown()
     });
 </script>
