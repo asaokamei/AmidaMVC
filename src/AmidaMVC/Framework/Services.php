@@ -2,71 +2,135 @@
 namespace AmidaMVC\Framework;
 
 /**
- * Module Locator.
- * Service Locator or DI Container for AmidaMVC's modules.
+ * Service Locator for AmidaMVC's modules.
+ * kind of DI Container?
  */
 
 class Services
 {
+    const COL_CLASS   = 0;
+    const COL_TYPE    = 1;
+    const COL_ID_NAME = 2;
     /**
      * @var array   options for creating module.
-     *    array( modName  => array(
+     *    array( service  => array(
      *            din => [ class, type, idName ],
      *            config => [],
+     *            inject => []
      *        ),
      *        modName2 =>...
      *    )
      */
-    const COL_CLASS   = 0;
-    const COL_TYPE    = 1;
-    const COL_ID_NAME = 2;
-    private $_modules = array();
-    private $_objects = array();
-    private $_lastObj = NULL;
-    private $_lastMod = NULL;
+    private $_services    = array();
+    private $_objects     = array();
+    private $_lastObject  = NULL;
+    private $_lastService = NULL;
+    static private $_self = NULL;
     // +-------------------------------------------------------------+
-    private function __construct() {}
-    static function getInstance() {}
-    static function start() {}
-    static function resume() {}
-    static function clean() {}
+    private function __construct() {
+        $idName = NULL;
+        $this->_objects[ 'GET' ][ '_self' ][ $idName ] = $this;
+    }
+    static function getInstance() {
+        if( !static::$_self ) {
+            static::$_self = new static();
+        }
+        return static::$_self;
+    }
+    static function start() {
+        $self = static::getInstance();
+        $self->_objects[ 'new' ] = array();
+        return $self;
+    }
+    static function resume() {
+        return static::getInstance();
+    }
+    static function clean() {
+        static::$_self = NULL;
+    }
     // +-------------------------------------------------------------+
-    function setModule( $moduleName, $class, $type='GET', $idName=NULL, $cfg=NULL ) {
+    /**
+     * @param $service
+     * @param $class
+     * @param string $type
+     * @param null|string $idName
+     * @param null $cfg
+     * @return Services
+     */
+    function setService( $service, $class, $type='GET', $idName=NULL, $cfg=NULL )
+    {
         $din = array( $class, $type, $idName );
-        if( isset( $this->_modules[ $moduleName ] ) ) {
-            $this->_modules[ $moduleName ][ 'din' ] = $din;
+        if( isset( $this->_services[ $service ] ) ) {
+            $this->_services[ $service ][ 'din' ] = $din;
             if( isset( $cfg ) ) {
-                $this->_modules[ $moduleName ][ 'config' ] = $cfg;
+                $this->_services[ $service ][ 'config' ] = $cfg;
             }
         }
         else {
             if( !is_array( $cfg ) ) $cfg = array();
-            $this->_modules = array(
+            $this->_services = array(
                 'din' => $din,
                 'config' => $cfg,
                 'inject' => array(),
             );
         }
+        $this->_lastService = $service;
         return $this;
     }
-    function setConfig( $config, $value=NULL ) {}
-    function setInject( $injectName, $mName, $type='GET', $id=NULL ) {}
-
     /**
-     * @param string $moduleName
+     * @param $config
+     * @param null $value
+     * @return Services
+     */
+    function setConfig( $config, $value=NULL )
+    {
+        if( isset( $this->_lastService ) && isset( $this->_services[ $this->_lastService ] ) ) {
+            if( is_array( $config ) ) {
+                $this->_services[ $this->_lastService ][ 'config' ] = array_merge(
+                    $this->_services[ $this->_lastService ][ 'config' ], $config
+                );
+            }
+            elseif( isset( $value ) ) {
+                $this->_services[ $this->_lastService ][ 'config' ][ $config ] = $value;
+            }
+            else {
+                $this->_services[ $this->_lastService ][ 'config' ][] = $config;
+            }
+        }
+        return $this;
+    }
+    /**
+     * @param string $name
+     * @param string $service
+     * @param string $type
+     * @param null|string   $id
+     * @return Services
+     */
+    function setInject( $name, $service, $type='GET', $id=NULL )
+    {
+        if( isset( $this->_lastService ) && isset( $this->_services[ $this->_lastService ] ) ) {
+            $this->_services[ $this->_lastService ][ 'inject' ][ $name ] = array(
+                $service, $type, $id
+            );
+        }
+        return $this;
+    }
+    /**
+     * @param string $service
      * @param array  $din
      * @param array  $config
      * @param array  $inject
      * @return Services
      */
-    function getModule( $moduleName, &$din, &$config, &$inject ) {
-        if( isset( $this->_modules[ $moduleName ] ) ) {
-            $din    = $this->_modules[ $moduleName ][ 'din' ];
-            $config = $this->_modules[ $moduleName ][ 'config' ];
-            $inject = $this->_modules[ $moduleName ][ 'inject' ];
+    function getService( $service, &$din, &$config, &$inject )
+    {
+        if( isset( $this->_services[ $service ] ) ) {
+            $din    = $this->_services[ $service ][ 'din' ];
+            $config = $this->_services[ $service ][ 'config' ];
+            $inject = $this->_services[ $service ][ 'inject' ];
         }
         else {
-            $din    = array( $moduleName, 'GET', NULL );
+            $din    = array( $service, 'GET', NULL );
             $config = array( '_undefined' => TRUE );
             $inject = array();
         }
@@ -74,73 +138,100 @@ class Services
     }
     // +-------------------------------------------------------------+
     /**
-     * @param $moduleName
+     * @param $service
      * @param null|string $type
      * @param null|string $idName
      * @param array $cfg
      * @return Services|object
      */
-    function get( $moduleName, $type=NULL, $idName=NULL, $cfg=array() ) {
-        $module = $this->getClean( $moduleName, $type, $idName, $cfg );
-        $this->_lastObj = $module;
-        return $module;
+    function get( $service, $type=NULL, $idName=NULL, $cfg=array() )
+    {
+        $object = $this->getClean( $service, $type, $idName, $cfg );
+        $this->_lastObject = $object;
+        return $object;
     }
     /**
-     * @param string $moduleName
+     * @param string $service
      * @param null|string $type
      * @param null|string $idName
      * @param array $cfg
      * @return object|static
      */
-    function getClean( $moduleName, $type=NULL, $idName=NULL, $cfg=array() ) {
-        $this->getModule( $moduleName, $din, $config, $inject );
+    function getClean( $service, $type=NULL, $idName=NULL, $cfg=array() )
+    {
+        $this->getService( $service, $din, $config, $inject );
         $className = $din[ self::COL_CLASS ];
-        if( !isset( $type   ) ) { $type = $din[ self::COL_TYPE    ]; }
-        if( !isset( $idName ) ) { $idName= $din[ self::COL_ID_NAME ]; }
+        if( !isset( $type   ) ) { $type   = $din[ self::COL_TYPE    ]; }
+        if( !isset( $idName ) ) { $idName = $din[ self::COL_ID_NAME ]; }
         if( !empty( $cfg ) ) { $config = array_merge( $config, $cfg ); }
         if( is_object( $className ) ) {
-            $module = $className;
+            $object = $className;
         }
         elseif( $className instanceof \Closure ) {
             /** @var $className Closure */
-            $module = $className( $this );
+            $object = $className( $this );
         }
         else if( $type == 'static' ) {
-            $module = $className;
+            $object = $className;
         }
         else {
-            if( isset( $this->_objects[ $type ][ $moduleName ][ $idName ] ) ) {
-                $module = $this->_objects[ $type ][ $moduleName ][ $idName ];
+            if( isset( $this->_objects[ $type ][ $service ][ $idName ] ) ) {
+                $object = $this->_objects[ $type ][ $service ][ $idName ];
             }
             else {
-                $this->_objects[ $type ][ $moduleName ][ $idName ] =
-                $module = new $className( $config );
+                $this->_objects[ $type ][ $service ][ $idName ] =
+                $object = new $className( $config );
             }
         }
-        $this->injectAndInit( $module, $inject );
-        return $module;
+        $this->_injectAndInit( $object, $inject );
+        return $object;
     }
-    function injectAndInit( $module, $inject ) {
+    /**
+     * @param object $object
+     * @param array $inject
+     */
+    function _injectAndInit( $object, $inject )
+    {
         if( !empty( $inject ) ) {
             foreach( $inject as $name => $din ) {
-                $injMod = call_user_func_array( array( $this, 'getClean' ), $din );
-                $method = 'inject' . ucwords( $name );
-                if( method_exists( $module, $method ) ) {
-                    call_user_func( array( $module, $method ), $injMod );
-                }
-                elseif( method_exists( $module, 'inject' ) ) {
-                    call_user_func( array( $module, 'inject' ), $name, $injMod );
-                }
+                $injected = call_user_func_array( array( $this, 'getClean' ), $din );
+                $this->_inject( $object, $name, $injected );
             }
         }
-        if( method_exists( $module, '_init' ) ) {
-            call_user_func( array( $module, '_init' ) );
+        if( method_exists( $object, '_init' ) ) {
+            call_user_func( array( $object, '_init' ) );
         }
     }
-    function inject( $name, $moduleName, $type=NULL, $idName=NULL, $cfg=array() ) {
-        $injMod = $this->getClean( $moduleName, $type, $idName, $cfg );
-        $module = $this->_lastObj;
-        $this->injectAndInit( $module, $injMod );
+    /**
+     * @param object $object
+     * @param string $name
+     * @param object $injected
+     * @return Services
+     */
+    function _inject( $object, $name, $injected )
+    {
+        $method = 'inject' . ucwords( $name );
+        if( method_exists( $object, $method ) ) {
+            call_user_func( array( $object, $method ), $injected );
+        }
+        elseif( method_exists( $object, 'inject' ) ) {
+            call_user_func( array( $object, 'inject' ), $name, $injected );
+        }
+        return $this;
+    }
+    /**
+     * @param $name
+     * @param $service
+     * @param null|string $type
+     * @param null|string $idName
+     * @param array $cfg
+     * @return Services
+     */
+    function inject( $name, $service, $type=NULL, $idName=NULL, $cfg=array() )
+    {
+        $injected = $this->getClean( $service, $type, $idName, $cfg );
+        $object = $this->_lastObject;
+        $this->_inject( $object, $name, $injected );
         return $this;
     }
     // +-------------------------------------------------------------+
