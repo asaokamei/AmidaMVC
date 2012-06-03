@@ -82,6 +82,12 @@ class Container
         $this->_modules[ $moduleName ] = $config;
         return $this;
     }
+    function setModuleConfig( $moduleName, $config ) {
+
+    }
+    function setModuleInject( $moduleName, $injectName ) {
+
+    }
     function modModuleInfo( $moduleName, $name, $value ) {
         if( isset( $this->_modules[ $moduleName ] ) ) {
             $moduleInfo = &$this->_modules[ $moduleName ];
