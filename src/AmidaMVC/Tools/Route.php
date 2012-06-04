@@ -82,9 +82,10 @@ class Route
      * search file system for path info.
      * @static
      * @param string $path   path of url
+     * @param array $indexes
      * @return array|bool    return $loadInfo or FALSE if not found
      */
-    function scan( $path )
+    function scan( $path, $indexes )
     {
         /** @var $loadClass \AmidaMVC\Tools\Load */
         $loadClass = $this->_loadClass;
@@ -96,10 +97,13 @@ class Route
         if( $file_name = $loadClass->findFile( $path ) ) {
             $loadInfo[ 'file' ] = $file_name;
             if( $loadClass->isDir( $file_name ) ) {
+                $loadInfo[ 'is_dir' ] = TRUE;
                 if( substr( $file_name, -1, 1 ) !== '/' ) {
                     $loadInfo[ 'reload' ] = $path . '/';
                 }
-                $loadInfo[ 'is_dir' ] = TRUE;
+                else {
+                    $loadInfo = $this->index( $path, $indexes );
+                }
             }
             return $loadInfo;
         }
@@ -134,24 +138,25 @@ class Route
      * search for an index file in the given folder.
      * @static
      * @param string $path     path to the directory.
-     * @param array $files     possible index file names.
+     * @param array $indexes     possible index file names.
      * @return array|bool      found loadInfo.
      */
-    function index( $path, $files )
+    function index( $path, $indexes )
     {
         /** @var $loadClass \AmidaMVC\Tools\Load */
         $loadClass = $this->_loadClass;
-        $found = $loadClass->search( $path, $files );
+        $found = $loadClass->search( $path, $indexes );
         if( empty( $found ) ) return FALSE;
         $found_names = array();
         foreach( $found as $list ) {
             $found_names[ basename( $list ) ] = $list;
         }
-        foreach( $files as $index ) {
+        foreach( $indexes as $index ) {
             if( isset( $found_names[ $index ] ) ) {
                 return array(
                     'file' => $found_names[ $index ],
                     'action' => NULL,
+                    'foundBy' => 'index',
                 );
             }
         }
