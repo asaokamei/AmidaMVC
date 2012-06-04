@@ -31,6 +31,14 @@ class Load
      */
     var $_loadFolder = array();
     // +-------------------------------------------------------------+
+    function __construct( $option=array() ) {
+        if( !empty( $option ) && is_array( $option ) ) {
+            foreach( $option as $root ) {
+                $this->setFileLocation( $root );
+            }
+        }
+    }
+    // +-------------------------------------------------------------+
     function isWhat( $what, $file ) {
         return $this->$what( $file );
     }

@@ -32,7 +32,7 @@ class Controller extends AmidaChain
      */
     var $_requestClass = NULL;
     /**
-     * @var \AmidaMVC\Framework\Container
+     * @var \AmidaMVC\Framework\Services
      */
     var $_diContainer = NULL;
     /**
@@ -261,7 +261,9 @@ class Controller extends AmidaChain
      * @return Controller
      */
     function setModuleOption( $name, $value ) {
-        $this->_diContainer->modModuleInfo( $name, 'option', $value );
+        $this->_diContainer
+            ->service( $name )
+            ->setConfig( $value );
         return $this;
     }
     // +-------------------------------------------------------------+
@@ -271,8 +273,8 @@ class Controller extends AmidaChain
      * @return mixed
      */
     function getModuleOption( $name ) {
-        $diModuleInfo = $this->_diContainer->getModuleInfo( $name );
-        return $diModuleInfo[ 'option' ];
+        $this->_diContainer->getService( $name, $din, $config, $inject );
+        return $config;
     }
     // +-------------------------------------------------------------+
     /**

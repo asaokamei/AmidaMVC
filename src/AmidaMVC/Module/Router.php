@@ -12,15 +12,7 @@ class Router implements IfModule
      */
     var $_indexes = array( 'index.md', 'index.html', 'index.php' );
     // +-------------------------------------------------------------+
-    /**
-     * initialize class.
-     * @param array $option   options to initialize.
-     */
-    function _init( $option=array() ) {
-        if( !isset( $this->_routeClass ) ) {
-            $di = \AmidaMVC\Framework\Container::start();
-            $this->_routeClass = $di->get( '\AmidaMVC\Tools\Route', 'static' );
-        }
+    function __construct( $option=array() ) {
         if( isset( $option[ 'routes' ] ) ) {
             call_user_func( array( $this->_routeClass, 'set' ), $option[ 'routes' ] );
         }
@@ -31,6 +23,16 @@ class Router implements IfModule
             else {
                 $this->_indexes[] = $option[ 'indexes' ];
             }
+        }
+    }
+    /**
+     * initialize class.
+     * @param array $option   options to initialize.
+     */
+    function _init( $option=array() ) {
+        if( !isset( $this->_routeClass ) ) {
+            $di = \AmidaMVC\Framework\Container::start();
+            $this->_routeClass = $di->get( '\AmidaMVC\Tools\Route', 'static' );
         }
     }
     function injectRoute( $route ) {
