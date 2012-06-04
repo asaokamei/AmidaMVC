@@ -203,6 +203,9 @@ class Load
             $pattern = '{' .implode( ',', $pattern ) . '}';
         }
         $found = array();
+        if( $found = glob( $path . '/' . $pattern, $flag ) ) {
+            return $found;
+        }
         if( empty( $this->_loadFolder ) ) return $found;
         foreach( $this->_loadFolder as $folder ) {
             $search = $folder . '/' . $path . $pattern;
