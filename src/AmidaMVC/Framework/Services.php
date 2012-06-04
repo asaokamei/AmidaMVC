@@ -27,24 +27,40 @@ class Services
     private $_lastService = NULL;
     static private $_self = NULL;
     // +-------------------------------------------------------------+
+    /**  */
     private function __construct() {
         $idName = NULL;
         $this->_objects[ 'GET' ][ '_self' ][ $idName ] = $this;
     }
+    /**
+     * @static
+     * @return Services
+     */
     static function getInstance() {
         if( !static::$_self ) {
             static::$_self = new static();
         }
         return static::$_self;
     }
+    /**
+     * @static
+     * @return Services
+     */
     static function start() {
         $self = static::getInstance();
         $self->_objects[ 'NEW' ] = array();
         return $self;
     }
+    /**
+     * @static
+     * @return Services
+     */
     static function resume() {
         return static::getInstance();
     }
+    /**
+     * @static
+     */
     static function clean() {
         static::$_self = NULL;
     }
@@ -136,6 +152,11 @@ class Services
         }
         return $this;
     }
+    /**
+     * @param null|string $type
+     * @param null|string $idName
+     * @param array $cfg
+     */
     function _prepDin( &$type, &$idName, &$cfg )
     {
         if( is_array( $type ) ) {
