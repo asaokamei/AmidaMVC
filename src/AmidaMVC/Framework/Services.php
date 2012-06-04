@@ -68,7 +68,7 @@ class Services
         }
         else {
             if( !is_array( $cfg ) ) $cfg = array();
-            $this->_services = array(
+            $this->_services[ $service ] = array(
                 'din' => $din,
                 'config' => $cfg,
                 'inject' => array(),
