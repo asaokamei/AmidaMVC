@@ -39,7 +39,7 @@ class Services
     }
     static function start() {
         $self = static::getInstance();
-        $self->_objects[ 'new' ] = array();
+        $self->_objects[ 'NEW' ] = array();
         return $self;
     }
     static function resume() {
@@ -146,6 +146,13 @@ class Services
      */
     function get( $service, $type=NULL, $idName=NULL, $cfg=array() )
     {
+        if( in_array( strtoupper( $type ), array( 'NEW', 'GET' ) ) ) {
+            $type = strtoupper( $type );
+        }
+        else {
+            $type = 'GET';
+            $idName = $type;
+        }
         $object = $this->getClean( $service, $type, $idName, $cfg );
         $this->_lastObject = $object;
         return $object;
