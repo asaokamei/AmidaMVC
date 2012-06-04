@@ -197,7 +197,7 @@ class Load
     function isDir( $dir ) {
         return is_dir( $dir );
     }
-    function search( $folder, $pattern, $flag=NULL ) {
+    function search( $path, $pattern, $flag=NULL ) {
         if( !isset( $flag ) ) $flag = GLOB_MARK|GLOB_BRACE;
         if( is_array( $pattern ) ) {
             $pattern = '{' .implode( ',', $pattern ) . '}';
@@ -205,7 +205,7 @@ class Load
         $found = array();
         if( empty( $this->_loadFolder ) ) return $found;
         foreach( $this->_loadFolder as $folder ) {
-            $search = $folder . '/' . $pattern;
+            $search = $folder . '/' . $path . $pattern;
             $found = glob( $search, $flag );
             if( !empty( $found ) ) break;
         }
