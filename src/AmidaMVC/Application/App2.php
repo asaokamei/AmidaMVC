@@ -7,6 +7,7 @@ class App2
     function app() {
         $di = self::diCms();
         $sl = self::setUpDi( $di );
+        /** @var $ctrl \AmidaMVC\Framework\Controller */
         $ctrl = $sl->get( 'controller' );
 
         $modules = array(
