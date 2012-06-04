@@ -156,7 +156,6 @@ class Route
                 return array(
                     'file' => $found_names[ $index ],
                     'action' => NULL,
-                    'foundBy' => 'index',
                 );
             }
         }
