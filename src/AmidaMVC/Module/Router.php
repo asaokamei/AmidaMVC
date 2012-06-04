@@ -11,11 +11,10 @@ class Router implements IfModule
      * @var array   list of index files when accessing a directory.
      */
     var $_indexes = array( 'index.md', 'index.html', 'index.php' );
+    var $config = NULL;
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) {
-        if( isset( $option[ 'routes' ] ) ) {
-            call_user_func( array( $this->_routeClass, 'set' ), $option[ 'routes' ] );
-        }
+        $this->config = $option;
         if( isset( $option[ 'indexes' ] ) ) {
             if( is_array( $option[ 'indexes' ] ) ) {
                 $this->_indexes = array_merge( $option[ 'indexes' ], $this->_indexes );
@@ -33,6 +32,9 @@ class Router implements IfModule
         if( !isset( $this->_routeClass ) ) {
             $di = \AmidaMVC\Framework\Container::start();
             $this->_routeClass = $di->get( '\AmidaMVC\Tools\Route', 'static' );
+        }
+        if( isset( $this->config[ 'routes' ] ) ) {
+            call_user_func( array( $this->_routeClass, 'set' ), $this->config[ 'routes' ] );
         }
     }
     function injectRoute( $route ) {
