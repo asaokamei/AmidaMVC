@@ -14,10 +14,8 @@ class App2
             'authDevLogin', 'authDevLogout', 'authDevFiler',
             'router',       'loader',        'emitter',
         );
-        $modules = array(
-            'router', 'loader', 'emitter',
-        );
         $ctrl->setModules( $modules );
+        $ctrl->separateCommands();
 
         return $ctrl;
     }
@@ -41,23 +39,23 @@ class App2
                 'din' => array( '\AmidaMVC\Tools\Request', 'new' ),
             ),
             'router' => array(
-                'din' => array( '\AmidaMVC\Module\Router',  'new' ),
+                'din'    => array( '\AmidaMVC\Module\Router',  'new' ),
                 'config' => array(),
                 'inject' => array(
                     array( 'route', 'route' ),
                 )
             ),
             'loader' => array(
-                'din' => array( '\AmidaMVC\Module\Loader',  'new' ),
+                'din'    => array( '\AmidaMVC\Module\Loader',  'new' ),
                 'inject' => array(
                     array( 'load', 'load' ),
                 )
             ),
             'emitter' => array(
                 'din' => array( '\AmidaMVC\Module\Emitter', 'new' )
-                ),
+            ),
             'controller' => array(
-                'din' => array( '\AmidaMVC\Framework\Controller', 'get' ),
+                'din'    => array( '\AmidaMVC\Framework\Controller', 'get' ),
                 'config' => array(
                     'site_title'        => 'AppCMS Web Site',
                     'template_file'     => '_Config/template.php',
@@ -69,6 +67,81 @@ class App2
                     array( 'diContainer', '_self' ),
                 ),
             ),
+            'authAdmin' => array(
+                'din' => array( '\AmidaMVC\Tools\AuthNot',  'new', 'authAdmin' ),
+                'config' => array(
+                    'password_file' => 'admin.password',
+                    'authArea'      => 'authAdmin'
+                )
+            ),
+            'authDev' => array(
+                'din'    => array( '\AmidaMVC\Tools\AuthNot',    'new', 'authDev' ),
+                'config' => array(
+                    'password_file' => 'dev.password',
+                    'authArea'      => 'authDev'
+                )
+            ),
+            'authDevLogin' => array(
+                'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
+                'config' => array(
+                    'authArea' => 'authDev',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/dev_login' ),
+                        'onFail' => array(
+                            'setLoginForm' => '_Config/login_file.md',
+                        ),
+                        'onSuccess' => array(
+                            'redirect' => '/',
+                        ),
+                    ),
+                )
+            ),
+            'authDevFiler' => array(
+                'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
+                'config' => array(
+                    'authArea' => 'authDev',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/' ),
+                        'onFail' => array(),
+                        'onSuccess' => array(
+                            'addModuleAfter' => array( 'router', 'filer', 'filer', ),
+                        ),
+                    ),
+                )
+            ),
+            'authDevLogout' => array(
+                'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
+                'config' => array(
+                    'authArea' => 'authDev',
+                    'evaluateOn' => array(
+                        'onPathInfo' => array( '/dev_logout' ),
+                        'onFail' => array(
+                            'redirect' => '/',
+                        ),
+                        'onSuccess' => array(
+                            'logout' => '',
+                            'redirect' => '/',
+                        ),
+                    ),
+                )
+            ),
+            'filer' => array(
+                'din'    => array( '\AmidaMVC\Module\Filer', 'new' ),
+                'config' => array(
+                    'template_file' => NULL,
+                    'listJs' => array(
+                        '/common/js/jquery-1.7.1.js',
+                        '/common/js/bootstrap.js',
+                        '/common/js/bootstrap-modal.js',
+                    ),
+                    'listCss' => array(
+                        '/common/css/bootstrap.css',
+                    ),
+                ),
+                'inject' => array(
+                    array( 'load', 'load' ),
+                ),
+            )
         );
         return $di;
     }
