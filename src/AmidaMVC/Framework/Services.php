@@ -210,6 +210,7 @@ class Services
         if( !isset( $type   ) ) { $type   = $din[ self::COL_TYPE    ]; }
         if( !isset( $idName ) ) { $idName = $din[ self::COL_ID_NAME ]; }
         if( !empty( $cfg ) ) { $config = array_merge( $config, $cfg ); }
+        $object = FALSE;
         if( is_object( $className ) ) {
             $object = $className;
         }
@@ -224,12 +225,14 @@ class Services
             if( isset( $this->_objects[ $type ][ $service ][ $idName ] ) ) {
                 $object = $this->_objects[ $type ][ $service ][ $idName ];
             }
-            else {
+            elseif( class_exists( $className ) ) {
                 $this->_objects[ $type ][ $service ][ $idName ] =
                 $object = new $className( $config );
             }
         }
-        $this->_injectAndInit( $object, $inject );
+        if( $object ) {
+            $this->_injectAndInit( $object, $inject );
+        }
         return $object;
     }
     /**
