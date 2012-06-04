@@ -34,15 +34,19 @@ if( isset( $_pageObj->devInfo ) ) {
         <div style="float: right; text-align: right;">
             <p>
                 dev-mode:<br />
-                <?php $authDev = $_ctrl->_diContainer->get( 'authDev' ); if( $authDev->isLoggedIn() ) { ?>
+                <?php $authDev = $_ctrl->_diContainer->get( 'authDev' );
+                if( is_object( $authDev ) && $authDev->isLoggedIn() ) { ?>
                 [<a href="dev_logout">logout</a>]
                 <?php } else { ?>
                 [<a href="dev_login">login</a>]
                 <?php } ?>
             </p>
         </div>
-        <p>AppSimple Suites by AmidaMVC.<br />
-        https://github.com/asaokamei/AmidaMVC</p>
+        <div>
+            <p>AppSimple Suites by AmidaMVC.<br />
+                https://github.com/asaokamei/AmidaMVC</p>
+        </div>
+        <p style="clear: both;"></p>
     </footer>
     <script type="text/javascript">
         $(document).ready( function() {

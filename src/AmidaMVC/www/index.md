@@ -1,11 +1,13 @@
-CMS Demo
-========
+AmidaMVC Shadow Page
+====================
+
+This is a shadow index page for AmidaMVC.
 
 This CMS like demo provides a pukiWiki like CMS using AmidaMVC Framework.
 
-*   [link to test.md for testing](test.md)
-*   [link to subdir](subdir/)  
-    try link w/o trailing slash: [link to subdir](subdir)
+*   This file is at: <?php echo __FILE__; ?>
+
+*   Root directory is: <?php echo $_ctrl->getLocation(); ?>
 
 Developer's Mode
 ----------------
@@ -25,5 +27,3 @@ framework as PHP code.
 get base URL
 : baseURL: '<?php echo $_ctrl->getBaseUrl(); ?>'.
 : ../bootstrap: '<?php echo $_ctrl->getBaseUrl( '../bootstrap' ); ?>'.
-
-[back to Top](../)
