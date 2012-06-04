@@ -65,6 +65,10 @@ class Services
         static::$_self = NULL;
     }
     // +-------------------------------------------------------------+
+    function service( $service ) {
+        $this->_lastService = $service;
+        return $this;
+    }
     /**
      * @param $service
      * @param $class
