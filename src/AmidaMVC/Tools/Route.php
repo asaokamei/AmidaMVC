@@ -81,13 +81,11 @@ class Route
     /**
      * search file system for path info.
      * @static
-     * @param string $root   root of the web document
      * @param string $path   path of url
      * @return array|bool    return $loadInfo or FALSE if not found
      */
-    function scan( $root, $path )
+    function scan( $path )
     {
-        $di = \AmidaMVC\Framework\Container::start();
         /** @var $loadClass \AmidaMVC\Tools\Load */
         $loadClass = $this->_loadClass;
         $loadInfo = array(
@@ -95,9 +93,8 @@ class Route
         );
         // find a file to load. 
         // ex: file_name = /path/to/file_name.
-        $file_name = $root . '/' . $path;
-        if( $loadClass->exists( $file_name ) ) {
-            $loadInfo[ 'file' ] = $path;
+        if( $file_name = $loadClass->findFile( $path ) ) {
+            $loadInfo[ 'file' ] = $file_name;
             if( $loadClass->isDir( $file_name ) ) {
                 if( substr( $file_name, -1, 1 ) !== '/' ) {
                     $loadInfo[ 'reload' ] = $path . '/';
@@ -121,9 +118,9 @@ class Route
                 return $loadInfo;
             }
             $folder .= $loc . '/';
-            $file_name = $root . '/' . $folder . '_App.php';
-            if( $loadClass->exists( $file_name ) ) {
-                $loadInfo[ 'file' ] = $folder . '_App.php';
+            $file_name = $folder . '_App.php';
+            if( $file_name = $loadClass->findFile( $file_name ) ) {
+                $loadInfo[ 'file' ] = $file_name;
                 $found = TRUE;
             }
         }
@@ -136,26 +133,24 @@ class Route
     /**
      * search for an index file in the given folder.
      * @static
-     * @param string $root     root of the folder.
      * @param string $path     path to the directory.
      * @param array $files     possible index file names.
      * @return array|bool      found loadInfo.
      */
-    function index( $root, $path, $files )
+    function index( $path, $files )
     {
-        $di = \AmidaMVC\Framework\Container::start();
         /** @var $loadClass \AmidaMVC\Tools\Load */
         $loadClass = $this->_loadClass;
-        $found = $loadClass->search( $root . '/' . $path, $files );
+        $found = $loadClass->search( $path, $files );
         if( empty( $found ) ) return FALSE;
         $found_names = array();
         foreach( $found as $list ) {
-            $found_names[] = basename( $list );
+            $found_names[ basename( $list ) ] = $list;
         }
         foreach( $files as $index ) {
-            if( in_array( $index, $found_names ) ) {
+            if( isset( $found_names[ $index ] ) ) {
                 return array(
-                    'file' => $path . $index,
+                    'file' => $found_names[ $index ],
                     'action' => NULL,
                 );
             }

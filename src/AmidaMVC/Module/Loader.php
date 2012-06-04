@@ -17,9 +17,9 @@ class Loader extends AModule implements IfModule
      * @param array $option    option to initialize.
      */
     function _init( $option=array() ) {
-        if( isset( $option[ 'loadClass' ] ) ) {
-            $this->_loadClass = $option[ 'loadClass' ];
-        }
+    }
+    function injectLoad( $load ) {
+        $this->_loadClass = $load;
     }
     // +-------------------------------------------------------------+
     /**
@@ -36,9 +36,8 @@ class Loader extends AModule implements IfModule
         if( !isset( $loadInfo[ 'file' ] ) ) {
             return FALSE;
         }
-        $command = $this->findCommand( $_ctrl->getCommands() );
         /** @var $load \AmidaMVC\Tools\Load */
-        $load = $_ctrl->getDi()->get( $this->_loadClass );
+        $load = $this->_loadClass;
         $file_name = $loadInfo[ 'file' ];
 
         /** @var string $file_name  */

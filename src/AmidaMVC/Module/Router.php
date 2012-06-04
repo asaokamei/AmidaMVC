@@ -51,19 +51,18 @@ class Router implements IfModule
     {
         $route = $this->_routeClass;
         $path  = $_ctrl->getPathInfo();
-        $root  = $_ctrl->getLocation();
         if( $loadInfo = call_user_func( array( $this->_routeClass, 'match' ), $path ) ) {
             // found by route map.
             $loadInfo[ 'foundBy' ] = 'route';
         }
-        else if( $loadInfo = $route->scan( $root, $path ) ) {
+        else if( $loadInfo = $route->scan( $path ) ) {
             // found (something) by scan.
             if( isset( $loadInfo[ 'reload' ] ) ) {
                 // reload if it is a directory without trailing slash.
                 $_ctrl->redirect( $loadInfo[ 'reload' ] );
             }
             else if( isset( $loadInfo[ 'is_dir' ] ) ) {
-                if( $loadInfo = $route->index( $root, $loadInfo[ 'file' ], $this->_indexes ) ) {
+                if( $loadInfo = $route->index( $loadInfo[ 'file' ], $this->_indexes ) ) {
                     // found an index file in the directory.
                     $loadInfo[ 'foundBy' ] = 'index';
                 }
@@ -75,10 +74,6 @@ class Router implements IfModule
         }
         if( empty( $loadInfo ) ) {
             $_ctrl->setAction( '_pageNotFound' );
-        }
-        else
-        if( !is_callable( $loadInfo[ 'file' ] ) ) {
-            $loadInfo[ 'file' ] = $_ctrl->getLocation( $loadInfo[ 'file' ] );
         }
         return $loadInfo;
     }
