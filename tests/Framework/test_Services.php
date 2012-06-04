@@ -61,4 +61,31 @@ class test_FrameworkServices extends \PHPUnit_Framework_TestCase
         $this->assertEquals( $obj1, $obj3 );
     }
     // +----------------------------------------------------------------------+
+    function test_Object_are_preserved() {
+        $className = '\tests\Framework\testClass1';
+        $obj1 = $this->di->get( $className );
+        $this->assertEquals( $className, '\\' . get_class( $obj1 ) );
+
+        $obj2 = $this->di->get( $className );
+        $this->assertEquals( $obj1, $obj2 );
+
+        $obj3 = $this->di->get( $className, 'GET', 'test' );
+        $this->assertTrue( $obj1 !== $obj3 );
+
+        $obj4 = $this->di->get( $className, 'GET', 'test' );
+        $this->assertTrue( $obj4 === $obj3 );
+
+        $obj5 = $this->di->get( $className, 'test' );
+        $this->assertTrue( $obj5 === $obj3 );
+
+        $static1 = $this->di->get( $className, 'static' );
+        $this->assertEquals( $className, $static1 );
+    }
+    // +----------------------------------------------------------------------+
+    function test_get_static_Object() {
+        $className = '\tests\Framework\testClass1';
+        $static1 = $this->di->get( $className, 'static' );
+        $this->assertEquals( $className, $static1 );
+    }
+    // +----------------------------------------------------------------------+
 }
