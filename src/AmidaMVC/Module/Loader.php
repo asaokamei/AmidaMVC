@@ -39,7 +39,7 @@ class Loader extends AModule implements IfModule
         /** @var $load \AmidaMVC\Tools\Load */
         $load = $this->_loadClass;
         $file_name = $loadInfo[ 'file' ];
-
+        $command = $this->findCommand( $_ctrl->getCommands() );
         /** @var string $file_name  */
         // load the file
         if( is_callable( $file_name ) ) {
@@ -89,13 +89,17 @@ class Loader extends AModule implements IfModule
      */
     function action_PageNotFound( $_ctrl, $_pageObj )
     {
-        if( $_ctrl->getOption( 'pageNotFound_file' ) ) {
-            $loadInfo = array(
-                'file' => $_ctrl->getOption( 'pageNotFound_file' ),
-                'action' => $_ctrl->defaultAct(),
-            );
-            $_ctrl->setMyAction( $_ctrl->defaultAct() );
-            $_pageObj->status( '404' );
+        $_ctrl->setMyAction( $_ctrl->defaultAct() );
+        $_pageObj->status( '404' );
+        $loadInfo = FALSE;
+        if( $file_name = $_ctrl->getOption( 'pageNotFound_file' ) ) {
+            $file_name = call_user_func( array( $this->_loadClass, 'findFile'), $file_name );
+            if( $file_name ) {
+                $loadInfo = array(
+                    'file' => $file_name,
+                    'action' => $_ctrl->defaultAct(),
+                );
+            }
             return $loadInfo;
         }
         return FALSE;
