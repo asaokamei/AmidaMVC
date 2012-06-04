@@ -75,6 +75,7 @@ class Services
      */
     function setService( $service, $class, $type='GET', $idName=NULL, $cfg=NULL )
     {
+        $this->_prepDin( $type, $idName, $cfg );
         $din = array( $class, $type, $idName );
         if( isset( $this->_services[ $service ] ) ) {
             $this->_services[ $service ][ 'din' ] = $din;
