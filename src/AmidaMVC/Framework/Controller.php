@@ -125,17 +125,9 @@ class Controller extends AmidaChain
      * @return bool|mixed|null  returned value from the last module.
      */
     function start( $pageObj=NULL ) {
-        $this->_diContainer =
-            ( $this->_diContainer ) ?: \AmidaMVC\Framework\Container::start();
         $this->pageObj =
             ( $pageObj ) ?: ( $this->pageObj ) ?:
             $this->_diContainer->get( '\AmidaMVC\Framework\PageObj' );
-        $this->_requestClass =
-            ( $this->_requestClass ) ?:
-            $this->_diContainer->get( '\AmidaMVC\Tools\Request' );
-        $this->_loadClass =
-            ( $this->_loadClass ) ?:
-            $this->_diContainer->get( '\AmidaMVC\Tools\Load' );
         // set loadFolder as ctrl_root and appDefault.
         $this->setFileLocation( $this->ctrl_root );
         if( isset( $option[ 'appDefault' ] ) ) {
