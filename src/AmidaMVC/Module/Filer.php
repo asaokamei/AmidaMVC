@@ -38,6 +38,9 @@ class Filer implements IfModule
     function _init( $option=array() ) {
         $this->setup( $option );
     }
+    function injectLoad( $load ) {
+        $this->_loadClass = $load;
+    }
     function setup( $option=array() ) {
         if( isset( $option[ 'listJs' ] ) ) {
             $this->listJs = $option[ 'listJs' ];
