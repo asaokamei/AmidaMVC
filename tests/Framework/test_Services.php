@@ -13,6 +13,21 @@ class testClass1
     }
 }
 
+class testClass2
+{
+    var $config;
+    var $option;
+    var $someObj;
+    function __construct( $config=NULL ) {
+        $this->config = $config;
+    }
+    function _init( $option=NULL ) {
+        $this->option = $option;
+    }
+    function injectSome( $obj ) {
+        $this->someObj = $obj;
+    }
+}
 
 class test_FrameworkServices extends \PHPUnit_Framework_TestCase
 {
@@ -86,6 +101,30 @@ class test_FrameworkServices extends \PHPUnit_Framework_TestCase
         $className = '\tests\Framework\testClass1';
         $static1 = $this->di->get( $className, 'static' );
         $this->assertEquals( $className, $static1 );
+    }
+    // +----------------------------------------------------------------------+
+    function test_get_with_config() {
+        $className = '\tests\Framework\testClass2';
+        $config1 = array( 'hello' => 'world' );
+        $obj1 = $this->di->get( $className, $config1 );
+        $this->assertEquals( $className, '\\' . get_class( $obj1 ) );
+        $this->assertEquals( $config1, $obj1->config );
+    }
+    // +----------------------------------------------------------------------+
+    function test_get_with_config_inject_object() {
+        $className1 = '\tests\Framework\testClass1';
+        $className2 = '\tests\Framework\testClass2';
+        $config1 = array(
+            'config' => 'testing config',
+        );
+        $this->di
+            ->setService( 'test',     $className2 )
+            ->setService( 'injected', $className1 );
+        $obj2 = $this->di->get( 'test', 'get', $config1 );
+        $this->di->inject( 'some', 'injected' );
+        $this->assertEquals( $className2, '\\' . get_class( $obj2 ) );
+        $this->assertEquals( $config1, $obj2->config );
+        $this->assertEquals( $className1, '\\' . get_class( $obj2->someObj ) );
     }
     // +----------------------------------------------------------------------+
 }
