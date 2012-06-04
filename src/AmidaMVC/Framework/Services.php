@@ -131,10 +131,29 @@ class Services
         }
         else {
             $din    = array( $service, 'GET', NULL );
-            $config = array( '_undefined' => TRUE );
+            $config = array();
             $inject = array();
         }
         return $this;
+    }
+    function _prepDin( &$type, &$idName, &$cfg )
+    {
+        if( is_array( $type ) ) {
+            $cfg = $type;
+            $idName = NULL;
+            $type = 'GET';
+        }
+        elseif( in_array( strtoupper( $type ), array( 'NEW', 'GET', 'STATIC' ) ) ) {
+            $type = strtoupper( $type );
+        }
+        else {
+            $idName = $type;
+            $type = 'GET';
+        }
+        if( is_array( $idName ) ) {
+            $cfg = $idName;
+            $idName = NULL;
+        }
     }
     // +-------------------------------------------------------------+
     /**
@@ -146,13 +165,7 @@ class Services
      */
     function get( $service, $type=NULL, $idName=NULL, $cfg=array() )
     {
-        if( in_array( strtoupper( $type ), array( 'NEW', 'GET', 'STATIC' ) ) ) {
-            $type = strtoupper( $type );
-        }
-        else {
-            $idName = $type;
-            $type = 'GET';
-        }
+        $this->_prepDin( $type, $idName, $cfg );
         $object = $this->getClean( $service, $type, $idName, $cfg );
         $this->_lastObject = $object;
         return $object;
