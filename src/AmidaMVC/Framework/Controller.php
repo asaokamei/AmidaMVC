@@ -238,6 +238,10 @@ class Controller extends AmidaChain
         }
         return '';
     }
+    function setOption( $name, $value ) {
+        $this->options[ $name ] = $value;
+        return $this;
+    }
     // +-------------------------------------------------------------+
     /**
      * @return \AmidaMVC\Framework\PageObj
