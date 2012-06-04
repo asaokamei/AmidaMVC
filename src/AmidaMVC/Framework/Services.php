@@ -146,12 +146,12 @@ class Services
      */
     function get( $service, $type=NULL, $idName=NULL, $cfg=array() )
     {
-        if( in_array( strtoupper( $type ), array( 'NEW', 'GET' ) ) ) {
+        if( in_array( strtoupper( $type ), array( 'NEW', 'GET', 'STATIC' ) ) ) {
             $type = strtoupper( $type );
         }
         else {
-            $type = 'GET';
             $idName = $type;
+            $type = 'GET';
         }
         $object = $this->getClean( $service, $type, $idName, $cfg );
         $this->_lastObject = $object;
@@ -178,7 +178,7 @@ class Services
             /** @var $className Closure */
             $object = $className( $this );
         }
-        else if( $type == 'static' ) {
+        else if( $type == 'STATIC' ) {
             $object = $className;
         }
         else {
