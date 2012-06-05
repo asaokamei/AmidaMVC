@@ -30,7 +30,7 @@ class Filer implements IfModule
     protected $backup    = '_Backup';
     protected $editors = array(
         'html'       => '\AmidaMVC\Editor\jHtmlArea',
-        'markdown'   => '\AmidaMVC\Editor\TextArea',
+        'markdown'   => '\AmidaMVC\Editor\jsMarkdownExtra',
         'text'       => '\AmidaMVC\Editor\TextArea',
         'css'        => '\AmidaMVC\Editor\TextArea',
         'javascript' => '\AmidaMVC\Editor\TextArea',
@@ -411,7 +411,7 @@ class Filer implements IfModule
         $file_name = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
         $contents  = call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $file_name );
         $self      = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
-        $file_type = call_user_func( array( $this->_loadClass, 'getFileType' ), $self );
+        $file_type = call_user_func( array( $this->_loadClass, 'getFileType' ), $file_name );
         if( isset( $this->editors[ $file_type ] ) ) {
             $title    = 'Edit: '. basename( $file_name );
             $editor   = $this->editors[ $file_type ];
