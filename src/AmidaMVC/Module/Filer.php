@@ -28,6 +28,13 @@ class Filer implements IfModule
      */
     protected $_loadClass = '\AmidaMVC\Tools\Load';
     protected $backup    = '_Backup';
+    protected $editors = array(
+        'html'       => '\AmidaMVC\Editor\TextArea',
+        'markdown'   => '\AmidaMVC\Editor\TextArea',
+        'text'       => '\AmidaMVC\Editor\TextArea',
+        'css'        => '\AmidaMVC\Editor\TextArea',
+        'javascript' => '\AmidaMVC\Editor\TextArea',
+    );
     // +-------------------------------------------------------------+
     /**
      * @param array $option
@@ -401,9 +408,8 @@ class Filer implements IfModule
      * @return array
      */
     function action_fEdit( $_ctrl, $_pageObj, $loadInfo ) {
-        $load = $this->_loadClass;
         $file_name = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
-        $contents = call_user_func( array( $load, 'getContentsByGet' ), $file_name );
+        $contents = call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $file_name );
         $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
         $contents = $this->_makeEditForm( 'Editing '. basename( $file_name ), $self, $contents );
         $_pageObj->setContent( $contents );
@@ -412,16 +418,12 @@ class Filer implements IfModule
     }
     // +-------------------------------------------------------------+
     function _makeEditForm( $title, $self, $contents, $cmd='_fPut' ) {
-        $contents = htmlspecialchars( $contents );
-        $contents =<<<END_OF_HTML
-<h1>{$title}</h1>
-
-    <form method="post" name="_editFile" action="{$self}/{$cmd}">
-        <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;">{$contents}</textarea>
-        <input type="submit" class="btn-primary" name="submit" value="Save File"/>
-        <input type="button" class="btn" name="cancel" value="cancel" onclick="location.href='{$self}'"/>
-    </form>
-END_OF_HTML;
+        $file_type = call_user_func( array( $this->_loadClass, 'getFileType' ), $self );
+        if( isset( $this->editors[ $file_type ] ) ) {
+            $editor   = $this->editors[ $file_type ];
+            $editor   = new $editor( $cmd );
+            $contents = $editor->edit( $title, $self, $contents );
+        }
         return $contents;
     }
     // +-------------------------------------------------------------+
