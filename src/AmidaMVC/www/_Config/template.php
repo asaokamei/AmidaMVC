@@ -1,12 +1,12 @@
 <?php
 /** @var $_pageObj \AmidaMVC\Framework\PageObj */
 /** @var $_ctrl \AmidaMVC\AppSimple\Application */
-$_pageObj->setCss( '../bootstrap/css/bootstrap.css' );
-$_pageObj->setCss( '../bootstrap/css/bootstrap-responsive.css' );
+$_pageObj->setCss( '/common/css/bootstrap.css' );
+$_pageObj->setCss( '/common/css/bootstrap-responsive.css' );
 $_pageObj->setCss( 'demo.css' );
-$_pageObj->setJs( '../bootstrap/js/jquery-1.7.1.js' );
-$_pageObj->setJs( '../bootstrap/js/bootstrap.js' );
-$_pageObj->setJs( '../bootstrap/js/bootstrap-dropdown.js' );
+$_pageObj->setJs( '/common/js/jquery-1.7.1.js' );
+$_pageObj->setJs( '/common/js/bootstrap.js' );
+$_pageObj->setJs( '/common/js/bootstrap-dropdown.js' );
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
