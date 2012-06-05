@@ -21,4 +21,5 @@ class TextArea implements IfEditor
 END_OF_HTML;
         return $contents;
     }
+    function page( $_pageObj ) {}
 }

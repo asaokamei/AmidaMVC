@@ -29,7 +29,7 @@ class Filer implements IfModule
     protected $_loadClass = '\AmidaMVC\Tools\Load';
     protected $backup    = '_Backup';
     protected $editors = array(
-        'html'       => '\AmidaMVC\Editor\TextArea',
+        'html'       => '\AmidaMVC\Editor\jHtmlArea',
         'markdown'   => '\AmidaMVC\Editor\TextArea',
         'text'       => '\AmidaMVC\Editor\TextArea',
         'css'        => '\AmidaMVC\Editor\TextArea',
@@ -409,9 +409,16 @@ class Filer implements IfModule
      */
     function action_fEdit( $_ctrl, $_pageObj, $loadInfo ) {
         $file_name = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
-        $contents = call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $file_name );
-        $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
-        $contents = $this->_makeEditForm( 'Editing '. basename( $file_name ), $self, $contents );
+        $contents  = call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $file_name );
+        $self      = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
+        $file_type = call_user_func( array( $this->_loadClass, 'getFileType' ), $self );
+        if( isset( $this->editors[ $file_type ] ) ) {
+            $title    = 'Edit: '. basename( $file_name );
+            $editor   = $this->editors[ $file_type ];
+            $editor   = new $editor();
+            $contents = $editor->edit( $title, $self, $contents );
+            $editor->page( $_pageObj );
+        }
         $_pageObj->setContent( $contents );
         $_ctrl->skipToModel( 'emitter' );
         return $loadInfo;
