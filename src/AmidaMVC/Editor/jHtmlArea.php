@@ -20,7 +20,7 @@ class jHtmlArea implements IfEditor
 <h1>{$title}</h1>
 
     <form method="post" name="_editFile" action="{$self}/{$this->cmd}">
-        <textarea name="_putContent" style="width:95%; height:350px; font-family: courier;">{$contents}</textarea>
+        <textarea name="_putContent" style="width:100%; height:350px; font-family: courier;">{$contents}</textarea>
         <input type="submit" class="btn-primary" name="submit" value="Save File"/>
         <input type="button" class="btn" name="cancel" value="cancel" onclick="location.href='{$self}'"/>
     </form>
