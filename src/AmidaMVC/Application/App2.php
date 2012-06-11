@@ -23,6 +23,7 @@ class App2
     function diCms() {
         $www = realpath( __DIR__ . '/../www/' );
         $di = array(
+            // Tools
             'load' => array(
                 'din'    => array( '\AmidaMVC\Tools\Load', 'get' ),
                 'config' => array(
@@ -42,6 +43,7 @@ class App2
             'session' => array(
                 'din' => array( '\AmidaMVC\Tools\Session', 'new' ),
             ),
+            // Modules
             'router' => array(
                 'din'    => array( '\AmidaMVC\Module\Router',  'new' ),
                 'config' => array(),
@@ -58,6 +60,7 @@ class App2
             'emitter' => array(
                 'din' => array( '\AmidaMVC\Module\Emitter', 'new' )
             ),
+            // Controller
             'controller' => array(
                 'din'    => array( '\AmidaMVC\Framework\Controller', 'get' ),
                 'config' => array(
@@ -72,6 +75,7 @@ class App2
                     array( 'diContainer', '_self' ),
                 ),
             ),
+            // for _Dev mode
             'authAdmin' => array(
                 'din' => array( '\AmidaMVC\Tools\AuthNot',  'new', 'authAdmin' ),
                 'config' => array(
