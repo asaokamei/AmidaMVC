@@ -45,7 +45,7 @@ class Auth implements IfModule
      * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
-     * @return array   $loadInfo for Loader.
+     * @return array|mixed $loadInfo for Loader.
      */
     function actionDefault( $_ctrl, &$_pageObj, $option=array() )
     {
@@ -55,7 +55,7 @@ class Auth implements IfModule
         // do the authentication
         if( $this->matchPathInfo( $_ctrl, $this->_evaluateOn[ 'onPathInfo' ] ) ) {
             // set up auth class as well.
-            $this->_auth = $_ctrl->_diContainer->get( $this->authArea );
+            $this->_auth = $_ctrl->services->get( $this->authArea );
             $auth_success = $this->_auth->getAuth();
             if( $auth_success ) {
                 $doList = $this->_evaluateOn[ 'onSuccess' ];

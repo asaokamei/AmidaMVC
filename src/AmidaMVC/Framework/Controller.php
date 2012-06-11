@@ -34,7 +34,7 @@ class Controller extends AmidaChain
     /**
      * @var \AmidaMVC\Framework\Services
      */
-    var $_diContainer = NULL;
+    var $services = NULL;
     /**
      * @var \AmidaMVC\Tools\Load
      */
@@ -77,7 +77,7 @@ class Controller extends AmidaChain
      * @param $diContainer
      */
     function injectDiContainer( $diContainer ) {
-        $this->_diContainer = $diContainer;
+        $this->services = $diContainer;
     }
     function injectRequest( $request ) {
         $this->request = $request;
@@ -86,7 +86,7 @@ class Controller extends AmidaChain
         $this->_loadClass = $load;
     }
     function getDi() {
-        return $this->_diContainer;
+        return $this->services;
     }
     // +-------------------------------------------------------------+
     /**
@@ -127,7 +127,7 @@ class Controller extends AmidaChain
     function start( $pageObj=NULL ) {
         $this->pageObj =
             ( $pageObj ) ?: ( $this->pageObj ) ?:
-            $this->_diContainer->get( '\AmidaMVC\Framework\PageObj' );
+            $this->services->get( '\AmidaMVC\Framework\PageObj' );
         // set loadFolder as ctrl_root and appDefault.
         $this->setFileLocation( $this->ctrl_root );
         $action = $this->defaultAct();
@@ -172,7 +172,7 @@ class Controller extends AmidaChain
      */
     function loadModule( &$module, $name ) {
         if( !is_object( $module ) ) {
-            $module = $this->_diContainer->get( $module );
+            $module = $this->services->get( $module );
         }
         return TRUE;
     }
@@ -253,7 +253,7 @@ class Controller extends AmidaChain
      * @return Controller
      */
     function setModuleOption( $name, $value ) {
-        $this->_diContainer
+        $this->services
             ->service( $name )
             ->setConfig( $value );
         return $this;
@@ -265,7 +265,7 @@ class Controller extends AmidaChain
      * @return mixed
      */
     function getModuleOption( $name ) {
-        $this->_diContainer->getService( $name, $din, $config, $inject );
+        $this->services->getService( $name, $din, $config, $inject );
         return $config;
     }
     // +-------------------------------------------------------------+
