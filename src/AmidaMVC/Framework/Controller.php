@@ -30,7 +30,7 @@ class Controller extends AmidaChain
     /**
      * @var \AmidaMVC\Tools\Request
      */
-    var $_requestClass = NULL;
+    var $request = NULL;
     /**
      * @var \AmidaMVC\Framework\Services
      */
@@ -80,7 +80,7 @@ class Controller extends AmidaChain
         $this->_diContainer = $diContainer;
     }
     function injectRequest( $request ) {
-        $this->_requestClass = $request;
+        $this->request = $request;
     }
     function injectLoad( $load ) {
         $this->_loadClass = $load;
@@ -115,7 +115,7 @@ class Controller extends AmidaChain
                 $path = DIRECTORY_SEPARATOR . $path;
             }
         }
-        $path = call_user_func( array( $this->_requestClass, 'truePath' ), $this->ctrl_root . $path );
+        $path = call_user_func( array( $this->request, 'truePath' ), $this->ctrl_root . $path );
         return $path;
     }
     // +-------------------------------------------------------------+
@@ -197,7 +197,7 @@ class Controller extends AmidaChain
      * @return string   base url where your web site is at.
      */
     function getBaseUrl( $url=NULL ) {
-        $base_url = $this->_requestClass->getBaseUrl( $url );
+        $base_url = $this->request->getBaseUrl( $url );
         return $base_url;
     }
     // +-------------------------------------------------------------+
@@ -206,7 +206,7 @@ class Controller extends AmidaChain
      * @return null|string
      */
     function getPathInfo() {
-        return $this->_requestClass->getPathInfo();
+        return $this->request->getPathInfo();
     }
     // +-------------------------------------------------------------+
     /**
@@ -296,7 +296,7 @@ class Controller extends AmidaChain
      * @return Controller
      */
     function separateCommands() {
-        $this->commands = $this->_requestClass->separateCommands( $this->prefixCmd );
+        $this->commands = $this->request->separateCommands( $this->prefixCmd );
         return $this;
     }
     // +-------------------------------------------------------------+
