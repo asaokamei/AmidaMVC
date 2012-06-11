@@ -6,87 +6,95 @@ namespace AmidaMVC\Tools;
 
 class Session
 {
-    /**
-     * @var bool  flag to check if session started.
-     */
-    static $session_start = FALSE;
-    /**
-     * @var null   temporary saves generated token. 
-     */
-    static $session_token = NULL;
+    /** @var bool  flag to check if session started. */
+    protected $session_start = FALSE;
+    /** @var null   temporary saves generated token. */
+    protected $session_token = NULL;
     /**  name of tokens stored in Session.     */
-    const  TOKEN_ID   = 'session.token.ids';
+    const  TOKEN_ID   = 'session..token.ids';
     /**  name of token send via post */
     const  TOKEN_NAME = 'sessionTokenValue_';
+    /** @var array|bool   where session data is */
+    protected $_session = NULL;
     // +-------------------------------------------------------------+
-    static function start() {
-        if( !static::$session_start ) {
+    function __construct( $config=NULL ) {
+        $this->start();
+        if( isset( $config ) && is_array( $config ) ) {
+            $this->_session = $config;
+        }
+        else {
+            $this->_session = &$_SESSION;
+        }
+    }
+    // +-------------------------------------------------------------+
+    function start() {
+        if( !$this->session_start ) {
             session_start();
-            static::$session_start = TRUE;
+            $this->session_start = TRUE;
         }
         return TRUE;
     }
     // +-------------------------------------------------------------+
-    static function set( $name, $value ) {
-        if( !isset( $_SESSION ) ) return FALSE;
-        $_SESSION[ $name ] = $value;
+    function set( $name, $value ) {
+        if( !isset( $this->_session ) ) return FALSE;
+        $this->_session[ $name ] = $value;
         return $value;
     }
     // +-------------------------------------------------------------+
-    static function del( $name ) {
-        if( isset( $_SESSION ) && array_key_exists( $name,  $_SESSION ) ) {
-            unset( $_SESSION[ $name ] );
+    function del( $name ) {
+        if( isset( $this->_session ) && array_key_exists( $name,  $this->_session ) ) {
+            unset( $this->_session[ $name ] );
         }
         return TRUE;
     }
     // +-------------------------------------------------------------+
-    static function get( $name ) {
-        if( isset( $_SESSION ) && array_key_exists( $name,  $_SESSION ) ) {
-            return $_SESSION[ $name ];
+    function get( $name ) {
+        if( isset( $this->_session ) && array_key_exists( $name,  $this->_session ) ) {
+            return $this->_session[ $name ];
         }
         return FALSE;
     }
     // +-------------------------------------------------------------+
     //  managing token for CSRF. 
     // +-------------------------------------------------------------+
-    static function pushToken() {
-        $token = md5( 'sess.dumb' . time() . $_SERVER["SCRIPT_FILENAME"] );
-        static::_pushToken( $token );
-        static::$session_token = $token;
+    function pushToken() {
+        $token = md5( 'session.dumb' . time() . mt_rand(1,100*100) . __DIR__ );
+        $this->_pushToken( $token );
+        $this->session_token = $token;
         return $token;
     }
     // +-------------------------------------------------------------+
-    static function _pushToken( $token ) {
+    function _pushToken( $token ) {
         static::start();
-        if( !isset( $_SESSION[ static::TOKEN_ID ] ) ) {
-            $_SESSION[ static::TOKEN_ID ] = array();
+        if( !isset( $this->_session[ static::TOKEN_ID ] ) ) {
+            $this->_session[ static::TOKEN_ID ] = array();
         }
         $max_token = 20;
-        $_SESSION[ static::TOKEN_ID ][] = $token;
-        if( count( $_SESSION[ static::TOKEN_ID ] ) > $max_token ) {
-            $num_remove = count( $_SESSION[ static::TOKEN_ID ] ) - $max_token;
-            $_SESSION[ static::TOKEN_ID ] =
-                array_slice( $_SESSION[ static::TOKEN_ID ], $num_remove );
+        $this->_session[ static::TOKEN_ID ][] = $token;
+        if( count( $this->_session[ static::TOKEN_ID ] ) > $max_token ) {
+            $num_remove = count( $this->_session[ static::TOKEN_ID ] ) - $max_token;
+            $this->_session[ static::TOKEN_ID ] =
+                array_slice( $this->_session[ static::TOKEN_ID ], $num_remove );
         }
     }
     // +-------------------------------------------------------------+
-    static function popToken() {
+    function popToken() {
         $name  = static::TOKEN_NAME;
-        $value = static::$session_token;
+        $value = $this->session_token;
         return "<input type=\"hidden\" name=\"{$name}\" value=\"{$value}\">";
     }
     // +-------------------------------------------------------------+
-    static function verifyToken() {
+    function verifyToken() {
         static::start();
         $token = $_POST[ static::TOKEN_NAME ];
-        if( $token && !empty( $_SESSION[ static::TOKEN_ID ] ) ) {
-            if( in_array( $token, $_SESSION[ static::TOKEN_ID ] ) ) {
-                foreach( $_SESSION[ static::TOKEN_ID ] as $k=>$v ) {
+        if( $token && !empty( $this->_session[ static::TOKEN_ID ] ) ) {
+            if( in_array( $token, $this->_session[ static::TOKEN_ID ] ) ) {
+                foreach( $this->_session[ static::TOKEN_ID ] as $k=>$v ) {
                     if( $v === $token ) {
-                        unset( $_SESSION[ static::TOKEN_ID ][$k] );
+                        unset( $this->_session[ static::TOKEN_ID ][$k] );
                     }
                 }
-                $_SESSION[ static::TOKEN_ID ] = array_values( $_SESSION[ static::TOKEN_ID ] );
+                $this->_session[ static::TOKEN_ID ] = array_values( $this->_session[ static::TOKEN_ID ] );
                 return TRUE;
             }
         }

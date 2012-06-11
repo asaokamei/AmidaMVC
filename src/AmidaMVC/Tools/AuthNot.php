@@ -15,9 +15,11 @@ class AuthNot
     var $auth_info  = array();
     var $option     = array();
     var $isLoggedIn = FALSE;
+    var $_session   = NULL;
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) {
         $this->setup( $option );
+        $this->_session = new Session();
     }
     function setup( $option=array() ) {
         if( isset( $option[ 'authArea' ] ) ) {
@@ -33,21 +35,21 @@ class AuthNot
     }
     // +-------------------------------------------------------------+
     function getAuth() {
-        if( $auth_info = static::_verifySession() ) {
+        if( $auth_info = $this->_verifySession() ) {
             $auth_info[ 'auth_method' ] = 'session';
             $this->auth_info = $auth_info;
         }
         elseif( $auth_info = static::_verifyPost() ) {
             $auth_info[ 'auth_method' ] = 'post';
             $this->auth_info = $auth_info;
-            static::_saveSession( $auth_info );
+            $this->_saveSession( $auth_info );
         }
         return $auth_info;
     }
     // +-------------------------------------------------------------+
     function logout(){
-        Session::start();
-        Session::del( $this->auth_id );
+        $this->_session->start();
+        $this->_session->del( $this->auth_id );
     }
     // +-------------------------------------------------------------+
     function _verifyPost() {
@@ -69,12 +71,12 @@ class AuthNot
     }
     // +-------------------------------------------------------------+
     function _saveSession( $auth_info ) {
-        Session::set( $this->auth_id, $auth_info );
+        $this->_session->set( $this->auth_id, $auth_info );
     }
     // +-------------------------------------------------------------+
     function _verifySession() {
-        Session::start();
-        $auth_info = Session::get( $this->auth_id );
+        $this->_session->start();
+        $auth_info = $this->_session->get( $this->auth_id );
         if( $auth_info && 
             $auth_info[ $this->act_name ] == $this->act_value ) {
             $this->isLoggedIn = TRUE;
