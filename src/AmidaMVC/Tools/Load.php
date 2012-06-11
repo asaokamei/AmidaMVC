@@ -38,6 +38,9 @@ class Load
             }
         }
     }
+    function getExt( $file ) {
+        return strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+    }
     // +-------------------------------------------------------------+
     function isWhat( $what, $file ) {
         return $this->$what( $file );
@@ -50,7 +53,7 @@ class Load
      * @return bool
      */
     function isView( $file ) {
-        $ext  = pathinfo( $file, PATHINFO_EXTENSION );
+        $ext  = $this->getExt( $file );
         return isset( $this->ext_view[ $ext ] );
     }
     // +-------------------------------------------------------------+
@@ -61,7 +64,7 @@ class Load
      * @return bool
      */
     function isText( $file ) {
-        $ext  = pathinfo( $file, PATHINFO_EXTENSION );
+        $ext  = $this->getExt( $file );
         return isset( $this->ext_view[ $ext ] ) || isset( $this->ext_text[ $ext ]  );
     }
     // +-------------------------------------------------------------+
@@ -72,12 +75,12 @@ class Load
      * @return bool
      */
     function isAsIs( $file ) {
-        $ext  = pathinfo( $file, PATHINFO_EXTENSION );
+        $ext  = $this->getExt( $file );
         return in_array( $ext, $this->ext_asIs );
     }
     // +-------------------------------------------------------------+
     function getFileType( $file ) {
-        $ext  = pathinfo( $file, PATHINFO_EXTENSION );
+        $ext  = $this->getExt( $file );
         if( isset( $this->ext_view[ $ext ] ) ) {
             return $this->ext_view[ $ext ];
         }
