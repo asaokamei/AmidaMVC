@@ -171,8 +171,7 @@ class Controller extends AmidaChain
     /**
      * @param mixed $module
      * @param string $name
-     * @throws \RuntimeException
-     * @return Controller|bool
+     * @return \AmidaMVC\Framework\AmidaChain|bool
      */
     function loadModule( &$module, $name ) {
         if( !is_object( $module ) ) {
