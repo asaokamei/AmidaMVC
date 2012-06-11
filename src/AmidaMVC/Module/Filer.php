@@ -35,6 +35,10 @@ class Filer implements IfModule
         'css'        => '\AmidaMVC\Editor\TextArea',
         'javascript' => '\AmidaMVC\Editor\TextArea',
     );
+    /** @var \AmidaMVC\Framework\Controller */
+    protected $_ctrl;
+    /** @var \AmidaMVC\Framework\PageObj */
+    protected $_pageObj;
     // +-------------------------------------------------------------+
     /**
      * @param array $option
@@ -64,33 +68,31 @@ class Filer implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      */
-    function _setMenu( $_ctrl, &$_pageObj, &$loadInfo ) {
+    function _setMenu( &$loadInfo ) {
         // set JavaScript and CSS files for developer's menu...
         if( !empty( $this->listJs ) ) {
             foreach( $this->listJs as $js ) {
-                $_pageObj->setJs( $js );
+                $this->_pageObj->setJs( $js );
             }
         }
         if( !empty( $this->listCss ) ) {
             foreach( $this->listCss as $css ) {
-                $_pageObj->setCss( $css );
+                $this->_pageObj->setCss( $css );
             }
         }
         // set file lists under the folder.
         /** @var $filer_folder string    folder where filer is looking at. */
         /** @var $path_folder string     path folder where filer is looking at */
-        $path_folder = $_ctrl->getPathInfo();
+        $path_folder = $this->_ctrl->getPathInfo();
         $path_folder = ( substr( $path_folder, -1 ) == '/' ) ? substr( $path_folder, 0, -1 ) : dirname( $path_folder );
         if( isset( $loadInfo[ 'file' ] ) ) {
             $filer_folder = ( is_dir( $loadInfo[ 'file' ] ) ) ?
                 $loadInfo[ 'file' ] : dirname( $loadInfo[ 'file'] );
         }
         else {
-            $filer_folder = $_ctrl->getLocation( $path_folder );
+            $filer_folder = $this->_ctrl->getLocation( $path_folder );
         }
         $this->filerInfo[ 'curr_folder' ] = $filer_folder;
         $this->filerInfo[ 'path_folder' ] = $path_folder;
@@ -137,30 +139,30 @@ class Filer implements IfModule
      * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
-     * @return array
+     * @return array|mixed
      */
     function actionDefault( $_ctrl, &$_pageObj, $loadInfo=array() )
     {
-        $this->_setMenu( $_ctrl, $_pageObj, $loadInfo );
+        $this->_ctrl = $_ctrl;
+        $this->_pageObj = $_pageObj;
+        $this->_setMenu( $loadInfo );
         $command = $this->_findFilerCommand( $_ctrl );
         if( $command ) {
             $method = 'action' . $command;
-            $loadInfo = $this->$method( $_ctrl, $_pageObj, $loadInfo );
+            $loadInfo = $this->$method( $loadInfo );
         }
         else {
             $loadInfo[ 'file' ] = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
         }
-        $this->_template( $_ctrl, $_pageObj );
+        $this->_template();
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_bkView( $_ctrl, &$_pageObj, $loadInfo=array() )
+    function action_bkView( $loadInfo=array() )
     {
         $bk_file = $_GET[ 'bf' ];
         $backup_folder = $this->_backupFolder( $loadInfo[ 'file' ] );
@@ -172,12 +174,10 @@ class Filer implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_bkDiff( $_ctrl, &$_pageObj, $loadInfo=array() )
+    function action_bkDiff( $loadInfo=array() )
     {
         $bk_file = $_GET[ 'bf' ];
         $backup_folder = $this->_backupFolder( $loadInfo[ 'file' ] );
@@ -187,20 +187,18 @@ class Filer implements IfModule
                 call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $loadInfo[ 'file' ] ) );
             $lines2   = htmlspecialchars(
                 call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $backup_file ) );
-            $_pageObj->setContent( array( 'lines1' => $lines1, 'lines2' => $lines2 ) );
-            $_pageObj->contentType( 'diff' );
-            $_ctrl->skipToModel( 'emitter' );
+            $this->_pageObj->setContent( array( 'lines1' => $lines1, 'lines2' => $lines2 ) );
+            $this->_pageObj->contentType( 'diff' );
+            $this->_ctrl->skipToModel( 'emitter' );
         }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_fDir( $_ctrl, &$_pageObj, $loadInfo=array() )
+    function action_fDir( $loadInfo=array() )
     {
         if( !isset( $_POST['_folderName'] ) || empty( $_POST['_folderName'] ) ) {
             $this->_error( 'add new folder error:',
@@ -213,7 +211,7 @@ class Filer implements IfModule
                     'folder already exists: ' . $_POST['_filderName'] );
             }
             elseif( call_user_func( array( $this->_loadClass, 'mkdir' ), $folder, 0777 ) ) {
-                $_ctrl->redirect( $_ctrl->getPathInfo() );
+                $this->_ctrl->redirect( $this->_ctrl->getPathInfo() );
             }
             else {
                 $this->_error( 'add new folder error:',
@@ -226,12 +224,10 @@ class Filer implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_fPurge( $_ctrl, &$_pageObj, $loadInfo=array() )
+    function action_fPurge( $loadInfo=array() )
     {
         if( $loadInfo[ 'file_edited' ] ) {
             $this->_error(
@@ -247,23 +243,21 @@ class Filer implements IfModule
         }
         else {
             if( call_user_func( array( $this->_loadClass, 'unlink' ), $loadInfo[ 'file' ] ) ) {
-                $_ctrl->redirect( $_ctrl->getPathInfo() );
+                $this->_ctrl->redirect( $this->_ctrl->getPathInfo() );
             }
         }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_fDel( $_ctrl, &$_pageObj, $loadInfo=array() )
+    function action_fDel( $loadInfo=array() )
     {
         if( isset( $loadInfo[ 'file_edited' ] ) ) {
             if( call_user_func( array( $this->_loadClass, 'unlink' ), $loadInfo[ 'file_edited' ] ) ) {
-                $_ctrl->redirect( $_ctrl->getPathInfo() );
+                $this->_ctrl->redirect( $this->_ctrl->getPathInfo() );
             }
             $this->_error(
                 'delete error',
@@ -274,12 +268,10 @@ class Filer implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_fDiff( $_ctrl, &$_pageObj, $loadInfo=array() ) {
+    function action_fDiff( $loadInfo=array() ) {
         if( !isset( $loadInfo[ 'file_edited' ] ) ) {
             $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
             $this->_error(
@@ -292,27 +284,25 @@ class Filer implements IfModule
                 call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $loadInfo[ 'file' ] ) );
             $lines2   = htmlspecialchars(
                 call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $loadInfo[ 'file_edited' ] ) );
-            $_pageObj->setContent( array( 'lines1' => $lines1, 'lines2' => $lines2 ) );
-            $_pageObj->contentType( 'diff' );
-            $_ctrl->skipToModel( 'emitter' );
+            $this->_pageObj->setContent( array( 'lines1' => $lines1, 'lines2' => $lines2 ) );
+            $this->_pageObj->contentType( 'diff' );
+            $this->_ctrl->skipToModel( 'emitter' );
         }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_fPub( $_ctrl, $_pageObj, $loadInfo ) {
+    function action_fPub( $loadInfo ) {
         $file_to_publish = $loadInfo[ 'file_edited' ];
         if( call_user_func( array( $this->_loadClass, 'exists' ),  $file_to_publish ) ) {
             $file_to_replaced = $loadInfo[ 'file' ];
             $this->_backup( $file_to_replaced );
             if( rename( $file_to_publish, $file_to_replaced ) ) {
                 // success
-                $_ctrl->redirect( $_ctrl->getPathInfo() );
+                $this->_ctrl->redirect( $this->_ctrl->getPathInfo() );
             }
             else {
                 $this->_error(
@@ -330,21 +320,19 @@ class Filer implements IfModule
      * needs to know where is the working directory because _newFileName
      * contains only the file name (no folder info).
      *
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_fFile( $_ctrl, $_pageObj, $loadInfo ) {
+    function action_fFile( $loadInfo ) {
         $new_file = $_POST[ '_newFileName' ];
-        $path_info = $_ctrl->getPathInfo();
+        $path_info = $this->_ctrl->getPathInfo();
         if( substr( $path_info, -1 ) === '/' ) {
             $path_info = $path_info . $new_file;
         }
         else {
             $path_info = dirname( $path_info ) . '/' . $new_file;
         }
-        $file_to_edit = $_ctrl->getLocation( $path_info );
+        $file_to_edit = $this->_ctrl->getLocation( $path_info );
         if( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) || is_dir( $file_to_edit ) ) {
             $this->_error(
                 'add new file error',
@@ -353,29 +341,27 @@ class Filer implements IfModule
             );
         }
         else {
-            $self = $_ctrl->getBaseUrl( $path_info );
+            $self = $this->_ctrl->getBaseUrl( $path_info );
             $contents = $this->_makeEditForm( 'Add File '.$new_file, $self, '' );
-            $_pageObj->setContent( $contents );
-            $_ctrl->skipToModel( 'emitter' );
-            $_ctrl->setAction( $_ctrl->defaultAct() );
+            $this->_pageObj->setContent( $contents );
+            $this->_ctrl->skipToModel( 'emitter' );
+            $this->_ctrl->setAction( $this->_ctrl->defaultAct() );
         }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_fPut( $_ctrl, $_pageObj, $loadInfo ) {
+    function action_fPut( $loadInfo ) {
         if( $loadInfo[ 'file' ] ) {
             // always put contents onto edited_file.
             $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
         }
         else {
             // it's a new file to add.
-            $file_to_edit = $_ctrl->getLocation( $_ctrl->getPathInfo() );
+            $file_to_edit = $this->_ctrl->getLocation( $this->_ctrl->getPathInfo() );
         }
         if( isset( $_POST[ '_putContent' ] ) ) {
             $content = $_POST[ '_putContent' ];
@@ -383,7 +369,7 @@ class Filer implements IfModule
             $content = str_replace( "\r", "\n", $content );
             $success = call_user_func( array( $this->_loadClass, 'putContents' ), $file_to_edit, $content );
             if( $success !== FALSE ) {
-                $_ctrl->redirect( $_ctrl->getPathInfo() );
+                $this->_ctrl->redirect( $this->_ctrl->getPathInfo() );
             }
             else {
                 $this->_error(
@@ -391,36 +377,35 @@ class Filer implements IfModule
                     "Could not save contents to file ({$file_to_edit}). <br />" .
                     "maybe file permission problem?"
                 );
-                $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
+                $self = $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() );
                 $content = $this->_makeEditForm( 'Re-editing ' . basename( $file_to_edit ), $self, $content );
-                $loadInfo = $this->action_fEdit( $_ctrl, $_pageObj, $loadInfo );
-                $_pageObj->setContent( $content );
-                $_ctrl->skipToModel( 'emitter' );
+                $loadInfo = $this->action_fEdit( $this->_ctrl, $this->_pageObj, $loadInfo );
+                $this->_pageObj->setContent( $content );
+                $this->_ctrl->skipToModel( 'emitter' );
             }
         }
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo
      * @return array
      */
-    function action_fEdit( $_ctrl, $_pageObj, $loadInfo ) {
+    function action_fEdit( $loadInfo ) {
         $file_name = ( $loadInfo[ 'file_edited' ] ) ?: $loadInfo[ 'file' ];
         $contents  = call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $file_name );
-        $self      = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
+        $self      = $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() );
         $file_type = call_user_func( array( $this->_loadClass, 'getFileType' ), $file_name );
         if( isset( $this->editors[ $file_type ] ) ) {
             $title    = 'Edit: '. basename( $file_name );
             $editor   = $this->editors[ $file_type ];
+            /** @var $editor \AmidaMVC\Editor\IfEditor */
             $editor   = new $editor();
             $contents = $editor->edit( $title, $self, $contents );
-            $editor->page( $_pageObj );
+            $editor->page( $this->_pageObj );
         }
-        $_pageObj->setContent( $contents );
-        $_ctrl->skipToModel( 'emitter' );
+        $this->_pageObj->setContent( $contents );
+        $this->_ctrl->skipToModel( 'emitter' );
         return $loadInfo;
     }
     // +-------------------------------------------------------------+
@@ -428,6 +413,7 @@ class Filer implements IfModule
         $file_type = call_user_func( array( $this->_loadClass, 'getFileType' ), $self );
         if( isset( $this->editors[ $file_type ] ) ) {
             $editor   = $this->editors[ $file_type ];
+            /** @var $editor \AmidaMVC\Editor\IfEditor */
             $editor   = new $editor( $cmd );
             $contents = $editor->edit( $title, $self, $contents );
         }
@@ -435,21 +421,21 @@ class Filer implements IfModule
     }
     // +-------------------------------------------------------------+
     /**
-     * @param \AmidaMVC\Framework\Controller $_ctrl
-     * @param \AmidaMVC\Framework\PageObj $_pageObj
      */
-    function _template( $_ctrl, $_pageObj ) {
+    function _template() {
+        $_ctrl = $this->_ctrl;
+        $_pageObj = $this->_pageObj;
         $_filerObj  = (object) $this->filerInfo;
         ob_start();
         ob_implicit_flush(0);
         if( $this->devTemplate ) {
-            include $_ctrl->findFile( $this->devTemplate );
+            include $this->_ctrl->findFile( $this->devTemplate );
         }
         else {
             include __DIR__ . '/' . $this->devTemplateDefault;
         }
         $contents = ob_get_clean();
-        $_pageObj->devInfo = $contents;
+        $this->_pageObj->devInfo = $contents;
     }
     // +-------------------------------------------------------------+
     /**
@@ -478,12 +464,11 @@ class Filer implements IfModule
     // +-------------------------------------------------------------+
     /**
      * find commands for Filer. commands are in static::$file_list.
-     * @param \AmidaMVC\Framework\Controller $_ctrl
      * @return string
      */
-    function _findFilerCommand( $_ctrl )
+    function _findFilerCommand()
     {
-        $gotCommandList = $_ctrl->getCommands();
+        $gotCommandList = $this->_ctrl->getCommands();
         $commandList    = array();
         foreach( $gotCommandList as $command ) {
             $cmd = explode( ':', $command );
