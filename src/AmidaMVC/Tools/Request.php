@@ -35,6 +35,17 @@ class Request
             $ok = preg_match( '/^[-\._a-zA-Z0-9]+$/', $val );
             return $result && $ok;
         };
+        $this->verifyCode = function( $result, $val ) {
+            $ok = preg_match( '/^[_a-zA-Z0-9]+$/', $val );
+            return $result && $ok;
+        };
+        $this->getVerifyMatch = function( $match ) {
+            return function( $result, $val ) use( $match ) {
+                $match = preg_quote( $match );
+                $ok = preg_match( "/^{$match}+$/", $val );
+                return $result && $ok;
+            };
+        };
     }
     /** html special chars wrapper.
      * @param $string
@@ -236,13 +247,22 @@ class Request
         }
         return $val;
     }
-    function getPost( $name, $type='string' ) {
+    function getPost( $name, $type=NULL ) {
         $val = $this->_getPost( $name );
+        $ok  = TRUE;
         if( $val === FALSE ) return $val;
         if( $type == 'filename' ) {
             $ok = $this->_verify( $val, 'verifyFile' );
-            if( !$ok ) $val = FALSE;
         }
+        elseif( $type == 'code' ) {
+            $ok = $this->_verify( $val, 'verifyCode' );
+        }
+        elseif( isset( $type ) ) {
+            // this code is not working yet.
+            //$verify = $this->getVerifyMatch( $type );
+            //$ok = $this->_verify( $val, 'verifyCode' );
+        }
+        if( !$ok ) $val = FALSE;
         return $val;
     }
     // +-------------------------------------------------------------+

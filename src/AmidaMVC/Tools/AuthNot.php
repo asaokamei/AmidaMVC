@@ -17,6 +17,8 @@ class AuthNot
     var $isLoggedIn = FALSE;
     /** @var \AmidaMVC\Tools\Session  */
     var $_session   = NULL;
+    /** @var \AmidaMVC\Tools\Request */
+    var $_request   = NULL;
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) {
         $this->setup( $option );
@@ -31,6 +33,9 @@ class AuthNot
     }
     function injectSession( $session ) {
         $this->_session = $session;
+    }
+    function injectRequest( $request ) {
+        $this->_request = $request;
     }
     // +-------------------------------------------------------------+
     function isLoggedIn() {
@@ -56,18 +61,18 @@ class AuthNot
     }
     // +-------------------------------------------------------------+
     function _verifyPost() {
-        if( !isset( $_POST ) || 
-            !isset( $_POST[ $this->act_name ] ) ||
-            !isset( $_POST[ $this->login_name ] ) ||
-            !isset( $_POST[ $this->login_pass ] ) ) {
+        $act_name   = $this->_request->getPost( $this->act_name,   'code' );
+        $login_name = $this->_request->getPost( $this->login_name, 'code' );
+        $login_pass = $this->_request->getPost( $this->login_pass, 'code' );
+        if( !$act_name || !$login_name || !$login_pass  ) {
             return FALSE;
         }
-        if( $_POST[ $this->act_name ] !== $this->act_value ) return FALSE;
-        if( $_POST[ $this->login_name ] !== $_POST[ $this->login_pass ] ) return FALSE;
+        if( $act_name !== $this->act_value ) return FALSE;
+        if( $login_name !== $login_pass ) return FALSE;
         $auth_info = array(
-            $this->login_name => $_POST[ $this->login_name ],
-            $this->login_pass => $_POST[ $this->login_pass ],
-            $this->act_name   => $_POST[ $this->act_name ],
+            $this->login_name => $login_name,
+            $this->login_pass => $login_pass,
+            $this->act_name   => $act_name,
         );
         $this->isLoggedIn = TRUE;
         return $auth_info;
