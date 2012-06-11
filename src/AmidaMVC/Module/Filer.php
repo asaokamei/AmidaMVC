@@ -428,14 +428,13 @@ class Filer implements IfModule
         $_filerObj  = (object) $this->filerInfo;
         ob_start();
         ob_implicit_flush(0);
-        if( $this->devTemplate ) {
-            include $this->_ctrl->findFile( $this->devTemplate );
+        if( $template = $_ctrl->getOption( 'template_dev_file' ) ) {
+            if( $template_file = $this->_ctrl->findFile( $template ) ) {
+                include $template_file;
+                $contents = ob_get_clean();
+                $this->_pageObj->devInfo = $contents;
+            }
         }
-        else {
-            include __DIR__ . '/' . $this->devTemplateDefault;
-        }
-        $contents = ob_get_clean();
-        $this->_pageObj->devInfo = $contents;
     }
     // +-------------------------------------------------------------+
     /**

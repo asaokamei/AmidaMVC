@@ -61,6 +61,7 @@ class App2
                     'site_title'        => 'AppCMS Web Site',
                     'template_file'     => '_Config/template.php',
                     'pageNotFound_file' => '_Config/pageNotFound.md',
+                    'template_dev_file' => '_Config/template._dev.php',
                 ),
                 'inject' => array(
                     array( 'request', 'request' ),
