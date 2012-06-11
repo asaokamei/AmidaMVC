@@ -130,9 +130,6 @@ class Controller extends AmidaChain
             $this->_diContainer->get( '\AmidaMVC\Framework\PageObj' );
         // set loadFolder as ctrl_root and appDefault.
         $this->setFileLocation( $this->ctrl_root );
-        if( isset( $option[ 'appDefault' ] ) ) {
-            $this->setFileLocation( $option[ 'appDefault' ] );
-        }
         $action = $this->defaultAct();
         return $this->dispatch( $action, $this->pageObj );
     }
