@@ -33,7 +33,6 @@ class Request
     }
     /**
      * check if request method is POST.
-     * @static
      * @return bool
      */
     function isPost() {
@@ -41,7 +40,6 @@ class Request
     }
     /**
      * get host name of server.
-     * @static
      * @return bool
      */
     function getHost() {
@@ -51,7 +49,6 @@ class Request
         return $this->_server[ 'SERVER_NAME' ];
     }
     /**
-     * @static
      * @return string
      */
     function getRequestUri() {
