@@ -39,6 +39,9 @@ class App2
             'request' => array(
                 'din' => array( '\AmidaMVC\Tools\Request', 'new' ),
             ),
+            'session' => array(
+                'din' => array( '\AmidaMVC\Tools\Session', 'new' ),
+            ),
             'router' => array(
                 'din'    => array( '\AmidaMVC\Module\Router',  'new' ),
                 'config' => array(),
@@ -81,7 +84,10 @@ class App2
                 'config' => array(
                     'password_file' => 'dev.password',
                     'authArea'      => 'authDev'
-                )
+                ),
+                'inject' => array(
+                    array( 'session', 'session' ),
+                ),
             ),
             'authDevLogin' => array(
                 'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),

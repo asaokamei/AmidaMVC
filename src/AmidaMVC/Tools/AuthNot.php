@@ -19,7 +19,6 @@ class AuthNot
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) {
         $this->setup( $option );
-        $this->_session = new Session();
     }
     function setup( $option=array() ) {
         if( isset( $option[ 'authArea' ] ) ) {
@@ -28,6 +27,9 @@ class AuthNot
     }
     function _init( $option=array() ) {
         $this->setup( $option );
+    }
+    function injectSession( $session ) {
+        $this->_session = $session;
     }
     // +-------------------------------------------------------------+
     function isLoggedIn() {
