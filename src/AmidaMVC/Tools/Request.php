@@ -211,10 +211,14 @@ class Request
         return $this;
     }
     function _verify( $val, $verifyName ) {
+        /** @var $verify closure */
         $verify = $this->$verifyName;
-        $result = ( is_array( $val ) ) ?
-            array_reduce( $val, $verify, TRUE ):
-            $verify( TRUE, $val );
+        $result = FALSE;
+        if( is_callable( $verify ) ) {
+            $result = ( is_array( $val ) ) ?
+                array_reduce( $val, $verify, TRUE ):
+                $verify( TRUE, $val );
+        }
         return $result;
     }
     function _getPost( $name ) {

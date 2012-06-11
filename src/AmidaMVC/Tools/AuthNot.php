@@ -15,6 +15,7 @@ class AuthNot
     var $auth_info  = array();
     var $option     = array();
     var $isLoggedIn = FALSE;
+    /** @var \AmidaMVC\Tools\Session  */
     var $_session   = NULL;
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) {
