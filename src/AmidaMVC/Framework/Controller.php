@@ -40,7 +40,7 @@ class Controller extends AmidaChain
      */
     var $_loadClass = NULL;
     /**
-     * @var null|\AmidaMVC\Framework\Container
+     * @var null|\AmidaMVC\Framework\Controller
      */
     static $_self = NULL;
     // +-------------------------------------------------------------+
