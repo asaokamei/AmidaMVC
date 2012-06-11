@@ -19,7 +19,7 @@ class Session
     // +-------------------------------------------------------------+
     function __construct( $config=NULL ) {
         $this->start();
-        if( isset( $config ) && is_array( $config ) ) {
+        if( !empty( $config ) && is_array( $config ) ) {
             $this->_session = $config;
         }
         else {
