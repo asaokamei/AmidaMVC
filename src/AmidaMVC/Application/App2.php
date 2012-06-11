@@ -87,6 +87,7 @@ class App2
                 ),
                 'inject' => array(
                     array( 'session', 'session' ),
+                    array( 'request', 'request' ),
                 ),
             ),
             'authDevLogin' => array(
