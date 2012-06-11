@@ -1,6 +1,6 @@
 <?php
 /** @var $_pageObj \AmidaMVC\Framework\PageObj */
-/** @var $_ctrl \AmidaMVC\AppSimple\Controller */
+/** @var $_ctrl    \AmidaMVC\Framework\Controller */
 $_pageObj->setCss( '/common/css/bootstrap.css' );
 $_pageObj->setCss( '/common/css/bootstrap-responsive.css' );
 $_pageObj->setCss( 'demo.css' );
@@ -34,7 +34,7 @@ if( isset( $_pageObj->devInfo ) ) {
         <div style="float: right; text-align: right;">
             <p>
                 dev-mode:<br />
-                <?php $authDev = $_ctrl->getDi()->get( 'authDev' );
+                <?php $authDev = $_ctrl->getServices()->get( 'authDev' );
                 if( is_object( $authDev ) && $authDev->isLoggedIn() ) { ?>
                 [<a href="dev_logout">logout</a>]
                 <?php } else { ?>

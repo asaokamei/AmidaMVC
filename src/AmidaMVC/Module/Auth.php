@@ -55,7 +55,7 @@ class Auth implements IfModule
         // do the authentication
         if( $this->matchPathInfo( $_ctrl, $this->_evaluateOn[ 'onPathInfo' ] ) ) {
             // set up auth class as well.
-            $this->_auth = $_ctrl->getDi()->get( $this->authArea );
+            $this->_auth = $_ctrl->getServices()->get( $this->authArea );
             $auth_success = $this->_auth->getAuth();
             if( $auth_success ) {
                 $doList = $this->_evaluateOn[ 'onSuccess' ];
