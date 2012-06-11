@@ -2,24 +2,8 @@ ToDo List
 
 * refactor AmidaMVC
 
-[ ] DiContainer: how to inject default object?
 [ ] PHPUnit using demo#4.
 [ ] use Config module; remove option stuff from Controller.
-[O] refactor Filer module
-    [ ] action_fPurge
-    [ ] action_fBakView
-    [ ] action_fBakDiff
-    [ ] action_fFolder
-    [X] action_fPub
-    [X] action_fFile
-    [X] action_fPut
-    [X] action_fEdit
-    [X] action_fDel
-    [X] action_fDiff
-    [X] _backup
-[ ] Security!!!
-    [ ] get POST data from Request and make it safe.
-    [ ] check for invalid path info input (/../, null byte).
 [ ] use doc_root as well as ctrl_root.
 [ ] i18n/language support.
 [ ] not to use _cmd in path info. use get argument?
@@ -36,6 +20,28 @@ ToDo List
     [X] 5/13 DiC is working fine.
     [X] 5/14 many of dependencies can be injected.
 [X] 5/14 new structure: Module, Application.
+[X] DiContainer: how to inject default object?
+    6/11 Now, it's a Services (service locator)
+    6/11 inject itself (_self).
+[X] 6/11 improved 404 not found page.
+[X] 6/11 refactor Filer module
+    [X] action_fPurge
+    [X] action_fBakView
+    [X] action_fBakDiff
+    [X] action_fFolder
+    [X] action_fPub
+    [X] action_fFile
+    [X] action_fPut
+    [X] action_fEdit
+    [X] action_fDel
+    [X] action_fDiff
+    [X] _backup
+[X] Security!!!
+    [X] 6/11 get POST data from Request and make it safe.
+        [X] 6/11 AuthNot to use Request object.
+        [X] 6/11 Request object has getPost to get from POST.
+        [X] 6/11 Filer module uses getData.
+    [X] 6/11 check for invalid path info input (/../, null byte).
 
 * Demo in AmidaMVC
 
