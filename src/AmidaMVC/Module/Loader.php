@@ -46,7 +46,7 @@ class Loader extends AModule implements IfModule
             // loading output from a closure function.
             // set type to as specified in loadInfo['type'].
             // and set loadMode as 'closure'.
-            $_pageObj->setContent( $file_name( $loadInfo ) );
+            $_pageObj->setContent( $file_name( $loadInfo, $_ctrl, $_pageObj ) );
             if( isset( $loadInfo[ 'type' ] ) ) {
                 $_pageObj->contentType( $loadInfo[ 'type' ] );
             }
