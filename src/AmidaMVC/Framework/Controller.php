@@ -85,6 +85,9 @@ class Controller extends AmidaChain
     function injectLoad( $load ) {
         $this->_loadClass = $load;
     }
+    /**
+     * @return Services|null
+     */
     function getServices() {
         return $this->services;
     }
@@ -128,7 +131,7 @@ class Controller extends AmidaChain
         $this->pageObj =
             ( $pageObj ) ?: ( $this->pageObj ) ?:
             $this->getServices()->get( '\AmidaMVC\Framework\PageObj' );
-        // set loadFolder as ctrl_root and appDefault.
+        // set loadFolder as ctrl_root.
         $this->setFileLocation( $this->ctrl_root );
         $action = $this->defaultAct();
         return $this->dispatch( $action, $this->pageObj );
