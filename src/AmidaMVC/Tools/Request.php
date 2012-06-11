@@ -7,18 +7,15 @@ namespace AmidaMVC\Tools;
  */
 class Request
 {
-    /**
-     * @var array   holds server info.
-     */
-    protected $_server = array();
-    /**
-     * @var string|bool   path info
-     */
+    const CHAR_SET = 'UTF-8';
+    /** @var array         holds server info. */
+    protected $_server  = array();
+    /** @var string|bool   path info */
     protected $path_info = NULL;
-    /**
-     * @var string\null   base URL
-     */
-    protected $base_url = NULL;
+    /** @var string\null   base URL */
+    protected $base_url  = NULL;
+    /** @var array         post data */
+    protected $_post     = array();
     // +-------------------------------------------------------------+
     /**
      * @param array $config    alternative to $_SERVER info.
@@ -30,13 +27,21 @@ class Request
         else {
             $this->_server = & $_SERVER;
         }
+        $this->verifyEncoding = function( $result, $val ) {
+            $ok = mb_check_encoding( $val, Request::CHAR_SET );
+            return $result && $ok;
+        };
+        $this->verifyFile = function( $result, $val ) {
+            $ok = preg_match( '/^[-\._a-zA-Z0-9]+$/', $val );
+            return $result && $ok;
+        };
     }
     /** html special chars wrapper.
      * @param $string
      * @return string
      */
     function h( $string ) {
-        return htmlspecialchars( $string, ENT_QUOTES, 'UTF-8' );
+        return htmlspecialchars( $string, ENT_QUOTES, self::CHAR_SET );
     }
     /**
      * check if request method is POST.
@@ -199,6 +204,42 @@ class Request
         // put initial separator that could have been lost
         $path=!$unipath ? '/'.$path : $path;
         return $path . $lastSlash;
+    }
+    // +-------------------------------------------------------------+
+    function setPostData( $post ) {
+        $this->_post = $post;
+        return $this;
+    }
+    function _verify( $val, $verifyName ) {
+        $verify = $this->$verifyName;
+        $result = ( is_array( $val ) ) ?
+            array_reduce( $val, $verify, TRUE ):
+            $verify( TRUE, $val );
+        return $result;
+    }
+    function _getPost( $name ) {
+        if( !empty( $this->_post ) ) {
+            $post = &$this->_post;
+        }
+        else {
+            $post = &$_POST;
+        }
+        $val = FALSE;
+        if( array_key_exists( $name, $post ) ) {
+            $val = $post[ $name ];
+            $ok  = $this->_verify( $val, 'verifyEncoding' );
+            if( !$ok ) { $val = FALSE;}
+        }
+        return $val;
+    }
+    function getPost( $name, $type='string' ) {
+        $val = $this->_getPost( $name );
+        if( $val === FALSE ) return $val;
+        if( $type == 'filename' ) {
+            $ok = $this->_verify( $val, 'verifyFile' );
+            if( !$ok ) $val = FALSE;
+        }
+        return $val;
     }
     // +-------------------------------------------------------------+
 }

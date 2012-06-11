@@ -200,22 +200,23 @@ class Filer implements IfModule
      */
     function action_fDir( $loadInfo=array() )
     {
-        if( !isset( $_POST['_folderName'] ) || empty( $_POST['_folderName'] ) ) {
+        $folder = $this->_ctrl->request->getPost( '_folderName', 'filename' );
+        if( !$folder ) {
             $this->_error( 'add new folder error:',
                 'enter folder name to add.' );
         }
         else {
-            $folder = dirname( $loadInfo['file'] ) . '/' . $_POST['_folderName'];
+            $folder = dirname( $loadInfo['file'] ) . '/' . $folder;
             if( file_exists( $folder ) ) {
                 $this->_error( 'add new folder error:',
-                    'folder already exists: ' . $_POST['_filderName'] );
+                    'folder already exists: ' . $folder );
             }
             elseif( call_user_func( array( $this->_loadClass, 'mkdir' ), $folder, 0777 ) ) {
                 $this->_ctrl->redirect( $this->_ctrl->getPathInfo() );
             }
             else {
                 $this->_error( 'add new folder error:',
-                    'failed to create folder: ' . $_POST['_filderName'] .
+                    'failed to create folder: ' . $folder .
                         'maybe folder\'s permission problem?'
                 );
             }
