@@ -325,7 +325,7 @@ class Filer implements IfModule
      * @return array
      */
     function action_fFile( $loadInfo ) {
-        $new_file = $_POST[ '_newFileName' ];
+        $new_file = $this->_ctrl->request->getPost( '_newFileName', 'filename' );
         $path_info = $this->_ctrl->getPathInfo();
         if( substr( $path_info, -1 ) === '/' ) {
             $path_info = $path_info . $new_file;
@@ -337,7 +337,7 @@ class Filer implements IfModule
         if( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) || is_dir( $file_to_edit ) ) {
             $this->_error(
                 'add new file error',
-                "file/directory already exists ({$file_to_edit}).\n" .
+                "file already exists ({$file_to_edit}).\n" .
                 "cannot overwrite existing file or directory."
             );
         }
@@ -364,8 +364,8 @@ class Filer implements IfModule
             // it's a new file to add.
             $file_to_edit = $this->_ctrl->getLocation( $this->_ctrl->getPathInfo() );
         }
-        if( isset( $_POST[ '_putContent' ] ) ) {
-            $content = $_POST[ '_putContent' ];
+        $content = $this->_ctrl->request->getPost( '_putContent' );
+        if( $content ) {
             $content = str_replace( "\r\n", "\n", $content );
             $content = str_replace( "\r", "\n", $content );
             $success = call_user_func( array( $this->_loadClass, 'putContents' ), $file_to_edit, $content );
