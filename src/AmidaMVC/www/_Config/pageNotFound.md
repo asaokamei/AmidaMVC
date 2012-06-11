@@ -1,5 +1,5 @@
-Page Not Found (Error Code 404)
-===============================
+Page Not Found
+==============
 
 <style type="text/css">
     #notFound{
@@ -20,6 +20,10 @@ Page Not Found (Error Code 404)
         border: 1px solid #d2691e;
         background-color: #fbeed5;
     }
+    #NotImage {
+        border: 0px;
+        border-radius: 15px;
+    }
 </style>
 <div markdown="1" id="notFound">
 
@@ -28,7 +32,7 @@ Could not find the requested page:
 
 
 <div style="text-align: center;">
-    <img src="<?php echo $_ctrl->getBaseUrl('/common/img/404notFound.JPG');?>" title="404 page not found" border="0">
+    <img src="<?php echo $_ctrl->getBaseUrl('/common/img/404notFound.JPG');?>" title="404 page not found" id="NotImage">
 </div>
 <div id="tryAgain">
     <a href="<?php echo $_ctrl->getBaseUrl();?>">please retry again!</a>
