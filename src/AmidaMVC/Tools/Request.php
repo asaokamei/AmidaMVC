@@ -31,6 +31,13 @@ class Request
             $this->_server = & $_SERVER;
         }
     }
+    /** html special chars wrapper.
+     * @param $string
+     * @return string
+     */
+    function h( $string ) {
+        return htmlspecialchars( $string, ENT_QUOTES, 'UTF-8' );
+    }
     /**
      * check if request method is POST.
      * @return bool
@@ -43,16 +50,16 @@ class Request
      * @return bool
      */
     function getHost() {
-        if( !empty( $this->_server[ 'HTTP_HOST' ] ) ) {
-            return $this->_server[ 'HTTP_HOST' ];
-        }
-        return $this->_server[ 'SERVER_NAME' ];
+        $host = ( isset( $this->_server[ 'HTTP_HOST' ] ) ) ?
+            $this->_server[ 'HTTP_HOST' ] :
+            $this->_server[ 'SERVER_NAME' ];
+        return $this->h( $host );
     }
     /**
      * @return string
      */
     function getRequestUri() {
-        return urldecode( $this->_server[ 'REQUEST_URI' ] );
+        return $this->h( urldecode( $this->_server[ 'REQUEST_URI' ] ) );
     }
     /**
      * @return string
