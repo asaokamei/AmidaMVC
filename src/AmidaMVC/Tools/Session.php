@@ -15,9 +15,9 @@ class Session
      */
     static $session_token = NULL;
     /**  name of tokens stored in Session.     */
-    const  TOKEN_ID   = 'sess.token.ids';
+    const  TOKEN_ID   = 'session.token.ids';
     /**  name of token send via post */
-    const  TOKEN_NAME = 'sessTokenValue_';
+    const  TOKEN_NAME = 'sessionTokenValue_';
     // +-------------------------------------------------------------+
     static function start() {
         if( !static::$session_start ) {
@@ -68,7 +68,6 @@ class Session
             $_SESSION[ static::TOKEN_ID ] =
                 array_slice( $_SESSION[ static::TOKEN_ID ], $num_remove );
         }
-        if( WORDY ) wordy_table( $_SESSION[ static::TOKEN_ID ], 'token:'.static::TOKEN_ID );
     }
     // +-------------------------------------------------------------+
     static function popToken() {
@@ -80,7 +79,6 @@ class Session
     static function verifyToken() {
         static::start();
         $token = $_POST[ static::TOKEN_NAME ];
-        if( WORDY ) wordy_table( $_SESSION[ static::TOKEN_ID ], "token: $token" );
         if( $token && !empty( $_SESSION[ static::TOKEN_ID ] ) ) {
             if( in_array( $token, $_SESSION[ static::TOKEN_ID ] ) ) {
                 foreach( $_SESSION[ static::TOKEN_ID ] as $k=>$v ) {
