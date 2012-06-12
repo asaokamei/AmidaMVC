@@ -3,10 +3,9 @@ namespace AmidaMVC\Editor;
 
 /**
  * from
- * http://pietschsoft.com/post/2009/07/21/jHtmlArea-The-all-NEW-HTML-WYSIWYG-Editor-for-jQuery.aspx
- * http://jhtmlarea.codeplex.com/
+ * https://github.com/tanakahisateru/js-markdown-extra
  *
- * current version was jHtmlArea 0.7.0 at the time of downloading.
+ * current version was ver 1.0 at the time of the download.
  */
 class jsMarkdownExtra implements IfEditor
 {
