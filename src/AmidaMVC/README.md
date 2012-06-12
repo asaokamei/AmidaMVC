@@ -25,5 +25,12 @@ folders
 [Application](Application/README.md):
 :    use this class to start AmidaMVC.
 
+[www](www/index.md)
+: a 'shadow' directory for js, css, images, and templates when
+  no configuration is given.
+
+old and not used
+----------------
+
 [Component](Component/README.md):
 :    old and not used anymore.
