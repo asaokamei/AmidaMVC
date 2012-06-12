@@ -50,16 +50,6 @@ class Controller extends AmidaChain
     function __construct( $option=array() ) 
     {
         $this->options = $option;
-
-        // set ctrl root folder.
-        if( !isset( $option[ 'ctrl_root' ] ) ) {
-            $option[ 'ctrl_root' ] = getcwd();
-        }
-        if( substr( $option[ 'ctrl_root' ], -1 ) === '/' ) {
-            // no trailing slash.
-            $option[ 'ctrl_root' ] = substr( $option[ 'ctrl_root' ], 0, -1 );
-        }
-        $this->ctrl_root    = $option[ 'ctrl_root' ];
     }
     /**
      * @param $modules
@@ -72,6 +62,15 @@ class Controller extends AmidaChain
                     array( $mod, $mod );
             }
         }
+    }
+    /**
+     * @param  string $ctrl_root
+     * @return Controller
+     */
+    function setCtrlRoot( $ctrl_root ) {
+        $this->ctrl_root = $ctrl_root;
+        $this->setFileLocation( $this->ctrl_root );
+        return $this;
     }
     /**
      * @param $diContainer
@@ -131,8 +130,6 @@ class Controller extends AmidaChain
         $this->pageObj =
             ( $pageObj ) ?: ( $this->pageObj ) ?:
             $this->getServices()->get( '\AmidaMVC\Framework\PageObj' );
-        // set loadFolder as ctrl_root.
-        $this->setFileLocation( $this->ctrl_root );
         $action = $this->defaultAct();
         return $this->dispatch( $action, $this->pageObj );
     }
