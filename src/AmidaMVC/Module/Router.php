@@ -14,7 +14,17 @@ class Router implements IfModule
     var $config = NULL;
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) {
-        $this->config = $option;
+        $this->_setup( $option );
+    }
+    /**
+     * initialize class.
+     * @param array $option   options to initialize.
+     * @return mixed|void
+     */
+    function _init( $option=array() ) {
+        $this->_setup( $option );
+    }
+    function _setup( $option ) {
         if( isset( $option[ 'indexes' ] ) ) {
             if( is_array( $option[ 'indexes' ] ) ) {
                 $this->_indexes = array_merge( $option[ 'indexes' ], $this->_indexes );
@@ -22,16 +32,6 @@ class Router implements IfModule
             else {
                 $this->_indexes[] = $option[ 'indexes' ];
             }
-        }
-    }
-    /**
-     * initialize class.
-     * @param array $option   options to initialize.
-     */
-    function _init( $option=array() ) {
-        if( !isset( $this->_routeClass ) ) {
-            $di = \AmidaMVC\Framework\Container::start();
-            $this->_routeClass = $di->get( '\AmidaMVC\Tools\Route', 'static' );
         }
         if( isset( $this->config[ 'routes' ] ) ) {
             call_user_func( array( $this->_routeClass, 'set' ), $this->config[ 'routes' ] );
@@ -47,7 +47,7 @@ class Router implements IfModule
      * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $option
-     * @return array   $loadInfo for Loader.
+     * @return array|mixed $loadInfo for Loader.
      */
     function actionDefault( $_ctrl, &$_pageObj, $option=array() )
     {
