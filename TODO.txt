@@ -4,7 +4,9 @@ ToDo List
 
 [ ] PHPUnit using demo#4.
 [ ] use Config module; remove option stuff from Controller.
-[ ] use doc_root as well as ctrl_root.
+[O] use doc_root as well as ctrl_root.
+    [ ] Filer to use ctrl_root for new file/directory.
+    [X] 6/12 setCtrlRoot to set ctrl_root.
 [ ] i18n/language support.
 [ ] not to use _cmd in path info. use get argument?
 [X] 5/13 use Request module; remove request related method from Controller.
