@@ -20,6 +20,44 @@ class App2
 
         return $ctrl;
     }
+    function diConfigSample() {
+        $diConfigJa = array(
+            'configJa' => array(
+                'din' => array( '\AmidaMVC\Module\Config', 'new' ),
+                'config' => array(
+                    'evaluateOn' => array(
+                        'onPathInfo'  => '/',
+                        'variable' => '_lang',
+                        'session'  => TRUE,
+                        'value'    => 'ja',
+                    ),
+                    'onSuccess' => array(
+                        'ctrl_root' => 'docs.ja',
+                        'set_option' => array(
+                            'template_file' => '_Config/template.ja.php',
+                            'language' => 'ja',
+                        ),
+                    ),
+                ),
+            )
+        );
+        $diConfigSmartPhone = array(
+            'configSf' => array(
+                'din' => array( '\AmidaMVC\Module\Config', 'new' ),
+                'config' => array(
+                    'evaluateOn' => array(
+                        'onPathInfo'  => '/',
+                        'user_agent'  => 'mobile',
+                    ),
+                    'onSuccess' => array(
+                        'set_option' => array(
+                            'template_file' => '_Config/template.small.php',
+                        ),
+                    ),
+                ),
+            )
+        );
+    }
     function diCms() {
         $www = realpath( __DIR__ . '/../www/' );
         $di = array(
