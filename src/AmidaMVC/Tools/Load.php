@@ -233,5 +233,12 @@ class Load
     function unlink( $filename ) {
         return unlink( $filename );
     }
+    /**
+     * @param string $filename
+     * @return array
+     */
+    function parse_ini( $filename, $flag=TRUE ) {
+        return parse_ini_file( $filename, $flag );
+    }
     // +-------------------------------------------------------------+
 }
