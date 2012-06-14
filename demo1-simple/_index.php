@@ -7,7 +7,7 @@ $app    ->get( '/func', function() {
                "This is a response from a closure function in markdown text.";
         }, array( 'type' => 'markdown' )
     );
-
+$app->setCtrlRoot( __DIR__ );
 $app
     ->setOption( 'site_title', 'AmidaMVC PHP Framework')
     ->start();
