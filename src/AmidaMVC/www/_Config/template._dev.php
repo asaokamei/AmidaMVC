@@ -5,12 +5,13 @@
 /** @var $_ctrl \AmidaMVC\Framework\Controller  */
 $self = $_ctrl->getBaseUrl( $_ctrl->getPathInfo() );
 $base = $_ctrl->getBaseUrl( $_filerObj->path_folder ) . '/';
+$_ctrl->i18n->textSection( '_template_dev' );
 
 $simpleMenuList = array(
-    '_view' => 'view',
-    '_fEdit' => 'edit',
-    '_fPub' => 'publish',
-    '_fDiff' => 'diff',
+    '_view'  => $_ctrl->i18n->text('menu.view'),
+    '_fEdit' => $_ctrl->i18n->text('menu.edit'),
+    '_fPub'  => $_ctrl->i18n->text('menu.publish'),
+    '_fDiff' => $_ctrl->i18n->text('menu.diff'),
 );
 
 // ------------------------------------------------------
@@ -39,25 +40,25 @@ $simpleMenuList = array(
                     echo "\n";
                     ?>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">more<b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_ctrl->i18n->text('menu.more');?><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <?php
                             if( in_array( '_fDel', $_filerObj->file_cmd ) ) {
-                                echo '<li><a href="javascript:$(\'#filerDelModal\').toggle(\'fast\');">delete▲</a></li>';
+                                echo '<li><a href="javascript:$(\'#filerDelModal\').toggle(\'fast\');">'. $_ctrl->i18n->text('menu.delete') .'▲</a></li>';
                             }
                             if( in_array( '_fPurge', $_filerObj->file_cmd ) ) {
-                                echo '<li><a href="javascript:$(\'#filerPurgeModal\').toggle(\'fast\');">purge-file▲</a></li>';
+                                echo '<li><a href="javascript:$(\'#filerPurgeModal\').toggle(\'fast\');">' .$_ctrl->i18n->text('menu.purge').'▲</a></li>';
                             }
                             ?>
-                            <li><a href="javascript:$('#filerNewForm').toggle('fast');">add a new file...</a></li>
-                            <li><a href="javascript:$('#filerAddFolder').toggle('fast');">add a new folder...</a></li>
+                            <li><a href="javascript:$('#filerNewForm').toggle('fast');"><?php echo $_ctrl->i18n->text('menu.add_file');?>...</a></li>
+                            <li><a href="javascript:$('#filerAddFolder').toggle('fast');"><?php echo $_ctrl->i18n->text('menu.add_dir');?>...</a></li>
                             <?php if( !empty( $_filerObj->file_list) ) { ?>
-                            <li><a href="javascript:$('#filerDirList').toggle('fast');">file list...</a></li>
+                            <li><a href="javascript:$('#filerDirList').toggle('fast');"><?php echo $_ctrl->i18n->text('menu.file_list');?>...</a></li>
                             <?php } ?>
                             <?php if( !empty( $_filerObj->backup_list) ) {
-                            echo '<li><a href="javascript:$(\'#filerBackUpList\').toggle(\'fast\');">backups...</a></li>';  } ?>
+                            echo '<li><a href="javascript:$(\'#filerBackUpList\').toggle(\'fast\');">' .$_ctrl->i18n->text('menu.backup') .'...</a></li>';  } ?>
                             <?php if( !empty( $debug ) ) {
-                            echo '<li><a href="javascript:toggle(\'debugInfo\');">debug info...</a></li>';  } ?>
+                            echo '<li><a href="javascript:toggle(\'debugInfo\');">' .$_ctrl->i18n->text('menu.debug') . '...</a></li>';  } ?>
                         </ul>
                     </li>
                 </ul>
