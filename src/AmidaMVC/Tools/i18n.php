@@ -42,17 +42,29 @@ class i18n
     function _loadTextFile( $filename ) {
         $found = FALSE;
         $loadFile_default  = $this->directory . self::FILE_HEADER_TEXT . $filename;
+        if( $found = $this->load->findFile( $loadFile_default.'.ini' ) ) {
+            // assume ini file
+            $textData = $this->load->parse_ini( $found );
+            $this->_mergeText( $textData );
+        }
         if( $this->language ) {
             $loadFile_lang     = $loadFile_default . '.'.$this->language;
             $found = $this->load->findFile( $loadFile_lang.'.ini' );
+            if( $found ) {
+                // assume ini file
+                $textData = $this->load->parse_ini( $found );
+                $this->_mergeText( $textData );
+            }
         }
-        if( !$found ) {
-            $found = $this->load->findFile( $loadFile_default.'.ini' );
-        }
-        if( $found ) {
-            // assume ini file
-            $textData = $this->load->parse_ini( $found );
-            $this->textData = array_merge( $this->textData, $textData );
+    }
+    function _mergeText( $textData ) {
+        foreach( $textData as $section => $data ) {
+            if( isset( $this->textData[ $section ] ) ) {
+                $this->textData[ $section ] = array_merge( $this->textData[ $section ], $data );
+            }
+            else {
+                $this->textData[ $section ] = $data;
+            }
         }
     }
     // +-------------------------------------------------------------+
