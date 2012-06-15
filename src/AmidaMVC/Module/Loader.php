@@ -15,6 +15,7 @@ class Loader extends AModule implements IfModule
     /**
      * initialize class.
      * @param array $option    option to initialize.
+     * @return mixed
      */
     function _init( $option=array() ) {
     }
@@ -29,7 +30,7 @@ class Loader extends AModule implements IfModule
      * @param \AmidaMVC\Framework\Controller $_ctrl
      * @param \AmidaMVC\Framework\PageObj $_pageObj
      * @param array $loadInfo    info about file to load from Router.
-     * @return bool
+     * @return mixed
      */
     function actionDefault( $_ctrl, &$_pageObj, $loadInfo=array() )
     {
