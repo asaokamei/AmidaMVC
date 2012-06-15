@@ -1,5 +1,6 @@
 <?php
-require_once( '../src/AmidaMVC/bootstrap.php' );
+error_reporting( E_ALL );
+require_once( __DIR__ . '/../src/AmidaMVC/bootstrap.php' );
 
 $app = \AmidaMVC\Application\App2::app();
 $app    ->get( '/func', function() {
