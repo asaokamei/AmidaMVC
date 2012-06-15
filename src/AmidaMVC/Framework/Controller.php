@@ -39,6 +39,9 @@ class Controller extends AmidaChain
      * @var \AmidaMVC\Tools\Load
      */
     var $_loadClass = NULL;
+
+    /** @var \AmidaMVC\Tools\i18n */
+    var $i18n = NULL;
     /**
      * @var null|\AmidaMVC\Framework\Controller
      */
@@ -83,6 +86,9 @@ class Controller extends AmidaChain
     }
     function injectLoad( $load ) {
         $this->_loadClass = $load;
+    }
+    function injectI18n( $i18n ) {
+        $this->i18n = $i18n;
     }
     /**
      * @return Services|null

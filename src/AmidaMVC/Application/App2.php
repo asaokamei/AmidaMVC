@@ -81,6 +81,18 @@ class App2
             'session' => array(
                 'din' => array( '\AmidaMVC\Tools\Session', 'new' ),
             ),
+            'i18n' => array(
+                'din'    => array( '\AmidaMVC\Tools\i18n', 'new' ),
+                'config' => array(
+                    'language'         => 'ja',
+                    'directory'        => '_Config',
+                    'file_amidaMVC'    => 'amidaMVC',
+                    'file_application' => 'application',
+                ),
+                'inject' => array(
+                    array( 'load', 'load' ),
+                ),
+            ),
             // Modules
             'router' => array(
                 'din'    => array( '\AmidaMVC\Module\Router',  'new' ),
@@ -110,6 +122,7 @@ class App2
                 'inject' => array(
                     array( 'request', 'request' ),
                     array( 'load', 'load' ),
+                    array( 'i18n', 'i18n' ),
                     array( 'diContainer', '_self' ),
                 ),
             ),
