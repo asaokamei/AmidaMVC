@@ -4,12 +4,12 @@ namespace AmidaMVC\Tools;
 class i18n
 {
     // +-------------------------------------------------------------+
-    /** @var \AmidaMVC\Tools\Load */
+    const FILE_HEADER_TEXT = 'i18n.text.';
     protected $config      = array();
+    /** @var \AmidaMVC\Tools\Load */
     protected $load        = NULL;
-    protected $directory   = '_Config';
-    protected $language    = 'en';
-    protected $extension   = 'ini';
+    protected $directory   = '_Config/';
+    protected $language    = '';
     protected $textSection = '';
     protected $textData    = array();
     // +-------------------------------------------------------------+
@@ -24,9 +24,15 @@ class i18n
         if( empty( $this->config ) ) {
             return ;
         }
-        foreach( $this->config as $key => $file ) {
+        foreach( $this->config as $key => $val ) {
             if( substr( $key, 0, 5 ) == 'file_' ) {
-                $this->_loadTextFile( $file );
+                $this->_loadTextFile( $val );
+            }
+            elseif( $key == 'language' ) {
+                $this->language( $val );
+            }
+            elseif( $key == 'directory' ) {
+                $this->directory( $val );
             }
         }
     }
@@ -34,17 +40,24 @@ class i18n
         $this->load = $load;
     }
     function _loadTextFile( $filename ) {
-        $loadFile  = ( $this->directory ) ? $this->directory.'/' : '';
-        $loadFile .= "{$filename}.{$this->language}.{$this->extension}";
-        if( $found = $this->load->findFile( $loadFile ) ) {
+        $found = FALSE;
+        $loadFile_default  = $this->directory . self::FILE_HEADER_TEXT . $filename;
+        if( $this->language ) {
+            $loadFile_lang     = $loadFile_default . '.'.$this->language;
+            $found = $this->load->findFile( $loadFile_lang.'.ini' );
+        }
+        if( !$found ) {
+            $found = $this->load->findFile( $loadFile_default.'.ini' );
+        }
+        if( $found ) {
             // assume ini file
             $textData = $this->load->parse_ini( $found );
             $this->textData = array_merge( $this->textData, $textData );
         }
     }
     // +-------------------------------------------------------------+
-    function directory( $dir='_Config' ) {
-        $this->directory = $dir;
+    function directory( $dir='_Config/' ) {
+        $this->directory = (substr( $dir, -1, 1 )=='/')?$dir:$dir.'/';
     }
     function extension( $ext='ini' ) {
         $this->extension = $ext;

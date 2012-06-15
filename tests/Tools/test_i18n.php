@@ -34,11 +34,18 @@ class test_ToolsI18n extends PHPUnit_Framework_TestCase
     {
         $this->load = new load();
         $this->config = array(
-            'file_something' => 'something.ini',
+            'file_something' => 'something',
         );
         $this->i18n = new \AmidaMVC\Tools\i18n( $this->config );
         $this->i18n->injectLoad( $this->load );
         $this->i18n->_init();
+    }
+    function test_fileText()
+    {
+        $file_origin = $this->config[ 'file_something' ];
+        $file_loaded = $this->load->loadFile;
+        $file_expect = "_Config/i18n.text.{$file_origin}.ini";
+        $this->assertEquals( $file_expect, $file_loaded );
     }
     function test_replaceText()
     {
