@@ -7,6 +7,8 @@ $_pageObj->setCss( 'demo.css' );
 $_pageObj->setJs( '/common/js/jquery-1.7.1.js' );
 $_pageObj->setJs( '/common/js/bootstrap.js' );
 $_pageObj->setJs( '/common/js/bootstrap-dropdown.js' );
+
+$_ctrl->i18n->textSection( '_template' );
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -33,12 +35,12 @@ if( isset( $_pageObj->devInfo ) ) {
     <footer>
         <div style="float: right; text-align: right;">
             <p>
-                dev-mode:<br />
+                <?php echo $_ctrl->i18n->text('admin_mode'); ?>:<br />
                 <?php $authDev = $_ctrl->getServices()->get( 'authDev' );
                 if( is_object( $authDev ) && $authDev->isLoggedIn() ) { ?>
-                [<a href="dev_logout">logout</a>]
+                [<a href="dev_logout"><?php echo $_ctrl->i18n->text('logout'); ?></a>]
                 <?php } else { ?>
-                [<a href="dev_login">login</a>]
+                [<a href="dev_login"><?php echo $_ctrl->i18n->text('login'); ?></a>]
                 <?php } ?>
             </p>
         </div>

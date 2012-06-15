@@ -1,5 +1,10 @@
-Page Not Found
-==============
+<?php
+/** @var $_pageObj \AmidaMVC\Framework\PageObj */
+/** @var $_ctrl    \AmidaMVC\Framework\Controller */
+$_ctrl->i18n->textSection( '_pageNotFound' );
+?>
+#<?php echo $_ctrl->i18n->text('page_not_found'); ?>
+
 
 <style type="text/css">
     #notFound{
@@ -27,7 +32,7 @@ Page Not Found
 </style>
 <div markdown="1" id="notFound">
 
-Could not find the requested page:
+<?php echo $_ctrl->i18n->text('not_found_message'); ?>:
 : _<?php echo $_ctrl->getBaseUrl( $_ctrl->getPathInfo() ); ?>_
 
 
@@ -35,6 +40,6 @@ Could not find the requested page:
     <img src="<?php echo $_ctrl->getBaseUrl('/common/img/404notFound.JPG');?>" title="404 page not found" id="NotImage">
 </div>
 <div id="tryAgain">
-    <a href="<?php echo $_ctrl->getBaseUrl();?>">please retry again!</a>
+    <a href="<?php echo $_ctrl->getBaseUrl();?>"><?php echo $_ctrl->i18n->text('try_again'); ?></a>
 </div>
 </div>
