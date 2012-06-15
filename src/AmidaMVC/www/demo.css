@@ -19,7 +19,7 @@ p,span,code {
     border-radius: 15px;
     box-shadow: 5px 5px 5px #aaaaaa;
 }
-header {
+header #headTitle {
     background: #d2691e;
     font-size: 18px;
     font-weight: normal;
@@ -28,11 +28,11 @@ header {
     box-shadow: 5px 5px 5px #cccccc;
     border-radius: 5px;
 }
-header a {
+header #headTitle a {
     text-decoration: none;
     color: #FFFFFF;
 }
-header a:hover {
+header #headTitle a:hover {
     text-decoration: none;
     color: pink;
 }

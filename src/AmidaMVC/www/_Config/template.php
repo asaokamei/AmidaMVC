@@ -25,8 +25,16 @@ if( isset( $_pageObj->devInfo ) ) {
 ?>
 
 <div class="mainbody">
-    <header><a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a></header>
-
+    <header>
+        <div id="headTitle">
+            <a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a>
+        </div>
+        <ul class="nav nav-pills">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">test</a></li>
+            <li><a href="#">test2</a></li>
+        </ul>
+    </header>
     <div id="content" >
         <!-- content starts -->
         <?php echo $_pageObj->getContent(); ?>
