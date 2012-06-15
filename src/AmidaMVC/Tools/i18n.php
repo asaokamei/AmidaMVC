@@ -5,20 +5,26 @@ class i18n
 {
     // +-------------------------------------------------------------+
     /** @var \AmidaMVC\Tools\Load */
-    protected $load;
+    protected $config      = array();
+    protected $load        = NULL;
     protected $directory   = '_Config';
     protected $language    = 'en';
     protected $extension   = 'ini';
     protected $textSection = '';
     protected $textData    = array();
     // +-------------------------------------------------------------+
-    function __construct( $config=array() ) {}
-    function _init( $config=array() ) {}
-    function _setup( $config ) {
-        if( empty( $config ) ) {
+    function __construct( $config=array() ) {
+        $this->config = $config;
+    }
+    function _init( $config=array() ) {
+        $this->config = array_merge( $this->config, $config );
+        $this->_setup();
+    }
+    function _setup() {
+        if( empty( $this->config ) ) {
             return ;
         }
-        foreach( $config as $key => $file ) {
+        foreach( $this->config as $key => $file ) {
             if( substr( $key, 0, 5 ) == 'file_' ) {
                 $this->_loadTextFile( $file );
             }
@@ -30,7 +36,7 @@ class i18n
     function _loadTextFile( $filename ) {
         $loadFile  = ( $this->directory ) ? $this->directory.'/' : '';
         $loadFile .= "{$filename}.{$this->language}.{$this->extension}";
-        if( !$found = $this->load->findFile( $loadFile ) ) {
+        if( $found = $this->load->findFile( $loadFile ) ) {
             // assume ini file
             $textData = $this->load->parse_ini( $found );
             $this->textData = array_merge( $this->textData, $textData );
@@ -55,7 +61,8 @@ class i18n
             return FALSE;
         }
         $words = $this->textData[ $this->textSection ][ $text ];
-        $args  = array_shift( func_get_args() );
+        $args  = func_get_args();
+        array_shift( $args );
         if( !empty( $args ) ) $words = $this->_replace( $words, $args );
         return $words;
     }
