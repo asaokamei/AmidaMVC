@@ -59,7 +59,7 @@ class App2
         );
     }
     function diCms() {
-        $www = realpath( __DIR__ . '/../www/' );
+        $www = realpath( __DIR__ . '/../../www/' );
         $di = array(
             // Tools
             'load' => array(
