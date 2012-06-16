@@ -35,6 +35,7 @@ class Filer implements IfModule
         'css'        => '\AmidaMVC\Editor\TextArea',
         'javascript' => '\AmidaMVC\Editor\TextArea',
     );
+    protected $editorDefault = '\AmidaMVC\Editor\TextArea';
     /** @var \AmidaMVC\Framework\Controller */
     protected $_ctrl;
     /** @var \AmidaMVC\Framework\PageObj */
@@ -146,7 +147,7 @@ class Filer implements IfModule
         $this->_ctrl = $_ctrl;
         $this->_pageObj = $_pageObj;
         $this->_setMenu( $loadInfo );
-        $command = $this->_findFilerCommand( $_ctrl );
+        $command = $this->_findFilerCommand();
         if( $command ) {
             $method = 'action' . $command;
             $loadInfo = $this->$method( $loadInfo );
@@ -379,10 +380,13 @@ class Filer implements IfModule
                     "maybe file permission problem?"
                 );
                 $self = $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() );
-                $content = $this->_makeEditForm( 'Re-editing ' . basename( $file_to_edit ), $self, $content );
-                $loadInfo = $this->action_fEdit( $this->_ctrl, $this->_pageObj, $loadInfo );
+                $title = 'Re-editing ' . basename( $file_to_edit );
+                $file_type = call_user_func( array( $this->_loadClass, 'getFileType' ), $file_to_edit );
+                $content  = $this->_editContents( $file_type, $title, $self, $content );
+                /** @var $loadInfo array */
+                $loadInfo = $this->action_fEdit( $loadInfo );
                 $this->_pageObj->setContent( $content );
-                $this->_ctrl->skipToModel( 'emitter' );
+                //$this->_ctrl->skipToModel( 'emitter' );
             }
         }
         return $loadInfo;
@@ -397,17 +401,19 @@ class Filer implements IfModule
         $contents  = call_user_func( array( $this->_loadClass, 'getContentsByGet' ), $file_name );
         $self      = $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() );
         $file_type = call_user_func( array( $this->_loadClass, 'getFileType' ), $file_name );
-        if( isset( $this->editors[ $file_type ] ) ) {
-            $title    = 'Edit: '. basename( $file_name );
-            $editor   = $this->editors[ $file_type ];
-            /** @var $editor \AmidaMVC\Editor\IfEditor */
-            $editor   = new $editor();
-            $contents = $editor->edit( $title, $self, $contents );
-            $editor->page( $this->_pageObj );
-        }
+        $title     = 'Edit: '. basename( $file_name );
+        $contents  = $this->_editContents( $file_type, $title, $self, $contents );
         $this->_pageObj->setContent( $contents );
         $this->_ctrl->skipToModel( 'emitter' );
         return $loadInfo;
+    }
+    function _editContents( $type, $title, $self, $contents ) {
+        $editor = ( isset( $this->editors[ $type ] ) ) ? $this->editors[ $type ] : $this->editorDefault;
+        /** @var $editor \AmidaMVC\Editor\IfEditor */
+        $editor   = new $editor();
+        $contents = $editor->edit( $title, $self, $contents );
+        $editor->page( $this->_pageObj );
+        return $contents;
     }
     // +-------------------------------------------------------------+
     function _makeEditForm( $title, $self, $contents, $cmd='_fPut' ) {
