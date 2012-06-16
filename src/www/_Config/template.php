@@ -32,7 +32,7 @@ if( isset( $_pageObj->devInfo ) ) {
             <a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a>
         </div>
         <ul class="nav nav-pills">
-            <li class="active"><a href="<?php echo $baseUrl;?>">HOME</a></li>
+            <li class="active"><a href="<?php echo $baseUrl;?>">home</a></li>
             <li><a href="<?php echo $baseUrl;?>docs/README.md">documents</a></li>
             <li class="dropdown">
                 <a href="<?php echo $baseUrl;?>src/README.md" class="dropdown-toggle" data-toggle="dropdown">source
