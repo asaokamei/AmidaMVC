@@ -46,9 +46,9 @@ if( isset( $_pageObj->devInfo ) ) {
                 <?php echo $_ctrl->i18n->text('admin_mode'); ?>:<br />
                 <?php $authDev = $_ctrl->getServices()->get( 'authDev' );
                 if( is_object( $authDev ) && $authDev->isLoggedIn() ) { ?>
-                [<a href="dev_logout"><?php echo $_ctrl->i18n->text('logout'); ?></a>]
+                [<a href="<?php echo $_ctrl->getBaseUrl(); ?>dev_logout"><?php echo $_ctrl->i18n->text('logout'); ?></a>]
                 <?php } else { ?>
-                [<a href="dev_login"><?php echo $_ctrl->i18n->text('login'); ?></a>]
+                [<a href="<?php echo $_ctrl->getBaseUrl(); ?>dev_login"><?php echo $_ctrl->i18n->text('login'); ?></a>]
                 <?php } ?>
             </p>
         </div>
