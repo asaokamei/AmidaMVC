@@ -62,6 +62,8 @@ $simpleMenuList = array(
                             echo '<li><a href="javascript:toggle(\'debugInfo\');">' .$_ctrl->i18n->text('menu.debug') . '...</a></li>';  } ?>
                         </ul>
                     </li>
+                    <?php if( $_filerObj->message ) {
+                    echo '<li><a href="javascript:$(\'#filerError\').toggle(\'fast\');" style="color:pink;">' .$_ctrl->i18n->text('menu.error') . '...</a></li>';  } ?>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -124,7 +126,6 @@ $simpleMenuList = array(
     <!-- show error message from _dev components -->
     <?php if( $_filerObj->message ) { ?>
     <div id="filerError" class="alert alert-error">
-        <a href="javascript:$('#filerError').toggle('fast');" class="close">×</a>
         <dl>
             <dt>Error: <?php echo $_filerObj->error; ?></dt>
             <dd><?php echo $_filerObj->message; ?></dd>
