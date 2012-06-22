@@ -35,16 +35,16 @@ if( isset( $_pageObj->devInfo ) ) {
             <li class="active"><a href="<?php echo $_ctrl->getBaseUrl(); ?>">Home</a></li>
             <li><a href="<?php echo $baseUrl;?>docs/README.md">documents</a></li>
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">source
+                <a class="dropdown-toggle" data-toggle="dropdown">source code
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="<?php echo $baseUrl;?>src/README.md">src folder</a></li>
                     <li><a href="<?php echo $baseUrl;?>src/AmidaMVC/README.md">AmidaMVC Source Codes</a></li>
                     <li><a href="<?php echo $baseUrl;?>src/www/">shadow www folder</a></li>
+                    <li><a href="<?php echo $baseUrl;?>vendor/README.md">vendor</a></li>
                 </ul>
             </li>
-            <li><a href="<?php echo $baseUrl;?>vendor/README.md">vendor</a></li>
             <li><a href="<?php echo $baseUrl;?>tests/">tests</a></li>
             <li><a href="<?php echo $baseUrl;?>demo/">demo</a></li>
         </ul>
