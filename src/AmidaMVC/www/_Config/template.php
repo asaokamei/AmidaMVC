@@ -30,9 +30,14 @@ if( isset( $_pageObj->devInfo ) ) {
             <a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a>
         </div>
         <ul class="nav nav-pills">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">test</a></li>
-            <li><a href="#">test2</a></li>
+            <li class="active"><a href="<?php echo $_ctrl->getBaseUrl(); ?>">Home</a></li>
+            <li><a href="<?php echo $_ctrl->getBaseUrl('/demo/'); ?>">demo</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">sources<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="<?php echo $_ctrl->getBaseUrl('/src/'); ?>">sources</a></li>
+                </ul>
+            </li>
         </ul>
     </header>
     <div id="content" >
@@ -61,6 +66,7 @@ if( isset( $_pageObj->devInfo ) ) {
     <script type="text/javascript">
         $(document).ready( function() {
             $( "table" ).addClass( "table" );
+            $('.dropdown-toggle').dropdown()
         });
     </script>
 </div>
