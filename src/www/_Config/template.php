@@ -9,6 +9,8 @@ $_pageObj->setJs( '/common/js/bootstrap.js' );
 $_pageObj->setJs( '/common/js/bootstrap-dropdown.js' );
 
 $_ctrl->i18n->textSection( '_template' );
+/** @var $_ctrl string */
+$baseUrl = $_ctrl->getBaseUrl();
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -31,13 +33,20 @@ if( isset( $_pageObj->devInfo ) ) {
         </div>
         <ul class="nav nav-pills">
             <li class="active"><a href="<?php echo $_ctrl->getBaseUrl(); ?>">Home</a></li>
-            <li><a href="<?php echo $_ctrl->getBaseUrl('/demo/'); ?>">demo</a></li>
+            <li><a href="<?php echo $baseUrl;?>docs/README.md">documents</a></li>
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">sources<b class="caret"></b></a>
+                <a class="dropdown-toggle" data-toggle="dropdown">source
+                    <b class="caret"></b>
+                </a>
                 <ul class="dropdown-menu">
-                    <li><a href="<?php echo $_ctrl->getBaseUrl('/src/'); ?>">sources</a></li>
+                    <li><a href="<?php echo $baseUrl;?>src/README.md">src folder</a></li>
+                    <li><a href="<?php echo $baseUrl;?>src/AmidaMVC/README.md">AmidaMVC Source Codes</a></li>
+                    <li><a href="<?php echo $baseUrl;?>src/www/">shadow www folder</a></li>
                 </ul>
             </li>
+            <li><a href="<?php echo $baseUrl;?>vendor/README.md">vendor</a></li>
+            <li><a href="<?php echo $baseUrl;?>tests/">tests</a></li>
+            <li><a href="<?php echo $baseUrl;?>demo/">demo</a></li>
         </ul>
     </header>
     <div id="content" >
@@ -51,9 +60,9 @@ if( isset( $_pageObj->devInfo ) ) {
                 <?php echo $_ctrl->i18n->text('admin_mode'); ?>:<br />
                 <?php $authDev = $_ctrl->getServices()->get( 'authDev' );
                 if( is_object( $authDev ) && $authDev->isLoggedIn() ) { ?>
-                [<a href="dev_logout"><?php echo $_ctrl->i18n->text('logout'); ?></a>]
+                [<a href="<?php echo $baseUrl; ?>dev_logout"><?php echo $_ctrl->i18n->text('logout'); ?></a>]
                 <?php } else { ?>
-                [<a href="dev_login"><?php echo $_ctrl->i18n->text('login'); ?></a>]
+                [<a href="<?php echo $baseUrl; ?>dev_login"><?php echo $_ctrl->i18n->text('login'); ?></a>]
                 <?php } ?>
             </p>
         </div>

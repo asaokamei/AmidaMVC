@@ -287,10 +287,7 @@ class Controller extends AmidaChain
         $name = 'router';
         $key  = 'routes';
         $moduleOption = $this->getModuleOption( $name );
-        $routeList = $moduleOption[ $key ];
-        if( !$routeList ) {
-            $routeList = array();
-        }
+        $routeList = ( isset( $moduleOption[ $key ] ) ) ? $moduleOption[ $key ] : array();
         $routeList[ $route ] = array_merge( $option, array( 'file' => $file ) );
         $moduleOption[ $key ] = $routeList;
         $this->setModuleOption( $name, $moduleOption );

@@ -34,6 +34,7 @@ $simpleMenuList = array(
                     // do the simple menu staff
                     foreach( $simpleMenuList as $simCmd => $simMenu ) {
                         if( in_array( $simCmd, $_filerObj->file_cmd ) ) {
+                            /** @var $simCmd string */
                             echo "<li><a href=\"{$self}/{$simCmd}\">{$simMenu}</a></li>\n";
                         }
                     }
@@ -188,7 +189,7 @@ $simpleMenuList = array(
         background-color:white;
     }
     div.filerBoxes form {
-        margin: 0px;
+        margin: 0;
         padding: 3px;
     }
     div#filerBackUpList {

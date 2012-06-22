@@ -14,19 +14,23 @@ p,span,code {
 .mainbody {
     width: 700px;
     margin: 20px auto 20px auto;
-    border:2px solid #E0E0E0;
+    border:2px solid #F0F0F0;
     padding: 10px 15px 10px 20px;
     border-radius: 15px;
-    box-shadow: 5px 5px 5px #aaaaaa;
+    box-shadow: 5px 5px 5px #F0F0F0;
+}
+header {
 }
 header #headTitle {
+    margin: 0 -5px 10px -5px;
+    border: 1px solid #cccccc;
+    box-shadow: 5px 5px 5px #cccccc;
+    border-radius: 5px;
+    padding: 10px 5px 10px 15px;
     background: #d2691e;
     font-size: 18px;
     font-weight: normal;
-    padding: 15px 5px 15px 15px;
-    margin: 0 -5px 10px -5px;
-    box-shadow: 5px 5px 5px #cccccc;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 header #headTitle a {
     text-decoration: none;
@@ -41,17 +45,17 @@ h1 {
     font-size: 20px;
     line-height: 1.5em;
     padding: 5px 5px 5px 5px;
-    margin: 20px 0 15px -2px;
-    border-left: 5px solid #d2691e;
+    margin: 20px 0 15px -5px;
+    border-left: 8px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
 }
 h2 {
     background: #F0F0F0;
     font-size: 16px;
     line-height: 1.5em;
+    border-left: 2px solid #d2691e;
     padding: 3px 5px 3px 5px;
     margin: 15px 5px 15px -2px;
-    box-shadow: 3px 3px 3px #cccccc;
 }
 p {
     font-size: 16px;
