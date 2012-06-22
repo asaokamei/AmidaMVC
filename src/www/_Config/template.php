@@ -26,6 +26,62 @@ if( isset( $_pageObj->devInfo ) ) {
 }
 ?>
 
+<?php
+// build some menu!
+$menu = array(
+    array( 'url' => '',       'title' => 'Home' ),
+    array( 'url' => 'docs/',  'title' => 'documents' ),
+    array( 'url' => 'src/',   'title' => 'source code',
+           'pages' => array(
+               array( 'url' => 'src/',          'title' => 'src top' ),
+               array( 'url' => 'src/AmidaMVC/', 'title' => 'main code' ),
+               array( 'url' => 'src/www/',      'title' => 'shadow www' ),
+               array( 'url' => 'vendor/',       'title' => 'vendors code' ),
+           )
+    ),
+    array( 'url' => 'tests/', 'title' => 'tests' ),
+    array( 'url' => 'demo/',  'title' => 'demo' ),
+);
+
+class Menus
+{
+    protected $menu;
+    protected $_ctrl;
+    function actionDefault( $_ctrl ) {
+        $this->_ctrl = $_ctrl;
+    }
+}
+function menu( $_ctrl, $menu, $class='nav nav-pills' ) {
+    $html = "<ul class=\"{$class}\">";
+    $html .= lists( $_ctrl, $menu );
+    $html .= '</ul>';
+    return $html;
+}
+function lists( $_ctrl, $menu ) {
+    $html = '';
+    foreach( $menu as $item ) {
+        if( isset( $item[ 'pages' ] ) ) {
+            $sub = menu( $_ctrl, $item['pages'], 'dropdown-menu' );
+            $html .= "
+            <li class=\"dropdown\">
+            <a class=\"dropdown-toggle\" data-toggle=\"dropdown\">{$item{'title'}}
+                    <b class=\"caret\"></b>
+            </a>
+            {$sub}
+            </li>
+            ";
+        }
+        else {
+            $url = $_ctrl->getBaseUrl( $item['url']);
+            $name = $item['title'];
+            $html .= "<li><a href=\"{$url}\">{$name}</a></li>";
+        }
+    }
+    return $html;
+}
+
+echo menu( $_ctrl, $menu );
+?>
 <div class="mainbody">
     <header>
         <div id="headTitle">
