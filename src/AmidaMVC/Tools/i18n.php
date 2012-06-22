@@ -83,7 +83,7 @@ class i18n
     }
     function text( $text ) {
         if( !isset( $this->textData[ $this->textSection ][ $text ] ) ) {
-            return FALSE;
+            return $text;
         }
         $words = $this->textData[ $this->textSection ][ $text ];
         $args  = func_get_args();
