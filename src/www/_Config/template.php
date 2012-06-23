@@ -42,27 +42,64 @@ $menu = array(
     array( 'url' => 'tests/', 'title' => 'tests' ),
     array( 'url' => 'demo/',  'title' => 'demo' ),
 );
+$config = array( 'menu' => $menu );
+$nav    = new NavBar();
+$nav->injectCtrl( $_ctrl );
+$menus  = new Menus( $config );
+$menus->injectNav( $nav );
+$menus->actionDefault( $_ctrl, $_pageObj );
+echo $_pageObj->topNav;
 
 class Menus
 {
-    protected $menu;
     protected $_ctrl;
-    function actionDefault( $_ctrl ) {
-        $this->_ctrl = $_ctrl;
+    protected $_pageObj;
+    protected $nav = NULL;
+    protected $menu = array();
+    function injectNav( $nav ) {
+        $this->nav = $nav;
+    }
+    function __construct( $config=array() ) {
+        if( isset( $config[ 'menu' ] ) ) {
+            $this->menu = $config[ 'menu' ];
+        }
+    }
+    function actionDefault( $_ctrl, $_pageObj ) {
+        $this->_ctrl    = $_ctrl;
+        $this->_pageObj = $_pageObj;
+        $_pageObj->topNav = $this->getMenu();
+    }
+    function getMenu() {
+        return $this->nav->getMenu( $this->menu );
     }
 }
-function menu( $_ctrl, $menu, $class='nav nav-pills' ) {
-    $html = "<ul class=\"{$class}\">";
-    $html .= lists( $_ctrl, $menu );
-    $html .= '</ul>';
-    return $html;
-}
-function lists( $_ctrl, $menu ) {
-    $html = '';
-    foreach( $menu as $item ) {
-        if( isset( $item[ 'pages' ] ) ) {
-            $sub = menu( $_ctrl, $item['pages'], 'dropdown-menu' );
-            $html .= "
+
+class NavBar
+{
+    protected $_ctrl;
+    function __construct() {
+    }
+    function injectCtrl( $_ctrl ) {
+        $this->_ctrl = $_ctrl;
+    }
+    function getMenu( $menu )
+    {
+        $class ='nav nav-pills';
+        $html  = $this->_ul( $menu, $class );
+        return $html;
+    }
+    function _ul( $menu, $class ) {
+        $html = "<ul class=\"{$class}\">";
+        $html .= $this->_li( $menu );
+        $html .= '</ul>';
+        return $html;
+    }
+    function _li( $menu ) {
+        $html = '';
+        foreach( $menu as $item ) {
+            if( isset( $item[ 'pages' ] ) ) {
+                $sub = $this->_ul( $item['pages'], 'dropdown-menu' );
+                $html .= "
             <li class=\"dropdown\">
             <a class=\"dropdown-toggle\" data-toggle=\"dropdown\">{$item{'title'}}
                     <b class=\"caret\"></b>
@@ -70,17 +107,17 @@ function lists( $_ctrl, $menu ) {
             {$sub}
             </li>
             ";
+            }
+            else {
+                $url = $this->_ctrl->getBaseUrl( $item['url']);
+                $name = $item['title'];
+                $html .= "<li><a href=\"{$url}\">{$name}</a></li>";
+            }
         }
-        else {
-            $url = $_ctrl->getBaseUrl( $item['url']);
-            $name = $item['title'];
-            $html .= "<li><a href=\"{$url}\">{$name}</a></li>";
-        }
+        return $html;
     }
-    return $html;
 }
 
-echo menu( $_ctrl, $menu );
 ?>
 <div class="mainbody">
     <header>
