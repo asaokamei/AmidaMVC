@@ -48,7 +48,6 @@ $nav->injectCtrl( $_ctrl );
 $menus  = new Menus( $config );
 $menus->injectNav( $nav );
 $menus->actionDefault( $_ctrl, $_pageObj );
-echo $_pageObj->topNav;
 
 class Menus
 {
@@ -67,10 +66,21 @@ class Menus
     function actionDefault( $_ctrl, $_pageObj ) {
         $this->_ctrl    = $_ctrl;
         $this->_pageObj = $_pageObj;
+        $this->_prepMenu( $this->menu );
         $_pageObj->topNav = $this->getMenu();
     }
     function getMenu() {
         return $this->nav->getMenu( $this->menu );
+    }
+    function _prepMenu( &$menu ) {
+        foreach( $menu as &$item ) {
+            if( isset( $item[ 'url' ] ) ) {
+                $item['url'] = $this->_ctrl->getBaseUrl( $item['url'] );
+            }
+            if( isset( $item[ 'pages' ] ) && is_array( $item[ 'pages' ] ) ) {
+                $this->_prepMenu( $item[ 'pages' ] );
+            }
+        }
     }
 }
 
@@ -109,7 +119,7 @@ class NavBar
             ";
             }
             else {
-                $url = $this->_ctrl->getBaseUrl( $item['url']);
+                $url = $item[ 'url' ]; //$this->_ctrl->getBaseUrl( $item['url']);
                 $name = $item['title'];
                 $html .= "<li><a href=\"{$url}\">{$name}</a></li>";
             }
@@ -124,23 +134,11 @@ class NavBar
         <div id="headTitle">
             <a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a>
         </div>
-        <ul class="nav nav-pills">
-            <li class="active"><a href="<?php echo $_ctrl->getBaseUrl(); ?>">Home</a></li>
-            <li><a href="<?php echo $baseUrl;?>docs/README.md">documents</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">source code
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="<?php echo $baseUrl;?>src/README.md">src folder</a></li>
-                    <li><a href="<?php echo $baseUrl;?>src/AmidaMVC/README.md">AmidaMVC Source Codes</a></li>
-                    <li><a href="<?php echo $baseUrl;?>src/www/">shadow www folder</a></li>
-                    <li><a href="<?php echo $baseUrl;?>vendor/README.md">vendor</a></li>
-                </ul>
-            </li>
-            <li><a href="<?php echo $baseUrl;?>tests/">tests</a></li>
-            <li><a href="<?php echo $baseUrl;?>demo/">demo</a></li>
-        </ul>
+        <?php
+        if( isset( $_pageObj->topNav ) ) {
+            echo $_pageObj->topNav;
+        }
+        ?>
     </header>
     <div id="content" >
         <!-- content starts -->
