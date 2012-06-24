@@ -44,7 +44,6 @@ $menu = array(
 );
 $config = array( 'menu' => $menu );
 $nav    = new NavBar();
-$nav->injectCtrl( $_ctrl );
 $menus  = new Menus( $config );
 $menus->injectNav( $nav );
 $menus->actionDefault( $_ctrl, $_pageObj );
@@ -86,11 +85,7 @@ class Menus
 
 class NavBar
 {
-    protected $_ctrl;
     function __construct() {
-    }
-    function injectCtrl( $_ctrl ) {
-        $this->_ctrl = $_ctrl;
     }
     function getMenu( $menu )
     {
@@ -119,7 +114,7 @@ class NavBar
             ";
             }
             else {
-                $url = $item[ 'url' ]; //$this->_ctrl->getBaseUrl( $item['url']);
+                $url = $item[ 'url' ];
                 $name = $item['title'];
                 $html .= "<li><a href=\"{$url}\">{$name}</a></li>";
             }
