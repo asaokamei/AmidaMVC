@@ -5,18 +5,31 @@ class NavBar
 {
     function __construct() {
     }
+    /**
+     * @param array $menu
+     * @return string
+     */
     function getMenu( $menu )
     {
         $class ='nav nav-pills';
         $html  = $this->_ul( $menu, $class );
         return $html;
     }
+    /**
+     * @param array $menu
+     * @param string $class
+     * @return string
+     */
     function _ul( $menu, $class ) {
         $html = "<ul class=\"{$class}\">";
         $html .= $this->_li( $menu );
         $html .= '</ul>';
         return $html;
     }
+    /**
+     * @param array $menu
+     * @return string
+     */
     function _li( $menu ) {
         $html = '';
         foreach( $menu as $item ) {
