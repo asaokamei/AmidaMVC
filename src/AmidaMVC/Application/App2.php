@@ -13,7 +13,7 @@ class App2
         $modules = array(
             //'authAdminOnly',
             'authDevLogin', 'authDevLogout', 'authDevFiler',
-            'router',       'loader',        'emitter',
+            'router',       'loader',        'menus',      'emitter',
         );
         $ctrl->setModules( $modules );
         $ctrl->separateCommands();
@@ -93,6 +93,9 @@ class App2
                     array( 'load', 'load' ),
                 ),
             ),
+            'navBar' => array(
+                'din' => array( '\AmidaMVC\Tools\NavBar', 'new' ),
+            ),
             // Modules
             'router' => array(
                 'din'    => array( '\AmidaMVC\Module\Router',  'new' ),
@@ -109,6 +112,12 @@ class App2
             ),
             'emitter' => array(
                 'din' => array( '\AmidaMVC\Module\Emitter', 'new' )
+            ),
+            'menus' => array(
+                'din' => array( '\AmidaMVC\Module\Menus', 'new' ),
+                'inject' => array(
+                    array( 'nav', 'navBar' )
+                ),
             ),
             // Controller
             'controller' => array(
