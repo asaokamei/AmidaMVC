@@ -10,9 +10,10 @@ $app->setModuleOption( 'menus',
             array( 'url' => 'docs/',  'title' => 'documents' ),
             array( 'url' => 'src/',   'title' => 'source code',
                 'pages' => array(
-                    array( 'url' => 'src/',          'title' => 'src top' ),
+                    array( 'url' => 'src/',          'title' => 'src/ dir top' ),
                     array( 'url' => 'src/AmidaMVC/', 'title' => 'main code' ),
                     array( 'url' => 'src/www/',      'title' => 'shadow www' ),
+                    array( 'divider' => TRUE ),
                     array( 'url' => 'vendor/',       'title' => 'vendors code' ),
                 )
             ),
