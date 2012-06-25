@@ -32,8 +32,8 @@ if( isset( $_pageObj->devInfo ) ) {
             <a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a>
         </div>
         <?php
-        if( isset( $_pageObj->topNav ) ) {
-            echo $_pageObj->topNav;
+        if( $topNav = $_pageObj->getComponent( 'topNav' ) ) {
+            echo $topNav;
         }
         ?>
     </header>

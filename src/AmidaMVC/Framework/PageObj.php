@@ -47,6 +47,9 @@ class PageObj
      * @var string|bool    developer's menu
      */
     var $devInfo = FALSE;
+
+    /** @var array   page components such as menu, side bar, etc. */
+    var $components = array();
     // +-------------------------------------------------------------+
     function __construct() {
 
@@ -222,6 +225,13 @@ class PageObj
             $html .= "<script src=\"" . $link . "\" type=\"text/javascript\"></script>\n";
         }
         return $html;
+    }
+    function setComponents( $name, $value ) {
+        $this->components[ $name ] = $value;
+        return $this;
+    }
+    function getComponent( $name ) {
+        return ( isset( $this->components[ $name ] ) ) ? $this->components[ $name ]: FALSE;
     }
     // +-------------------------------------------------------------+
 }

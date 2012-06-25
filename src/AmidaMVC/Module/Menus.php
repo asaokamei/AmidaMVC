@@ -11,6 +11,8 @@ class Menus
     protected $nav = NULL;
     /** @var array */
     protected $menu = array();
+    /** @var string name of component */
+    protected $componentName = 'topNav';
     /**
      * @param array $config
      */
@@ -33,9 +35,9 @@ class Menus
         $this->_ctrl    = $_ctrl;
         $this->_pageObj = $_pageObj;
         $max_score = $this->_prepMenu( $this->menu );
-        $_pageObj->topNav = $this->getMenu( $max_score );
+        $topNav = $this->getMenu( $max_score );
+        $_pageObj->setComponents( $this->componentName, $topNav );
     }
-
     /**
      * @param int $max_score
      * @return string
