@@ -32,28 +32,49 @@ class Menus
     function actionDefault( $_ctrl, $_pageObj ) {
         $this->_ctrl    = $_ctrl;
         $this->_pageObj = $_pageObj;
-        $this->_prepMenu( $this->menu );
-        /** @var topNav string */
-        $_pageObj->topNav = $this->getMenu();
+        $max_score = $this->_prepMenu( $this->menu );
+        $_pageObj->topNav = $this->getMenu( $max_score );
     }
+
     /**
+     * @param int $max_score
      * @return string
      */
-    function getMenu() {
-        return $this->nav->getMenu( $this->menu );
+    function getMenu( $max_score ) {
+        return $this->nav->getMenu( $this->menu, $max_score );
     }
     /**
      * @param array $menu
+     * @return int
      */
     function _prepMenu( &$menu ) {
+        $max_score = -1;
         foreach( $menu as &$item ) {
             if( isset( $item[ 'url' ] ) ) {
+                $item[ 'score' ] = $this->_score( $item['url'] );
+                if( $item[ 'score' ] >  $max_score ) $max_score = $item[ 'score' ];
                 $item['url'] = $this->_ctrl->getBaseUrl( $item['url'] );
             }
             if( isset( $item[ 'pages' ] ) && is_array( $item[ 'pages' ] ) ) {
-                $this->_prepMenu( $item[ 'pages' ] );
+                $score = $this->_prepMenu( $item[ 'pages' ] );
+                if( $score > $max_score ) $max_score = $score;
+                if( $score > $item[ 'score' ] ) $item[ 'score' ] = $score;
             }
         }
+        return $max_score;
+    }
+    /**
+     * @param string $url
+     * @return int
+     */
+    function _score( $url ) {
+        $pathInfo = $this->_ctrl->getPathInfo();
+        for( $i = 0; $i < strlen( $pathInfo ); $i++ ) {
+            if( $pathInfo[$i] !== $url[$i] ) break;
+        }
+        $diff = strlen( $url ) - strlen( $pathInfo );
+        $score = $i * 101 - $diff;
+        return $score;
     }
 }
 
