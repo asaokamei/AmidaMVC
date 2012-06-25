@@ -2,12 +2,12 @@ ToDo List
 
 * refactor AmidaMVC
 
+[ ] Language support
 [ ] PHPUnit using demo#4.
 [ ] use Config module; remove option stuff from Controller.
 [O] use doc_root as well as ctrl_root.
     [ ] Filer to use ctrl_root for new file/directory.
     [X] 6/12 setCtrlRoot to set ctrl_root.
-[ ] i18n/language support.
 [ ] not to use _cmd in path info. use get argument?
 [X] 5/13 use Request module; remove request related method from Controller.
 [X] rewrite everything but Framework.
@@ -44,6 +44,9 @@ ToDo List
         [X] 6/11 Request object has getPost to get from POST.
         [X] 6/11 Filer module uses getData.
     [X] 6/11 check for invalid path info input (/../, null byte).
+[X] 6/15 i18n/language support.
+[X] 6/25 Menu using bootstrap's navBar
+    [X] dynamic menu using pathInfo and url in menu.
 
 * Demo in AmidaMVC
 
