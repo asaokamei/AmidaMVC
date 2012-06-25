@@ -36,7 +36,10 @@ class NavBar
     function _li( $menu ) {
         $html = '';
         foreach( $menu as $item ) {
-            $active = ( $item[ 'score' ] >= $this->max_score ) ? ' active' : '';
+            $url   = ( isset( $item[ 'url' ] ) ) ? $item[ 'url' ] : '';
+            $title = ( isset( $item[ 'title' ] ) ) ? $item[ 'title' ] : '';
+            $score = ( isset( $item[ 'score' ] ) ) ? $item[ 'score' ] : 0;
+            $active = ( $score >= $this->max_score ) ? ' active' : '';
             if( isset( $item[ 'pages' ] ) ) {
                 $sub = $this->_ul( $item['pages'], 'dropdown-menu' );
                 $html .= "
@@ -52,9 +55,7 @@ class NavBar
                 $html .= "<li class=\"divider\"></li>";
             }
             else {
-                $url = $item[ 'url' ];
-                $name = $item['title'];
-                $html .= "<li class=\"{$active}\"><a href=\"{$url}\">{$name}</a></li>";
+                $html .= "<li class=\"{$active}\"><a href=\"{$url}\">{$title}</a></li>";
             }
         }
         return $html;
