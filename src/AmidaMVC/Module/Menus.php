@@ -69,11 +69,12 @@ class Menus
      */
     function _score( $url ) {
         $pathInfo = $this->_ctrl->getPathInfo();
-        for( $i = 0; $i < strlen( $pathInfo ); $i++ ) {
-            if( $pathInfo[$i] !== $url[$i] ) break;
+        $pathLength = strlen( $pathInfo );
+        for( $i = 0; $i < $pathLength; $i++ ) {
+            if( !isset( $url[$i] ) || $pathInfo[$i] !== $url[$i] ) break;
         }
-        $diff = strlen( $url ) - strlen( $pathInfo );
-        $score = $i * 101 - $diff;
+        $diff = min( 100, strlen( $url ) - $pathLength );
+        $score = $i * 100 + 100 - $diff;
         return $score;
     }
 }
