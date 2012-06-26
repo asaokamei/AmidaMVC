@@ -269,12 +269,12 @@ class Request
     /**
      * @return array
      */
-    function getLanguageList() {
+    function getLanguageList( $langOnly=TRUE ) {
         $languages = array();
         if( isset( $this->_server[ 'HTTP_ACCEPT_LANGUAGE' ] ) ) {
             $languages = $this->parseAcceptLanguage( $this->_server[ 'HTTP_ACCEPT_LANGUAGE' ] );
             foreach( $languages as &$lang ) {
-                if( strpos( $lang, '-' ) !== FALSE ) {
+                if( $langOnly && strpos( $lang, '-' ) !== FALSE ) {
                     $lang = substr( $lang, 0, strpos( $lang, '-' ) );
                 }
             }
