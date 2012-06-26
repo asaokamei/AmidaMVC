@@ -273,10 +273,17 @@ class Request
         $languages = array();
         if( isset( $this->_server[ 'HTTP_ACCEPT_LANGUAGE' ] ) ) {
             $languages = $this->parseAcceptLanguage( $this->_server[ 'HTTP_ACCEPT_LANGUAGE' ] );
+            foreach( $languages as &$lang ) {
+                if( strpos( $lang, '-' ) !== FALSE ) {
+                    $lang = substr( $lang, 0, strpos( $lang, '-' ) );
+                }
+            }
         }
         return $languages;
     }
     /**
+     * thanks for
+     * http://www.dyeager.org/blog/2008/10/getting-browser-default-language-php.html
      * @param string $accept
      * @return array|bool
      */
