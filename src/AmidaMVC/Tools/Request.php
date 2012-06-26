@@ -266,4 +266,41 @@ class Request
         return $val;
     }
     // +-------------------------------------------------------------+
+    /**
+     * @return array
+     */
+    function getLanguageList() {
+        $languages = array();
+        if( isset( $this->_server[ 'HTTP_ACCEPT_LANGUAGE' ] ) ) {
+            $languages = $this->parseAcceptLanguage( $this->_server[ 'HTTP_ACCEPT_LANGUAGE' ] );
+        }
+        return $languages;
+    }
+    /**
+     * @param string $accept
+     * @return array|bool
+     */
+    function parseAcceptLanguage( $accept ) {
+        if( strlen( $accept ) <= 0 ) return FALSE;
+        $list = explode( ',', $accept );
+        $unsorted = array();
+        foreach( $list as $val ) {
+            if( preg_match( "/(.*);q=([0-1]{0,1}\.\d{0,4})/i", $val, $matches ) ) {
+                $lang = $matches[1];
+                $qVal = (float) $matches[2];
+            }
+            else {
+                $lang = $val;
+                $qVal = 1.0;
+            }
+            $unsorted[ $lang ] = $qVal;
+        }
+        arsort( $unsorted );
+        $langList = array();
+        foreach( $unsorted as $lang => $qVal ) {
+            $langList[] = $lang;
+        }
+        return $langList;
+    }
+    // +-------------------------------------------------------------+
 }
