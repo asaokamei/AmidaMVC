@@ -267,6 +267,7 @@ class Request
     }
     // +-------------------------------------------------------------+
     /**
+     * @param bool $langOnly
      * @return array
      */
     function getLanguageList( $langOnly=TRUE ) {
