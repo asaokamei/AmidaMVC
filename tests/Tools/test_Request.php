@@ -19,7 +19,7 @@ class test_ToolsRequest extends PHPUnit_Framework_TestCase
         );
         $req  = new \AmidaMVC\Tools\Request( $server );
         $list = $req->getLanguageList();
-        $listOK = array( 'fr', 'en-US', 'ja-JP' );
+        $listOK = array( 'fr', 'en', 'ja' );
         $this->assertEquals( $listOK, $list );
     }
     function test_AcceptLang_ja_and_en_4() {
@@ -28,7 +28,7 @@ class test_ToolsRequest extends PHPUnit_Framework_TestCase
         );
         $req  = new \AmidaMVC\Tools\Request( $server );
         $list = $req->getLanguageList( FALSE );
-        $listOK = array( 'fr', 'en', 'ja' );
+        $listOK = array( 'fr', 'en-US', 'ja-JP' );
         $this->assertEquals( $listOK, $list );
     }
     function test_AcceptLang_ja_and_en_1() {
