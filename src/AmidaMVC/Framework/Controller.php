@@ -71,8 +71,8 @@ class Controller extends AmidaChain
      * @return Controller
      */
     function setCtrlRoot( $ctrl_root ) {
-        $this->ctrl_root = $ctrl_root;
-        $this->setFileLocation( $this->ctrl_root );
+        //$this->ctrl_root = $ctrl_root;
+        $this->setFileLocation( $ctrl_root );
         return $this;
     }
     /**
@@ -156,6 +156,7 @@ class Controller extends AmidaChain
         if( substr( $folder, 0, 1 ) !== '/' ) {
             $folder = $this->getLocation( $folder );
         }
+        $this->ctrl_root = $folder;
         $exec = array( $this->_loadClass, 'setFileLocation' );
         return call_user_func( $exec, $folder );
     }
