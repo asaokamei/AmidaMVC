@@ -14,6 +14,7 @@ $baseUrl = $_ctrl->getBaseUrl();
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
+<meta charset="utf-8">
 <title><?php echo $_ctrl->getOption( 'site_title' ); ?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php echo $_pageObj->getCssLinks( $_ctrl ); ?>
