@@ -237,7 +237,7 @@ class Request
             $post = &$this->_post;
         }
         else {
-            $post = &$_POST;
+            $post = &$_REQUEST;
         }
         $val = FALSE;
         if( array_key_exists( $name, $post ) ) {
