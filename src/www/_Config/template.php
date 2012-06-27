@@ -55,6 +55,17 @@ if( isset( $_pageObj->devInfo ) ) {
                 <?php } ?>
             </p>
         </div>
+        <?php
+        if( isset( $_pageObj->sections[ 'footer' ][ 'lang' ] ) ) {
+            $section = $_pageObj->sections[ 'footer' ][ 'lang' ];
+            $html = "<div style=\"float: right; text-align: left;\"><p>{$section{'title'}}</p><ul>\n";
+            foreach( $section[ 'lists' ] as $link ) {
+                $html .= "<li><a href=\"{$link{1}}\">{$link{0}}</a></li>";
+            }
+            $html .= "</ul></div>";
+            echo $html;
+        }
+        ?>
         <div>
             <p>AppSimple Suites by AmidaMVC.<br />
                 https://github.com/asaokamei/AmidaMVC</p>

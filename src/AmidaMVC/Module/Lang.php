@@ -96,7 +96,21 @@ class Lang extends AModule implements IfModule
         $this->i18n->loadFiles();
         // setup ctrl root
         $this->ctrlRoot();
+        $this->drawSection();
         return $extra;
+    }
+    function drawSection() {
+        $section = array(
+            'title' => $this->i18n->text( 'select_lang' ),
+            'type'  => 'list',
+            'lists' => array(),
+        );
+        foreach( $this->langList as $lang ) {
+            $name = ( $this->i18n->langCode( $lang ) ) ?: $lang;
+            $section[ 'lists' ][] = array( $name,
+                $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() ).'/_lang?language='.$lang );
+        }
+        $this->_pageObj->sections[ 'footer' ]['lang'] = $section;
     }
     // +-------------------------------------------------------------+
     function ctrlRoot() {

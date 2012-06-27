@@ -114,3 +114,9 @@ footer p {
     letter-spacing: 1px;
     line-height: 1em;
 }
+footer li {
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    line-height: 1em;
+}
