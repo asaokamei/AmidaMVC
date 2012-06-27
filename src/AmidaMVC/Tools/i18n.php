@@ -75,6 +75,7 @@ class i18n
         $this->extension = $ext;
     }
     function language( $lang ) {
+        $this->config[ 'language' ] = $lang;
         $this->language = substr( $lang, 0, 2 );
     }
     // +-------------------------------------------------------------+
