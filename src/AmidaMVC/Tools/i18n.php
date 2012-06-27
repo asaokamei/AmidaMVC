@@ -13,6 +13,14 @@ class i18n
     protected $textSection = '';
     protected $textData    = array();
     protected $fileToLoad  = array();
+    protected $listOfLang  = array(
+        'en' => 'English',
+        'es' => 'español',
+        'fr' => 'French',
+        'ja' => '日本語',
+        'ko' => '贛語',
+        'zh' => '中文',
+    );
     // +-------------------------------------------------------------+
     function __construct( $config=array() ) {
         $this->config = $config;
@@ -78,6 +86,9 @@ class i18n
     function language( $lang ) {
         $this->config[ 'language' ] = $lang;
         $this->language = substr( $lang, 0, 2 );
+    }
+    function langCode( $code ) {
+        return (isset( $this->listOfLang[$code])) ? $this->listOfLang[$code]:FALSE;
     }
     // +-------------------------------------------------------------+
     function textSection( $section ) {
