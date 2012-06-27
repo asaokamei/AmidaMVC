@@ -84,7 +84,7 @@ class Lang extends AModule implements IfModule
         if( $language = $this->getLanguage() ) {
             //$this->_ctrl->setModuleOption( 'i18n', 'language', $language );
             $this->i18n->language( $language );
-            $this->i18n->_setup();
+            $this->i18n->loadFiles();
         }
         return $extra;
     }
