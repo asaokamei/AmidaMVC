@@ -12,6 +12,7 @@ class i18n
     protected $language    = '';
     protected $textSection = '';
     protected $textData    = array();
+    protected $fileToLoad  = array();
     // +-------------------------------------------------------------+
     function __construct( $config=array() ) {
         $this->config = $config;
@@ -26,7 +27,7 @@ class i18n
         }
         foreach( $this->config as $key => $val ) {
             if( substr( $key, 0, 5 ) == 'file_' ) {
-                $this->_loadTextFile( $val );
+                $this->fileToLoad[ $val ] = TRUE;
             }
             elseif( $key == 'language' ) {
                 $this->language( $val );
@@ -34,27 +35,27 @@ class i18n
             elseif( $key == 'directory' ) {
                 $this->directory( $val );
             }
+            elseif( $key == 'loadFiles' ) {
+                $this->loadFiles();
+            }
         }
     }
     function injectLoad( $load ) {
         $this->load = $load;
     }
+    function loadFiles() {
+        if( !empty( $this->fileToLoad ) ) {
+            foreach( $this->fileToLoad as $file => $val ) {
+                $this->_loadTextFile( $file );
+            }
+        }
+    }
     function _loadTextFile( $filename ) {
-        $found = FALSE;
-        $loadFile_default  = $this->directory . self::FILE_HEADER_TEXT . $filename;
-        if( $found = $this->load->findFile( $loadFile_default.'.ini' ) ) {
-            // assume ini file
+        $loadFile = $this->directory . self::FILE_HEADER_TEXT . $filename . '.'.$this->language;
+        $found = $this->load->findFile( $loadFile.'.ini' );
+        if( $found ) {
             $textData = $this->load->parse_ini( $found );
             $this->_mergeText( $textData );
-        }
-        if( $this->language ) {
-            $loadFile_lang     = $loadFile_default . '.'.$this->language;
-            $found = $this->load->findFile( $loadFile_lang.'.ini' );
-            if( $found ) {
-                // assume ini file
-                $textData = $this->load->parse_ini( $found );
-                $this->_mergeText( $textData );
-            }
         }
     }
     function _mergeText( $textData ) {
