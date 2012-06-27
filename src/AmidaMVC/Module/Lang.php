@@ -27,7 +27,7 @@ class Lang extends AModule implements IfModule
     protected $matchUrl = '^{lang}\\/';
 
     /** @var string  set ctrl_root to the name below */
-    protected $ctrlRooTName = array();
+    protected $ctrlRootName = array();
 
     /** @var bool|string  selected language */
     protected $language = 'en';
@@ -58,7 +58,7 @@ class Lang extends AModule implements IfModule
                     $this->langList = $val;
                 }
                 elseif( $key == 'ctrl_root' ) {
-                    $this->ctrlRooTName = $val;
+                    $this->ctrlRootName = $val;
                 }
             }
         }
@@ -90,28 +90,30 @@ class Lang extends AModule implements IfModule
     {
         $this->_ctrl = $_ctrl;
         $this->_pageObj = $_pageObj;
-        if( $language = $this->getLanguage() ) {
-            //$this->_ctrl->setModuleOption( 'i18n', 'language', $language );
-            $this->i18n->language( $language );
-            $this->i18n->loadFiles();
-            // setup ctrl_root if any...
-            if( $this->ctrlRooTName ) {
-                $ctrlRoot = FALSE;
-                if( array_key_exists( $language, $this->ctrlRooTName ) ) {
-                    $ctrlRoot = $this->ctrlRooTName[ $language ];
-                }
-                elseif( isset( $this->ctrlRooTName[0] ) ) {
-                    $ctrlRoot = $this->ctrlRooTName[0];
-                }
-                if( $ctrlRoot ) {
-                    $ctrlRoot = $this->_fill( $ctrlRoot, $language );
-                    $this->_ctrl->setCtrlRoot( $ctrlRoot );
-                }
-            }
-        }
+        $this->getLanguage();
+        // setup i18n with language.
+        $this->i18n->language( $this->language );
+        $this->i18n->loadFiles();
+        // setup ctrl root
+        $this->ctrlRoot();
         return $extra;
     }
     // +-------------------------------------------------------------+
+    function ctrlRoot() {
+        if( $this->ctrlRootName ) {
+            $ctrlRoot = FALSE;
+            if( array_key_exists( $this->language, $this->ctrlRootName ) ) {
+                $ctrlRoot = $this->ctrlRootName[ $this->language ];
+            }
+            elseif( isset( $this->ctrlRootName[0] ) ) {
+                $ctrlRoot = $this->ctrlRootName[0];
+            }
+            if( $ctrlRoot ) {
+                $ctrlRoot = $this->_fill( $ctrlRoot, $this->language );
+                $this->_ctrl->setCtrlRoot( $ctrlRoot );
+            }
+        }
+    }
     /**
      * @return bool
      */
@@ -128,7 +130,6 @@ class Lang extends AModule implements IfModule
             $this->language = $language;
             $this->session->set( $this->sessionSaveId, $language );
         }
-        return $language;
     }
     /**
      * @param array $accepted
