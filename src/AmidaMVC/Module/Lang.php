@@ -18,7 +18,7 @@ class Lang extends AModule implements IfModule
      * - replace pathInfo and baseUrl in Request
      */
     /** @var array   list of available languages in the application */
-    protected $langList = array( 'en' );
+    protected $langList = array( 'en', 'ja' );
 
     /** @var array   list of supported commands.  */
     var $commands = array( '_lang' );
@@ -79,7 +79,14 @@ class Lang extends AModule implements IfModule
      */
     public function actionDefault( $_ctrl, &$_pageObj, $extra = array() )
     {
-        // TODO: Implement actionDefault() method.
+        $this->_ctrl = $_ctrl;
+        $this->_pageObj = $_pageObj;
+        if( $language = $this->getLanguage() ) {
+            //$this->_ctrl->setModuleOption( 'i18n', 'language', $language );
+            $this->i18n->language( $language );
+            $this->i18n->_setup();
+        }
+        return $extra;
     }
     // +-------------------------------------------------------------+
     /**
@@ -107,7 +114,7 @@ class Lang extends AModule implements IfModule
     function checkHttp( $accepted ) {
         $language = FALSE;
         foreach( $accepted as $lang ) {
-            if( in_array( $this->langList, $lang ) ) {
+            if( in_array( $lang, $this->langList ) ) {
                 $language = $lang;
                 break;
             }
@@ -141,7 +148,7 @@ class Lang extends AModule implements IfModule
         $language    = FALSE;
         foreach( $this->langList as $lang ) {
             $exp = $this->_fill( $this->matchUrl, $lang );
-            if( preg_match( $exp, $pathInfo ) ) {
+            if( preg_match( "/{$exp}/i", $pathInfo ) ) {
                 $language = $lang;
                 break;
             }
