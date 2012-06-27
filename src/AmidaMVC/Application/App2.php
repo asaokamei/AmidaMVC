@@ -100,7 +100,12 @@ class App2
             // Modules
             'lang' => array(
                 'din'    => array( '\AmidaMVC\Module\Lang',    'new' ),
-                'config' => array(),
+                'config' => array(
+                    'lang_list' => array( 'en', 'ja' ),
+                    'ctrl_root' => array(
+                        'docs.{lang}', 'en' => FALSE,
+                    ),
+                ),
                 'inject' => array(
                     array( 'i18n',    'i18n' ),
                     array( 'session', 'session' )

@@ -27,7 +27,7 @@ class Lang extends AModule implements IfModule
     protected $matchUrl = '^{lang}\\/';
 
     /** @var string  set ctrl_root to the name below */
-    protected $ctrlRootName = '_docs.{lang}';
+    protected $ctrlRooTName = array();
 
     /** @var bool|string  selected language */
     protected $language = 'en';
@@ -52,7 +52,16 @@ class Lang extends AModule implements IfModule
      * @return \AmidaMVC\Module\Lang
      */
     public function __construct( $config=array() ) {
-        // TODO Implement __construct
+        if( !empty( $config ) ) {
+            foreach( $config as $key => $val ) {
+                if( $key == 'lang_list' ) {
+                    $this->langList = $val;
+                }
+                elseif( $key == 'ctrl_root' ) {
+                    $this->ctrlRooTName = $val;
+                }
+            }
+        }
         // lang_list
         // ctrl_root folder name
     }
@@ -85,6 +94,20 @@ class Lang extends AModule implements IfModule
             //$this->_ctrl->setModuleOption( 'i18n', 'language', $language );
             $this->i18n->language( $language );
             $this->i18n->loadFiles();
+            // setup ctrl_root if any...
+            if( $this->ctrlRooTName ) {
+                $ctrlRoot = FALSE;
+                if( array_key_exists( $language, $this->ctrlRooTName ) ) {
+                    $ctrlRoot = $this->ctrlRooTName[ $language ];
+                }
+                elseif( isset( $this->ctrlRooTName[0] ) ) {
+                    $ctrlRoot = $this->ctrlRooTName[0];
+                }
+                if( $ctrlRoot ) {
+                    $ctrlRoot = $this->_fill( $ctrlRoot, $language );
+                    $this->_ctrl->setCtrlRoot( $ctrlRoot );
+                }
+            }
         }
         return $extra;
     }
