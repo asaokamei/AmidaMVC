@@ -12,6 +12,7 @@ class App2
 
         $modules = array(
             //'authAdminOnly',
+            'lang',
             'authDevLogin', 'authDevLogout', 'authDevFiler',
             'router',       'loader',        'menus',      'emitter',
         );
@@ -76,15 +77,15 @@ class App2
                 )
             ),
             'request' => array(
-                'din' => array( '\AmidaMVC\Tools\Request', 'new' ),
+                'din' => array( '\AmidaMVC\Tools\Request', 'get' ),
             ),
             'session' => array(
-                'din' => array( '\AmidaMVC\Tools\Session', 'new' ),
+                'din' => array( '\AmidaMVC\Tools\Session', 'get' ),
             ),
             'i18n' => array(
-                'din'    => array( '\AmidaMVC\Tools\i18n', 'new' ),
+                'din'    => array( '\AmidaMVC\Tools\i18n', 'get' ),
                 'config' => array(
-                    'language'         => 'ja',
+                    'language'         => 'en',
                     'directory'        => '_Config',
                     'file_amidaMVC'    => 'amidaMVC',
                     'file_application' => 'application',
@@ -94,9 +95,17 @@ class App2
                 ),
             ),
             'navBar' => array(
-                'din' => array( '\AmidaMVC\Tools\NavBar', 'new' ),
+                'din' => array( '\AmidaMVC\Tools\NavBar', 'get' ),
             ),
             // Modules
+            'lang' => array(
+                'din'    => array( '\AmidaMVC\Module\Lang',    'new' ),
+                'config' => array(),
+                'inject' => array(
+                    array( 'i18n',    'i18n' ),
+                    array( 'session', 'session' )
+                ),
+            ),
             'router' => array(
                 'din'    => array( '\AmidaMVC\Module\Router',  'new' ),
                 'config' => array(),
