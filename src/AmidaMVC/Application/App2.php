@@ -4,6 +4,10 @@ namespace AmidaMVC\Application;
 class App2
 {
     static $sl;
+
+    /**
+     * @return \AmidaMVC\Framework\Controller|
+     */
     function app() {
         $di = self::diCms();
         $sl = self::setUpDi( $di );
@@ -21,6 +25,9 @@ class App2
 
         return $ctrl;
     }
+    /**
+     *
+     */
     function diConfigSample() {
         $diConfigJa = array(
             'configJa' => array(
@@ -58,7 +65,7 @@ class App2
                 ),
             )
         );
-        // wishful programming... 
+        // wishful programming...
         $diConfigAuth = array(
             'auth' => array(
                 'din'    => array( '\AmidaMVC\Tools\AuthBasic', 'get' ),
@@ -125,6 +132,9 @@ class App2
             ),
         );
     }
+    /**
+     * @return array
+     */
     function diCms() {
         $www = realpath( __DIR__ . '/../../www/' );
         $di = array(
@@ -143,10 +153,10 @@ class App2
                 )
             ),
             'request' => array(
-                'din' => array( '\AmidaMVC\Tools\Request', 'get' ),
+                'din'    => array( '\AmidaMVC\Tools\Request', 'get' ),
             ),
             'session' => array(
-                'din' => array( '\AmidaMVC\Tools\Session', 'get' ),
+                'din'    => array( '\AmidaMVC\Tools\Session', 'get' ),
             ),
             'i18n' => array(
                 'din'    => array( '\AmidaMVC\Tools\i18n', 'get' ),
@@ -189,7 +199,7 @@ class App2
                 'din' => array( '\AmidaMVC\Module\Emitter', 'new' )
             ),
             'menus' => array(
-                'din' => array( '\AmidaMVC\Module\Menus', 'new' ),
+                'din'    => array( '\AmidaMVC\Module\Menus', 'new' ),
                 'inject' => array(
                     array( 'nav', 'navBar' )
                 ),
@@ -212,7 +222,7 @@ class App2
             ),
             // for _Dev mode
             'authAdmin' => array(
-                'din' => array( '\AmidaMVC\Tools\AuthNot',  'new', 'authAdmin' ),
+                'din'    => array( '\AmidaMVC\Tools\AuthNot',  'new', 'authAdmin' ),
                 'config' => array(
                     'password_file' => 'admin.password',
                     'authArea'      => 'authAdmin'
@@ -293,7 +303,13 @@ class App2
         );
         return $di;
     }
-    function setUpDi( $di ) {
+
+    /**
+     * @param $di
+     * @return \AmidaMVC\Framework\Services
+     */
+    function setUpDi( $di )
+    {
         static::$sl = $sl = \AmidaMVC\Framework\Services::start();
         foreach( $di as $service => $setup ) {
             $din = array_merge( array( $service ), $setup[ 'din' ] );
