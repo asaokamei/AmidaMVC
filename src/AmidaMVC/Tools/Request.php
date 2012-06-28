@@ -181,6 +181,12 @@ class Request
         $this->setPathInfo( $path_info );
         return $commands;
     }
+    function rewriteBaseAndPath( $token ) {
+        if( substr( $this->path_info, 0, strlen( $token ) ) == $token ) {
+            $this->path_info = substr( $this->path_info, strlen( $token ) );
+            $this->base_url .= $token;
+        }
+    }
     // +-------------------------------------------------------------+
     /**
      * This function is to replace PHP's extremely buggy realpath().

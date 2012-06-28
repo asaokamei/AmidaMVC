@@ -27,6 +27,7 @@ $app->setModuleOption( 'lang', array(
     'ctrl_root' => array(
         '_docs.{lang}', 'en' => FALSE,
     ),
+    'match_url' => '^{lang}\\/',
 ) );
 $app
     ->setOption( 'site_title', 'AmidaMVC PHP Framework' )

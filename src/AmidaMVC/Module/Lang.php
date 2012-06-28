@@ -24,7 +24,10 @@ class Lang extends AModule implements IfModule
     var $commands = array( '_lang' );
 
     /** @var string  check url against this regexp */
-    protected $matchUrl = '^{lang}\\/';
+    protected $matchUrl = '';
+
+    /** @var bool */
+    protected $matchRewrite = FALSE;
 
     /** @var string  set ctrl_root to the name below */
     protected $ctrlRootName = array();
@@ -60,6 +63,9 @@ class Lang extends AModule implements IfModule
                 elseif( $key == 'ctrl_root' ) {
                     $this->ctrlRootName = $val;
                 }
+                elseif( $key == 'match_url' ) {
+                    $this->matchUrl = $val;
+                }
             }
         }
         // lang_list
@@ -69,9 +75,7 @@ class Lang extends AModule implements IfModule
      * @param array $option
      * @return mixed
      */
-    public function _init( $option = array() )
-    {
-        // TODO: Implement _init() method.
+    public function _init( $option = array() ) {
     }
     public function injectI18n( $i18n ) {
         $this->i18n = $i18n;
@@ -107,8 +111,13 @@ class Lang extends AModule implements IfModule
         );
         foreach( $this->langList as $lang ) {
             $name = ( $this->i18n->langCode( $lang ) ) ?: $lang;
-            $section[ 'lists' ][] = array( $name,
-                $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() ).'/_lang?language='.$lang );
+            if( $this->matchRewrite ) {
+                $link = $this->_ctrl->getBaseUrl('../')."{$lang}/";
+            }
+            else {
+                $link = $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() ).'/_lang?language='.$lang;
+            }
+            $section[ 'lists' ][] = array( $name, $link );
         }
         $this->_pageObj->sections[ 'footer' ]['lang'] = $section;
     }
@@ -184,12 +193,18 @@ class Lang extends AModule implements IfModule
      */
     function checkUrl( $pathInfo ) {
         $language    = FALSE;
+        $token       = NULL;
         foreach( $this->langList as $lang ) {
             $exp = $this->_fill( $this->matchUrl, $lang );
-            if( preg_match( "/{$exp}/i", $pathInfo ) ) {
+            if( preg_match( "/({$exp})/i", $pathInfo, $matches ) ) {
                 $language = $lang;
+                $token    = $matches[1];
                 break;
             }
+        }
+        if( $language && $token ) {
+            $this->_ctrl->request->rewriteBaseAndPath( $token );
+            $this->matchRewrite = TRUE;
         }
         return $language;
     }
