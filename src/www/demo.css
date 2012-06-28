@@ -120,3 +120,17 @@ footer li {
     letter-spacing: 1px;
     line-height: 1em;
 }
+footer .sectionBox {
+    float: right;
+    width: 120px;
+    padding: 5px;
+}
+footer .sectionBox h3 {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 0 2px 0;
+    padding: 3px 2px 3px 2px;
+    line-height: 1em;
+    background-color: #cccccc;
+    border-radius: 2px;
+}

@@ -44,25 +44,25 @@ if( isset( $_pageObj->devInfo ) ) {
         <!-- content ends -->
     </div>
     <footer>
-        <div style="float: right; text-align: right;">
+        <div class="sectionBox">
+            <h3><?php echo $_ctrl->i18n->text('admin_mode'); ?>:</h3>
             <p>
-                <?php echo $_ctrl->i18n->text('admin_mode'); ?>:<br />
                 <?php $authDev = $_ctrl->getServices()->get( 'authDev' );
                 if( is_object( $authDev ) && $authDev->isLoggedIn() ) { ?>
-                [<a href="<?php echo $baseUrl; ?>dev_logout"><?php echo $_ctrl->i18n->text('logout'); ?></a>]
+                    &nbsp;[<a href="<?php echo $baseUrl; ?>dev_logout"><?php echo $_ctrl->i18n->text('logout'); ?></a>]
                 <?php } else { ?>
-                [<a href="<?php echo $baseUrl; ?>dev_login"><?php echo $_ctrl->i18n->text('login'); ?></a>]
+                    &nbsp;[<a href="<?php echo $baseUrl; ?>dev_login"><?php echo $_ctrl->i18n->text('login'); ?></a>]
                 <?php } ?>
             </p>
         </div>
         <?php
         if( isset( $_pageObj->sections[ 'footer' ][ 'lang' ] ) ) {
             $section = $_pageObj->sections[ 'footer' ][ 'lang' ];
-            $html = "<div style=\"float: right; text-align: left;\"><p>{$section{'title'}}</p><ul>\n";
+            $html = "<div class=\"sectionBox\"><h3>" . $_ctrl->i18n->text($section['title']) . "</h3>\n";
             foreach( $section[ 'lists' ] as $link ) {
-                $html .= "<li><a href=\"{$link{1}}\">{$link{0}}</a></li>";
+                $html .= "<p>&nbsp;[<a href=\"{$link{1}}\">{$link{0}}</a>]</p>";
             }
-            $html .= "</ul></div>";
+            $html .= "</div>";
             echo $html;
         }
         ?>
