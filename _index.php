@@ -22,6 +22,12 @@ $app->setModuleOption( 'menus',
         )
     )
 );
+$app->setModuleOption( 'lang', array(
+    'lang_list' => array( 'en', 'ja' ),
+    'ctrl_root' => array(
+        '_docs.{lang}', 'en' => FALSE,
+    ),
+) );
 $app
     ->setOption( 'site_title', 'AmidaMVC PHP Framework' )
     ->start();

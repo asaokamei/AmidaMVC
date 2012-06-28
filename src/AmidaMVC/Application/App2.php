@@ -33,7 +33,7 @@ class App2
                         'value'    => 'ja',
                     ),
                     'onSuccess' => array(
-                        'ctrl_root' => 'docs.ja',
+                        'ctrl_root' => '_docs.ja',
                         'set_option' => array(
                             'template_file' => '_Config/template.ja.php',
                             'language' => 'ja',
@@ -100,12 +100,7 @@ class App2
             // Modules
             'lang' => array(
                 'din'    => array( '\AmidaMVC\Module\Lang',    'new' ),
-                'config' => array(
-                    'lang_list' => array( 'en', 'ja' ),
-                    'ctrl_root' => array(
-                        'docs.{lang}', 'en' => FALSE,
-                    ),
-                ),
+                'config' => array(),
                 'inject' => array(
                     array( 'i18n',    'i18n' ),
                     array( 'session', 'session' )
