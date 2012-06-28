@@ -58,6 +58,72 @@ class App2
                 ),
             )
         );
+        // wishful programming... 
+        $diConfigAuth = array(
+            'auth' => array(
+                'din'    => array( '\AmidaMVC\Tools\AuthBasic', 'get' ),
+                'config' => array(
+                    'password_file' => '_Config/.password',
+                ),
+                'inject' => array(
+                    array( 'load', 'load' ),
+                ),
+            ),
+            'AuthDev' => array(
+                'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
+                'inject' => array(),
+                'config' => array(
+                    array(
+                        'onPathInfo' => array( '/dev_login' ),
+                        'evaluate' => array( 'auth', 'isLogin' ),
+                        'onFail' => array(
+                            'setLoginForm' => '_Config/login_file.md',
+                        ),
+                        'onSuccess' => array(
+                            'redirect' => '/',
+                        ),
+                    ),
+                    array(
+                        'onPathInfo' => array( '/dev_login' ),
+                        'evaluate' => array( 'auth', 'logOut' ),
+                    ),
+                    array(
+                        'onPathInfo' => array( '/admin/' ),
+                        'evaluate' => array( 'auth', 'isAdmin' ),
+                        'onFail' => array(
+                            'setLoginForm' => '_Config/login_file.md',
+                        ),
+                    ),
+                    array(
+                        'onPathInfo' => array( '/' ),
+                        'evaluate' => array( 'auth', 'isLogin' ),
+                        'onSuccess' => array(
+                            'addModuleAfter' => array( 'router', 'filer', 'filer', ),
+                        ),
+                    ),
+                ),
+            ),
+            'Device' => array(
+                'din'    => array( '\AmidaMVC\Module\Config', 'new' ),
+                'inject' => array(),
+                'config' => array(
+                    array(
+                        'onPathInfo' => array( '/' ),
+                        'evaluate' => array( 'request', 'isRetina' ),
+                        'onSuccess' => array(
+                            'setImageType' => 'retina'
+                        ),
+                    ),
+                    array(
+                        'onPathInfo' => array( '/' ),
+                        'evaluate' => array( 'request', 'isSmall' ),
+                        'onSuccess' => array(
+                            'setOption' => array( 'template_file', 'template.small.php' ),
+                        ),
+                    ),
+                ),
+            ),
+        );
     }
     function diCms() {
         $www = realpath( __DIR__ . '/../../www/' );
