@@ -16,24 +16,22 @@ p,span,code {
 }
 .mainbody {
     width: 700px;
-    margin: 20px auto 20px auto;
-    border:2px solid #F0F0F0;
+    margin: 0 auto 0 auto;
+}
+div #content {
+    width: 700px;
+    margin: 0px auto 10px auto;
     padding: 10px 15px 10px 20px;
-    border-radius: 15px;
-    box-shadow: 5px 5px 5px #F0F0F0;
 }
 header {
+    padding: 0;
+    background-color: #F0F0F0;
 }
 header #headTitle {
-    margin: 0 -5px 10px -5px;
-    border: 1px solid #cccccc;
-    box-shadow: 5px 5px 5px #cccccc;
-    border-radius: 5px;
     padding: 10px 5px 10px 15px;
     background: #d2691e;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: normal;
-    border-radius: 4px;
 }
 header #headTitle a {
     text-decoration: none;
@@ -43,13 +41,23 @@ header #headTitle a:hover {
     text-decoration: none;
     color: pink;
 }
+header p.headSubTitle {
+    color: white;
+    font-size: 14px;
+}
+footer {
+    background: #F0F0F0;
+    border-top: 2px solid #d2691e;
+    padding: 5px 5px 5px 5px;
+    margin: 20px 0 10px -5px;
+}
 h1 {
     background: #F0F0F0;
     font-size: 20px;
     line-height: 1.5em;
     padding: 5px 5px 5px 5px;
-    margin: 20px 0 15px -5px;
-    border-left: 8px solid #d2691e;
+    margin: 10px 0 15px -5px;
+    border-left: 10px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
 }
 h2 {
@@ -100,32 +108,24 @@ dd {
     margin-top: 0.3em;
     margin-left: 3em;
 }
-footer {
-    background: #F0F0F0;
-    padding: 5px 5px 5px 5px;
-    margin: 20px 0 0 -5px;
-    border-left: 10px solid #d2691e;
-    border-right: 10px solid #d2691e;
-    box-shadow: 5px 5px 5px #cccccc;
-}
-footer p {
+div .sectionBox p {
     font-size: 12px;
     font-weight: normal;
     letter-spacing: 1px;
     line-height: 1em;
 }
-footer li {
+div .sectionBox li {
     font-size: 12px;
     font-weight: normal;
     letter-spacing: 1px;
     line-height: 1em;
 }
-footer .sectionBox {
+div .sectionBox {
     float: right;
     width: 120px;
     padding: 5px;
 }
-footer .sectionBox h3 {
+div .sectionBox h3 {
     font-size: 12px;
     font-weight: bold;
     margin: 0 0 2px 0;

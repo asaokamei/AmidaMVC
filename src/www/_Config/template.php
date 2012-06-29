@@ -31,6 +31,11 @@ if( isset( $_pageObj->devInfo ) ) {
     <header>
         <div id="headTitle">
             <a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a>
+            <?php
+            if( $_ctrl->getOption( 'site_sub_title' ) ) {
+                echo "<p class=\"headSubTitle\">" . $_ctrl->getOption( 'site_sub_title' ) . "</p>\n";
+            }
+            ?>
         </div>
         <?php
         if( $topNav = $_pageObj->getComponent( 'topNav' ) ) {
@@ -66,7 +71,7 @@ if( isset( $_pageObj->devInfo ) ) {
             echo $html;
         }
         ?>
-        <div>
+        <div class="sectionBox" style="width:250px;float: left;">
             <p>AppSimple Suites by AmidaMVC.<br />
                 https://github.com/asaokamei/AmidaMVC</p>
         </div>
