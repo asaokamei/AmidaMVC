@@ -20,15 +20,15 @@ p,span,code {
 }
 div #content {
     width: 700px;
-    margin: 0px auto 10px auto;
-    padding: 10px 15px 10px 20px;
+    margin: 5px auto 10px auto;
+    padding: 0px 15px 10px 20px;
 }
 header {
-    padding: 0;
+    padding:0;
     background-color: #F0F0F0;
 }
 header #headTitle {
-    padding: 10px 5px 10px 15px;
+    padding: 15px 5px 10px 15px;
     background: #d2691e;
     font-size: 24px;
     font-weight: normal;
@@ -44,6 +44,9 @@ header #headTitle a:hover {
 header p.headSubTitle {
     color: white;
     font-size: 14px;
+}
+header .headMenu {
+    padding: 0 0 0 5px;
 }
 footer {
     background: #F0F0F0;

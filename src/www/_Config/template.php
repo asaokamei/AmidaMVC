@@ -39,7 +39,7 @@ if( isset( $_pageObj->devInfo ) ) {
         </div>
         <?php
         if( $topNav = $_pageObj->getComponent( 'topNav' ) ) {
-            echo $topNav;
+            echo "<div class='headMenu'>{$topNav}</div>";
         }
         ?>
     </header>
