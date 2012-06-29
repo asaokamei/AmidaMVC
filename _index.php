@@ -31,4 +31,5 @@ $app->setModuleOption( 'lang', array(
 ) );
 $app
     ->setOption( 'site_title', 'AmidaMVC PHP Framework' )
+    ->setOption( 'site_sub_title', 'A PHP Framework turned into CMS. dah...' )
     ->start();
