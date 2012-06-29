@@ -14,7 +14,7 @@ class NavBar
     function getMenu( $menu, $max_score=NULL )
     {
         $this->max_score = $max_score;
-        $class ='nav nav-pills';
+        $class ='nav nav-tabs';
         $html  = $this->_ul( $menu, $class );
         return $html;
     }
