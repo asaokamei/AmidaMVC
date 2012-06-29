@@ -44,9 +44,13 @@ if( isset( $_pageObj->devInfo ) ) {
         ?>
     </header>
     <div id="content" >
-        <!-- content starts -->
-        <?php echo $_pageObj->getContent(); ?>
-        <!-- content ends -->
+        <div class="container">
+            <div class="span8">
+                <!-- content starts -->
+                <?php echo $_pageObj->getContent(); ?>
+                <!-- content ends -->
+            </div>
+        </div>
     </div>
     <footer>
         <div class="sectionBox">
