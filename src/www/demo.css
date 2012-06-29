@@ -61,17 +61,17 @@ h1 {
     font-size: 20px;
     line-height: 1.5em;
     padding: 5px 5px 5px 5px;
-    margin: 10px 0 15px -5px;
-    border-left: 10px solid #d2691e;
+    margin: 10px 0 15px -15px;
+    border-left: 15px solid #d2691e;
     box-shadow: 3px 3px 3px #cccccc;
 }
 h2 {
     background: #F4F4F0;
     font-size: 16px;
     line-height: 1.5em;
-    border-left: 2px solid #d2691e;
+    border-left: 4px solid #d2691e;
     padding: 3px 5px 3px 5px;
-    margin: 10px 0 10px -2px;
+    margin: 10px 0 10px -4px;
 }
 h3 {
     font-size: 14px;
