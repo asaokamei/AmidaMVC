@@ -1,14 +1,17 @@
 #Top of Demo
 
-*   file at subdirectory: [sub/sub.html](sub/sub.html)
-*   php source code: [sub/sub2.php](sub/sub2.php), [text.php](text.php)
+*   html sample: [index.html](index.html)
 *   application1: [app1/list](app1/list)
 *   application using Router: [route/list](route/list)
-*   css file: [demo.css](demo.css)
+
+###Hello Applications
+
+*   [hello in markdown](hello.md)
+*   [hello in HTML](hello.html)
+*   [hello in PHP](hello.php)
 
 ##links causing error
 *   application1 error: [app1/test](app1/test)
-*   sub folder file not found: [sub/sub](sub/sub)
 
 ##dev staff
 *   show debug info [debug on](_dev/)
