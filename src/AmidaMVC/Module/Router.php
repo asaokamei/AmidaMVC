@@ -14,7 +14,7 @@ class Router implements IfModule
     var $config = NULL;
     // +-------------------------------------------------------------+
     function __construct( $option=array() ) {
-        $this->_setup( $option );
+        $this->config = $option;
     }
     /**
      * initialize class.
@@ -22,7 +22,7 @@ class Router implements IfModule
      * @return mixed|void
      */
     function _init( $option=array() ) {
-        $this->_setup( $option );
+        $this->_setup( $this->config );
     }
     function _setup( $option ) {
         if( isset( $option[ 'indexes' ] ) ) {
@@ -33,8 +33,8 @@ class Router implements IfModule
                 $this->_indexes[] = $option[ 'indexes' ];
             }
         }
-        if( isset( $this->config[ 'routes' ] ) ) {
-            call_user_func( array( $this->_routeClass, 'set' ), $this->config[ 'routes' ] );
+        if( isset( $option[ 'routes' ] ) ) {
+            call_user_func( array( $this->_routeClass, 'set' ), $option[ 'routes' ] );
         }
     }
     function injectRoute( $route ) {

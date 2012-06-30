@@ -29,6 +29,7 @@ $app->setModuleOption( 'lang', array(
     ),
     'match_url' => '^{lang}\\/',
 ) );
+$app->get( '/demo/func', function() { return "#closure\n output from closure."; }, array( 'type' => 'markdown' ) );
 $app
     ->setOption( 'site_title', 'AmidaMVC PHP Framework' )
     ->setOption( 'site_sub_title', 'A PHP Framework turned into CMS. dah...' )

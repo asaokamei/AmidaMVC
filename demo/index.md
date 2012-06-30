@@ -10,6 +10,10 @@
 *   [hello in HTML](hello.html)
 *   [hello in PHP](hello.php)
 
+###Output from Closure
+
+*   [hello closure](func)
+
 ##links causing error
 *   application1 error: [app1/test](app1/test)
 
