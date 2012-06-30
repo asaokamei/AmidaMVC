@@ -3,7 +3,7 @@
 ##マニュアルでインストール
 
 githubからダウンロード
-: https://github.com/asaokamei/AmidaMVC
+: git clone https://github.com/asaokamei/AmidaMVC
 
 アパッチのドキュメントルートに新しいフォルダーを作成する。
 : 例：mkdir /doc/root/home
