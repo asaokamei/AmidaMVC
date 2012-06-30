@@ -73,7 +73,7 @@ class Filer implements IfModule
      */
     function _setMenu( &$loadInfo )
     {
-        // TODO: rewrite for file being a closure. 
+        // TODO: rewrite for file being a closure.
         // set JavaScript and CSS files for developer's menu...
         if( !empty( $this->listJs ) ) {
             foreach( $this->listJs as $js ) {
