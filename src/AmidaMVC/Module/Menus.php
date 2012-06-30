@@ -9,6 +9,8 @@ class Menus
     protected $_pageObj;
     /** @var \AmidaMVC\Tools\NavBar */
     protected $nav = NULL;
+    /** @var \AmidaMVC\Tools\I18n */
+    protected $i18n = NULL;
     /** @var array */
     protected $menu = array();
     /** @var string name of component */
@@ -20,6 +22,10 @@ class Menus
         if( isset( $config[ 'menu' ] ) ) {
             $this->menu = $config[ 'menu' ];
         }
+    }
+    function injectI18n( $i18n ) {
+        $this->i18n = $i18n;
+        $this->i18n->textSection( 'Menus' );
     }
     /**
      * @param $nav
@@ -52,6 +58,8 @@ class Menus
     function _prepMenu( &$menu ) {
         $max_score = -1;
         foreach( $menu as &$item ) {
+            $item[ 'title' ] = ( isset( $item['title'] ) ) ?
+                $this->i18n->text( $item[ 'title' ] ) : '';
             if( isset( $item[ 'url' ] ) ) {
                 $item[ 'score' ] = $this->_score( $item['url'] );
                 if( $item[ 'score' ] >  $max_score ) $max_score = $item[ 'score' ];
