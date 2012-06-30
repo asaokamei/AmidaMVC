@@ -88,7 +88,7 @@ class Filer implements IfModule
         /** @var $path_folder string     path folder where filer is looking at */
         $path_folder = $this->_ctrl->getPathInfo();
         $path_folder = ( substr( $path_folder, -1 ) == '/' ) ? substr( $path_folder, 0, -1 ) : dirname( $path_folder );
-        if( isset( $loadInfo[ 'file' ] ) ) {
+        if( isset( $loadInfo[ 'file' ] ) && is_string( $loadInfo['file'] ) ) {
             $filer_folder = ( is_dir( $loadInfo[ 'file' ] ) ) ?
                 $loadInfo[ 'file' ] : dirname( $loadInfo[ 'file'] );
         }
@@ -107,15 +107,17 @@ class Filer implements IfModule
         $this->filerInfo[ 'file_list' ] = $file_list;
 
         // list backup files
-        $backup_glob   = $this->_backupFileName( $loadInfo[ 'file' ], '*' );
-        $backup_list   = call_user_func( array( $this->_loadClass, 'glob' ), $backup_glob );
-        if( !empty( $backup_list ) ) {
-            foreach( $backup_list as &$backup ) {
-                $this->filerInfo[ 'backup_list' ][] = basename( $backup );
+        if( !is_callable( $loadInfo[ 'file' ] ) ) {
+            $backup_glob   = $this->_backupFileName( $loadInfo[ 'file' ], '*' );
+            $backup_list   = call_user_func( array( $this->_loadClass, 'glob' ), $backup_glob );
+            if( !empty( $backup_list ) ) {
+                foreach( $backup_list as &$backup ) {
+                    $this->filerInfo[ 'backup_list' ][] = basename( $backup );
+                }
             }
         }
         // set up menu
-        $file_to_edit = $this->_getFileToEdit( $loadInfo[ 'file' ] );
+        $file_to_edit = ( is_callable( $loadInfo[ 'file' ] ) ) ? FALSE: $this->_getFileToEdit( $loadInfo[ 'file' ] );
         if( !isset( $loadInfo[ 'file' ] ) ) {
         }
         elseif( call_user_func( array( $this->_loadClass, 'exists' ), $file_to_edit ) ) {
@@ -129,7 +131,7 @@ class Filer implements IfModule
         }
         else {
             $loadInfo[ 'file_edited' ] = FALSE;
-            $this->filerInfo[ 'file_src' ]   = basename( $loadInfo[ 'file' ] );
+            $this->filerInfo[ 'file_src' ]   = ( is_callable( $loadInfo[ 'file' ] ) ) ? FALSE: basename( $loadInfo[ 'file' ] );
             $this->filerInfo[ 'file_cmd' ][] = '_view';
             $this->filerInfo[ 'file_cmd' ][] = '_fEdit';
             $this->filerInfo[ 'file_cmd' ][] = '_fPurge';
