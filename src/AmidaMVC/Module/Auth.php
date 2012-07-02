@@ -163,6 +163,7 @@ class Auth implements IfModule
         $this->_auth->logout();
     }
     function drawLogin() {
+        $this->i18n->textSection( '_template' );
         $section = array(
             'title' => $this->i18n->text( 'admin_mode' ),
             'type'  => 'list',
@@ -170,11 +171,12 @@ class Auth implements IfModule
         );
         $section[ 'lists' ][] = array(
             $this->i18n->text('login'),
-            $this->_ctrl->getPathInfo() . '/dev_login'
+            $this->_ctrl->getBaseUrl( '/dev_login' ),
         );
         $this->_pageObj->section->set( 'auth', $section );
     }
     function drawLogout() {
+        $this->i18n->textSection( '_template' );
         $section = array(
             'title' => $this->i18n->text( 'admin_mode' ),
             'type'  => 'list',
@@ -182,7 +184,7 @@ class Auth implements IfModule
         );
         $section[ 'lists' ][] = array(
             $this->i18n->text('logout'),
-            $this->_ctrl->getPathInfo() . '/dev_logout'
+            $this->_ctrl->getBaseUrl( '/dev_logout' ),
         );
         $this->_pageObj->section->set( 'auth', $section );
     }

@@ -104,6 +104,7 @@ class Lang extends AModule implements IfModule
         return $extra;
     }
     function drawSection() {
+        $this->i18n->textSection( '_template' );
         $section = array(
             'title' => $this->i18n->text( 'select_lang' ),
             'type'  => 'list',
