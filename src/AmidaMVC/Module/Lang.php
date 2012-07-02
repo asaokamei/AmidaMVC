@@ -119,7 +119,7 @@ class Lang extends AModule implements IfModule
             }
             $section[ 'lists' ][] = array( $name, $link );
         }
-        $this->_pageObj->sections[ 'footer' ]['lang'] = $section;
+        $this->_pageObj->section->set( 'lang', $section );
     }
     // +-------------------------------------------------------------+
     function ctrlRoot() {
