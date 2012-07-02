@@ -201,7 +201,8 @@ class App2
             'menus' => array(
                 'din'    => array( '\AmidaMVC\Module\Menus', 'new' ),
                 'inject' => array(
-                    array( 'nav', 'navBar' )
+                    array( 'nav', 'navBar' ),
+                    array( 'i18n', 'i18n' ),
                 ),
             ),
             // Controller

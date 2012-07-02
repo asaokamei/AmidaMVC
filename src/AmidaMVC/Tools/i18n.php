@@ -94,6 +94,11 @@ class i18n
     function textSection( $section ) {
         $this->textSection = $section;
     }
+    function html() {
+        $args  = func_get_args();
+        $text = call_user_func_array( array( $this, 'text' ), $args );
+        return nl2br( $text );
+    }
     function text( $text ) {
         if( !isset( $this->textData[ $this->textSection ][ $text ] ) ) {
             return $text;

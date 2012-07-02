@@ -114,11 +114,10 @@ $simpleMenuList = array(
     <!-- adding new folder -->
     <div id="filerAddFolder">
         <a href="javascript:$('#filerAddFolder').toggle('fast');" class="close">×</a>
-        add new folder:
+        <?php echo $_ctrl->i18n->html('add_folder', $_filerObj->curr_folder ); ?>add new folder:
         <form method="post" name="_addFolder" action="<?php echo $self?>/_fDir" class="well form-inline">
             <label>
-                <input type="text" name="_folderName" width="50"
-                                  placeholder="new folder at '/<?php echo $_filerObj->curr_folder; ?>'">
+                <input type="text" name="_folderName" width="50">
             </label>
             <input class="btn-small btn-primary" type="submit" name="submit" value="add new folder"/>
         </form>

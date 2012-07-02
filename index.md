@@ -33,14 +33,6 @@ This git entry itself is a demo site.
 download the source code from the [github](https://github.com/asaokamei/AmidaMVC) 
 and deploy it anywhere under root document of Apache with PHP >= 5.3.0. Then, access the url. 
 
-some other interesting demo: 
-
-*   [demo#1: simple site](demo1-simple/)
-*   [demo#2: simple with template](demo2-simple/)
-*   [demo#2: simple but from array set (no file access)](demo2-array/)
-*   [demo#3: source code view](demo3-src/)
-*   [demo#4: like a CMS](demo4-cms/)
-
 Demos below are for AmidaMVC ver0.1 only.
 probably not going to work.
 
