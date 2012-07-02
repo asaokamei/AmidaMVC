@@ -268,13 +268,19 @@ class App2
             ),
             'authDevFiler' => array(
                 'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
+                'inject' => array(
+                    array( 'i18n', 'i18n' ),
+                ),
                 'config' => array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/' ),
-                        'onFail' => array(),
+                        'onFail' => array(
+                            'drawLogin' => array(),
+                        ),
                         'onSuccess' => array(
                             'addModuleAfter' => array( 'router', 'filer', 'filer', ),
+                            'drawLogout' => array(),
                         ),
                     ),
                 )

@@ -22,6 +22,9 @@ class Auth implements IfModule
     protected $_ctrl;
     /** @var \AmidaMVC\Framework\PageObj */
     protected $_pageObj;
+
+    /** @var \AmidaMVC\Tools\i18n */
+    protected $i18n;
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -41,6 +44,9 @@ class Auth implements IfModule
             $this->_evaluateOn = $option[ 'evaluateOn' ];
         }
         $this->option = array_merge( $this->_defaultOptions, $option );
+    }
+    public function injectI18n( $i18n ) {
+        $this->i18n = $i18n;
     }
     // +-------------------------------------------------------------+
     /**
@@ -155,6 +161,30 @@ class Auth implements IfModule
      */
     function logout( $message ) {
         $this->_auth->logout();
+    }
+    function drawLogin() {
+        $section = array(
+            'title' => $this->i18n->text( 'admin_mode' ),
+            'type'  => 'list',
+            'lists' => array(),
+        );
+        $section[ 'lists' ][] = array(
+            $this->i18n->text('login'),
+            $this->_ctrl->getPathInfo() . '/dev_login'
+        );
+        $this->_pageObj->section->set( 'auth', $section );
+    }
+    function drawLogout() {
+        $section = array(
+            'title' => $this->i18n->text( 'admin_mode' ),
+            'type'  => 'list',
+            'lists' => array(),
+        );
+        $section[ 'lists' ][] = array(
+            $this->i18n->text('logout'),
+            $this->_ctrl->getPathInfo() . '/dev_logout'
+        );
+        $this->_pageObj->section->set( 'auth', $section );
     }
     // +-------------------------------------------------------------+
 }
