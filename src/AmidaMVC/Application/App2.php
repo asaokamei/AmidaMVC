@@ -115,10 +115,10 @@ class App2
                 'inject' => array(),
                 'config' => array(
                     array(
-                        'onPathInfo' => array( '/' ),
+                        'onPathInfo' => array( '/common/images/' ),
                         'evaluate' => array( 'request', 'isRetina' ),
                         'onSuccess' => array(
-                            'setImageType' => 'retina'
+                            'rewriteUrl' => array( '/common/images/', '/common/images_retina/' ),
                         ),
                     ),
                     array(
