@@ -1,8 +1,16 @@
 Test Markdown File
 ==================
 
+ちょっと編集
+
 This file is written with markdown description.  
-it's working!!
+it's working!! Filer changed. 
+
+Now validates post input. 
+
+##404 error page
+
+Now has cool 404 error page. 
 
 ## Lists
 
