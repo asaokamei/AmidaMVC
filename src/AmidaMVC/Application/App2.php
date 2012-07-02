@@ -173,6 +173,9 @@ class App2
             'navBar' => array(
                 'din' => array( '\AmidaMVC\Tools\NavBar', 'get' ),
             ),
+            'section' => array(
+                'din' => array( '\AmidaMVC\Tools\Section', 'get' ),
+            ),
             // Modules
             'lang' => array(
                 'din'    => array( '\AmidaMVC\Module\Lang',    'new' ),
@@ -205,10 +208,13 @@ class App2
                     array( 'i18n', 'i18n' ),
                 ),
             ),
+            // Page Object
             'pageObj' => array(
                 'din'    => array( '\AmidaMVC\Framework\PageObj', 'new' ),
                 'config' => array(),
-                'inject' => array(),
+                'inject' => array(
+                    array( 'section', 'section' ),
+                ),
             ),
             // Controller
             'controller' => array(
