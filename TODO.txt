@@ -2,7 +2,11 @@ ToDo List
 
 * refactor AmidaMVC
 
-[ ] Language support
+[ ] modify Filer
+    [ ] add file under ctrl_root folder.
+    [ ] ignore closure and controller.
+[ ] modify Router and Loader to use 'func' for closure.
+[ ] Config to load Auth* modules according to pathInfo.
 [ ] PHPUnit using demo#4.
 [ ] use Config module; remove option stuff from Controller.
 [O] use doc_root as well as ctrl_root.
@@ -47,6 +51,7 @@ ToDo List
 [X] 6/15 i18n/language support.
 [X] 6/25 Menu using bootstrap's navBar
     [X] dynamic menu using pathInfo and url in menu.
+[X] Language support -> Lang module added
 
 * Demo in AmidaMVC
 
