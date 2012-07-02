@@ -135,7 +135,7 @@ class Controller extends AmidaChain
     function start( $pageObj=NULL ) {
         $this->pageObj =
             ( $pageObj ) ?: ( $this->pageObj ) ?:
-            $this->getServices()->get( '\AmidaMVC\Framework\PageObj' );
+            $this->getServices()->get( 'pageObj' );
         $action = $this->defaultAct();
         return $this->dispatch( $action, $this->pageObj );
     }

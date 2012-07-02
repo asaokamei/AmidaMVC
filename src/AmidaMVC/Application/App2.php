@@ -205,6 +205,11 @@ class App2
                     array( 'i18n', 'i18n' ),
                 ),
             ),
+            'pageObj' => array(
+                'din'    => array( '\AmidaMVC\Framework\PageObj', 'new' ),
+                'config' => array(),
+                'inject' => array(),
+            ),
             // Controller
             'controller' => array(
                 'din'    => array( '\AmidaMVC\Framework\Controller', 'get' ),
