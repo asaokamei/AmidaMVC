@@ -12,7 +12,7 @@ body {
 header {
 }
 div #content {
-    padding: 0px 15px 10px 20px;
+    padding: 0 15px 10px 20px;
 }
 footer {
     background: #f0f4f8;
@@ -23,9 +23,8 @@ footer {
 header #headTitle {
     line-height: 1em;
     padding: 20px 5px 10px 15px;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: normal;
-    font-family: "Garmond";
 }
 header #headTitle a {
     text-decoration: none;
@@ -48,11 +47,9 @@ header .headMenu {
 table {
     border: #CCCCCC solid 2px;
     border-collapse:collapse;
-    box-shadow: 2px 2px 2px #cccccc;
-    font-size: 1.0em;
 }
 th {
-    background-color: #F0F0F0;
+    background-color: #f0f4f8;
     border: #E0E0E0 solid 1px;
     padding:3px;
 }
@@ -62,27 +59,15 @@ td {
 }
 
 dt {
-    font-size: 16px;
-    font-weight: bold;
     margin-top: 0.8em;
     margin-left: 1em;
 }
 dd {
-    font-size: 16px;
-    margin-top: 0.3em;
     margin-left: 3em;
 }
 div .sectionBox p {
-    font-size: 12px;
-    font-weight: normal;
-    letter-spacing: 1px;
-    line-height: 1em;
 }
 div .sectionBox li {
-    font-size: 12px;
-    font-weight: normal;
-    letter-spacing: 1px;
-    line-height: 1em;
 }
 footer div .sectionBox {
     float: right;
