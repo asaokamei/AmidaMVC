@@ -6,19 +6,19 @@ $app->setCtrlRoot( __DIR__ );
 $app->setModuleOption( 'router', array( 'indexes' => 'README.md' ) );
 $app->setModuleOption( 'menus',
     array( 'menu' => array(
-            array( 'url' => '',       'title' => 'home' ),
-            array( 'url' => 'docs/',  'title' => 'docs' ),
-            array( 'url' => 'src/',   'title' => 'src',
+            array( 'url' => '',       'title' => 'home', 'icon' => 'home' ),
+            array( 'url' => 'docs/',  'title' => 'docs', 'icon' => 'book' ),
+            array( 'url' => 'src/',   'title' => 'src',  'icon' => 'folder-open',
                 'pages' => array(
                     array( 'url' => 'src/',          'title' => 'src_top' ),
                     array( 'url' => 'src/AmidaMVC/', 'title' => 'src_code' ),
                     array( 'url' => 'src/www/',      'title' => 'src_www' ),
                     array( 'divider' => TRUE ),
                     array( 'url' => 'vendor/',       'title' => 'src_vendor' ),
+                    array( 'url' => 'tests/',        'title' => 'tests' ),
                 )
             ),
-            array( 'url' => 'tests/', 'title' => 'tests' ),
-            array( 'url' => 'demo/',  'title' => 'demo' ),
+            array( 'url' => 'demo/',  'title' => 'demo', 'icon' => 'pencil' ),
         )
     )
 );

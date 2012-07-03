@@ -40,7 +40,7 @@ if( isset( $_pageObj->devInfo ) ) {
             </div>
             <?php
             if( $topNav = $_pageObj->getComponent( 'topNav' ) ) {
-                echo "<div class='headMenu'>{$topNav}</div>";
+                echo "<div class='headMenu'>" . $topNav->draw( 'tabs' ) ."</div>";
             }
             ?>
         </header>

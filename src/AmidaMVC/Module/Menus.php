@@ -41,15 +41,8 @@ class Menus
         $this->_ctrl    = $_ctrl;
         $this->_pageObj = $_pageObj;
         $max_score = $this->_prepMenu( $this->menu );
-        $topNav = $this->getMenu( $max_score );
-        $_pageObj->setComponents( $this->componentName, $topNav );
-    }
-    /**
-     * @param int $max_score
-     * @return string
-     */
-    function getMenu( $max_score ) {
-        return $this->nav->getMenu( $this->menu, $max_score );
+        $this->nav->setMenu( $this->menu, $max_score );
+        $_pageObj->setComponents( $this->componentName, $this->nav );
     }
     /**
      * @param array $menu
