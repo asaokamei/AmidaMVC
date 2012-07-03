@@ -50,9 +50,18 @@ class PageObj
 
     /** @var array   page components such as menu, side bar, etc. */
     var $components = array();
+
+    /** @var \AmidaMVC\Tools\Section */
+    var $section = NULL;
     // +-------------------------------------------------------------+
     function __construct() {
 
+    }
+    /**
+     * @param \AmidaMVC\Tools\Section $section
+     */
+    function injectSection( $section ) {
+        $this->section = $section;
     }
     // +-------------------------------------------------------------+
     /**

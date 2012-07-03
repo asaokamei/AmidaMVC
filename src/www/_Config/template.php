@@ -49,27 +49,9 @@ if( isset( $_pageObj->devInfo ) ) {
         <!-- content ends -->
     </div>
     <footer>
-        <div class="sectionBox">
-            <h3><?php echo $_ctrl->i18n->text('admin_mode'); ?>:</h3>
-            <p>
-                <?php $authDev = $_ctrl->getServices()->get( 'authDev' );
-                if( is_object( $authDev ) && $authDev->isLoggedIn() ) { ?>
-                    &nbsp;[<a href="<?php echo $baseUrl; ?>dev_logout"><?php echo $_ctrl->i18n->text('logout'); ?></a>]
-                <?php } else { ?>
-                    &nbsp;[<a href="<?php echo $baseUrl; ?>dev_login"><?php echo $_ctrl->i18n->text('login'); ?></a>]
-                <?php } ?>
-            </p>
-        </div>
         <?php
-        if( isset( $_pageObj->sections[ 'footer' ][ 'lang' ] ) ) {
-            $section = $_pageObj->sections[ 'footer' ][ 'lang' ];
-            $html = "<div class=\"sectionBox\"><h3>" . $_ctrl->i18n->text($section['title']) . "</h3>\n";
-            foreach( $section[ 'lists' ] as $link ) {
-                $html .= "<p>&nbsp;[<a href=\"{$link{1}}\">{$link{0}}</a>]</p>";
-            }
-            $html .= "</div>";
-            echo $html;
-        }
+        echo $_pageObj->section->draw( 'auth' );
+        echo $_pageObj->section->draw( 'lang' );
         ?>
         <div class="sectionBox" style="width:250px;float: left;">
             <p>AppSimple Suites by AmidaMVC.<br />

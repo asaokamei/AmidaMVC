@@ -173,6 +173,9 @@ class App2
             'navBar' => array(
                 'din' => array( '\AmidaMVC\Tools\NavBar', 'get' ),
             ),
+            'section' => array(
+                'din' => array( '\AmidaMVC\Tools\Section', 'get' ),
+            ),
             // Modules
             'lang' => array(
                 'din'    => array( '\AmidaMVC\Module\Lang',    'new' ),
@@ -203,6 +206,14 @@ class App2
                 'inject' => array(
                     array( 'nav', 'navBar' ),
                     array( 'i18n', 'i18n' ),
+                ),
+            ),
+            // Page Object
+            'pageObj' => array(
+                'din'    => array( '\AmidaMVC\Framework\PageObj', 'new' ),
+                'config' => array(),
+                'inject' => array(
+                    array( 'section', 'section' ),
                 ),
             ),
             // Controller
@@ -257,13 +268,19 @@ class App2
             ),
             'authDevFiler' => array(
                 'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
+                'inject' => array(
+                    array( 'i18n', 'i18n' ),
+                ),
                 'config' => array(
                     'authArea' => 'authDev',
                     'evaluateOn' => array(
                         'onPathInfo' => array( '/' ),
-                        'onFail' => array(),
+                        'onFail' => array(
+                            'drawLogin' => array(),
+                        ),
                         'onSuccess' => array(
                             'addModuleAfter' => array( 'router', 'filer', 'filer', ),
+                            'drawLogout' => array(),
                         ),
                     ),
                 )
