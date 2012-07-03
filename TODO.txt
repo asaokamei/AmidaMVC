@@ -52,6 +52,7 @@ ToDo List
 [X] 6/25 Menu using bootstrap's navBar
     [X] dynamic menu using pathInfo and url in menu.
 [X] Language support -> Lang module added
+[X] AuthBasic works.
 
 * Demo in AmidaMVC
 
