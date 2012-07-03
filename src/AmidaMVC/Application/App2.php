@@ -241,14 +241,15 @@ class App2
                 )
             ),
             'authDev' => array(
-                'din'    => array( '\AmidaMVC\Tools\AuthNot',    'new', 'authDev' ),
+                'din'    => array( '\AmidaMVC\Tools\AuthBasic',    'new', 'authDev' ),
                 'config' => array(
-                    'password_file' => 'dev.password',
+                    'password_file' => '_Config/.dev.password',
                     'authArea'      => 'authDev'
                 ),
                 'inject' => array(
                     array( 'session', 'session' ),
                     array( 'request', 'request' ),
+                    array( 'load', 'load' ),
                 ),
             ),
             'authDevLogin' => array(
