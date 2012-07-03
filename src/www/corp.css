@@ -8,20 +8,16 @@ html {
 body {
 }
 .mainbody {
-    margin: 0 auto 0 auto;
 }
 header {
-    padding: 0;
 }
 div #content {
-    margin: 5px auto 10px auto;
     padding: 0px 15px 10px 20px;
 }
 footer {
     background: #f0f4f8;
     border-top: 2px solid #0044cc;
     padding: 5px 5px 5px 5px;
-    margin: 20px 0 10px -5px;
 }
 /* inside header */
 header #headTitle {
@@ -40,8 +36,9 @@ header #headTitle a:hover {
     color: #0e90d2;
 }
 header p.headSubTitle {
+    margin: 5px 0 5px 0;
     line-height: 1em;
-    color: #333333;
+    color: #666666;
     font-size: 14px;
 }
 header .headMenu {
