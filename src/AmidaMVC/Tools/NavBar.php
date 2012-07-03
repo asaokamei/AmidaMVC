@@ -17,7 +17,7 @@ class NavBar
             </a>
             %2$s
             </li>',
-        '' => '',
+        'icon' => '<i class="icon-%s"></i> ',
     );
     protected $pill = array();
     protected $tags = array();
@@ -107,7 +107,7 @@ class NavBar
             $title = ( isset( $item[ 'title' ] ) ) ? $item[ 'title' ] : '';
             $score = ( isset( $item[ 'score' ] ) ) ? $item[ 'score' ] : 0;
             $active = ( $score >= $this->max_score ) ? ' active' : '';
-            if( isset( $item[ 'icon' ] ) ) $title = '<i class="icon-' . $item['icon'] . '"></i> ' . $title;
+            if( isset( $item[ 'icon' ] ) ) $title = $this->_text( 'icon', $item['icon'] ) . $title;
             if( isset( $item[ 'pages' ] ) ) {
                 $sub = $this->_ul( $item['pages'], 'subUl' );
                 $html .= $this->_text( 'liSub', $title, $sub, $active );
