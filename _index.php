@@ -10,12 +10,11 @@ $app->setModuleOption( 'menus',
             array( 'url' => 'docs/',  'title' => 'docs', 'icon' => 'book' ),
             array( 'url' => 'src/',   'title' => 'src',  'icon' => 'folder-open',
                 'pages' => array(
-                    array( 'url' => 'src/',          'title' => 'src_top' ),
                     array( 'url' => 'src/AmidaMVC/', 'title' => 'src_code' ),
                     array( 'url' => 'src/www/',      'title' => 'src_www' ),
+                    array( 'url' => 'tests/',        'title' => 'tests' ),
                     array( 'divider' => TRUE ),
                     array( 'url' => 'vendor/',       'title' => 'src_vendor' ),
-                    array( 'url' => 'tests/',        'title' => 'tests' ),
                 )
             ),
             array( 'url' => 'demo/',  'title' => 'demo', 'icon' => 'pencil' ),
