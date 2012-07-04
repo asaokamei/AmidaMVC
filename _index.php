@@ -30,7 +30,7 @@ $app->setModuleOption( 'lang', array(
 ) );
 $app->get( '/demo/func', function() { return "#closure\n output from closure."; }, array( 'type' => 'markdown' ) );
 $app
-    ->setOption( 'template_file', '_Config/template.corp.php' )
+    ->setOption( 'template_file', '_Config/template.boot.php' )
     ->setOption( 'site_title', 'AmidaMVC PHP Framework' )
     ->setOption( 'site_sub_title', 'A PHP Framework turned into CMS. dah...' )
     ->start();

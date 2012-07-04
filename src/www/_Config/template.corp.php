@@ -54,6 +54,7 @@ if( isset( $_pageObj->devInfo ) ) {
             <?php
             echo $_pageObj->section->draw( 'auth' );
             echo $_pageObj->section->draw( 'lang' );
+            echo $_pageObj->section->draw( 'template' );
             ?>
         </div>
         <footer class="span12">

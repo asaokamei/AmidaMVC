@@ -16,7 +16,7 @@ class App2
 
         $modules = array(
             //'authAdminOnly',
-            'lang',
+            'lang', 'template',
             'authDevLogin', 'authDevLogout', 'authDevFiler',
             'router',       'loader',        'menus',      'emitter',
         );
@@ -179,6 +179,14 @@ class App2
             // Modules
             'lang' => array(
                 'din'    => array( '\AmidaMVC\Module\Lang',    'new' ),
+                'config' => array(),
+                'inject' => array(
+                    array( 'i18n',    'i18n' ),
+                    array( 'session', 'session' )
+                ),
+            ),
+            'template' => array(
+                'din'    => array( '\AmidaMVC\Module\Template',    'new' ),
                 'config' => array(),
                 'inject' => array(
                     array( 'i18n',    'i18n' ),
