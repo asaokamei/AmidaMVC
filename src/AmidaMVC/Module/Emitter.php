@@ -131,12 +131,9 @@ class Emitter extends AModule implements IfModule
         if( $_pageObj->contentType() == 'html' ) {
             $emit     = $this->_emitClass;
             // if template_file is set, use it as relative to ctrl_root.
+            $template = NULL;
             if( $_ctrl->getOption( 'template_file' ) ) {
                 $template = $_ctrl->findFile( $_ctrl->getOption( 'template_file' ) );
-            }
-            else {
-                // or use the template in the AppSimple folder as default.
-                $template = __DIR__ . '/template.php';
             }
             $content_data = array( '_ctrl' => $_ctrl, '_pageObj' => $_pageObj );
             $content = $emit::inject( $template, $content_data );
