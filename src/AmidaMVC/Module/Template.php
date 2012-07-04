@@ -10,6 +10,7 @@ class Template extends AModule implements IfModule
         'boot' => 'bootstrap'
     );
     protected $var_name = 'template';
+    protected $temp_type;
     var $commands = array( '_template' );
     protected $default_template = 'boot';
 
@@ -67,15 +68,15 @@ class Template extends AModule implements IfModule
         $this->session->start();
         $sessionId = $this->getSessionId();
         if( $this->findCommand( $this->_ctrl->getCommands() ) && isset( $this->var_name ) ) {
-            $temp_type = $this->_ctrl->request->getPost( $this->var_name );
+            $this->temp_type = $this->_ctrl->request->getPost( $this->var_name );
         }
-        elseif( $temp_type = ( $this->session->get( $sessionId ) ) ) {
+        elseif( $this->temp_type = ( $this->session->get( $sessionId ) ) ) {
         }
-        if( !$temp_type || !isset( $this->template_list[ $temp_type ] ) ) {
-            $temp_type = $this->default_template;
+        if( !$this->temp_type || !isset( $this->template_list[ $this->temp_type ] ) ) {
+            $this->temp_type = $this->default_template;
         }
-        $template = sprintf( $this->template_file, $temp_type );
-        $this->session->set( $sessionId, $temp_type );
+        $template = sprintf( $this->template_file, $this->temp_type );
+        $this->session->set( $sessionId, $this->temp_type );
         return $template;
     }
     public function setCtrlOption( $name, $value ) {
