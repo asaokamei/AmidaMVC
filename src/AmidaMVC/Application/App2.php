@@ -221,7 +221,7 @@ class App2
                 'din'    => array( '\AmidaMVC\Framework\Controller', 'get' ),
                 'config' => array(
                     'site_title'        => 'AppCMS Web Site',
-                    'template_file'     => '_Config/template.php',
+                    'template_file'     => '_Config/template.base.php',
                     'pageNotFound_file' => '_Config/pageNotFound.md',
                     'template_dev_file' => '_Config/template._dev.php',
                 ),

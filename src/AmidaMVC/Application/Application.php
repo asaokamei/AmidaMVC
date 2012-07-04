@@ -16,7 +16,7 @@ class Application
         // various default options
         $ctlDefault = array(
             'site_title'        => 'AppCMS Web Site',
-            'template_file'     => 'template.php',
+            'template_file'     => 'template.base.php',
             'pageNotFound_file' => FALSE,
         );
         $moduleDefault = array(
