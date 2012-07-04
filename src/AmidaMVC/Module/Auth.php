@@ -25,6 +25,8 @@ class Auth implements IfModule
 
     /** @var \AmidaMVC\Tools\i18n */
     protected $i18n;
+    /** @var null|array */
+    protected $auth_access = NULL;
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -68,8 +70,8 @@ class Auth implements IfModule
         if( $this->matchPathInfo( $this->_evaluateOn[ 'onPathInfo' ] ) ) {
             // set up auth class as well.
             $this->_auth = $this->_ctrl->getServices()->get( $this->authArea );
-            $auth_success = $this->_auth->getAuth();
-            if( $auth_success ) {
+            $this->auth_success = $this->_auth->getAuth();
+            if( $this->auth_success ) {
                 $doList = $this->_evaluateOn[ 'onSuccess' ];
             }
             else {
@@ -182,6 +184,16 @@ class Auth implements IfModule
             'type'  => 'list',
             'lists' => array(),
         );
+        if( isset( $this->auth_success[ 'auth_name' ] ) ) {
+            $section[ 'lists' ][] = array(
+                $this->i18n->text( 'auth_name' ) . ':' . $this->auth_success[ 'auth_name' ]
+            );
+        }
+        if( isset( $this->auth_success[ 'name' ] ) ) {
+            $section[ 'lists' ][] = array(
+                $this->i18n->text( 'user_name' ) . ':' . $this->auth_success[ 'name' ]
+            );
+        }
         $section[ 'lists' ][] = array(
             $this->i18n->text('logout'),
             $this->_ctrl->getBaseUrl( '/dev_logout' ),
