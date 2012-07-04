@@ -3,7 +3,7 @@
 /** @var $_ctrl    \AmidaMVC\Framework\Controller */
 $_pageObj->setCss( '/common/css/bootstrap.css' );
 $_pageObj->setCss( '/common/css/bootstrap-responsive.css' );
-$_pageObj->setCss( '/corp.css' );
+$_pageObj->setCss( '/boot.css' );
 $_pageObj->setJs( '/common/js/jquery-1.7.1.js' );
 $_pageObj->setJs( '/common/js/bootstrap.js' );
 $_pageObj->setJs( '/common/js/bootstrap-dropdown.js' );
@@ -30,14 +30,14 @@ if( isset( $_pageObj->devInfo ) ) {
 <div class="container mainbody">
     <div class="row">
         <header class="span12">
-            <div id="headTitle">
+            <h1>
                 <a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a>
-                <?php
+            </h1>
+            <?php
                 if( $_ctrl->getOption( 'site_sub_title' ) ) {
-                    echo "<p class=\"headSubTitle\">" . $_ctrl->getOption( 'site_sub_title' ) . "</p>\n";
+                    echo "<p class=\"lead\">" . $_ctrl->getOption( 'site_sub_title' ) . "</p>\n";
                 }
                 ?>
-            </div>
             <?php
             if( $topNav = $_pageObj->getComponent( 'topNav' ) ) {
                 echo "<div class='headMenu'>" . $topNav->draw( 'tabs' ) ."</div>";
