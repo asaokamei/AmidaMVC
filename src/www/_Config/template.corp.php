@@ -44,8 +44,7 @@ if( isset( $_pageObj->devInfo ) ) {
             }
             ?>
         </header>
-        <div class="span1 visible-desktop">&nbsp;</div>
-        <div id="content" class="span7">
+        <div id="content" class="span8">
             <!-- content starts -->
             <?php echo $_pageObj->getContent(); ?>
             <!-- content ends -->
