@@ -70,7 +70,8 @@ class Section
         $html .= "<h3>{$data{'title'}}</h3>";
         foreach( $data[ 'lists' ] as $link ) {
             if( isset( $link[0] ) && isset( $link[1] ) ) {
-                $html .= "<p>&nbsp;[ <a href=\"" . $link{1} . "\">{$link{0}}</a> ]</p>";
+                $active = ( isset( $link[ 'active' ] ) ) ? '<i class="icon-ok"></i> ': '';
+                $html .= "<p>&nbsp;[ <a href=\"" . $link{1} . "\">{$link{0}}</a> {$active}]</p>";
             }
             elseif( isset( $link[0] ) ) {
                 $html .= "<p>{$link{0}}</p>";

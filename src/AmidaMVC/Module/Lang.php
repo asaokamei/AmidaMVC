@@ -118,7 +118,9 @@ class Lang extends AModule implements IfModule
             else {
                 $link = $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() ).'/_lang?language='.$lang;
             }
-            $section[ 'lists' ][] = array( $name, $link );
+            $data = array( $name, $link );
+            if( $lang == $this->language ) $data[ 'active' ] = TRUE;
+            $section[ 'lists' ][] = $data;
         }
         $this->_pageObj->section->set( 'lang', $section );
     }

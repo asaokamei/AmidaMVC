@@ -97,7 +97,9 @@ class Template extends AModule implements IfModule
         foreach( $this->template_list as $temp_type => $name ) {
             $name = ( $this->i18n->langCode( $name ) ) ?: $name;
             $link = $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() ).'/_template?template='.$temp_type;
-            $section[ 'lists' ][] = array( $name, $link );
+            $data = array( $name, $link );
+            if( $temp_type == $this->temp_type ) $data[ 'active' ] = TRUE;
+            $section[ 'lists' ][] = $data;
         }
         $this->_pageObj->section->set( 'template', $section );
     }
