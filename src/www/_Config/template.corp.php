@@ -30,26 +30,27 @@ if( isset( $_pageObj->devInfo ) ) {
 <div class="container mainbody">
     <div class="row">
         <header class="span12">
-            <div id="headTitle">
+            <h1>
                 <a href="<?php echo $_ctrl->getBaseUrl(); ?>"><?php echo $_ctrl->getOption( 'site_title' ); ?></a>
-                <?php
+            </h1>
+            <?php
                 if( $_ctrl->getOption( 'site_sub_title' ) ) {
-                    echo "<p class=\"headSubTitle\">" . $_ctrl->getOption( 'site_sub_title' ) . "</p>\n";
+                    echo "<p class=\"lead\">" . $_ctrl->getOption( 'site_sub_title' ) . "</p>\n";
                 }
                 ?>
-            </div>
             <?php
             if( $topNav = $_pageObj->getComponent( 'topNav' ) ) {
                 echo "<div class='headMenu'>" . $topNav->draw( 'tabs' ) ."</div>";
             }
             ?>
         </header>
-        <div id="content" class="span8">
+        <div class="span1 visible-desktop">&nbsp;</div>
+        <div id="content" class="span7">
             <!-- content starts -->
             <?php echo $_pageObj->getContent(); ?>
             <!-- content ends -->
         </div>
-        <div id="side" class="well span4">
+        <div id="side" class="span3">
             <h1>Side Bars</h1>
             <?php
             echo $_pageObj->section->draw( 'auth' );
@@ -57,6 +58,8 @@ if( isset( $_pageObj->devInfo ) ) {
             echo $_pageObj->section->draw( 'template' );
             ?>
         </div>
+        <div class="span1 visible-desktop">&nbsp;</div>
+        <div style="clear: both;"></div>
         <footer class="span12">
             <div class="sectionBox" style="width:250px;float: left;">
                 <p>AppSimple Suites by AmidaMVC.<br />
@@ -67,7 +70,7 @@ if( isset( $_pageObj->devInfo ) ) {
     </div>
     <script type="text/javascript">
         $(document).ready( function() {
-            $( "table" ).addClass( "table" );
+            //$( "table" ).addClass( "table" );
             $('.dropdown-toggle').dropdown()
         });
     </script>
