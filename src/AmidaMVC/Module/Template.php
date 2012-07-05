@@ -5,9 +5,9 @@ class Template extends AModule implements IfModule
 {
     protected $template_file = '_Config/template.%s.php';
     protected $template_list = array(
+        'base' => 'orange',
+        'boot' => 'bootstrap',
         'corp' => 'corporation',
-        'base' => 'basic orange',
-        'boot' => 'bootstrap'
     );
     protected $var_name = 'template';
     protected $temp_type;
