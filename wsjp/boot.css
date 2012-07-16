@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+}
+html {
+    overflow-y: scroll;
+}
+/* main construction */
+body {
+    font-size: 16px;
+}
+p {
+    font-size: 16px;
+    line-height: 1.5em;
+}
+.mainbody {
+}
+header {
+    margin-top: 15px;
+}
+div #content {
+}
+footer {
+    margin-top: 45px;
+    padding: 35px 5px 36px;
+    border-top: 1px solid #E5E5E5;
+}
+/* inside header */
+header .headMenu {
+    padding: 2px 0 0 5px;
+}
+header .lead {
+    font-size: 18px;
+    margin: -12px 0 10px 80px;
+    color: #999;
+}
+footer div .sectionBox {
+    float: right;
+    width: 120px;
+    padding: 5px;
+}
+footer ul.bottomNav {
+    margin: 0;
+    padding: 0;
+}
+footer ul.bottomNav li {
+    float: left;
+    list-style: none;
+}
+/* article */
+
+h1 {
+    font-size:36px;
+    font-weight: normal;
+    font-family: "Meiryo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #0066CC;
+    margin: 10px 0px 10px 0px;
+    padding:5px 5px 5px 0px;
+    line-height: 1.5em;
+    clear: both;
+}
+h1 img {
+    float: right;
+    height: 120px;
+    margin: 5px -5px 10px 10px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+h2 {
+    color: #666;
+    font-size: 24px;
+    font-weight: normal;
+    font-family: "Meiryo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 25px 0px 15px 0px;
+    padding:5px 3px 3px 3px;
+    line-height: 1.2em;
+    border-bottom: 1px solid #DDD;
+    clear: both;
+}
+div.dtBox {
+    float: left;
+    margin-left: 0;
+}
+dt {
+    margin: 0.5em 0 0.5em 1em;
+    padding: 0.1em 0 0.1em 0.5em;
+    font-size: 16px;
+    clear: both;
+    border-left: 0.5em solid #0099FF;
+}
+dd {
+    margin: 0.5em 0 0.5em 2em;
+    padding: 0.1em 0 0.1em 0;
+    font-size: 16px;
+    line-height: 1.4em;
+}
+dt img {
+    float: right;
+    height: 6em;
+    margin: 5px 5px 10px 10px;
+    border-radius: 4px;
+}
+
+/* side section */
+
+side h3 {
+    font-size: 16px;
+    margin: 1em 0 0.5em 0;
+    padding: 0 0 0 0.5em;
+    border-left: 0.3em solid #0099FF;
+}
+side {
+    font-size: 12px;
+}
+.sectionBox dt {
+    font-size: 14px;
+    border: none;
+    clear: both;
+    width: 6em;
+    margin: 0.5em 0 0 1em;
+    padding: 0;
+}
+.sectionBox dd {
+    font-size: 14px;
+    margin: 0 0 0 2em;
+    padding: 0;
+}
