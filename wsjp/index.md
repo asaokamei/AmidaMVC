@@ -1,4 +1,4 @@
-#ワークスポット・ジェーピー
+<img src="<?php echo $_ctrl->getBaseUrl( '/common/img/DSC_1265.jpg'); ?>" style="border-radius:8px;">
 
 <div class="dtBox span4" markdown="1">
 [業務内容 / Service](serv.md)![service](<?php echo $_ctrl->getBaseUrl( '/common/img/big-ser.jpg'); ?>)
