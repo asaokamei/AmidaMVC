@@ -1,47 +1,50 @@
-#経験 / Profile ![profile](<?php echo $_ctrl->getBaseUrl( '/common/img/big-pro.jpg'); ?>)
+#Profile ![profile](<?php echo $_ctrl->getBaseUrl( '/common/img/big-pro.jpg'); ?>)
 
-プロジェクトの成功には、技術力だけではなく、コミュニケーション能力、問題解決能力、リスク管理能力、
-などの管理能力が必要です。日本とアメリカに挟まれて培った経験が生きています。
-
-*   簡単な[自己紹介](prof_me.md)もどうぞ。
+Not only web-site development, but also experienced in software engineering for consumer products
+such as Palm and Sony's in-vehicle navigation systems. Also managed engineering group for
+developing consumer products for companies in Japan and United States.
 
 ##WorkSpot, Inc., Palo Alto, California (2000 — 2002)
 
-友人７人とベンチャービジネス、WorkSpot, inc.を1999年に立ち上げ、2000年から会社に参加ました。
-なお、今はワークスポット･ジェーピーと名乗っていますが、アメリカのWorkSpot, Inc.とは資本関係などはありません。
-
 <div class="dtBox span4" markdown="1">
 VP of Engineering
-: ワイアレスパーム部門のエンジニアリングマネージャーとしてOmniSkyやPalmとアプリケーションの共同開発を指揮。
-  アメリカでは初となるワイアレスインターネットポータルの開発、ドキュメントマネージメントシステム、などの設計と構築を行いました。
+: an engineering manager for wireless palm division, and worked with OmniSky, and Palm.
 </div>
 
 <div class="dtBox span4" markdown="1">
-WorkSpot, Inc. の技術
-: 自分は直接関わりませんでしたが、WorkSpotはApplication Service Provider（ASP）の新しい手法として
-  VNC技術を使ったLinuxデスクトップサーバーを開発しました。 今のVPSにつながる新しいサービスの形を示せたと思います。
+about WorkSpot, Inc.
+: offered Remote Linux Desktop Service using VNC technology.
 </div>
 
 ##Etak, Inc., Menlo Park, Calfornia (1994 — 2000)
 
-過当ともいえた日本でのカーナビ競争に生き抜くため技術開発の設計・構築や、日本とアメリカの共同開発の橋渡し役などをしてました。
-
 <div class="dtBox span4" markdown="1">
 Program Manager
-: 約10名ほどのカーナビゲーション部門のマネージャーとして、地図ライブラリの開発や、
-  Clarion、Kenwood用のヨーロッパ・日本の地図データ作成の指揮をとりました。
+: an engineering manager as a in-vehicle navigation system development, and worked with Clarion, Kenwood.
 </div>
 
 <div class="dtBox span4" markdown="1">
 Lead Engineer
-: 当時、CD-ROMを使った経路探索の計算時間短縮のため、新しい探索アルゴリズムの開発を行いました。
-  Etakで開発された技術はクラリオン社のカーナビゲーションシステムで生かされました。
+: lead a group of engineer to develop break-thru technology for pathfinding
+  used in Clarion's in-vehicle navigation system.
 </div>
 
 <div class="dtBox span4" markdown="1">
 Software Engineer
-: 最初のプロジェクトは日本のナビケン用地図データ作成のため、SONYとの共同開発の橋渡し役を行いました。
-  またカリフォルニア、フロリダ、そしてヨーロッパの地図データ作成のため、仕様の策定などに携わりました。
+: act as liason with SONY to develop Navi-Ken product for US market
 </div>
 
+##About Myself
+
+Read, write and speak fluently in English and Japanese after I spend 12 years living in the United States.
+
+Studied Mechanical Engineering in Idaho, then moved to Silicon Valley to help
+in-vehicle car navigation systems development between the United States
+and Japan.
+
+In the last days in SV, I started a company with 7 of my friends, WorkSpot,
+which enabled VPS-like services in year of 2000 using VNC technology,
+as well as developed software for wireless Palm.
+
+Currently, my focus is on development using PHP and RDB system for various web-sites.
 

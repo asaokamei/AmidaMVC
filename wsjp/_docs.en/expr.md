@@ -1,62 +1,43 @@
-#実績 / Experience ![experience](<?php echo $_ctrl->getBaseUrl( '/common/img/big-exp.jpg'); ?>)
+#Experience ![experience](<?php echo $_ctrl->getBaseUrl( '/common/img/big-exp.jpg'); ?>)
 
-ウェブサイト構築だけでなく、クライアント・サーバーの通信仕様設計、開発まで、さまざまな開発経験があります。日米を代表する企業との共同開発で培った豊かな経験と実績があります。
+offers various skills, including web-site development using PHP and Database,
+designing communication protocols, and managing projects.
 
-##ウェブサイト構築例
-
-ウェブサイトやサーバーアプリケーションなど受注承ります。見積もり・設計などお気軽にお尋ねください。
+##Web-Site Development
 
 <div class="dtBox span4" markdown="1">
-日本冷凍空調学会≫
-: メールマガジンおよび入会等フォームなど、ウェブサイトの運用に関する様々なサポートを行っています。
+JSRAE's Web Site
+: developed member's only web pages, conference management system, etc.
 </div>
 
 <div class="dtBox span4" markdown="1">
-単位管理
-: 単位の取得が義務付けられている協会用の、会員の単位の登録と集計システムを構築しました。
-</div>
-
-<div class="dtBox span4" markdown="1">
-ショッピングカート
-: ショッピングサイトとショッピングカートの構築を行っています。クレジットカードによる購入から出荷指示までサポートします。
+Continuous Education Program
+: developed a web based service to manage unit calculation for continuous education program.
 </div>
 
 
-##業務アプリケーションの例
 
-ウェブサイトに限らず、プロジェクトや社内で利用するアプリケーションも行っています。
+##Various Applications
 
 <div class="dtBox span4" markdown="1">
-会員管理システム
-: 約5000名の学会の会員管理システムを構築。会費･購読費などの充当計算を行います。
+Member's Administration
+: membership administration system for an association.
 </div>
 
 <div class="dtBox span4" markdown="1">
-慶応大学KLasiプロジェクト
-: 安全安心を追求する産学協同プロジェクトに参加し、汎用熱需要計算システムを構築しました。
+KLASI Project
+: developed an application for thermal demand estimation in Keio University's KLASI project.
 </div>
 
 
-##プロジェクトマネージメント、情報技術コンサルタント
-
-優秀な技術者がそろっていても、プロジェクトがうまく進まないときもあります。複数の会社で共同開発を行っている場合、問題原因の追究が難しくなることが多いようです。
+##Consulting
 
 <div class="dtBox span4" markdown="1">
-日本冷凍空調学会・広報委員
-: 日本冷凍空調学会の広報委員として、学会の広報活動とウェブサイトの運用方針などに携わっています。
+JSRAE's WG
+: member of JSRAE's working group on refrigeration properties.
 </div>
 
 <div class="dtBox span4" markdown="1">
-状態式作成WGメンバー
-: 日本冷凍空調学会の熱力学状態式作成Working Groupのメンバーとして、Peng-Robinson式の臨界域における飽和物性計算の収束性を向上しました。
-</div>
-
-<div class="dtBox span4" markdown="1">
-北米テレアトラス
-: ベルギーに本社のある地図会社で、主としてカーナビに用いられています。日本のカーナビ開発エンジニアとの技術支援を行いました。
-</div>
-
-<div class="dtBox span4" markdown="1">
-技術翻訳
-: カーナビゲーションに関連する技術文書の翻訳を行っています。日英・英日、どちらも（だいたい）大丈夫です。
+Technical Translation
+: offers technical translation, in strength in in-vehicle navigation systems.
 </div>
