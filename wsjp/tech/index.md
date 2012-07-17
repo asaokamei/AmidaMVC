@@ -8,7 +8,7 @@
 ##最近の開発から
 
 <div class="dtBox span4" markdown="1">
-AmidaMVCフレームワーク
+[AmidaMVCフレームワーク](amida.md)
 : PHPのウェブアプリケーション用のフレームワークを開発しました。本サイトも使っています。
 </div>
 
@@ -18,12 +18,10 @@ ctrlFormデモ
 </div>
 
 <div class="dtBox span8" markdown="1">
-PHPカンファレンス2011で発表
-: 2011年9月10日のPHPカンファレンスでCena-DTAの発表してきました。
-    [技術評論社の当日レポート](http://gihyo.jp/news/report/01/phpcon2011/0001?page=2#gaf51ecf)では
-  _「注目の技術かもしれません」_と評価していただきました。詳細はブログの
-  「[PHPカンファレンスでCena-DTA発表](http://wsjp.blogspot.com/2011/09/phpcena-dta.html)」で。
-</div>
+Cena-DTA
+: HTML5のローカルデータベースを使うためのPHP/JavaScriptライブラリです。
+DBのデータ＆参照関係を同期できます。PHPConf 2011で発表し、技術評論社から
+「将来期待できる技術（かもしれない）」と評価されました。</div>
 
 ##古いコンテンツ
 
@@ -45,7 +43,7 @@ PHPカンファレンス2011で発表
 
 
 
-##もっと古いコンテンツ
+##過去ログ（もっと古いコンテンツ）
 
 昔書いた内容です。
 今読むと･･･恥ずかしい内容ですが。

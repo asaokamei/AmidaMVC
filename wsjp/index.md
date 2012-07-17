@@ -20,9 +20,23 @@
 </div>
 
 <div class="dtBox span4" markdown="1">
-[技術 / Technology](tech.md)![technology](<?php echo $_ctrl->getBaseUrl( '/common/img/big-tec.jpg'); ?>)
+[技術 / Technology](tech/index.md)![technology](<?php echo $_ctrl->getBaseUrl( '/common/img/big-tec.jpg'); ?>)
 : ソフトウェア開発も物作り。よい技術がベースにあってこそ、いいソフトウェアもサービスも提供できると信じています。
 </div>
 
-Cena-DTA
-: HTML5のローカルデータベースを使うためのPHP/JavaScriptライブラリです。DBのデータ＆参照関係を同期できます。PHPConf 2011で発表し、技術評論社から「将来期待できる技術（かもしれない）」と評価されました。
+##お知らせ
+
+<div class="dtBox span8" markdown="1">
+サイトリニューアル
+: 本ウェブサイトをリニューアルしました。弊社開発のAmidaMVCを使い、日本語・英語対応、ダイナミックメニュー、
+Responsiveデザインの導入、等を行っています。中身は変わりませんが。
+</div>
+
+<div class="dtBox span8" markdown="1">
+PHPカンファレンス2011で発表
+: 2011年9月10日のPHPカンファレンスでCena-DTAの発表してきました。
+    [技術評論社の当日レポート](http://gihyo.jp/news/report/01/phpcon2011/0001?page=2#gaf51ecf)では
+  _「注目の技術かもしれません」_と評価していただきました。詳細はブログの
+  「[PHPカンファレンスでCena-DTA発表](http://wsjp.blogspot.com/2011/09/phpcena-dta.html)」で。
+</div>
+
