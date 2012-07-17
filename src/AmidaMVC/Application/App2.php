@@ -50,9 +50,9 @@ class App2
                 'din'    => array( '\AmidaMVC\Module\Config', 'new' ),
                 'inject' => array(),
                 'config' => array(
-                    'onPathInfo'  => '/',
-                    'evaluate' => array( 'request', 'isMobile' ),
-                    'onSuccess' => array(
+                    'onPathInfo' => '/',
+                    'evaluate'   => array( 'request', 'isMobile' ),
+                    'onSuccess'  => array(
                         'set_option' => function( $_ctrl ) {
                             $_ctrl->options[ 'template_file' ] = '_Config/template.small.php';
                             return TRUE;
@@ -73,6 +73,7 @@ class App2
                 array( 'load', 'load' ),
             ),
         );
+        /** @var $_ctrl \AmidaMVC\Framework\Controller */
         $diConfigAuth[ 'AuthDev' ] = array(
             'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
             'inject' => array(),
@@ -84,7 +85,7 @@ class App2
                         $_ctrl->redirect( '/' );
                         return TRUE;
                     },
-                    'onFail' => function( $_ctrl ) {
+                    'onFailure'  => function( $_ctrl ) {
                         $_ctrl->setAction( '_loginForm' );
                         $_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
                         return TRUE;
@@ -100,8 +101,8 @@ class App2
                 ),
                 array(
                     'onPathInfo' => array( '/admin/' ),
-                    'evaluate' => array( 'auth', 'isAdmin' ),
-                    'onFail' => function( $_ctrl ) {
+                    'evaluate'   => array( 'auth', 'isAdmin' ),
+                    'onFailure'  => function( $_ctrl ) {
                         $_ctrl->setAction( '_loginForm' );
                         $_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
                         return TRUE;
@@ -109,8 +110,8 @@ class App2
                 ),
                 array(
                     'onPathInfo' => array( '/' ),
-                    'evaluate' => array( 'auth', 'isLogin' ),
-                    'onSuccess' => function( $_ctrl ) {
+                    'evaluate'   => array( 'auth', 'isLogin' ),
+                    'onSuccess'  => function( $_ctrl ) {
                         $_ctrl->addModuleAfter( 'router', 'filer', 'filer' );
                     },
                 ),
@@ -122,17 +123,19 @@ class App2
             'config' => array(
                 array(
                     'onPathInfo' => array( '/common/images/' ),
-                    'evaluate' => array( 'request', 'isRetina' ),
-                    'onSuccess' => array(
-                        'rewriteUrl' => array( '/common/images/', '/common/images_retina/' ),
-                    ),
+                    'evaluate'   => array( 'request', 'isRetina' ),
+                    'onSuccess'  => function( $_ctrl ) {
+                        $_ctrl->load->setFileLocation( '_docs.retina' );
+                        return TRUE;
+                    },
                 ),
                 array(
                     'onPathInfo' => array( '/' ),
-                    'evaluate' => array( 'request', 'isSmall' ),
-                    'onSuccess' => array(
-                        'setOption' => array( 'template_file', 'template.small.php' ),
-                    ),
+                    'evaluate'   => array( 'request', 'isSmall' ),
+                    'onSuccess'  => function( $_ctrl ) {
+                        $_ctrl->options[ 'template_file' ] = '_Config/template.small.php';
+                        return TRUE;
+                    },
                 ),
             ),
         );
