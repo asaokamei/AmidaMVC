@@ -28,105 +28,94 @@ class App2
     /**
      *
      */
-    function diConfigSample() {
-        $diConfigJa = array(
-            'configJa' => array(
-                'din' => array( '\AmidaMVC\Module\Config', 'new' ),
-                'config' => array(
-                    'evaluateOn' => array(
-                        'onPathInfo'  => '/',
-                        'variable' => '_lang',
-                        'session'  => TRUE,
-                        'value'    => 'ja',
-                    ),
-                    'onSuccess' => array(
-                        'ctrl_root' => '_docs.ja',
-                        'set_option' => array(
-                            'template_file' => '_Config/template.ja.php',
-                            'language' => 'ja',
-                        ),
-                    ),
-                ),
-            )
-        );
+    function diConfigSample() 
+    {
         $diConfigSmartPhone = array(
             'configSf' => array(
-                'din' => array( '\AmidaMVC\Module\Config', 'new' ),
+                'din'    => array( '\AmidaMVC\Module\Config', 'new' ),
+                'inject' => array(),
                 'config' => array(
-                    'evaluateOn' => array(
-                        'onPathInfo'  => '/',
-                        'user_agent'  => 'mobile',
-                    ),
+                    'onPathInfo'  => '/',
+                    'evaluate' => array( 'request', 'isMobile' ),
                     'onSuccess' => array(
-                        'set_option' => array(
-                            'template_file' => '_Config/template.small.php',
-                        ),
+                        'set_option' => function( $_mod, $_ctrl ) {
+                            $_ctrl->options[ 'template_file' ] = '_Config/template.small.php';
+                            return TRUE;
+                        },
                     ),
                 ),
             )
         );
         // wishful programming...
-        $diConfigAuth = array(
-            'auth' => array(
-                'din'    => array( '\AmidaMVC\Tools\AuthBasic', 'get' ),
-                'config' => array(
-                    'password_file' => '_Config/.password',
+        $diConfigAuth = array();
+        $diConfigAuth[ 'auth' ] = array(
+            'din'    => array( '\AmidaMVC\Tools\AuthBasic', 'get' ),
+            'config' => array(
+                'password_file' => '_Config/.password',
+            ),
+            'inject' => array(
+                array( 'load', 'load' ),
+            ),
+        );
+        $diConfigAuth[ 'AuthDev' ] = array(
+            'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
+            'inject' => array(),
+            'config' => array(
+                array(
+                    'onPathInfo' => array( '/dev_login' ),
+                    'evaluate'   => array( 'auth', 'isLogin' ),
+                    'onSuccess'  => function( $_mod, $_ctrl ) {
+                        $_ctrl->redirect( '/' );
+                        return TRUE;
+                    },
+                    'onFail' => function( $_mod, $_ctrl ) {
+                        $_ctrl->setAction( '_loginForm' );
+                        $_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
+                        return TRUE;
+                    },
                 ),
-                'inject' => array(
-                    array( 'load', 'load' ),
+                array(
+                    'onPathInfo' => array( '/dev_logout' ),
+                    'evaluate'   => array( 'auth', 'logOut' ),
+                    'onSuccess'  => function( $_mod, $_ctrl ) {
+                        $_ctrl->redirect( '/' );
+                        return TRUE;
+                    },
+                ),
+                array(
+                    'onPathInfo' => array( '/admin/' ),
+                    'evaluate' => array( 'auth', 'isAdmin' ),
+                    'onFail' => function( $_mod, $_ctrl ) {
+                        $_ctrl->setAction( '_loginForm' );
+                        $_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
+                        return TRUE;
+                    },
+                ),
+                array(
+                    'onPathInfo' => array( '/' ),
+                    'evaluate' => array( 'auth', 'isLogin' ),
+                    'onSuccess' => function( $_mod, $_ctrl ) {
+                        $_ctrl->addModuleAfter( 'router', 'filer', 'filer' );
+                    },
                 ),
             ),
-            'AuthDev' => array(
-                'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
-                'inject' => array(),
-                'config' => array(
-                    array(
-                        'onPathInfo' => array( '/dev_login' ),
-                        'evaluate' => array( 'auth', 'isLogin' ),
-                        'onFail' => array(
-                            'setLoginForm' => '_Config/login_file.md',
-                        ),
-                        'onSuccess' => array(
-                            'redirect' => '/',
-                        ),
-                    ),
-                    array(
-                        'onPathInfo' => array( '/dev_login' ),
-                        'evaluate' => array( 'auth', 'logOut' ),
-                    ),
-                    array(
-                        'onPathInfo' => array( '/admin/' ),
-                        'evaluate' => array( 'auth', 'isAdmin' ),
-                        'onFail' => array(
-                            'setLoginForm' => '_Config/login_file.md',
-                        ),
-                    ),
-                    array(
-                        'onPathInfo' => array( '/' ),
-                        'evaluate' => array( 'auth', 'isLogin' ),
-                        'onSuccess' => array(
-                            'addModuleAfter' => array( 'router', 'filer', 'filer', ),
-                        ),
+        );
+        $diConfigAuth[ 'Device' ] = array(
+            'din'    => array( '\AmidaMVC\Module\Config', 'new' ),
+            'inject' => array(),
+            'config' => array(
+                array(
+                    'onPathInfo' => array( '/common/images/' ),
+                    'evaluate' => array( 'request', 'isRetina' ),
+                    'onSuccess' => array(
+                        'rewriteUrl' => array( '/common/images/', '/common/images_retina/' ),
                     ),
                 ),
-            ),
-            'Device' => array(
-                'din'    => array( '\AmidaMVC\Module\Config', 'new' ),
-                'inject' => array(),
-                'config' => array(
-                    array(
-                        'onPathInfo' => array( '/common/images/' ),
-                        'evaluate' => array( 'request', 'isRetina' ),
-                        'onSuccess' => array(
-                            'rewriteUrl' => array( '/common/images/', '/common/images_retina/' ),
-                        ),
-                    ),
-                    array(
-                        'onPathInfo' => array( '/' ),
-                        'evaluate' => array( 'request', 'isSmall' ),
-                        'onSuccess' => array(
-                            'setOption' => array( 'template_file', 'template.small.php' ),
-                        ),
+                array(
+                    'onPathInfo' => array( '/' ),
+                    'evaluate' => array( 'request', 'isSmall' ),
+                    'onSuccess' => array(
+                        'setOption' => array( 'template_file', 'template.small.php' ),
                     ),
                 ),
             ),
