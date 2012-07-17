@@ -1,4 +1,7 @@
-<img src="<?php echo $_ctrl->getBaseUrl( '/common/img/DSC_1265.jpg'); ?>" style="border-radius:8px;">
+<div class="span8" style="position: relative; margin: 10px; border: 1px solid #ddd; padding: 10px; border-radius: 16px; ">
+<div class="span8" style="position: absolute; top 60px; margin: 10px; padding: 10px; color: white; ">ワークスポット・ジェーピーは人と技術の間を結びます。 </div>
+<img src="<?php echo $_ctrl->getBaseUrl( '/common/img/DSC_1265.jpg'); ?>" style="border-radius:8px; ">
+</div>
 
 <div class="dtBox span4" markdown="1">
 [業務内容 / Service](serv.md)![service](<?php echo $_ctrl->getBaseUrl( '/common/img/big-ser.jpg'); ?>)
@@ -22,4 +25,3 @@
 
 Cena-DTA
 : HTML5のローカルデータベースを使うためのPHP/JavaScriptライブラリです。DBのデータ＆参照関係を同期できます。PHPConf 2011で発表し、技術評論社から「将来期待できる技術（かもしれない）」と評価されました。
-

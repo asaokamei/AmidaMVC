@@ -12,11 +12,9 @@ $app->setModuleOption( 'menus',
             array( 'url' => 'expr.md',   'title' => 'experience' ),
             array( 'url' => 'tech/',     'title' => 'technology',
                 'pages' => array(
-                    array( 'url' => 'tech/',          'title' => 'technology top' ),
+                    array( 'url' => 'tech/',          'title' => 'tech_top' ),
                     array( 'divider' => TRUE ),
-                    array( 'url' => 'vendor/',       'title' => 'src_vendor' ),
-                    array( 'divider' => TRUE ),
-                    array( 'title' => 'old stuff' ),
+                    array( 'title' => 'tech_old' ),
                     array( 'url' => 'tech/old_fw', 'title' => 'framework' ),
                     array( 'url' => 'tech/old', 'title' => 'old stuff' ),
                 )

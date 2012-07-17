@@ -8,7 +8,7 @@ $_pageObj->setJs( '/common/js/bootstrap.js' );
 $_pageObj->setJs( '/common/js/bootstrap-dropdown.js' );
 $_pageObj->setCss( '/boot.css' );
 
-$_ctrl->i18n->textSection( '_template' );
+$_ctrl->i18n->textSection( 'Template' );
 /** @var $_ctrl string */
 $baseUrl = $_ctrl->getBaseUrl();
 ?>
@@ -49,17 +49,17 @@ if( isset( $_pageObj->devInfo ) ) {
         </article>
         <side class="span4">
             <div class="sectionBox">
-                <h3>所在地・連絡先</h3>
+                <h3><?php echo $_ctrl->i18n->text('contact_info' ); ?></h3>
                 <dl>
-                    <dt>名前：</dt>
-                    <dd>亀井亜佐夫</dd>
-                    <dt>屋号：</dt>
-                    <dd>ワークスポット･ジェーピー</dd>
-                    <dt>住所：</dt>
-                    <dd>〒152-0022 東京都目黒区</dd>
-                    <dt>連絡方法：</dt>
-                    <dd>090-4660-7870　（携帯）<br />
-                    info @ workspot.jp　（email）</dd>
+                    <dt><?php echo $_ctrl->i18n->text('name_title' ); ?></dt>
+                    <dd><?php echo $_ctrl->i18n->text('name_val' ); ?></dd>
+                    <dt><?php echo $_ctrl->i18n->text('work_title' ); ?></dt>
+                    <dd><?php echo $_ctrl->i18n->text('work_val' ); ?></dd>
+                    <dt><?php echo $_ctrl->i18n->text('addr_title' ); ?></dt>
+                    <dd><?php echo $_ctrl->i18n->text('addr_val' ); ?></dd>
+                    <dt><?php echo $_ctrl->i18n->text('cont_title' ); ?></dt>
+                    <dd>090-4660-7870<?php echo $_ctrl->i18n->text('cont_cell' ); ?><br />
+                    info @ workspot.jp<?php echo $_ctrl->i18n->text('cont_mail' ); ?></dd>
                 </dl>
             </div>
             <div style="clear:both;"></div>
