@@ -21,7 +21,7 @@ ctrlFormデモ
 PHPカンファレンス2011で発表
 : 2011年9月10日のPHPカンファレンスでCena-DTAの発表してきました。
     [技術評論社の当日レポート](http://gihyo.jp/news/report/01/phpcon2011/0001?page=2#gaf51ecf)では
-  「注目の技術かもしれません」と評価していただきました。詳細はブログの
+  _「注目の技術かもしれません」_と評価していただきました。詳細はブログの
   「[PHPカンファレンスでCena-DTA発表](http://wsjp.blogspot.com/2011/09/phpcena-dta.html)」で。
 </div>
 
