@@ -1,4 +1,4 @@
-#技術/古い内容 ![profile](<?php echo $_ctrl->getBaseUrl( '/common/img/big-tec.jpg'); ?>)
+#過去ログ（古い内容） ![profile](<?php echo $_ctrl->getBaseUrl( '/common/img/big-tec.jpg'); ?>)
 
 昔書いた内容です。
 
