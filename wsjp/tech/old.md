@@ -1,4 +1,4 @@
-#技術 / 古い内容 ![profile](<?php echo $_ctrl->getBaseUrl( '/common/img/big-tec.jpg'); ?>)
+#技術/古い内容 ![profile](<?php echo $_ctrl->getBaseUrl( '/common/img/big-tec.jpg'); ?>)
 
 昔書いた内容です。
 
@@ -17,12 +17,12 @@
 <div class="dtBox span8" markdown="1">
 PHP Tips
 : PHPのちょっとしたチップです。古い内容ですがアクセスが多いので、復活させました。
-: 「ページの有効期限切れ」問題
+: [「ページの有効期限切れ」問題](old_cache_limiter.md)
 : IF文でのチェック （０と値無しを見分けるにはどうするか？）
 </div>
 
 <div class="dtBox span8" markdown="1">
-オープンソースの紹介
+[オープンソースの紹介](old_opensource.md)
 : PHP、PostgreSQL、Linuxといった代表的かつワークスポット･ジェーピーでよく使っているオープンソースの紹介です。
 こちらも内容が古くなってしまいました。今やオープンソースを使うなんて、当たり前になりましたが、当時は正当性を主張する必要があったものです。
 </div>
