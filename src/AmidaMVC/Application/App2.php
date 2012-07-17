@@ -30,6 +30,21 @@ class App2
      */
     function diConfigSample() 
     {
+        /**
+         * set to false to turn of the module. 
+         */
+        $moduleList = array(
+            //'authAdminOnly',
+            'lang'          => TRUE, 
+            'template'      => TRUE,
+            'authDevLogin'  => TRUE, 
+            'authDevLogout' => TRUE, 
+            'authDevFiler'  => TRUE,
+            'router'        => TRUE,
+            'loader'        => TRUE,
+            'menus'         => TRUE,
+            'emitter'       => TRUE,
+        );
         $diConfigSmartPhone = array(
             'configSf' => array(
                 'din'    => array( '\AmidaMVC\Module\Config', 'new' ),
@@ -38,7 +53,7 @@ class App2
                     'onPathInfo'  => '/',
                     'evaluate' => array( 'request', 'isMobile' ),
                     'onSuccess' => array(
-                        'set_option' => function( $_mod, $_ctrl ) {
+                        'set_option' => function( $_ctrl ) {
                             $_ctrl->options[ 'template_file' ] = '_Config/template.small.php';
                             return TRUE;
                         },
@@ -47,6 +62,7 @@ class App2
             )
         );
         // wishful programming...
+        // use closure, avoid array/config/settings.
         $diConfigAuth = array();
         $diConfigAuth[ 'auth' ] = array(
             'din'    => array( '\AmidaMVC\Tools\AuthBasic', 'get' ),
@@ -64,11 +80,11 @@ class App2
                 array(
                     'onPathInfo' => array( '/dev_login' ),
                     'evaluate'   => array( 'auth', 'isLogin' ),
-                    'onSuccess'  => function( $_mod, $_ctrl ) {
+                    'onSuccess'  => function( $_ctrl ) {
                         $_ctrl->redirect( '/' );
                         return TRUE;
                     },
-                    'onFail' => function( $_mod, $_ctrl ) {
+                    'onFail' => function( $_ctrl ) {
                         $_ctrl->setAction( '_loginForm' );
                         $_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
                         return TRUE;
@@ -77,7 +93,7 @@ class App2
                 array(
                     'onPathInfo' => array( '/dev_logout' ),
                     'evaluate'   => array( 'auth', 'logOut' ),
-                    'onSuccess'  => function( $_mod, $_ctrl ) {
+                    'onSuccess'  => function( $_ctrl ) {
                         $_ctrl->redirect( '/' );
                         return TRUE;
                     },
@@ -85,7 +101,7 @@ class App2
                 array(
                     'onPathInfo' => array( '/admin/' ),
                     'evaluate' => array( 'auth', 'isAdmin' ),
-                    'onFail' => function( $_mod, $_ctrl ) {
+                    'onFail' => function( $_ctrl ) {
                         $_ctrl->setAction( '_loginForm' );
                         $_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
                         return TRUE;
@@ -94,7 +110,7 @@ class App2
                 array(
                     'onPathInfo' => array( '/' ),
                     'evaluate' => array( 'auth', 'isLogin' ),
-                    'onSuccess' => function( $_mod, $_ctrl ) {
+                    'onSuccess' => function( $_ctrl ) {
                         $_ctrl->addModuleAfter( 'router', 'filer', 'filer' );
                     },
                 ),
