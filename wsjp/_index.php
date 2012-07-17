@@ -14,9 +14,7 @@ $app->setModuleOption( 'menus',
                 'pages' => array(
                     array( 'url' => 'tech/',          'title' => 'tech_top' ),
                     array( 'divider' => TRUE ),
-                    array( 'title' => 'tech_old' ),
-                    array( 'url' => 'tech/old_fw', 'title' => 'framework' ),
-                    array( 'url' => 'tech/old', 'title' => 'old stuff' ),
+                    array( 'url' => 'tech/old.md',    'title' => 'tech_old' ),
                 )
             ),
             array( 'url' => '#blog', 'title' => 'blog...' ),
