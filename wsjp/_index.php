@@ -24,7 +24,7 @@ $app->setModuleOption( 'menus',
 $app->setModuleOption( 'lang', array(
     'lang_list' => array( 'en', 'ja' ),
     'ctrl_root' => array(
-        '_docs.{lang}',
+        '_docs.{lang}', 'ja' => FALSE,
     ),
     'match_url' => '^{lang}\\/',
 ) );
