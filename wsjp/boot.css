@@ -91,14 +91,14 @@ div.dtBox {
     margin-left: 0;
 }
 dt {
-    margin: 0.5em 0 0.5em 1em;
+    margin: 1em 0 0.5em 1em;
     padding: 0.1em 0 0.1em 0.5em;
     font-size: 16px;
     clear: both;
     border-left: 0.5em solid #0099FF;
 }
 dd {
-    margin: 0.5em 0 0.5em 2em;
+    margin: 0 0 0 2em;
     padding: 0.1em 0 0.1em 0;
     font-size: 16px;
     line-height: 1.4em;
