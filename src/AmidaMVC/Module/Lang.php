@@ -123,7 +123,7 @@ class Lang extends AModule implements IfModule
                     $link = $this->_ctrl->getBaseUrl('../')."{$lang}/";
                 }
                 else {
-                    $link = $this->_ctrl->getBaseUrl()."{$lang}/";
+                    $this->_ctrl->redirect( "{$lang}/" );
                 }
             }
             else {
