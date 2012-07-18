@@ -6,11 +6,11 @@ $app->setCtrlRoot( __DIR__ );
 $app->setModuleOption( 'router', array( 'indexes' => 'README.md' ) );
 $app->setModuleOption( 'menus',
     array( 'menu' => array(
-            array( 'url' => '',          'title' => 'home' ),
-            array( 'url' => 'serv.md',   'title' => 'service' ),
-            array( 'url' => 'prof.md',   'title' => 'profile' ),
-            array( 'url' => 'expr.md',   'title' => 'experience' ),
-            array( 'url' => 'tech/',     'title' => 'technology',
+            array( 'url' => '',          'title' => 'home',    'icon' => 'home' ),
+            array( 'url' => 'serv.md',   'title' => 'service',    'icon' => 'file' ),
+            array( 'url' => 'prof.md',   'title' => 'profile',    'icon' => 'user' ),
+            array( 'url' => 'expr.md',   'title' => 'experience',    'icon' => 'list' ),
+            array( 'url' => 'tech/',     'title' => 'technology',    'icon' => 'edit',
                 'pages' => array(
                     array( 'url' => 'tech/',          'title' => 'tech_top' ),
                     array( 'divider' => TRUE ),
