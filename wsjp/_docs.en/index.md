@@ -1,4 +1,4 @@
-<div class="span8" style="position: relative; margin: 10px; border: 1px solid #ddd; padding: 10px; border-radius: 16px; ">
+<div class="span8" style="position: relative; margin: 10px; ">
 <div class="span8" style="position: absolute; top 60px; margin: 10px; padding: 10px; color: white; ">
     connecting people and technology.</div>
 <img src="<?php echo $_ctrl->getBaseUrl( '/common/img/DSC_1265.jpg'); ?>" style="border-radius:8px; ">
@@ -28,7 +28,7 @@
 
 Site renewal
 : This web site is now served by AmidaMVC, a home-grown PHP Framework/CMS.
-: some contents are still in Japanese (not translated to English, yet).
+: _some contents are still in Japanese_ (not translated to English, yet).
 
 Presented Cena-DTA in PHP Conference 2011
 : Presented about Cena-DTA, a new technology to synchronize databases, in PHP Conference held in 2011/9/10.

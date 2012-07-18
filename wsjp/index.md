@@ -1,4 +1,4 @@
-<div class="span8" style="position: relative; margin: 10px; border: 1px solid #ddd; padding: 10px; border-radius: 16px; ">
+<div class="span8" style="position: relative; margin: 10px; ">
 <div class="span8" style="position: absolute; top 60px; margin: 10px; padding: 10px; color: white; ">
     ワークスポット・ジェーピーは人と技術を結びます。</div>
 <img src="<?php echo $_ctrl->getBaseUrl( '/common/img/DSC_1265.jpg'); ?>" style="border-radius:8px; ">
