@@ -14,7 +14,8 @@ $app->setModuleOption( 'menus',
                 'pages' => array(
                     array( 'url' => 'tech/',          'title' => 'tech_top' ),
                     array( 'divider' => TRUE ),
-                    array( 'url' => 'tech/amida.md',  'title' => 'amidaMVC' ),
+                    array( 'url' => 'tech/cena.md',  'title' => 'Cena-DTA' ),
+                    array( 'url' => 'tech/amida.md',  'title' => 'AmidaMVC' ),
                     array( 'url' => 'tech/old.md',    'title' => 'tech_old' ),
                 )
             ),

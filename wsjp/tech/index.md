@@ -18,7 +18,7 @@ ctrlFormデモ
 </div>
 
 <div class="dtBox span8" markdown="1">
-Cena-DTA
+[Cena-DTA](cena.md)
 : HTML5のローカルデータベースを使うためのPHP/JavaScriptライブラリです。
 DBのデータ＆参照関係を同期できます。PHPConf 2011で発表し、技術評論社から
 「将来期待できる技術（かもしれない）」と評価されました。</div>
