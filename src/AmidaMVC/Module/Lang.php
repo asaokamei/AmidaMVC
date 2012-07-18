@@ -26,6 +26,9 @@ class Lang extends AModule implements IfModule
     /** @var string  check url against this regexp */
     protected $matchUrl = '';
 
+    /** @var bool    TRUE if url matched with lang code */
+    protected $matchURL = FALSE;
+
     /** @var bool */
     protected $matchRewrite = FALSE;
 
@@ -65,6 +68,9 @@ class Lang extends AModule implements IfModule
                 }
                 elseif( $key == 'match_url' ) {
                     $this->matchUrl = $val;
+                }
+                elseif( $key == 'match_rewrite' ) {
+                    $this->matchRewrite = TRUE;
                 }
             }
         }
@@ -113,7 +119,12 @@ class Lang extends AModule implements IfModule
         foreach( $this->langList as $lang ) {
             $name = ( $this->i18n->langCode( $lang ) ) ?: $lang;
             if( $this->matchRewrite ) {
-                $link = $this->_ctrl->getBaseUrl('../')."{$lang}/";
+                if( $this->matchURL ) {
+                    $link = $this->_ctrl->getBaseUrl('../')."{$lang}/";
+                }
+                else {
+                    $link = $this->_ctrl->getBaseUrl()."{$lang}/";
+                }
             }
             else {
                 $link = $this->_ctrl->getBaseUrl( $this->_ctrl->getPathInfo() ).'/_lang?language='.$lang;
@@ -208,6 +219,7 @@ class Lang extends AModule implements IfModule
         if( $language && $token ) {
             $this->_ctrl->request->rewriteBaseAndPath( $token );
             $this->matchRewrite = TRUE;
+            $this->matchURL     = TRUE;
         }
         return $language;
     }

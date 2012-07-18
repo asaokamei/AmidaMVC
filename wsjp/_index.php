@@ -29,6 +29,7 @@ $app->setModuleOption( 'lang', array(
         '_docs.{lang}', 'ja' => FALSE,
     ),
     'match_url' => '^{lang}\\/',
+    'match_rewrite' => TRUE,
 ) );
 $app
     ->setOption( 'site_title', 'WorkSpot.JP' )
