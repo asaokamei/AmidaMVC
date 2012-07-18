@@ -19,7 +19,7 @@ $app->setModuleOption( 'menus',
                     array( 'url' => 'tech/old.md',    'title' => 'tech_old' ),
                 )
             ),
-            array( 'url' => '#blog', 'title' => 'blog...' ),
+            array( 'url' => 'http://wsjp.blogspot.jp/', 'title' => 'blog>>', 'target' => 'blank' ),
         )
     )
 );

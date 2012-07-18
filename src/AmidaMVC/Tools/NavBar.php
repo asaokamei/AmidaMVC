@@ -11,6 +11,7 @@ class NavBar
         'divider' => '<li class="divider"></li>',
         'endUl' => '</ul>',
         'liItem' => '<li class="%3$s"><a href="%2$s">%1$s</a></li>',
+        'liItemBlank' => '<li class="%3$s"><a href="%2$s" target="_blank">%1$s</a></li>',
         'liSub' => '<li class="dropdown%3$s">
             <a class="dropdown-toggle" data-toggle="dropdown">%1$s
                     <b class="caret"></b>
@@ -114,6 +115,9 @@ class NavBar
             }
             elseif( isset( $item[ 'divider' ] ) ) {
                 $html .= $this->_text( 'divider' );
+            }
+            elseif( isset( $item[ 'target' ] ) && $item[ 'target' ] == 'blank' ) {
+                $html .= $this->_text( 'liItemBlank', $title, $url, $active );
             }
             else {
                 $html .= $this->_text( 'liItem', $title, $url, $active );
