@@ -24,5 +24,11 @@
 : Technology makes the difference.
 </div>
 
-Cena-DTA
-: Cena Data Transfer Agent is a library that helps to develop a website and application using HTML5's local database.
+##Recent Activities
+
+Site renewal
+: This web site is now served by AmidaMVC, a home-grown PHP Framework/CMS.
+: some contents are still in Japanese (not translated to English, yet).
+
+Presented Cena-DTA in PHP Conference 2011
+: Presented about Cena-DTA, a new technology to synchronize databases, in PHP Conference held in 2011/9/10.
