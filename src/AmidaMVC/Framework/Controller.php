@@ -204,6 +204,9 @@ class Controller extends AmidaChain
      * @return string   base url where your web site is at.
      */
     function getBaseUrl( $url=NULL ) {
+        if( preg_match( '/^http[s]*:\/\//i', $url ) ) {
+            return $url;
+        }
         $base_url = $this->request->getBaseUrl( $url );
         return $base_url;
     }
