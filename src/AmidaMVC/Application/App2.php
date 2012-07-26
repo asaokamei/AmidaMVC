@@ -8,7 +8,7 @@ class App2
     /**
      * @return \AmidaMVC\Framework\Controller|
      */
-    function app() {
+    static function app() {
         $di = self::diCms();
         $sl = self::setUpDi( $di );
         /** @var $ctrl \AmidaMVC\Framework\Controller */
@@ -28,7 +28,7 @@ class App2
     /**
      *
      */
-    function diConfigSample() 
+    static function diConfigSample() 
     {
         /**
          * set to false to turn of the module. 
@@ -141,7 +141,7 @@ class App2
     /**
      * @return array
      */
-    function diCms() {
+    static function diCms() {
         $www = realpath( __DIR__ . '/../../www/' );
         $di = array(
             // Tools
@@ -341,7 +341,7 @@ class App2
      * @param $di
      * @return \AmidaMVC\Framework\Services
      */
-    function setUpDi( $di )
+    static function setUpDi( $di )
     {
         static::$sl = $sl = \AmidaMVC\Framework\Services::start();
         foreach( $di as $service => $setup ) {
