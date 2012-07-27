@@ -66,8 +66,43 @@ if( isset( $_pageObj->devInfo ) ) {
             <?php
             echo $_pageObj->section->draw( 'lang' );
             ?>
+            <div class="sectionBox">
+                <h3>twitter</h3>
+                <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+                <script>
+                    new TWTR.Widget({
+                        version: 2,
+                        type: 'profile',
+                        rpp: 4,
+                        interval: 30000,
+                        width: 250,
+                        height: 300,
+                        theme: {
+                            shell: {
+                                background: '#ada1fc',
+                                color: '#eeedf7'
+                            },
+                            tweets: {
+                                background: '#ffffff',
+                                color: '#826bb8',
+                                links: '#558a3d'
+                            }
+                        },
+                        features: {
+                            scrollbar: false,
+                            loop: false,
+                            live: false,
+                            behavior: 'all'
+                        }
+                    }).render().setUser('asao_jp').start();
+                </script>            </div>
         </side>
         <footer class="span12">
+            <div class="span4" style="float: right;">
+                <?php
+                echo $_pageObj->section->draw( 'auth' );
+                ?>
+            </div>
             <div class="sectionBox">
                 <p><strong>WorkSpot.JP</strong> brings open source to business...</p>
                 </dl>
@@ -77,11 +112,6 @@ if( isset( $_pageObj->devInfo ) ) {
                     <li><a href="<?php echo $_ctrl->getBaseUrl( '/expr.md'); ?>" ><img src="<?php echo $_ctrl->getBaseUrl( '/common/img/bar_exp.gif'); ?>"></a></li>
                     <li><a href="<?php echo $_ctrl->getBaseUrl( '/tech/'); ?>" ><img src="<?php echo $_ctrl->getBaseUrl( '/common/img/bar_tec.gif'); ?>"></a></li>
                 </ul>
-            </div>
-            <div class="span4" style="float: right;">
-                <?php
-                echo $_pageObj->section->draw( 'auth' );
-                ?>
             </div>
             <p style="clear: both;"></p>
         </footer>

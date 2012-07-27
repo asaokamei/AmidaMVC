@@ -36,11 +36,6 @@ header .lead {
 .dropdown-menu .divider {
     border-bottom: 1px solid #ddd;
 }
-footer div .sectionBox {
-    float: right;
-    width: 120px;
-    padding: 5px;
-}
 footer ul.bottomNav {
     margin: 0;
     padding: 0;
@@ -125,6 +120,10 @@ side h3 {
 }
 side {
     font-size: 12px;
+}
+.sectionBox p {
+    font-size: 14px;
+    line-height: 1.2em;
 }
 .sectionBox dt {
     font-size: 14px;
