@@ -10,7 +10,7 @@ class Emitter extends AModule implements IfModule
     /**
      * @var array    list of supported commands.
      */
-    var $commands = array( '_view', '_src', '_raw' );
+    var $commands = array( '_view', '_src', '_raw', '_bare' );
     // +-------------------------------------------------------------+
     /**
      * initialize class.
@@ -48,6 +48,18 @@ class Emitter extends AModule implements IfModule
     function action_view( $_ctrl, &$_pageObj, $option=array() ) {
         $this->convert( $_pageObj );
         $this->template( $_ctrl, $_pageObj );
+        $_pageObj->emit();
+        return TRUE;
+    }
+    // +-------------------------------------------------------------+
+    /**
+     * @param \AmidaMVC\Framework\Controller $_ctrl
+     * @param \AmidaMVC\Framework\PageObj $_pageObj
+     * @param array $option
+     * @return bool
+     */
+    function action_bare( $_ctrl, &$_pageObj, $option=array() ) {
+        $this->convert( $_pageObj );
         $_pageObj->emit();
         return TRUE;
     }
