@@ -108,6 +108,9 @@ class Response
             case 'pdf':
                 $mime = 'application/pdf';
                 break;
+            case 'ico':
+                $mime = 'image/x-icon';
+                break;
             default:
                 $mime = 'text/html';
                 break;

@@ -6,7 +6,7 @@ class Load
     /**
      * @var array   file extensions to load as is.
      */
-    var $ext_asIs = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif' );
+    var $ext_asIs = array( 'css', 'js', 'pdf', 'png', 'jpg', 'gif', 'ico' );
     /**
      * @var array   file extensions to load.
      */
