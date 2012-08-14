@@ -16,7 +16,7 @@ class App2
 
         $modules = array(
             //'authAdminOnly',
-            'lang', 'template',
+            'config', 'lang', 'template',
             'authDevLogin', 'authDevLogout', 'authDevFiler',
             'router',       'loader',        'menus',      'emitter',
         );
@@ -183,6 +183,11 @@ class App2
                 'din' => array( '\AmidaMVC\Tools\Section', 'get' ),
             ),
             // Modules
+            'config' => array(
+                'din'    => array( '\AmidaMVC\Module\Config',    'new' ),
+                'config' => array(),
+                'inject' => array(),
+            ),
             'lang' => array(
                 'din'    => array( '\AmidaMVC\Module\Lang',    'new' ),
                 'config' => array(),

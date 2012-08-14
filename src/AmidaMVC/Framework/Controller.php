@@ -310,5 +310,9 @@ class Controller extends AmidaChain
     function getCommands() {
         return $this->commands;
     }
+    function addCommand( $cmd ) {
+        $this->commands[] = $cmd;
+        return $this;
+    }
     // +-------------------------------------------------------------+
 }
