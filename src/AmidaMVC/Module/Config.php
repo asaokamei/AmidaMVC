@@ -68,6 +68,9 @@ class Config implements IfModule
     {
         if( $this->matchPathInfo( $path ) && isset( $config[ 'evaluate' ] ) ) {
             $this->return = $this->evaluate( $config[ 'evaluate' ] );
+            if( isset( $config[ 'onAny' ] ) ) {
+                $this->evaluate( $config[ 'onAny' ] );
+            }
             if( isset( $config[ 'onFail' ] ) && !$this->return ) {
                 $this->evaluate( $config[ 'onFail' ] );
             }
@@ -83,6 +86,7 @@ class Config implements IfModule
      */
     public function evaluate( $evaluate )
     {
+        $return = NULL;
         if( is_callable( $evaluate ) ) {
             $return = $evaluate( $this );
         }
