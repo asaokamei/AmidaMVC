@@ -215,7 +215,7 @@ class Services
             $object = $className;
         }
         elseif( $className instanceof \Closure ) {
-            /** @var $className Closure */
+            /** @var $className callable */
             $object = $className( $this );
         }
         else if( $type == 'STATIC' ) {
