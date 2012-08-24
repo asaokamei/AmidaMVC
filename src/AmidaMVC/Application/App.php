@@ -12,11 +12,11 @@ class App
     /**
      * @return \AmidaMVC\Framework\Controller
      */
-    static function app()
+    static function app( $ctrl='controller ')
     {
-        $sl = static::_setupDiC();
+        static::_setupDiC();
         /** @var $ctrl \AmidaMVC\Framework\Controller */
-        $ctrl = $sl->get( 'controller' );
+        $ctrl = static::$dic->get( $ctrl );
 
         $modules = array(
             'config',
