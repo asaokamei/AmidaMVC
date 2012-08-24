@@ -62,59 +62,7 @@ class App2
         // wishful programming...
         // use closure, avoid array/config/settings.
         $diConfigAuth = array();
-        $diConfigAuth[ 'auth' ] = array(
-            'din'    => array( '\AmidaMVC\Tools\AuthBasic', 'get' ),
-            'config' => array(
-                'password_file' => '_Config/.password',
-            ),
-            'inject' => array(
-                array( 'load', 'load' ),
-            ),
-        );
-        /** @var $_ctrl \AmidaMVC\Framework\Controller */
-        $diConfigAuth[ 'AuthDev' ] = array(
-            'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
-            'inject' => array(),
-            'config' => array(
-                array(
-                    'onPathInfo' => array( '/dev_login' ),
-                    'evaluate'   => array( 'auth', 'isLogin' ),
-                    'onSuccess'  => function( $_ctrl ) {
-                        $_ctrl->redirect( '/' );
-                        return TRUE;
-                    },
-                    'onFailure'  => function( $_ctrl ) {
-                        $_ctrl->setAction( '_loginForm' );
-                        $_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
-                        return TRUE;
-                    },
-                ),
-                array(
-                    'onPathInfo' => array( '/dev_logout' ),
-                    'evaluate'   => array( 'auth', 'logOut' ),
-                    'onSuccess'  => function( $_ctrl ) {
-                        $_ctrl->redirect( '/' );
-                        return TRUE;
-                    },
-                ),
-                array(
-                    'onPathInfo' => array( '/admin/' ),
-                    'evaluate'   => array( 'auth', 'isAdmin' ),
-                    'onFailure'  => function( $_ctrl ) {
-                        $_ctrl->setAction( '_loginForm' );
-                        $_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
-                        return TRUE;
-                    },
-                ),
-                array(
-                    'onPathInfo' => array( '/' ),
-                    'evaluate'   => array( 'auth', 'isLogin' ),
-                    'onSuccess'  => function( $_ctrl ) {
-                        $_ctrl->addModuleAfter( 'router', 'filer', 'filer' );
-                    },
-                ),
-            ),
-        );
+
         $diConfigAuth[ 'Device' ] = array(
             'din'    => array( '\AmidaMVC\Module\Config', 'new' ),
             'inject' => array(),
@@ -255,14 +203,6 @@ class App2
                     array( 'i18n', 'i18n' ),
                     array( 'diContainer', '_self' ),
                 ),
-            ),
-            // for _Dev mode
-            'authAdmin' => array(
-                'din'    => array( '\AmidaMVC\Tools\AuthNot',  'new', 'authAdmin' ),
-                'config' => array(
-                    'password_file' => 'admin.password',
-                    'authArea'      => 'authAdmin'
-                )
             ),
             'authDev' => array(
                 'din'    => array( '\AmidaMVC\Tools\AuthBasic',    'new', 'authDev' ),
