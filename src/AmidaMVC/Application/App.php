@@ -46,7 +46,7 @@ class App
      * @static
      * @return \AmidaMVC\Framework\Controller
      */
-    static function App()
+    static function cms()
     {
         static::config( 'config', array(
             'onPathInfo' => '/',
@@ -105,6 +105,16 @@ class App
         }
     }
 
+    static function service( $service, $din, $config=array(), $inject=array() )
+    {
+        static::defaultDicConfig();
+        if( !isset( static::$dicConfig[ $service ] ) ) {
+            static::$dicConfig[ $service ] = array();
+        }
+        static::$dicConfig[ $service ][ 'din'    ] = $din;
+        static::$dicConfig[ $service ][ 'config' ] = $config;
+        static::$dicConfig[ $service ][ 'inject' ] = $inject;
+    }
     // +-------------------------------------------------------------+
     /**
      * @return \AmidaMVC\Framework\Services
