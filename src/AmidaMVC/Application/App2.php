@@ -17,7 +17,7 @@ class App2
         $modules = array(
             //'authAdminOnly',
             'config', 'lang', 'template',
-            'authDevLogin', 'authDevLogout', 'authDevFiler',
+            'authDevLogin',
             'router',       'loader',        'menus',      'emitter',
         );
         $ctrl->setModules( $modules );
@@ -185,7 +185,12 @@ class App2
             // Modules
             'config' => array(
                 'din'    => array( '\AmidaMVC\Module\Config',    'new' ),
-                'config' => array(),
+                'config' => array(
+                    'onPathInfo' => '/',
+                    'evaluate' => function( $config ) {
+                        $config->test = 'test';
+                    }
+                ),
                 'inject' => array(),
             ),
             'lang' => array(
@@ -273,51 +278,38 @@ class App2
             ),
             'authDevLogin' => array(
                 'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
-                'config' => array(
-                    'authArea' => 'authDev',
-                    'evaluateOn' => array(
-                        'onPathInfo' => array( '/dev_login' ),
-                        'onFail' => array(
-                            'setLoginForm' => '_Config/login_file.md',
-                        ),
-                        'onSuccess' => array(
-                            'redirect' => '/',
-                        ),
-                    ),
-                )
-            ),
-            'authDevFiler' => array(
-                'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
                 'inject' => array(
                     array( 'i18n', 'i18n' ),
                 ),
                 'config' => array(
-                    'authArea' => 'authDev',
-                    'evaluateOn' => array(
-                        'onPathInfo' => array( '/' ),
-                        'onFail' => array(
-                            'drawLogin' => array(),
-                        ),
-                        'onSuccess' => array(
-                            'addModuleAfter' => array( 'router', 'filer', 'filer', ),
-                            'drawLogout' => array(),
-                        ),
+                    array(
+                        'onPathInfo' => '/',
+                        'evaluate' => array( 'authDev', 'getAuth' ),
+                        'onSuccess' => function( $auth ) {
+                            $auth->_ctrl->addModuleAfter( 'router', 'filer', 'filer' );
+                            $auth->drawLogout();
+                        },
+                        'onFail' => function( $auth ) {
+                            $auth->drawLogin();
+                        },
                     ),
-                )
-            ),
-            'authDevLogout' => array(
-                'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
-                'config' => array(
-                    'authArea' => 'authDev',
-                    'evaluateOn' => array(
-                        'onPathInfo' => array( '/dev_logout' ),
-                        'onFail' => array(
-                            'redirect' => '/',
-                        ),
-                        'onSuccess' => array(
-                            'logout' => '',
-                            'redirect' => '/',
-                        ),
+                    array(
+                        'onPathInfo' => '/dev_logout',
+                        'evaluate' => array( 'authDev', 'logout' ),
+                        'onAny' => function( $auth ) {
+                            $auth->_ctrl->redirect( '/' );
+                        },
+                    ),
+                    array(
+                        'onPathInfo' => '/dev_login',
+                        'evaluate' => array( 'authDev', 'getAuth' ),
+                        'onFail' => function( $auth ) {
+                            $auth->_ctrl->setAction( '_loginForm' );
+                            $auth->_ctrl->options[ 'loginForm_file' ] = '_Config/login_file.md';
+                        },
+                        'onSuccess' => function( $auth ) {
+                            $auth->_ctrl->redirect( '/' );
+                        },
                     ),
                 )
             ),
