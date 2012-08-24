@@ -117,13 +117,16 @@ class App
     }
     // +-------------------------------------------------------------+
     /**
+     * @param \AmidaMVC\Framework\Services|null $dic
      * @return \AmidaMVC\Framework\Services
      */
-    static function _setupDiC()
+    static function _setupDiC( $dic=NULL )
     {
         static::defaultDicConfig();
-        static::$dic = \AmidaMVC\Framework\Services::start();
-        foreach( static::$dicConfig as $service => $setup ) {
+        static::$dic = ( is_object( $dic ) ) ? $dic: \AmidaMVC\Framework\Services::start();
+
+        foreach( static::$dicConfig as $service => $setup )
+        {
             $din = array_merge( array( $service ), $setup[ 'din' ] );
             call_user_func_array( array( static::$dic, 'setService' ), $din );
             if( isset( $setup[ 'config' ] ) ) {
