@@ -10,9 +10,10 @@ class App
 
     // +-------------------------------------------------------------+
     /**
+     * @param string $ctrl
      * @return \AmidaMVC\Framework\Controller
      */
-    static function app( $ctrl='controller ')
+    static function app( $ctrl='controller' )
     {
         static::_setupDiC();
         /** @var $ctrl \AmidaMVC\Framework\Controller */
@@ -37,7 +38,7 @@ class App
         static::config( 'config', array(
             'onPathInfo' => '/',
             'evaluate'   => function( $config ) {
-                $config->_ctrl->addModule( 'lang', 'lang' );
+                $config->_ctrl->prependModule( 'lang', 'lang' );
             },
         ) );
         return static::app();
@@ -51,9 +52,11 @@ class App
         static::config( 'config', array(
             'onPathInfo' => '/',
             'evaluate'   => function( $config ) {
-                $config->_ctrl->addModule( 'lang', 'lang' );
-                $config->_ctrl->addModule( 'template', 'template' );
-                $config->_ctrl->addModule( 'configDev', 'configDev' );
+                $config->_ctrl->prependModule( array(
+                    array( 'lang', 'lang' ),
+                    array( 'template', 'template' ),
+                    array( 'configDev', 'configDev' ),
+                ));
             },
         ) );
         return static::app();
