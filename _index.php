@@ -1,7 +1,7 @@
 <?php
 require_once( __DIR__ . '/src/AmidaMVC/bootstrap.php' );
 
-$app = \AmidaMVC\Application\App2::app();
+$app = \AmidaMVC\Application\App::cms();
 $app->setCtrlRoot( __DIR__ );
 $app->setModuleOption( 'router', array( 'indexes' => 'README.md' ) );
 $app->setModuleOption( 'menus',
