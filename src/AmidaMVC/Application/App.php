@@ -19,11 +19,6 @@ class App
         /** @var $ctrl \AmidaMVC\Framework\Controller */
         $ctrl = static::$dic->get( $ctrl );
 
-        $modules = array(
-            'config',
-            'router', 'loader', 'menus', 'emitter',
-        );
-        $ctrl->setModules( $modules );
         $ctrl->separateCommands();
 
         return $ctrl;
@@ -35,13 +30,13 @@ class App
      */
     static function std()
     {
-        static::config( 'config', array(
-            'onPathInfo' => '/',
-            'evaluate'   => function( $config ) {
-                $config->_ctrl->prependModule( 'lang', 'lang' );
-            },
-        ) );
-        return static::app();
+        $modules = array(
+            'config',
+            'router', 'loader', 'menus', 'emitter',
+        );
+        $ctrl = static::app();
+        $ctrl->setModules( $modules );
+        return $ctrl;
     }
     /**
      * @static
@@ -49,21 +44,17 @@ class App
      */
     static function cms()
     {
-        static::config( 'config', array(
-            'onPathInfo' => '/',
-            'evaluate'   => function( $config ) {
-                $config->_ctrl->prependModule( array(
-                    array( 'lang', 'lang' ),
-                    array( 'template', 'template' ),
-                    array( 'configDev', 'configDev' ),
-                ));
-            },
-        ) );
-        return static::app();
+        $modules = array(
+            'lang', 'config', 'template', 'authDevLogin',
+            'router', 'loader', 'menus', 'emitter',
+        );
+        $ctrl = static::app();
+        $ctrl->setModules( $modules );
+        return $ctrl;
     }
 
     // +-------------------------------------------------------------+
-    /**
+    /** changes config for a service.
      * @static
      * @param string $service
      * @param array $config
@@ -85,7 +76,7 @@ class App
         }
     }
 
-    /**
+    /** setup injection for a service.
      * @static
      * @param string $service
      * @param string $name
@@ -108,6 +99,13 @@ class App
         }
     }
 
+    /** add a new service to DiConfig.
+     * @static
+     * @param string $service
+     * @param array $din
+     * @param array $config
+     * @param array $inject
+     */
     static function service( $service, $din, $config=array(), $inject=array() )
     {
         static::defaultDicConfig();
@@ -191,14 +189,7 @@ class App
         // Modules
         static::$dicConfig[ 'config' ] = array(
             'din' => array( '\AmidaMVC\Module\Config', 'new' ),
-            'config' => array(
-                'onPathInfo' => '/',
-                'evaluate'   => function( $config ) {
-                    $config->_ctrl->addModule( 'lang', 'lang' );
-                    $config->_ctrl->addModule( 'template', 'template' );
-                    $config->_ctrl->addModule( 'configDev', 'configDev' );
-                },
-            ),
+            'config' => array(),
         );
         static::$dicConfig[ 'lang' ] = array(
             'din' => array( '\AmidaMVC\Module\Lang', 'new' ),
@@ -221,8 +212,7 @@ class App
             'config' => array(
                 'onPathInfo' => '/common/',
                 'evaluate'   => function( $config ) {
-                    $config->_ctrl->addModule( 'authDev', 'authDev' );
-                    $config->_ctrl->addModule( 'template', 'template' );
+                    $config->_ctrl->appendModule( 'authDev', 'authDev' );
                 },
             ),
         );
@@ -275,32 +265,25 @@ class App
             ),
         );
         // for _Dev mode
-        static::$dicConfig[ 'auth' ] = array(
-            'din' => array( '\AmidaMVC\Tools\AuthBasic', 'get' ),
+        static::$dicConfig[ 'authDev' ] = array(
+            'din' => array( '\AmidaMVC\Tools\AuthBasic',    'new', 'authDev' ),
             'inject' => array(
+                array( 'session', 'session' ),
+                array( 'request', 'request' ),
                 array( 'load', 'load' ),
             ),
             'config' => array(
-                'password_file' => '_Config/.password',
+                'password_file' => '_Config/.dev.password',
+                'authArea'      => 'authDev',
             ),
         );
-        static::$dicConfig[ 'AuthDev' ] = array(
+        static::$dicConfig[ 'authDevLogin' ] = array(
             'din'    => array( '\AmidaMVC\Module\Auth', 'new' ),
             'inject' => array(
                 array( 'i18n', 'i18n' ),
             ),
             'config' => array(
-                array(
-                    'onPathInfo' => '/',
-                    'evaluate' => array( 'authDev', 'getAuth' ),
-                    'onSuccess' => function( $auth ) {
-                        $auth->_ctrl->addModuleAfter( 'router', 'filer', 'filer' );
-                        $auth->drawLogout();
-                    },
-                    'onFail' => function( $auth ) {
-                        $auth->drawLogin();
-                    },
-                ),
+
                 array(
                     'onPathInfo' => '/dev_logout',
                     'evaluate' => array( 'authDev', 'logout' ),
@@ -319,7 +302,17 @@ class App
                         $auth->_ctrl->redirect( '/' );
                     },
                 ),
-            )
+                array(
+                    'onPathInfo' => '/',
+                    'evaluate' => array( 'authDev', 'getAuth' ),
+                    'onSuccess' => function( $auth ) {
+                        $auth->_ctrl->addModuleAfter( 'router', 'filer', 'filer' );
+                        $auth->drawLogout();
+                    },
+                    'onFail' => function( $auth ) {
+                        $auth->drawLogin();
+                    },
+                ),           )
         );
         static::$dicConfig[ 'filer' ] = array(
             'din' => array( '\AmidaMVC\Module\Filer', 'new' ),
